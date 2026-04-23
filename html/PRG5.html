@@ -425,7 +425,7 @@ pre {
 ;
 </div><span class="l"><a class="anc" name="803c" href="#803c">[803c]</a><span class="cd"><span class="i">LDX</span> <span class="o">#$03</span></span><span class="ce">; X = 3 (loop counter).</span></span>
 <span class="l"></span>
-<a name=":803e:@_checkSoundEffectLoop"></a><span class="l"><a class="anc" name="803e" href="#803e">[803e]</a><a href="#:803e:@_checkSoundEffectLoop" class="lla">@_checkSoundEffectLoop:</a><span class="ce">; [$803e]</span></span>
+<a name="803e:@_checkSoundEffectLoop"></a><span class="l"><a class="anc" name="803e" href="#803e">[803e]</a><a href="#803e:@_checkSoundEffectLoop" class="lla">@_checkSoundEffectLoop:</a><span class="ce">; [$803e]</span></span>
 <span class="l"><a class="anc" name="803e" href="#803e">[803e]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="RAM.html#SoundEffect_TicksRemaining">SoundEffect_TicksRemaining</a>,X</span></span><span class="ce">; Load the sound effect at the current index.</span></span>
 <span class="l"><a class="anc" name="8041" href="#8041">[8041]</a><span class="cd"><span class="i">BNE</span> <span class="o"><a href="#@_return">@_return</a></span></span><span class="ce">; If it's set, then return.</span></span>
 <span class="l"><a class="anc" name="8043" href="#8043">[8043]</a><span class="cd"><span class="i">DEX</span></span><span class="ce">; X-- (loop counter).</span></span>
@@ -438,7 +438,7 @@ pre {
 ;
 </div><span class="l"><a class="anc" name="8046" href="#8046">[8046]</a><span class="cd"><span class="i">JMP</span> <span class="o"><a href="#Audio_Reset">Audio_Reset</a></span></span><span class="ce">; Reset the audio.</span></span>
 <span class="l"></span>
-<a name=":8049:@_return"></a><span class="l"><a class="anc" name="8049" href="#8049">[8049]</a><a href="#:8049:@_return" class="lla">@_return:</a><span class="ce">; [$8049]</span></span>
+<a name="8049:@_return"></a><span class="l"><a class="anc" name="8049" href="#8049">[8049]</a><a href="#8049:@_return" class="lla">@_return:</a><span class="ce">; [$8049]</span></span>
 <span class="l"><a class="anc" name="8049" href="#8049">[8049]</a><span class="cd"><span class="i">RTS</span></span></span>
 <span class="l"></span>
 <span class="l"></span>
@@ -535,7 +535,7 @@ pre {
 ;
 </div><span class="l"><a class="anc" name="8083" href="#8083">[8083]</a><span class="cd"><span class="i">LDX</span> <span class="o">#$07</span></span><span class="ce">; X = 7 (loop counter).</span></span>
 <span class="l"></span>
-<a name=":8085:@_loadMusicLoop"></a><span class="l"><a class="anc" name="8085" href="#8085">[8085]</a><a href="#:8085:@_loadMusicLoop" class="lla">@_loadMusicLoop:</a><span class="ce">; [$8085]</span></span>
+<a name="8085:@_loadMusicLoop"></a><span class="l"><a class="anc" name="8085" href="#8085">[8085]</a><a href="#8085:@_loadMusicLoop" class="lla">@_loadMusicLoop:</a><span class="ce">; [$8085]</span></span>
 <span class="l"><a class="anc" name="8085" href="#8085">[8085]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="#MSCRIPTS_LOOKUP">MSCRIPTS_LOOKUP</a>,Y</span></span><span class="ce">; Load the MScript channel address at Y.</span></span>
 <span class="l"><a class="anc" name="8088" href="#8088">[8088]</a><span class="cd"><span class="i">STA</span> <span class="o"><a href="RAM.html#Music_CurrentScriptAddrs">Music_CurrentScriptAddrs</a>,X</span></span><span class="ce">; Store it in the list of channel addresses.</span></span>
 <span class="l"></span>
@@ -675,19 +675,19 @@ pre {
 <span class="l"><a class="anc" name="810b" href="#810b">[810b]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#MScript_CurrentChannel">MScript_CurrentChannel</a></span></span><span class="ce">; Clear the current channel index.</span></span>
 <span class="l"></span>
 <span class="l"></span>
-<a name=":810e:@_loop"></a><div class="c">;
+<a name="810e:@_loop"></a><div class="c">;
 ; Loop through each of the channels.
 ;
 ; For each channel, the current value will be played and
 ; only advanced when the repeat count for the value hits 0.
 ;
-</div><span class="l"><a class="anc" name="810e" href="#810e">[810e]</a><a href="#:810e:@_loop" class="lla">@_loop:</a><span class="ce">; [$810e]</span></span>
+</div><span class="l"><a class="anc" name="810e" href="#810e">[810e]</a><a href="#810e:@_loop" class="lla">@_loop:</a><span class="ce">; [$810e]</span></span>
 <span class="l"><a class="anc" name="810e" href="#810e">[810e]</a><span class="cd"><span class="i">LDX</span> <span class="o">a:<a href="RAM.html#MScript_CurrentChannel">MScript_CurrentChannel</a></span></span><span class="ce">; X = Current channel index</span></span>
 <span class="l"><a class="anc" name="8111" href="#8111">[8111]</a><span class="cd"><span class="i">DEC</span> <span class="o"><a href="RAM.html#Music_NoteTicksRemaining">Music_NoteTicksRemaining</a>,X</span></span></span>
 <span class="l"><a class="anc" name="8114" href="#8114">[8114]</a><span class="cd"><span class="i">BNE</span> <span class="o"><a href="#@_play">@_play</a></span></span></span>
 <span class="l"><a class="anc" name="8116" href="#8116">[8116]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#MScripts_InvokeNext">MScripts_InvokeNext</a></span></span></span>
 <span class="l"></span>
-<a name=":8119:@_play"></a><span class="l"><a class="anc" name="8119" href="#8119">[8119]</a><a href="#:8119:@_play" class="lla">@_play:</a><span class="ce">; [$8119]</span></span>
+<a name="8119:@_play"></a><span class="l"><a class="anc" name="8119" href="#8119">[8119]</a><a href="#8119:@_play" class="lla">@_play:</a><span class="ce">; [$8119]</span></span>
 <span class="l"><a class="anc" name="8119" href="#8119">[8119]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#Music_PlayForChannel">Music_PlayForChannel</a></span></span><span class="ce">; Play music on this channel.</span></span>
 <span class="l"><a class="anc" name="811c" href="#811c">[811c]</a><span class="cd"><span class="i">INC</span> <span class="o">a:<a href="RAM.html#MScript_CurrentChannel">MScript_CurrentChannel</a></span></span><span class="ce">; Move to the next channel.</span></span>
 <span class="l"><a class="anc" name="811f" href="#811f">[811f]</a><span class="cd"><span class="i">LDA</span> <span class="o">a:<a href="RAM.html#MScript_CurrentChannel">MScript_CurrentChannel</a></span></span><span class="ce">; Load that channel index.</span></span>
@@ -709,7 +709,7 @@ pre {
 </div><span class="l"><a class="anc" name="812d" href="#812d">[812d]</a><span class="cd"><span class="i">LDA</span> <span class="o">#$00</span></span></span>
 <span class="l"><a class="anc" name="812f" href="#812f">[812f]</a><span class="cd"><span class="i">STA</span> <span class="o"><a href="RAM.html#Music_Current">Music_Current</a></span></span><span class="ce">; Unset the current music.</span></span>
 <span class="l"></span>
-<a name=":8131:@_return"></a><span class="l"><a class="anc" name="8131" href="#8131">[8131]</a><a href="#:8131:@_return" class="lla">@_return:</a><span class="ce">; [$8131]</span></span>
+<a name="8131:@_return"></a><span class="l"><a class="anc" name="8131" href="#8131">[8131]</a><a href="#8131:@_return" class="lla">@_return:</a><span class="ce">; [$8131]</span></span>
 <span class="l"><a class="anc" name="8131" href="#8131">[8131]</a><span class="cd"><span class="i">RTS</span></span></span>
 <span class="l"></span>
 </pre><pre><a name="Music_PlayForChannel"></a><div class="cp">;============================================================================
@@ -734,17 +734,17 @@ pre {
 <span class="l"><a class="anc" name="813d" href="#813d">[813d]</a><span class="cd"><span class="i">RTS</span></span><span class="ce">; Else, return.</span></span>
 <span class="l"></span>
 <span class="l"></span>
-<a name=":813e:@_isTriangleWave"></a><div class="c">;
+<a name="813e:@_isTriangleWave"></a><div class="c">;
 ; This is the Triangle Wave channel.
 ;
-</div><span class="l"><a class="anc" name="813e" href="#813e">[813e]</a><a href="#:813e:@_isTriangleWave" class="lla">@_isTriangleWave:</a><span class="ce">; [$813e]</span></span>
+</div><span class="l"><a class="anc" name="813e" href="#813e">[813e]</a><a href="#813e:@_isTriangleWave" class="lla">@_isTriangleWave:</a><span class="ce">; [$813e]</span></span>
 <span class="l"><a class="anc" name="813e" href="#813e">[813e]</a><span class="cd"><span class="i">LDX</span> <span class="o">a:<a href="RAM.html#MScript_CurrentChannel">MScript_CurrentChannel</a></span></span><span class="ce">; Load the current channel index.</span></span>
 <span class="l"><a class="anc" name="8141" href="#8141">[8141]</a><span class="cd"><span class="i">LDA</span> <span class="o">a:<a href="RAM.html#Something_Music_Triangle_017e">Something_Music_Triangle_017e</a></span></span></span>
 <span class="l"><a class="anc" name="8144" href="#8144">[8144]</a><span class="cd"><span class="i">BEQ</span> <span class="o"><a href="#@_checkSoundEffectOnTri">@_checkSoundEffectOnTri</a></span></span></span>
 <span class="l"><a class="anc" name="8146" href="#8146">[8146]</a><span class="cd"><span class="i">DEC</span> <span class="o">a:<a href="RAM.html#Something_Music_Triangle_017e">Something_Music_Triangle_017e</a></span></span></span>
 <span class="l"><a class="anc" name="8149" href="#8149">[8149]</a><span class="cd"><span class="i">LDA</span> <span class="o">#$c0</span></span></span>
 <span class="l"></span>
-<a name=":814b:@_checkSoundEffectOnTri"></a><span class="l"><a class="anc" name="814b" href="#814b">[814b]</a><a href="#:814b:@_checkSoundEffectOnTri" class="lla">@_checkSoundEffectOnTri:</a><span class="ce">; [$814b]</span></span>
+<a name="814b:@_checkSoundEffectOnTri"></a><span class="l"><a class="anc" name="814b" href="#814b">[814b]</a><a href="#814b:@_checkSoundEffectOnTri" class="lla">@_checkSoundEffectOnTri:</a><span class="ce">; [$814b]</span></span>
 <span class="l"><a class="anc" name="814b" href="#814b">[814b]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#MScript_CurValue">MScript_CurValue</a></span></span></span>
 <span class="l"></span>
 <span class="l"></span>
@@ -763,16 +763,16 @@ pre {
 <span class="l"><a class="anc" name="8156" href="#8156">[8156]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#TRI_LINEAR">TRI_LINEAR</a></span></span><span class="ce">; Set it on the channel.</span></span>
 <span class="l"><a class="anc" name="8159" href="#8159">[8159]</a><span class="cd"><span class="i">RTS</span></span><span class="ce">; And return.</span></span>
 <span class="l"></span>
-<a name=":815a:@_clearTriangleWave"></a><span class="l"><a class="anc" name="815a" href="#815a">[815a]</a><a href="#:815a:@_clearTriangleWave" class="lla">@_clearTriangleWave:</a><span class="ce">; [$815a]</span></span>
+<a name="815a:@_clearTriangleWave"></a><span class="l"><a class="anc" name="815a" href="#815a">[815a]</a><a href="#815a:@_clearTriangleWave" class="lla">@_clearTriangleWave:</a><span class="ce">; [$815a]</span></span>
 <span class="l"><a class="anc" name="815a" href="#815a">[815a]</a><span class="cd"><span class="i">LDA</span> <span class="o">#$00</span></span></span>
 <span class="l"><a class="anc" name="815c" href="#815c">[815c]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#TRI_LINEAR">TRI_LINEAR</a></span></span><span class="ce">; Clear the Triangle Wave channel.</span></span>
 <span class="l"><a class="anc" name="815f" href="#815f">[815f]</a><span class="cd"><span class="i">RTS</span></span><span class="ce">; And return.</span></span>
 <span class="l"></span>
 <span class="l"></span>
-<a name=":8160:@_isSquareWave"></a><div class="c">;
+<a name="8160:@_isSquareWave"></a><div class="c">;
 ; This is a Square Wave channel.
 ;
-</div><span class="l"><a class="anc" name="8160" href="#8160">[8160]</a><a href="#:8160:@_isSquareWave" class="lla">@_isSquareWave:</a><span class="ce">; [$8160]</span></span>
+</div><span class="l"><a class="anc" name="8160" href="#8160">[8160]</a><a href="#8160:@_isSquareWave" class="lla">@_isSquareWave:</a><span class="ce">; [$8160]</span></span>
 <span class="l"><a class="anc" name="8160" href="#8160">[8160]</a><span class="cd"><span class="i">LDX</span> <span class="o">a:<a href="RAM.html#MScript_CurrentChannel">MScript_CurrentChannel</a></span></span></span>
 <span class="l"><a class="anc" name="8163" href="#8163">[8163]</a><span class="cd"><span class="i">LDY</span> <span class="o"><a href="RAM.html#Music_SQEnvelope_Mode">Music_SQEnvelope_Mode</a>,X</span></span></span>
 <span class="l"><a class="anc" name="8166" href="#8166">[8166]</a><span class="cd"><span class="i">BEQ</span> <span class="o"><a href="#Music_PlaySQEnvelopeModeLinearTrailoff">Music_PlaySQEnvelopeModeLinearTrailoff</a></span></span></span>
@@ -836,12 +836,12 @@ pre {
 <span class="l"><a class="anc" name="817a" href="#817a">[817a]</a><span class="cd"><span class="i">STA</span> <span class="o"><a href="RAM.html#Music_SQEnvelope_Value">Music_SQEnvelope_Value</a>,X</span></span><span class="ce">; Store the new counter.</span></span>
 <span class="l"></span>
 <span class="l"></span>
-<a name=":817d:@LAB_PRG5__817d"></a><div class="c">;
+<a name="817d:@LAB_PRG5__817d"></a><div class="c">;
 ; Convert the value to a value between 0-15.
 ;
 ; This effectively shifts any value into the lower nibble.
 ;
-</div><span class="l"><a class="anc" name="817d" href="#817d">[817d]</a><a href="#:817d:@LAB_PRG5__817d" class="lla">@LAB_PRG5__817d:</a><span class="ce">; [$817d]</span></span>
+</div><span class="l"><a class="anc" name="817d" href="#817d">[817d]</a><a href="#817d:@LAB_PRG5__817d" class="lla">@LAB_PRG5__817d:</a><span class="ce">; [$817d]</span></span>
 <span class="l"><a class="anc" name="817d" href="#817d">[817d]</a><span class="cd"><span class="i">LSR</span> <span class="o">A</span></span><span class="ce">; Shift into the lower nibble.</span></span>
 <span class="l"><a class="anc" name="817e" href="#817e">[817e]</a><span class="cd"><span class="i">LSR</span> <span class="o">A</span></span></span>
 <span class="l"><a class="anc" name="817f" href="#817f">[817f]</a><span class="cd"><span class="i">LSR</span> <span class="o">A</span></span></span>
@@ -858,7 +858,7 @@ pre {
 <span class="l"><a class="anc" name="818b" href="#818b">[818b]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#Music_UpdateSQVolRegister">Music_UpdateSQVolRegister</a></span></span><span class="ce">; Update the volume and flags the SQ*_VOL register.</span></span>
 <span class="l"><a class="anc" name="818e" href="#818e">[818e]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#Music_ApplySQPitchEffectToLO">Music_ApplySQPitchEffectToLO</a></span></span><span class="ce">; Apply the mode's pitch effect to the SQ*_LO register.</span></span>
 <span class="l"></span>
-<a name=":8191:@_return"></a><span class="l"><a class="anc" name="8191" href="#8191">[8191]</a><a href="#:8191:@_return" class="lla">@_return:</a><span class="ce">; [$8191]</span></span>
+<a name="8191:@_return"></a><span class="l"><a class="anc" name="8191" href="#8191">[8191]</a><a href="#8191:@_return" class="lla">@_return:</a><span class="ce">; [$8191]</span></span>
 <span class="l"><a class="anc" name="8191" href="#8191">[8191]</a><span class="cd"><span class="i">RTS</span></span></span>
 </pre><pre><a name="Music_PlaySQEnvelopeModeCurveButHeld"></a><div class="cp">;============================================================================
 ; TODO: Document Music_PlaySQEnvelopeModeCurveButHeld
@@ -885,7 +885,7 @@ pre {
 <span class="l"><a class="anc" name="81a1" href="#81a1">[81a1]</a><span class="cd"><span class="i">DEC</span> <span class="o"><a href="RAM.html#Music_SQEnvelope_Value">Music_SQEnvelope_Value</a>,X</span></span></span>
 <span class="l"><a class="anc" name="81a4" href="#81a4">[81a4]</a><span class="cd"><span class="i">DEC</span> <span class="o"><a href="RAM.html#Music_SQEnvelope_Value">Music_SQEnvelope_Value</a>,X</span></span></span>
 <span class="l"></span>
-<a name=":81a7:@LAB_PRG5__81a7"></a><span class="l"><a class="anc" name="81a7" href="#81a7">[81a7]</a><a href="#:81a7:@LAB_PRG5__81a7" class="lla">@LAB_PRG5__81a7:</a><span class="ce">; [$81a7]</span></span>
+<a name="81a7:@LAB_PRG5__81a7"></a><span class="l"><a class="anc" name="81a7" href="#81a7">[81a7]</a><a href="#81a7:@LAB_PRG5__81a7" class="lla">@LAB_PRG5__81a7:</a><span class="ce">; [$81a7]</span></span>
 <span class="l"><a class="anc" name="81a7" href="#81a7">[81a7]</a><span class="cd"><span class="i">INC</span> <span class="o"><a href="RAM.html#Music_SQEnvelope_Phase">Music_SQEnvelope_Phase</a>,X</span></span></span>
 <span class="l"><a class="anc" name="81aa" href="#81aa">[81aa]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="RAM.html#Music_SQEnvelope_Value">Music_SQEnvelope_Value</a>,X</span></span></span>
 <span class="l"><a class="anc" name="81ad" href="#81ad">[81ad]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#MScript_CurValue">MScript_CurValue</a></span></span></span>
@@ -894,7 +894,7 @@ pre {
 <span class="l"><a class="anc" name="81b5" href="#81b5">[81b5]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#Music_UpdateSQVolRegister">Music_UpdateSQVolRegister</a></span></span></span>
 <span class="l"><a class="anc" name="81b8" href="#81b8">[81b8]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#Music_ApplySQPitchEffectToLO">Music_ApplySQPitchEffectToLO</a></span></span></span>
 <span class="l"></span>
-<a name=":81bb:@_return"></a><span class="l"><a class="anc" name="81bb" href="#81bb">[81bb]</a><a href="#:81bb:@_return" class="lla">@_return:</a><span class="ce">; [$81bb]</span></span>
+<a name="81bb:@_return"></a><span class="l"><a class="anc" name="81bb" href="#81bb">[81bb]</a><a href="#81bb:@_return" class="lla">@_return:</a><span class="ce">; [$81bb]</span></span>
 <span class="l"><a class="anc" name="81bb" href="#81bb">[81bb]</a><span class="cd"><span class="i">RTS</span></span></span>
 </pre><pre><a name="Music_PlaySQEnvelopeModePluck"></a><div class="cp">;============================================================================
 ; TODO: Document Music_PlaySQEnvelopeModePluck
@@ -921,14 +921,14 @@ pre {
 <span class="l"><a class="anc" name="81c8" href="#81c8">[81c8]</a><span class="cd"><span class="i">BEQ</span> <span class="o"><a href="#@LAB_PRG5__81cd">@LAB_PRG5__81cd</a></span></span></span>
 <span class="l"><a class="anc" name="81ca" href="#81ca">[81ca]</a><span class="cd"><span class="i">INC</span> <span class="o"><a href="RAM.html#Music_SQEnvelope_Phase">Music_SQEnvelope_Phase</a>,X</span></span></span>
 <span class="l"></span>
-<a name=":81cd:@LAB_PRG5__81cd"></a><span class="l"><a class="anc" name="81cd" href="#81cd">[81cd]</a><a href="#:81cd:@LAB_PRG5__81cd" class="lla">@LAB_PRG5__81cd:</a><span class="ce">; [$81cd]</span></span>
+<a name="81cd:@LAB_PRG5__81cd"></a><span class="l"><a class="anc" name="81cd" href="#81cd">[81cd]</a><a href="#81cd:@LAB_PRG5__81cd" class="lla">@LAB_PRG5__81cd:</a><span class="ce">; [$81cd]</span></span>
 <span class="l"><a class="anc" name="81cd" href="#81cd">[81cd]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#MScript_CurValue">MScript_CurValue</a></span></span></span>
 <span class="l"><a class="anc" name="81d0" href="#81d0">[81d0]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="RAM.html#SoundEffect_TicksRemaining">SoundEffect_TicksRemaining</a>,X</span></span></span>
 <span class="l"><a class="anc" name="81d3" href="#81d3">[81d3]</a><span class="cd"><span class="i">BNE</span> <span class="o"><a href="#@_return">@_return</a></span></span></span>
 <span class="l"><a class="anc" name="81d5" href="#81d5">[81d5]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#Music_UpdateSQVolRegister">Music_UpdateSQVolRegister</a></span></span></span>
 <span class="l"><a class="anc" name="81d8" href="#81d8">[81d8]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#Music_ApplySQPitchEffectToLO">Music_ApplySQPitchEffectToLO</a></span></span></span>
 <span class="l"></span>
-<a name=":81db:@_return"></a><span class="l"><a class="anc" name="81db" href="#81db">[81db]</a><a href="#:81db:@_return" class="lla">@_return:</a><span class="ce">; [$81db]</span></span>
+<a name="81db:@_return"></a><span class="l"><a class="anc" name="81db" href="#81db">[81db]</a><a href="#81db:@_return" class="lla">@_return:</a><span class="ce">; [$81db]</span></span>
 <span class="l"><a class="anc" name="81db" href="#81db">[81db]</a><span class="cd"><span class="i">RTS</span></span></span>
 <span class="l"></span>
 <a name="SQ_MODE_2_PLUCK_VALUES"></a><div class="c">;
@@ -1022,7 +1022,7 @@ pre {
 ;
 </div><span class="l"><a class="anc" name="8201" href="#8201">[8201]</a><span class="cd"><span class="i">LDA</span> <span class="o">#$00</span></span><span class="ce">; Set the volume to 0.</span></span>
 <span class="l"></span>
-<a name=":8203:@_setVolume"></a><span class="l"><a class="anc" name="8203" href="#8203">[8203]</a><a href="#:8203:@_setVolume" class="lla">@_setVolume:</a><span class="ce">; [$8203]</span></span>
+<a name="8203:@_setVolume"></a><span class="l"><a class="anc" name="8203" href="#8203">[8203]</a><a href="#8203:@_setVolume" class="lla">@_setVolume:</a><span class="ce">; [$8203]</span></span>
 <span class="l"><a class="anc" name="8203" href="#8203">[8203]</a><span class="cd"><span class="i">LDX</span> <span class="o">a:<a href="RAM.html#MScript_CurrentChannel">MScript_CurrentChannel</a></span></span><span class="ce">; Load the current SQ channel as an index.</span></span>
 <span class="l"><a class="anc" name="8206" href="#8206">[8206]</a><span class="cd"><span class="i">ORA</span> <span class="o"><a href="RAM.html#Music_SQ_ControlBits">Music_SQ_ControlBits</a>,X</span></span><span class="ce">; Apply control bits to the value to set for the register.</span></span>
 <span class="l"><a class="anc" name="8209" href="#8209">[8209]</a><span class="cd"><span class="i">STA</span> <span class="o"><a href="RAM.html#SQ1_VOL">SQ1_VOL</a>,Y</span></span><span class="ce">; And set the register.</span></span>
@@ -1096,7 +1096,7 @@ pre {
 <span class="l"><a class="anc" name="8233" href="#8233">[8233]</a><span class="cd"><span class="i">SBC</span> <span class="o">a:<a href="RAM.html#Music_SQEffect_Delta">Music_SQEffect_Delta</a></span></span><span class="ce">; Subtract the delta calculated above.</span></span>
 <span class="l"><a class="anc" name="8236" href="#8236">[8236]</a><span class="cd"><span class="i">STA</span> <span class="o"><a href="RAM.html#SQ1_LO">SQ1_LO</a>,Y</span></span><span class="ce">; And store it in the register.</span></span>
 <span class="l"></span>
-<a name=":8239:@_return"></a><span class="l"><a class="anc" name="8239" href="#8239">[8239]</a><a href="#:8239:@_return" class="lla">@_return:</a><span class="ce">; [$8239]</span></span>
+<a name="8239:@_return"></a><span class="l"><a class="anc" name="8239" href="#8239">[8239]</a><a href="#8239:@_return" class="lla">@_return:</a><span class="ce">; [$8239]</span></span>
 <span class="l"><a class="anc" name="8239" href="#8239">[8239]</a><span class="cd"><span class="i">RTS</span></span></span>
 <span class="l"></span>
 </pre><pre><a name="MScripts_InvokeNext"></a><div class="cp">;============================================================================
@@ -1136,7 +1136,7 @@ pre {
 <span class="l"><a class="anc" name="8244" href="#8244">[8244]</a><span class="cd"><span class="i">BEQ</span> <span class="o"><a href="#@_loadNextValue">@_loadNextValue</a></span></span><span class="ce">; If not, process the next value in the script.</span></span>
 <span class="l"><a class="anc" name="8246" href="#8246">[8246]</a><span class="cd"><span class="i">JMP</span> <span class="o"><a href="#Music_PlayNoise">Music_PlayNoise</a></span></span><span class="ce">; Else, play the noise.</span></span>
 <span class="l"></span>
-<a name=":8249:@_loadNextValue"></a><span class="l"><a class="anc" name="8249" href="#8249">[8249]</a><a href="#:8249:@_loadNextValue" class="lla">@_loadNextValue:</a><span class="ce">; [$8249]</span></span>
+<a name="8249:@_loadNextValue"></a><span class="l"><a class="anc" name="8249" href="#8249">[8249]</a><a href="#8249:@_loadNextValue" class="lla">@_loadNextValue:</a><span class="ce">; [$8249]</span></span>
 <span class="l"><a class="anc" name="8249" href="#8249">[8249]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#MScripts_GetNextValue">MScripts_GetNextValue</a></span></span><span class="ce">; Get the next value from the MScript.</span></span>
 <span class="l"><a class="anc" name="824c" href="#824c">[824c]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#MScript_CurValue">MScript_CurValue</a></span></span><span class="ce">; Store it.</span></span>
 <span class="l"><a class="anc" name="824f" href="#824f">[824f]</a><span class="cd"><span class="i">TAY</span></span><span class="ce">; Y = Value</span></span>
@@ -1144,10 +1144,10 @@ pre {
 <span class="l"><a class="anc" name="8252" href="#8252">[8252]</a><span class="cd"><span class="i">JMP</span> <span class="o"><a href="#MScripts_PlayIfHasValue">MScripts_PlayIfHasValue</a></span></span><span class="ce">; Play if there's a value, or finish if 0.</span></span>
 <span class="l"></span>
 <span class="l"></span>
-<a name=":8255:@_handleScriptValue"></a><div class="c">;
+<a name="8255:@_handleScriptValue"></a><div class="c">;
 ; Check if this is an MScript op (&gt;= 0xEE).
 ;
-</div><span class="l"><a class="anc" name="8255" href="#8255">[8255]</a><a href="#:8255:@_handleScriptValue" class="lla">@_handleScriptValue:</a><span class="ce">; [$8255]</span></span>
+</div><span class="l"><a class="anc" name="8255" href="#8255">[8255]</a><a href="#8255:@_handleScriptValue" class="lla">@_handleScriptValue:</a><span class="ce">; [$8255]</span></span>
 <span class="l"><a class="anc" name="8255" href="#8255">[8255]</a><span class="cd"><span class="i">CMP</span> <span class="o">#$ee</span></span><span class="ce">; Is this &lt; 0xEE?</span></span>
 <span class="l"><a class="anc" name="8257" href="#8257">[8257]</a><span class="cd"><span class="i">BCC</span> <span class="o"><a href="#MScripts_SetNoteLengthFromNext">MScripts_SetNoteLengthFromNext</a></span></span><span class="ce">; If so, jump.</span></span>
 <span class="l"></span>
@@ -1276,23 +1276,23 @@ pre {
 <span class="l"><a class="anc" name="82c8" href="#82c8">[82c8]</a><span class="cd"><span class="i">LDA</span> <span class="o">#$18</span></span></span>
 <span class="l"><a class="anc" name="82ca" href="#82ca">[82ca]</a><span class="cd"><span class="i">BNE</span> <span class="o"><a href="#@_storeLength">@_storeLength</a></span></span></span>
 <span class="l"></span>
-<a name=":82cc:@_beginCheckOffsets"></a><span class="l"><a class="anc" name="82cc" href="#82cc">[82cc]</a><a href="#:82cc:@_beginCheckOffsets" class="lla">@_beginCheckOffsets:</a><span class="ce">; [$82cc]</span></span>
+<a name="82cc:@_beginCheckOffsets"></a><span class="l"><a class="anc" name="82cc" href="#82cc">[82cc]</a><a href="#82cc:@_beginCheckOffsets" class="lla">@_beginCheckOffsets:</a><span class="ce">; [$82cc]</span></span>
 <span class="l"><a class="anc" name="82cc" href="#82cc">[82cc]</a><span class="cd"><span class="i">LDY</span> <span class="o">#$00</span></span></span>
 <span class="l"></span>
-<a name=":82ce:@_checkOffsetLoop"></a><span class="l"><a class="anc" name="82ce" href="#82ce">[82ce]</a><a href="#:82ce:@_checkOffsetLoop" class="lla">@_checkOffsetLoop:</a><span class="ce">; [$82ce]</span></span>
+<a name="82ce:@_checkOffsetLoop"></a><span class="l"><a class="anc" name="82ce" href="#82ce">[82ce]</a><a href="#82ce:@_checkOffsetLoop" class="lla">@_checkOffsetLoop:</a><span class="ce">; [$82ce]</span></span>
 <span class="l"><a class="anc" name="82ce" href="#82ce">[82ce]</a><span class="cd"><span class="i">CMP</span> <span class="o"><a href="#MUSIC_CHANNEL_NOTE_OFFSETS_3_">MUSIC_CHANNEL_NOTE_OFFSETS_3_</a>,Y</span></span></span>
 <span class="l"><a class="anc" name="82d1" href="#82d1">[82d1]</a><span class="cd"><span class="i">BCS</span> <span class="o"><a href="#@_loadLength">@_loadLength</a></span></span></span>
 <span class="l"><a class="anc" name="82d3" href="#82d3">[82d3]</a><span class="cd"><span class="i">INY</span></span></span>
 <span class="l"><a class="anc" name="82d4" href="#82d4">[82d4]</a><span class="cd"><span class="i">INY</span></span></span>
 <span class="l"><a class="anc" name="82d5" href="#82d5">[82d5]</a><span class="cd"><span class="i">BNE</span> <span class="o"><a href="#@_checkOffsetLoop">@_checkOffsetLoop</a></span></span></span>
 <span class="l"></span>
-<a name=":82d7:@_loadLength"></a><span class="l"><a class="anc" name="82d7" href="#82d7">[82d7]</a><a href="#:82d7:@_loadLength" class="lla">@_loadLength:</a><span class="ce">; [$82d7]</span></span>
+<a name="82d7:@_loadLength"></a><span class="l"><a class="anc" name="82d7" href="#82d7">[82d7]</a><a href="#82d7:@_loadLength" class="lla">@_loadLength:</a><span class="ce">; [$82d7]</span></span>
 <span class="l"><a class="anc" name="82d7" href="#82d7">[82d7]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="#BYTE_PRG5__8570">BYTE_PRG5__8570</a>,Y</span></span></span>
 <span class="l"></span>
-<a name=":82da:@_storeLength"></a><span class="l"><a class="anc" name="82da" href="#82da">[82da]</a><a href="#:82da:@_storeLength" class="lla">@_storeLength:</a><span class="ce">; [$82da]</span></span>
+<a name="82da:@_storeLength"></a><span class="l"><a class="anc" name="82da" href="#82da">[82da]</a><a href="#82da:@_storeLength" class="lla">@_storeLength:</a><span class="ce">; [$82da]</span></span>
 <span class="l"><a class="anc" name="82da" href="#82da">[82da]</a><span class="cd"><span class="i">STA</span> <span class="o"><a href="RAM.html#Music_SQ_Note_Lengths">Music_SQ_Note_Lengths</a>,X</span></span></span>
 <span class="l"></span>
-<a name=":82dd:@_invokeNext"></a><span class="l"><a class="anc" name="82dd" href="#82dd">[82dd]</a><a href="#:82dd:@_invokeNext" class="lla">@_invokeNext:</a><span class="ce">; [$82dd]</span></span>
+<a name="82dd:@_invokeNext"></a><span class="l"><a class="anc" name="82dd" href="#82dd">[82dd]</a><a href="#82dd:@_invokeNext" class="lla">@_invokeNext:</a><span class="ce">; [$82dd]</span></span>
 <span class="l"><a class="anc" name="82dd" href="#82dd">[82dd]</a><span class="cd"><span class="i">JMP</span> <span class="o"><a href="#MScripts_InvokeNext">MScripts_InvokeNext</a></span></span></span>
 <span class="l"><a class="anc" name="82e0" href="#82e0">[82e0]</a><span class="cd"><span class="i">JMP</span> <span class="o"><a href="#MScripts_InvokeNext">MScripts_InvokeNext</a></span></span><span class="ce">; Unreachable?</span></span>
 <span class="l"></span>
@@ -1368,18 +1368,18 @@ pre {
 <span class="l"><a class="anc" name="8305" href="#8305">[8305]</a><span class="cd"><span class="i">BEQ</span> <span class="o"><a href="#@LAB_PRG5__830a">@LAB_PRG5__830a</a></span></span></span>
 <span class="l"><a class="anc" name="8307" href="#8307">[8307]</a><span class="cd"><span class="i">JMP</span> <span class="o"><a href="#Music_StoreNoteDuration">Music_StoreNoteDuration</a></span></span></span>
 <span class="l"></span>
-<a name=":830a:@LAB_PRG5__830a"></a><span class="l"><a class="anc" name="830a" href="#830a">[830a]</a><a href="#:830a:@LAB_PRG5__830a" class="lla">@LAB_PRG5__830a:</a><span class="ce">; [$830a]</span></span>
+<a name="830a:@LAB_PRG5__830a"></a><span class="l"><a class="anc" name="830a" href="#830a">[830a]</a><a href="#830a:@LAB_PRG5__830a" class="lla">@LAB_PRG5__830a:</a><span class="ce">; [$830a]</span></span>
 <span class="l"><a class="anc" name="830a" href="#830a">[830a]</a><span class="cd"><span class="i">LDA</span> <span class="o">a:<a href="RAM.html#Music_Noise_Index">Music_Noise_Index</a></span></span></span>
 <span class="l"><a class="anc" name="830d" href="#830d">[830d]</a><span class="cd"><span class="i">BNE</span> <span class="o"><a href="#@LAB_PRG5__8312">@LAB_PRG5__8312</a></span></span></span>
 <span class="l"><a class="anc" name="830f" href="#830f">[830f]</a><span class="cd"><span class="i">JMP</span> <span class="o"><a href="#Music_StoreNoteDuration">Music_StoreNoteDuration</a></span></span></span>
 <span class="l"></span>
-<a name=":8312:@LAB_PRG5__8312"></a><span class="l"><a class="anc" name="8312" href="#8312">[8312]</a><a href="#:8312:@LAB_PRG5__8312" class="lla">@LAB_PRG5__8312:</a><span class="ce">; [$8312]</span></span>
+<a name="8312:@LAB_PRG5__8312"></a><span class="l"><a class="anc" name="8312" href="#8312">[8312]</a><a href="#8312:@LAB_PRG5__8312" class="lla">@LAB_PRG5__8312:</a><span class="ce">; [$8312]</span></span>
 <span class="l"><a class="anc" name="8312" href="#8312">[8312]</a><span class="cd"><span class="i">ASL</span> <span class="o">A</span></span></span>
 <span class="l"><a class="anc" name="8313" href="#8313">[8313]</a><span class="cd"><span class="i">ASL</span> <span class="o">A</span></span></span>
 <span class="l"><a class="anc" name="8314" href="#8314">[8314]</a><span class="cd"><span class="i">TAX</span></span></span>
 <span class="l"><a class="anc" name="8315" href="#8315">[8315]</a><span class="cd"><span class="i">LDY</span> <span class="o">#$00</span></span></span>
 <span class="l"></span>
-<a name=":8317:@LAB_PRG5__8317"></a><span class="l"><a class="anc" name="8317" href="#8317">[8317]</a><a href="#:8317:@LAB_PRG5__8317" class="lla">@LAB_PRG5__8317:</a><span class="ce">; [$8317]</span></span>
+<a name="8317:@LAB_PRG5__8317"></a><span class="l"><a class="anc" name="8317" href="#8317">[8317]</a><a href="#8317:@LAB_PRG5__8317" class="lla">@LAB_PRG5__8317:</a><span class="ce">; [$8317]</span></span>
 <span class="l"><a class="anc" name="8317" href="#8317">[8317]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="#MUSIC_NOISE_VALUES">MUSIC_NOISE_VALUES</a>,X</span></span></span>
 <span class="l"><a class="anc" name="831a" href="#831a">[831a]</a><span class="cd"><span class="i">STA</span> <span class="o"><a href="RAM.html#NOISE_VOL">NOISE_VOL</a>,Y</span></span></span>
 <span class="l"><a class="anc" name="831d" href="#831d">[831d]</a><span class="cd"><span class="i">INX</span></span></span>
@@ -1406,7 +1406,7 @@ pre {
 <span class="l"><a class="anc" name="832c" href="#832c">[832c]</a><span class="cd"><span class="i">BEQ</span> <span class="o"><a href="#@_setNote">@_setNote</a></span></span></span>
 <span class="l"><a class="anc" name="832e" href="#832e">[832e]</a><span class="cd"><span class="i">JMP</span> <span class="o"><a href="#Music_StoreNoteDuration">Music_StoreNoteDuration</a></span></span></span>
 <span class="l"></span>
-<a name=":8331:@_setNote"></a><span class="l"><a class="anc" name="8331" href="#8331">[8331]</a><a href="#:8331:@_setNote" class="lla">@_setNote:</a><span class="ce">; [$8331]</span></span>
+<a name="8331:@_setNote"></a><span class="l"><a class="anc" name="8331" href="#8331">[8331]</a><a href="#8331:@_setNote" class="lla">@_setNote:</a><span class="ce">; [$8331]</span></span>
 <span class="l"><a class="anc" name="8331" href="#8331">[8331]</a><span class="cd"><span class="i">LDX</span> <span class="o">a:<a href="RAM.html#MScript_CurrentChannel">MScript_CurrentChannel</a></span></span></span>
 <span class="l"><a class="anc" name="8334" href="#8334">[8334]</a><span class="cd"><span class="i">BEQ</span> <span class="o"><a href="#@_setSquareWave1">@_setSquareWave1</a></span></span></span>
 <span class="l"><a class="anc" name="8336" href="#8336">[8336]</a><span class="cd"><span class="i">DEX</span></span></span>
@@ -1428,10 +1428,10 @@ pre {
 <span class="l"><a class="anc" name="8352" href="#8352">[8352]</a><span class="cd"><span class="i">JMP</span> <span class="o"><a href="#Music_PlayTriangleWave">Music_PlayTriangleWave</a></span></span></span>
 <span class="l"></span>
 <span class="l"></span>
-<a name=":8355:@_setSquareWave1"></a><div class="c">;
+<a name="8355:@_setSquareWave1"></a><div class="c">;
 ; This is the Square Wave 1 channel.
 ;
-</div><span class="l"><a class="anc" name="8355" href="#8355">[8355]</a><a href="#:8355:@_setSquareWave1" class="lla">@_setSquareWave1:</a><span class="ce">; [$8355]</span></span>
+</div><span class="l"><a class="anc" name="8355" href="#8355">[8355]</a><a href="#8355:@_setSquareWave1" class="lla">@_setSquareWave1:</a><span class="ce">; [$8355]</span></span>
 <span class="l"><a class="anc" name="8355" href="#8355">[8355]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#Music_SetNote">Music_SetNote</a></span></span></span>
 <span class="l"><a class="anc" name="8358" href="#8358">[8358]</a><span class="cd"><span class="i">LDA</span> <span class="o">#$00</span></span></span>
 <span class="l"><a class="anc" name="835a" href="#835a">[835a]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#SQ1_SWEEP">SQ1_SWEEP</a></span></span></span>
@@ -1446,10 +1446,10 @@ pre {
 <span class="l"><a class="anc" name="8374" href="#8374">[8374]</a><span class="cd"><span class="i">BEQ</span> <span class="o"><a href="#@_finish">@_finish</a></span></span></span>
 <span class="l"></span>
 <span class="l"></span>
-<a name=":8376:@_setSquareWave2Sweep"></a><div class="c">;
+<a name="8376:@_setSquareWave2Sweep"></a><div class="c">;
 ; This is the Square Wave 2 channel.
 ;
-</div><span class="l"><a class="anc" name="8376" href="#8376">[8376]</a><a href="#:8376:@_setSquareWave2Sweep" class="lla">@_setSquareWave2Sweep:</a><span class="ce">; [$8376]</span></span>
+</div><span class="l"><a class="anc" name="8376" href="#8376">[8376]</a><a href="#8376:@_setSquareWave2Sweep" class="lla">@_setSquareWave2Sweep:</a><span class="ce">; [$8376]</span></span>
 <span class="l"><a class="anc" name="8376" href="#8376">[8376]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#Music_SetNote">Music_SetNote</a></span></span></span>
 <span class="l"><a class="anc" name="8379" href="#8379">[8379]</a><span class="cd"><span class="i">LDA</span> <span class="o">#$00</span></span></span>
 <span class="l"><a class="anc" name="837b" href="#837b">[837b]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#SQ2_SWEEP">SQ2_SWEEP</a></span></span></span>
@@ -1460,7 +1460,7 @@ pre {
 <span class="l"><a class="anc" name="8389" href="#8389">[8389]</a><span class="cd"><span class="i">SEC</span></span></span>
 <span class="l"><a class="anc" name="838a" href="#838a">[838a]</a><span class="cd"><span class="i">SBC</span> <span class="o">a:<a href="RAM.html#Music_SQ2_TimerLowBias">Music_SQ2_TimerLowBias</a></span></span></span>
 <span class="l"></span>
-<a name=":838d:@_setSQ2HiLo"></a><span class="l"><a class="anc" name="838d" href="#838d">[838d]</a><a href="#:838d:@_setSQ2HiLo" class="lla">@_setSQ2HiLo:</a><span class="ce">; [$838d]</span></span>
+<a name="838d:@_setSQ2HiLo"></a><span class="l"><a class="anc" name="838d" href="#838d">[838d]</a><a href="#838d:@_setSQ2HiLo" class="lla">@_setSQ2HiLo:</a><span class="ce">; [$838d]</span></span>
 <span class="l"><a class="anc" name="838d" href="#838d">[838d]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#SQ2_LO">SQ2_LO</a></span></span></span>
 <span class="l"><a class="anc" name="8390" href="#8390">[8390]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#Music_Current_SQ_Low_1_">Music_Current_SQ_Low_1_</a></span></span></span>
 <span class="l"><a class="anc" name="8393" href="#8393">[8393]</a><span class="cd"><span class="i">LDA</span> <span class="o">a:<a href="RAM.html#Music_Note_Period_High">Music_Note_Period_High</a></span></span></span>
@@ -1469,7 +1469,7 @@ pre {
 <span class="l"><a class="anc" name="839c" href="#839c">[839c]</a><span class="cd"><span class="i">LDA</span> <span class="o">#$00</span></span></span>
 <span class="l"><a class="anc" name="839e" href="#839e">[839e]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#Music_SQEnvelope_Phase_1_">Music_SQEnvelope_Phase_1_</a></span></span></span>
 <span class="l"></span>
-<a name=":83a1:@_finish"></a><span class="l"><a class="anc" name="83a1" href="#83a1">[83a1]</a><a href="#:83a1:@_finish" class="lla">@_finish:</a><span class="ce">; [$83a1]</span></span>
+<a name="83a1:@_finish"></a><span class="l"><a class="anc" name="83a1" href="#83a1">[83a1]</a><a href="#83a1:@_finish" class="lla">@_finish:</a><span class="ce">; [$83a1]</span></span>
 <span class="l"><a class="anc" name="83a1" href="#83a1">[83a1]</a><span class="cd"><span class="i">LDX</span> <span class="o">a:<a href="RAM.html#MScript_CurrentChannel">MScript_CurrentChannel</a></span></span></span>
 <span class="l"><a class="anc" name="83a4" href="#83a4">[83a4]</a><span class="cd"><span class="i">LDA</span> <span class="o">#$ff</span></span></span>
 <span class="l"><a class="anc" name="83a6" href="#83a6">[83a6]</a><span class="cd"><span class="i">STA</span> <span class="o"><a href="RAM.html#Music_SQEnvelope_Value">Music_SQEnvelope_Value</a>,X</span></span></span>
@@ -1584,7 +1584,7 @@ pre {
 </div><span class="l"><a class="anc" name="83e2" href="#83e2">[83e2]</a><span class="cd"><span class="i">LDY</span> <span class="o">#$01</span></span></span>
 <span class="l"><a class="anc" name="83e4" href="#83e4">[83e4]</a><span class="cd"><span class="i">SEC</span></span></span>
 <span class="l"></span>
-<a name=":83e5:@_loop1"></a><span class="l"><a class="anc" name="83e5" href="#83e5">[83e5]</a><a href="#:83e5:@_loop1" class="lla">@_loop1:</a><span class="ce">; [$83e5]</span></span>
+<a name="83e5:@_loop1"></a><span class="l"><a class="anc" name="83e5" href="#83e5">[83e5]</a><a href="#83e5:@_loop1" class="lla">@_loop1:</a><span class="ce">; [$83e5]</span></span>
 <span class="l"><a class="anc" name="83e5" href="#83e5">[83e5]</a><span class="cd"><span class="i">SBC</span> <span class="o">#$0c</span></span></span>
 <span class="l"><a class="anc" name="83e7" href="#83e7">[83e7]</a><span class="cd"><span class="i">INY</span></span></span>
 <span class="l"><a class="anc" name="83e8" href="#83e8">[83e8]</a><span class="cd"><span class="i">BCS</span> <span class="o"><a href="#@_loop1">@_loop1</a></span></span></span>
@@ -1603,18 +1603,18 @@ pre {
 <span class="l"><a class="anc" name="83f8" href="#83f8">[83f8]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#Music_Note_Period_High">Music_Note_Period_High</a></span></span></span>
 <span class="l"></span>
 <span class="l"></span>
-<a name=":83fb:@_octaveLoop"></a><div class="c">;
+<a name="83fb:@_octaveLoop"></a><div class="c">;
 ; Convert to the note in the right octave based on
 ; the starting value.
 ;
-</div><span class="l"><a class="anc" name="83fb" href="#83fb">[83fb]</a><a href="#:83fb:@_octaveLoop" class="lla">@_octaveLoop:</a><span class="ce">; [$83fb]</span></span>
+</div><span class="l"><a class="anc" name="83fb" href="#83fb">[83fb]</a><a href="#83fb:@_octaveLoop" class="lla">@_octaveLoop:</a><span class="ce">; [$83fb]</span></span>
 <span class="l"><a class="anc" name="83fb" href="#83fb">[83fb]</a><span class="cd"><span class="i">DEY</span></span></span>
 <span class="l"><a class="anc" name="83fc" href="#83fc">[83fc]</a><span class="cd"><span class="i">BEQ</span> <span class="o"><a href="#@_return">@_return</a></span></span></span>
 <span class="l"><a class="anc" name="83fe" href="#83fe">[83fe]</a><span class="cd"><span class="i">LSR</span> <span class="o">a:<a href="RAM.html#Music_Note_Period_High">Music_Note_Period_High</a></span></span></span>
 <span class="l"><a class="anc" name="8401" href="#8401">[8401]</a><span class="cd"><span class="i">ROR</span> <span class="o">a:<a href="RAM.html#Music_Note_Period_Low">Music_Note_Period_Low</a></span></span></span>
 <span class="l"><a class="anc" name="8404" href="#8404">[8404]</a><span class="cd"><span class="i">JMP</span> <span class="o"><a href="#@_octaveLoop">@_octaveLoop</a></span></span></span>
 <span class="l"></span>
-<a name=":8407:@_return"></a><span class="l"><a class="anc" name="8407" href="#8407">[8407]</a><a href="#:8407:@_return" class="lla">@_return:</a><span class="ce">; [$8407]</span></span>
+<a name="8407:@_return"></a><span class="l"><a class="anc" name="8407" href="#8407">[8407]</a><a href="#8407:@_return" class="lla">@_return:</a><span class="ce">; [$8407]</span></span>
 <span class="l"><a class="anc" name="8407" href="#8407">[8407]</a><span class="cd"><span class="i">RTS</span></span></span>
 <span class="l"></span>
 <span class="l"></span>
@@ -1655,7 +1655,7 @@ pre {
 ;
 </div><span class="l"><a class="anc" name="8417" href="#8417">[8417]</a><span class="cd"><span class="i">DEC</span> <span class="o"><a href="RAM.html#Music_CurrentScriptAddrs">Music_CurrentScriptAddrs</a>+1,X</span></span><span class="ce">; Decrement the upper byte of the address.</span></span>
 <span class="l"></span>
-<a name=":8419:@_setAddr"></a><span class="l"><a class="anc" name="8419" href="#8419">[8419]</a><a href="#:8419:@_setAddr" class="lla">@_setAddr:</a><span class="ce">; [$8419]</span></span>
+<a name="8419:@_setAddr"></a><span class="l"><a class="anc" name="8419" href="#8419">[8419]</a><a href="#8419:@_setAddr" class="lla">@_setAddr:</a><span class="ce">; [$8419]</span></span>
 <span class="l"><a class="anc" name="8419" href="#8419">[8419]</a><span class="cd"><span class="i">DEC</span> <span class="o"><a href="RAM.html#Music_CurrentScriptAddrs">Music_CurrentScriptAddrs</a>,X</span></span><span class="ce">; Decrement the lower byte of the address.</span></span>
 <span class="l"></span>
 <span class="l"></span>
@@ -1748,7 +1748,7 @@ pre {
 <span class="l"><a class="anc" name="8450" href="#8450">[8450]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="RAM.html#MScript_LoopEndAddrs">MScript_LoopEndAddrs</a>+1,X</span></span><span class="ce">; Load the upper byte of the loop end address.</span></span>
 <span class="l"><a class="anc" name="8453" href="#8453">[8453]</a><span class="cd"><span class="i">STA</span> <span class="o"><a href="RAM.html#Music_CurrentScriptAddrs">Music_CurrentScriptAddrs</a>+1,X</span></span><span class="ce">; Set as the upper byte of the next address.</span></span>
 <span class="l"></span>
-<a name=":8455:@_invokeNext"></a><span class="l"><a class="anc" name="8455" href="#8455">[8455]</a><a href="#:8455:@_invokeNext" class="lla">@_invokeNext:</a><span class="ce">; [$8455]</span></span>
+<a name="8455:@_invokeNext"></a><span class="l"><a class="anc" name="8455" href="#8455">[8455]</a><a href="#8455:@_invokeNext" class="lla">@_invokeNext:</a><span class="ce">; [$8455]</span></span>
 <span class="l"><a class="anc" name="8455" href="#8455">[8455]</a><span class="cd"><span class="i">JMP</span> <span class="o"><a href="#MScripts_InvokeNext">MScripts_InvokeNext</a></span></span></span>
 <span class="l"></span>
 <span class="l"></span>
@@ -1797,11 +1797,11 @@ pre {
 <span class="l"><a class="anc" name="847b" href="#847b">[847b]</a><span class="cd"><span class="i">STA</span> <span class="o"><a href="RAM.html#Music_CurrentScriptAddrs">Music_CurrentScriptAddrs</a>+1,X</span></span><span class="ce">; Set as the upper byte of the current script address.</span></span>
 <span class="l"></span>
 <span class="l"></span>
-<a name=":847d:@_invokeNext"></a><div class="c">;
+<a name="847d:@_invokeNext"></a><div class="c">;
 ; We're done. Proceed with the script, either looping or
 ; moving on from the loop.
 ;
-</div><span class="l"><a class="anc" name="847d" href="#847d">[847d]</a><a href="#:847d:@_invokeNext" class="lla">@_invokeNext:</a><span class="ce">; [$847d]</span></span>
+</div><span class="l"><a class="anc" name="847d" href="#847d">[847d]</a><a href="#847d:@_invokeNext" class="lla">@_invokeNext:</a><span class="ce">; [$847d]</span></span>
 <span class="l"><a class="anc" name="847d" href="#847d">[847d]</a><span class="cd"><span class="i">JMP</span> <span class="o"><a href="#MScripts_InvokeNext">MScripts_InvokeNext</a></span></span><span class="ce">; Invoke the next operation in the script.</span></span>
 <span class="l"></span>
 <span class="l"></span>
@@ -1902,7 +1902,7 @@ pre {
 <span class="l"><a class="anc" name="84bf" href="#84bf">[84bf]</a><span class="cd"><span class="i">TAY</span></span></span>
 <span class="l"><a class="anc" name="84c0" href="#84c0">[84c0]</a><span class="cd"><span class="i">LDX</span> <span class="o">#$00</span></span></span>
 <span class="l"></span>
-<a name=":84c2:@_loop"></a><span class="l"><a class="anc" name="84c2" href="#84c2">[84c2]</a><a href="#:84c2:@_loop" class="lla">@_loop:</a><span class="ce">; [$84c2]</span></span>
+<a name="84c2:@_loop"></a><span class="l"><a class="anc" name="84c2" href="#84c2">[84c2]</a><a href="#84c2:@_loop" class="lla">@_loop:</a><span class="ce">; [$84c2]</span></span>
 <span class="l"><a class="anc" name="84c2" href="#84c2">[84c2]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="#MSCRIPTS_TITLESCREEN">MSCRIPTS_TITLESCREEN</a>,Y</span></span></span>
 <span class="l"><a class="anc" name="84c5" href="#84c5">[84c5]</a><span class="cd"><span class="i">STA</span> <span class="o"><a href="RAM.html#Music_CurrentScriptAddrs">Music_CurrentScriptAddrs</a>,X</span></span></span>
 <span class="l"><a class="anc" name="84c7" href="#84c7">[84c7]</a><span class="cd"><span class="i">INY</span></span></span>
@@ -2099,7 +2099,7 @@ pre {
 <span class="l"><a class="anc" name="854d" href="#854d">[854d]</a><span class="cd"><span class="i">BNE</span> <span class="o"><a href="#@_return">@_return</a></span></span></span>
 <span class="l"><a class="anc" name="854f" href="#854f">[854f]</a><span class="cd"><span class="i">INC</span> <span class="o"><a href="RAM.html#Music_CurrentScriptAddrs">Music_CurrentScriptAddrs</a>+1,X</span></span></span>
 <span class="l"></span>
-<a name=":8551:@_return"></a><span class="l"><a class="anc" name="8551" href="#8551">[8551]</a><a href="#:8551:@_return" class="lla">@_return:</a><span class="ce">; [$8551]</span></span>
+<a name="8551:@_return"></a><span class="l"><a class="anc" name="8551" href="#8551">[8551]</a><a href="#8551:@_return" class="lla">@_return:</a><span class="ce">; [$8551]</span></span>
 <span class="l"><a class="anc" name="8551" href="#8551">[8551]</a><span class="cd"><span class="i">RTS</span></span></span>
 <span class="l"></span>
 <span class="l"></span>
@@ -2406,12 +2406,12 @@ pre {
 ;
 </div><span class="l"><a class="anc" name="862f" href="#862f">[862f]</a><span class="cd"><span class="i">LDX</span> <span class="o">#$03</span></span><span class="ce">; X = 3 (channel loop counter).</span></span>
 <span class="l"></span>
-<a name=":8631:@_checkActiveEffectsLoop"></a><span class="l"><a class="anc" name="8631" href="#8631">[8631]</a><a href="#:8631:@_checkActiveEffectsLoop" class="lla">@_checkActiveEffectsLoop:</a><span class="ce">; [$8631]</span></span>
+<a name="8631:@_checkActiveEffectsLoop"></a><span class="l"><a class="anc" name="8631" href="#8631">[8631]</a><a href="#8631:@_checkActiveEffectsLoop" class="lla">@_checkActiveEffectsLoop:</a><span class="ce">; [$8631]</span></span>
 <span class="l"><a class="anc" name="8631" href="#8631">[8631]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="RAM.html#SoundEffect_TicksRemaining">SoundEffect_TicksRemaining</a>,X</span></span><span class="ce">; Load the sound effect ticks remaining for this channel.</span></span>
 <span class="l"><a class="anc" name="8634" href="#8634">[8634]</a><span class="cd"><span class="i">BEQ</span> <span class="o"><a href="#@_prepareNextActiveEffectsLoopIter">@_prepareNextActiveEffectsLoopIter</a></span></span><span class="ce">; If this channel is done, prepare for the next iteration.</span></span>
 <span class="l"><a class="anc" name="8636" href="#8636">[8636]</a><span class="cd"><span class="i">DEC</span> <span class="o"><a href="RAM.html#SoundEffect_TicksRemaining">SoundEffect_TicksRemaining</a>,X</span></span><span class="ce">; Reduce the ticks remaining by 1.</span></span>
 <span class="l"></span>
-<a name=":8639:@_prepareNextActiveEffectsLoopIter"></a><span class="l"><a class="anc" name="8639" href="#8639">[8639]</a><a href="#:8639:@_prepareNextActiveEffectsLoopIter" class="lla">@_prepareNextActiveEffectsLoopIter:</a><span class="ce">; [$8639]</span></span>
+<a name="8639:@_prepareNextActiveEffectsLoopIter"></a><span class="l"><a class="anc" name="8639" href="#8639">[8639]</a><a href="#8639:@_prepareNextActiveEffectsLoopIter" class="lla">@_prepareNextActiveEffectsLoopIter:</a><span class="ce">; [$8639]</span></span>
 <span class="l"><a class="anc" name="8639" href="#8639">[8639]</a><span class="cd"><span class="i">DEX</span></span><span class="ce">; X-- (loop counter).</span></span>
 <span class="l"><a class="anc" name="863a" href="#863a">[863a]</a><span class="cd"><span class="i">BPL</span> <span class="o"><a href="#@_checkActiveEffectsLoop">@_checkActiveEffectsLoop</a></span></span><span class="ce">; If &gt;= 0, loop.</span></span>
 <span class="l"></span>
@@ -2455,11 +2455,11 @@ pre {
 <span class="l"><a class="anc" name="8656" href="#8656">[8656]</a><span class="cd"><span class="i">BNE</span> <span class="o"><a href="#@_runOnTickHandler">@_runOnTickHandler</a></span></span><span class="ce">; Else, it's a match, so just load the handler to run it.</span></span>
 <span class="l"></span>
 <span class="l"></span>
-<a name=":8658:@_newHandler"></a><div class="c">;
+<a name="8658:@_newHandler"></a><div class="c">;
 ; Reset the sound effect handler and state for a new sound
 ; effect.
 ;
-</div><span class="l"><a class="anc" name="8658" href="#8658">[8658]</a><a href="#:8658:@_newHandler" class="lla">@_newHandler:</a><span class="ce">; [$8658]</span></span>
+</div><span class="l"><a class="anc" name="8658" href="#8658">[8658]</a><a href="#8658:@_newHandler" class="lla">@_newHandler:</a><span class="ce">; [$8658]</span></span>
 <span class="l"><a class="anc" name="8658" href="#8658">[8658]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="#SOUND_EFFECT_HANDLER_INDEXES">SOUND_EFFECT_HANDLER_INDEXES</a>,X</span></span><span class="ce">; Load the sound effect handler index for this ID.</span></span>
 <span class="l"><a class="anc" name="865b" href="#865b">[865b]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#SoundEffect_HandlerIndex">SoundEffect_HandlerIndex</a></span></span><span class="ce">; Store as the new index.</span></span>
 <span class="l"><a class="anc" name="865e" href="#865e">[865e]</a><span class="cd"><span class="i">TAX</span></span><span class="ce">; X = A (index).</span></span>
@@ -2477,7 +2477,7 @@ pre {
 <span class="l"><a class="anc" name="866d" href="#866d">[866d]</a><span class="cd"><span class="i">BEQ</span> <span class="o"><a href="#@_checkAndRunHandler">@_checkAndRunHandler</a></span></span><span class="ce">; Immediately jump to check and run the setup handler for the sound effect.</span></span>
 <span class="l"></span>
 <span class="l"></span>
-<a name=":866f:@_runOnTickHandler"></a><div class="c">;
+<a name="866f:@_runOnTickHandler"></a><div class="c">;
 ; Load the secondary, on-tick stage for the sound effect
 ; handler.
 ;
@@ -2485,13 +2485,13 @@ pre {
 ; on-tick stage. Pairs of each are in the sound effect
 ; handlers table.
 ;
-</div><span class="l"><a class="anc" name="866f" href="#866f">[866f]</a><a href="#:866f:@_runOnTickHandler" class="lla">@_runOnTickHandler:</a><span class="ce">; [$866f]</span></span>
+</div><span class="l"><a class="anc" name="866f" href="#866f">[866f]</a><a href="#866f:@_runOnTickHandler" class="lla">@_runOnTickHandler:</a><span class="ce">; [$866f]</span></span>
 <span class="l"><a class="anc" name="866f" href="#866f">[866f]</a><span class="cd"><span class="i">LDX</span> <span class="o">a:<a href="RAM.html#SoundEffect_HandlerIndex">SoundEffect_HandlerIndex</a></span></span><span class="ce">; Load the index of the sound effect handler.</span></span>
 <span class="l"><a class="anc" name="8672" href="#8672">[8672]</a><span class="cd"><span class="i">INX</span></span><span class="ce">; Advance to the next address for the on-tick handler.</span></span>
 <span class="l"><a class="anc" name="8673" href="#8673">[8673]</a><span class="cd"><span class="i">INX</span></span></span>
 <span class="l"></span>
 <span class="l"></span>
-<a name=":8674:@_checkAndRunHandler"></a><div class="c">;
+<a name="8674:@_checkAndRunHandler"></a><div class="c">;
 ; Check if the sound effect index is within bounds of the
 ; handlers table.
 ;
@@ -2500,7 +2500,7 @@ pre {
 ; that this is &lt; 0x74, with the idea being that 0x73 would
 ; never be set (unless there was a major programming flaw).
 ;
-</div><span class="l"><a class="anc" name="8674" href="#8674">[8674]</a><a href="#:8674:@_checkAndRunHandler" class="lla">@_checkAndRunHandler:</a><span class="ce">; [$8674]</span></span>
+</div><span class="l"><a class="anc" name="8674" href="#8674">[8674]</a><a href="#8674:@_checkAndRunHandler" class="lla">@_checkAndRunHandler:</a><span class="ce">; [$8674]</span></span>
 <span class="l"><a class="anc" name="8674" href="#8674">[8674]</a><span class="cd"><span class="i">CPX</span> <span class="o">#$74</span></span><span class="ce">; Is this a valid sound effect within the handlers lookup table?</span></span>
 <span class="l"><a class="anc" name="8676" href="#8676">[8676]</a><span class="cd"><span class="i">BCS</span> <span class="o"><a href="#Sound_ResetCurrentSound">Sound_ResetCurrentSound</a></span></span><span class="ce">; If not, reset the current sound effect.</span></span>
 <span class="l"><a class="anc" name="8678" href="#8678">[8678]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="#SOUND_EFFECT_HANDLERS">SOUND_EFFECT_HANDLERS</a>+1,X</span></span><span class="ce">; Load the upper byte of the handler address.</span></span>
@@ -2660,7 +2660,7 @@ pre {
 <span class="l"><a class="anc" name="86ca" href="#86ca">[86ca]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#NOISE_VOL">NOISE_VOL</a></span></span></span>
 <span class="l"><a class="anc" name="86cd" href="#86cd">[86cd]</a><span class="cd"><span class="i">JMP</span> <span class="o"><a href="#Sound_ResetCurrentSound">Sound_ResetCurrentSound</a></span></span></span>
 <span class="l"></span>
-<a name=":86d0:@_return"></a><span class="l"><a class="anc" name="86d0" href="#86d0">[86d0]</a><a href="#:86d0:@_return" class="lla">@_return:</a><span class="ce">; [$86d0]</span></span>
+<a name="86d0:@_return"></a><span class="l"><a class="anc" name="86d0" href="#86d0">[86d0]</a><a href="#86d0:@_return" class="lla">@_return:</a><span class="ce">; [$86d0]</span></span>
 <span class="l"><a class="anc" name="86d0" href="#86d0">[86d0]</a><span class="cd"><span class="i">RTS</span></span></span>
 <span class="l"></span>
 <a name="SOUNDEFFECT_MESSAGE_NOISE_LO"></a><div class="c">;
@@ -2710,7 +2710,7 @@ pre {
 <span class="l"><a class="anc" name="86ef" href="#86ef">[86ef]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#NOISE_VOL">NOISE_VOL</a></span></span></span>
 <span class="l"><a class="anc" name="86f2" href="#86f2">[86f2]</a><span class="cd"><span class="i">JMP</span> <span class="o"><a href="#Sound_ResetCurrentSound">Sound_ResetCurrentSound</a></span></span></span>
 <span class="l"></span>
-<a name=":86f5:@_play"></a><span class="l"><a class="anc" name="86f5" href="#86f5">[86f5]</a><a href="#:86f5:@_play" class="lla">@_play:</a><span class="ce">; [$86f5]</span></span>
+<a name="86f5:@_play"></a><span class="l"><a class="anc" name="86f5" href="#86f5">[86f5]</a><a href="#86f5:@_play" class="lla">@_play:</a><span class="ce">; [$86f5]</span></span>
 <span class="l"><a class="anc" name="86f5" href="#86f5">[86f5]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#SoundEffect_SetNote">SoundEffect_SetNote</a></span></span></span>
 <span class="l"><a class="anc" name="86f8" href="#86f8">[86f8]</a><span class="cd"><span class="i">LDA</span> <span class="o">#$5f</span></span></span>
 <span class="l"><a class="anc" name="86fa" href="#86fa">[86fa]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#SQ2_VOL">SQ2_VOL</a></span></span></span>
@@ -2789,7 +2789,7 @@ pre {
 <span class="l"><a class="anc" name="874a" href="#874a">[874a]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#NOISE_VOL">NOISE_VOL</a></span></span></span>
 <span class="l"><a class="anc" name="874d" href="#874d">[874d]</a><span class="cd"><span class="i">JMP</span> <span class="o"><a href="#Sound_ResetCurrentSound">Sound_ResetCurrentSound</a></span></span></span>
 <span class="l"></span>
-<a name=":8750:@_play"></a><span class="l"><a class="anc" name="8750" href="#8750">[8750]</a><a href="#:8750:@_play" class="lla">@_play:</a><span class="ce">; [$8750]</span></span>
+<a name="8750:@_play"></a><span class="l"><a class="anc" name="8750" href="#8750">[8750]</a><a href="#8750:@_play" class="lla">@_play:</a><span class="ce">; [$8750]</span></span>
 <span class="l"><a class="anc" name="8750" href="#8750">[8750]</a><span class="cd"><span class="i">LDX</span> <span class="o">a:<a href="RAM.html#SoundEffect_State_0128">SoundEffect_State_0128</a></span></span></span>
 <span class="l"><a class="anc" name="8753" href="#8753">[8753]</a><span class="cd"><span class="i">LDA</span> <span class="o">#$1f</span></span></span>
 <span class="l"><a class="anc" name="8755" href="#8755">[8755]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#NOISE_VOL">NOISE_VOL</a></span></span></span>
@@ -2853,7 +2853,7 @@ pre {
 <span class="l"><a class="anc" name="8787" href="#8787">[8787]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#SQ2_VOL">SQ2_VOL</a></span></span></span>
 <span class="l"><a class="anc" name="878a" href="#878a">[878a]</a><span class="cd"><span class="i">JMP</span> <span class="o"><a href="#Sound_ResetCurrentSound">Sound_ResetCurrentSound</a></span></span></span>
 <span class="l"></span>
-<a name=":878d:@_play"></a><span class="l"><a class="anc" name="878d" href="#878d">[878d]</a><a href="#:878d:@_play" class="lla">@_play:</a><span class="ce">; [$878d]</span></span>
+<a name="878d:@_play"></a><span class="l"><a class="anc" name="878d" href="#878d">[878d]</a><a href="#878d:@_play" class="lla">@_play:</a><span class="ce">; [$878d]</span></span>
 <span class="l"><a class="anc" name="878d" href="#878d">[878d]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#SoundEffect_SetNote">SoundEffect_SetNote</a></span></span></span>
 <span class="l"><a class="anc" name="8790" href="#8790">[8790]</a><span class="cd"><span class="i">LDA</span> <span class="o">#$df</span></span></span>
 <span class="l"><a class="anc" name="8792" href="#8792">[8792]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#SQ2_VOL">SQ2_VOL</a></span></span></span>
@@ -2920,7 +2920,7 @@ pre {
 <span class="l"><a class="anc" name="87cc" href="#87cc">[87cc]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#SQ2_VOL">SQ2_VOL</a></span></span></span>
 <span class="l"><a class="anc" name="87cf" href="#87cf">[87cf]</a><span class="cd"><span class="i">JMP</span> <span class="o"><a href="#Sound_ResetCurrentSound">Sound_ResetCurrentSound</a></span></span></span>
 <span class="l"></span>
-<a name=":87d2:@_play"></a><span class="l"><a class="anc" name="87d2" href="#87d2">[87d2]</a><a href="#:87d2:@_play" class="lla">@_play:</a><span class="ce">; [$87d2]</span></span>
+<a name="87d2:@_play"></a><span class="l"><a class="anc" name="87d2" href="#87d2">[87d2]</a><a href="#87d2:@_play" class="lla">@_play:</a><span class="ce">; [$87d2]</span></span>
 <span class="l"><a class="anc" name="87d2" href="#87d2">[87d2]</a><span class="cd"><span class="i">ORA</span> <span class="o">#$50</span></span></span>
 <span class="l"><a class="anc" name="87d4" href="#87d4">[87d4]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#SQ2_VOL">SQ2_VOL</a></span></span></span>
 <span class="l"><a class="anc" name="87d7" href="#87d7">[87d7]</a><span class="cd"><span class="i">LDA</span> <span class="o">#$00</span></span></span>
@@ -2940,7 +2940,7 @@ pre {
 <span class="l"><a class="anc" name="87f9" href="#87f9">[87f9]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#SoundEffect_State_Counter">SoundEffect_State_Counter</a></span></span></span>
 <span class="l"><a class="anc" name="87fc" href="#87fc">[87fc]</a><span class="cd"><span class="i">INC</span> <span class="o">a:<a href="RAM.html#SoundEffect_State_0128">SoundEffect_State_0128</a></span></span></span>
 <span class="l"></span>
-<a name=":87ff:@_return"></a><span class="l"><a class="anc" name="87ff" href="#87ff">[87ff]</a><a href="#:87ff:@_return" class="lla">@_return:</a><span class="ce">; [$87ff]</span></span>
+<a name="87ff:@_return"></a><span class="l"><a class="anc" name="87ff" href="#87ff">[87ff]</a><a href="#87ff:@_return" class="lla">@_return:</a><span class="ce">; [$87ff]</span></span>
 <span class="l"><a class="anc" name="87ff" href="#87ff">[87ff]</a><span class="cd"><span class="i">RTS</span></span></span>
 <span class="l"></span>
 <a name="SOUNDEFFECT_MAGIC_SQ2_VOL"></a><div class="c">;
@@ -2997,7 +2997,7 @@ pre {
 <span class="l"><a class="anc" name="8829" href="#8829">[8829]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#NOISE_VOL">NOISE_VOL</a></span></span></span>
 <span class="l"><a class="anc" name="882c" href="#882c">[882c]</a><span class="cd"><span class="i">JMP</span> <span class="o"><a href="#Sound_ResetCurrentSound">Sound_ResetCurrentSound</a></span></span></span>
 <span class="l"></span>
-<a name=":882f:@_play"></a><span class="l"><a class="anc" name="882f" href="#882f">[882f]</a><a href="#:882f:@_play" class="lla">@_play:</a><span class="ce">; [$882f]</span></span>
+<a name="882f:@_play"></a><span class="l"><a class="anc" name="882f" href="#882f">[882f]</a><a href="#882f:@_play" class="lla">@_play:</a><span class="ce">; [$882f]</span></span>
 <span class="l"><a class="anc" name="882f" href="#882f">[882f]</a><span class="cd"><span class="i">LDA</span> <span class="o">a:<a href="RAM.html#SoundEffect_State_Counter">SoundEffect_State_Counter</a></span></span></span>
 <span class="l"><a class="anc" name="8832" href="#8832">[8832]</a><span class="cd"><span class="i">LSR</span> <span class="o">A</span></span></span>
 <span class="l"><a class="anc" name="8833" href="#8833">[8833]</a><span class="cd"><span class="i">LSR</span> <span class="o">A</span></span></span>
@@ -3070,7 +3070,7 @@ pre {
 <span class="l"><a class="anc" name="888a" href="#888a">[888a]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#SQ2_VOL">SQ2_VOL</a></span></span></span>
 <span class="l"><a class="anc" name="888d" href="#888d">[888d]</a><span class="cd"><span class="i">JMP</span> <span class="o"><a href="#Sound_ResetCurrentSound">Sound_ResetCurrentSound</a></span></span></span>
 <span class="l"></span>
-<a name=":8890:@_play"></a><span class="l"><a class="anc" name="8890" href="#8890">[8890]</a><a href="#:8890:@_play" class="lla">@_play:</a><span class="ce">; [$8890]</span></span>
+<a name="8890:@_play"></a><span class="l"><a class="anc" name="8890" href="#8890">[8890]</a><a href="#8890:@_play" class="lla">@_play:</a><span class="ce">; [$8890]</span></span>
 <span class="l"><a class="anc" name="8890" href="#8890">[8890]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#SoundEffect_SetNote">SoundEffect_SetNote</a></span></span></span>
 <span class="l"><a class="anc" name="8893" href="#8893">[8893]</a><span class="cd"><span class="i">INC</span> <span class="o">a:<a href="RAM.html#SoundEffect_State_Counter">SoundEffect_State_Counter</a></span></span></span>
 <span class="l"><a class="anc" name="8896" href="#8896">[8896]</a><span class="cd"><span class="i">LDA</span> <span class="o">a:<a href="RAM.html#SoundEffect_State_Counter">SoundEffect_State_Counter</a></span></span></span>
@@ -3085,7 +3085,7 @@ pre {
 <span class="l"><a class="anc" name="88ad" href="#88ad">[88ad]</a><span class="cd"><span class="i">LDA</span> <span class="o">a:<a href="RAM.html#SoundEffect_Note_High">SoundEffect_Note_High</a></span></span></span>
 <span class="l"><a class="anc" name="88b0" href="#88b0">[88b0]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#SQ2_HI">SQ2_HI</a></span></span></span>
 <span class="l"></span>
-<a name=":88b3:@_return"></a><span class="l"><a class="anc" name="88b3" href="#88b3">[88b3]</a><a href="#:88b3:@_return" class="lla">@_return:</a><span class="ce">; [$88b3]</span></span>
+<a name="88b3:@_return"></a><span class="l"><a class="anc" name="88b3" href="#88b3">[88b3]</a><a href="#88b3:@_return" class="lla">@_return:</a><span class="ce">; [$88b3]</span></span>
 <span class="l"><a class="anc" name="88b3" href="#88b3">[88b3]</a><span class="cd"><span class="i">RTS</span></span></span>
 <span class="l"></span>
 <a name="SOUNDEFFECT_MAYBE_TYPING_NOTES"></a><div class="c">;
@@ -3136,7 +3136,7 @@ pre {
 <span class="l"><a class="anc" name="88e1" href="#88e1">[88e1]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#SoundEffect_State_Counter">SoundEffect_State_Counter</a></span></span></span>
 <span class="l"><a class="anc" name="88e4" href="#88e4">[88e4]</a><span class="cd"><span class="i">RTS</span></span></span>
 <span class="l"></span>
-<a name=":88e5:@_playNote"></a><span class="l"><a class="anc" name="88e5" href="#88e5">[88e5]</a><a href="#:88e5:@_playNote" class="lla">@_playNote:</a><span class="ce">; [$88e5]</span></span>
+<a name="88e5:@_playNote"></a><span class="l"><a class="anc" name="88e5" href="#88e5">[88e5]</a><a href="#88e5:@_playNote" class="lla">@_playNote:</a><span class="ce">; [$88e5]</span></span>
 <span class="l"><a class="anc" name="88e5" href="#88e5">[88e5]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#SoundEffect_SetNote">SoundEffect_SetNote</a></span></span></span>
 <span class="l"><a class="anc" name="88e8" href="#88e8">[88e8]</a><span class="cd"><span class="i">LDX</span> <span class="o">a:<a href="RAM.html#SoundEffect_State_0128">SoundEffect_State_0128</a></span></span></span>
 <span class="l"><a class="anc" name="88eb" href="#88eb">[88eb]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="#SOUNDEFFECT_ITEM_PICKED_UP_SQ2_VOLS">SOUNDEFFECT_ITEM_PICKED_UP_SQ2_VOLS</a>,X</span></span></span>
@@ -3145,7 +3145,7 @@ pre {
 <span class="l"><a class="anc" name="88f2" href="#88f2">[88f2]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#SQ2_VOL">SQ2_VOL</a></span></span></span>
 <span class="l"><a class="anc" name="88f5" href="#88f5">[88f5]</a><span class="cd"><span class="i">JMP</span> <span class="o"><a href="#Sound_ResetCurrentSound">Sound_ResetCurrentSound</a></span></span></span>
 <span class="l"></span>
-<a name=":88f8:@_playSQ2"></a><span class="l"><a class="anc" name="88f8" href="#88f8">[88f8]</a><a href="#:88f8:@_playSQ2" class="lla">@_playSQ2:</a><span class="ce">; [$88f8]</span></span>
+<a name="88f8:@_playSQ2"></a><span class="l"><a class="anc" name="88f8" href="#88f8">[88f8]</a><a href="#88f8:@_playSQ2" class="lla">@_playSQ2:</a><span class="ce">; [$88f8]</span></span>
 <span class="l"><a class="anc" name="88f8" href="#88f8">[88f8]</a><span class="cd"><span class="i">ORA</span> <span class="o">#$90</span></span></span>
 <span class="l"><a class="anc" name="88fa" href="#88fa">[88fa]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#SQ2_VOL">SQ2_VOL</a></span></span></span>
 <span class="l"><a class="anc" name="88fd" href="#88fd">[88fd]</a><span class="cd"><span class="i">LDA</span> <span class="o">#$00</span></span></span>
@@ -3215,7 +3215,7 @@ pre {
 <span class="l"><a class="anc" name="8938" href="#8938">[8938]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#SQ2_VOL">SQ2_VOL</a></span></span></span>
 <span class="l"><a class="anc" name="893b" href="#893b">[893b]</a><span class="cd"><span class="i">JMP</span> <span class="o"><a href="#Sound_ResetCurrentSound">Sound_ResetCurrentSound</a></span></span></span>
 <span class="l"></span>
-<a name=":893e:@_play"></a><span class="l"><a class="anc" name="893e" href="#893e">[893e]</a><a href="#:893e:@_play" class="lla">@_play:</a><span class="ce">; [$893e]</span></span>
+<a name="893e:@_play"></a><span class="l"><a class="anc" name="893e" href="#893e">[893e]</a><a href="#893e:@_play" class="lla">@_play:</a><span class="ce">; [$893e]</span></span>
 <span class="l"><a class="anc" name="893e" href="#893e">[893e]</a><span class="cd"><span class="i">ORA</span> <span class="o">#$d0</span></span></span>
 <span class="l"><a class="anc" name="8940" href="#8940">[8940]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#SQ2_VOL">SQ2_VOL</a></span></span></span>
 <span class="l"><a class="anc" name="8943" href="#8943">[8943]</a><span class="cd"><span class="i">LDA</span> <span class="o">#$00</span></span></span>
@@ -3236,7 +3236,7 @@ pre {
 <span class="l"><a class="anc" name="8967" href="#8967">[8967]</a><span class="cd"><span class="i">LDA</span> <span class="o">#$50</span></span></span>
 <span class="l"><a class="anc" name="8969" href="#8969">[8969]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#SoundEffect_State_Counter">SoundEffect_State_Counter</a></span></span></span>
 <span class="l"></span>
-<a name=":896c:@_return"></a><span class="l"><a class="anc" name="896c" href="#896c">[896c]</a><a href="#:896c:@_return" class="lla">@_return:</a><span class="ce">; [$896c]</span></span>
+<a name="896c:@_return"></a><span class="l"><a class="anc" name="896c" href="#896c">[896c]</a><a href="#896c:@_return" class="lla">@_return:</a><span class="ce">; [$896c]</span></span>
 <span class="l"><a class="anc" name="896c" href="#896c">[896c]</a><span class="cd"><span class="i">RTS</span></span></span>
 <span class="l"></span>
 <a name="SOUNDEFFECT_COIN_TOUCHED_SQ2_VOL"></a><div class="c">;
@@ -3283,7 +3283,7 @@ pre {
 <span class="l"><a class="anc" name="8989" href="#8989">[8989]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#NOISE_VOL">NOISE_VOL</a></span></span></span>
 <span class="l"><a class="anc" name="898c" href="#898c">[898c]</a><span class="cd"><span class="i">JMP</span> <span class="o"><a href="#Sound_ResetCurrentSound">Sound_ResetCurrentSound</a></span></span></span>
 <span class="l"></span>
-<a name=":898f:@_play"></a><span class="l"><a class="anc" name="898f" href="#898f">[898f]</a><a href="#:898f:@_play" class="lla">@_play:</a><span class="ce">; [$898f]</span></span>
+<a name="898f:@_play"></a><span class="l"><a class="anc" name="898f" href="#898f">[898f]</a><a href="#898f:@_play" class="lla">@_play:</a><span class="ce">; [$898f]</span></span>
 <span class="l"><a class="anc" name="898f" href="#898f">[898f]</a><span class="cd"><span class="i">LDA</span> <span class="o">a:<a href="RAM.html#SoundEffect_State_Counter">SoundEffect_State_Counter</a></span></span></span>
 <span class="l"><a class="anc" name="8992" href="#8992">[8992]</a><span class="cd"><span class="i">LSR</span> <span class="o">A</span></span></span>
 <span class="l"><a class="anc" name="8993" href="#8993">[8993]</a><span class="cd"><span class="i">AND</span> <span class="o">#$0f</span></span></span>
@@ -3331,7 +3331,7 @@ pre {
 <span class="l"><a class="anc" name="89b9" href="#89b9">[89b9]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#SQ2_VOL">SQ2_VOL</a></span></span></span>
 <span class="l"><a class="anc" name="89bc" href="#89bc">[89bc]</a><span class="cd"><span class="i">JMP</span> <span class="o"><a href="#Sound_ResetCurrentSound">Sound_ResetCurrentSound</a></span></span></span>
 <span class="l"></span>
-<a name=":89bf:@_play"></a><span class="l"><a class="anc" name="89bf" href="#89bf">[89bf]</a><a href="#:89bf:@_play" class="lla">@_play:</a><span class="ce">; [$89bf]</span></span>
+<a name="89bf:@_play"></a><span class="l"><a class="anc" name="89bf" href="#89bf">[89bf]</a><a href="#89bf:@_play" class="lla">@_play:</a><span class="ce">; [$89bf]</span></span>
 <span class="l"><a class="anc" name="89bf" href="#89bf">[89bf]</a><span class="cd"><span class="i">LDA</span> <span class="o">a:<a href="RAM.html#SoundEffect_State_Counter">SoundEffect_State_Counter</a></span></span></span>
 <span class="l"><a class="anc" name="89c2" href="#89c2">[89c2]</a><span class="cd"><span class="i">AND</span> <span class="o">#$0f</span></span></span>
 <span class="l"><a class="anc" name="89c4" href="#89c4">[89c4]</a><span class="cd"><span class="i">ORA</span> <span class="o">#$50</span></span></span>
@@ -3413,7 +3413,7 @@ pre {
 <span class="l"><a class="anc" name="8a16" href="#8a16">[8a16]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#SQ2_VOL">SQ2_VOL</a></span></span></span>
 <span class="l"><a class="anc" name="8a19" href="#8a19">[8a19]</a><span class="cd"><span class="i">JMP</span> <span class="o"><a href="#Sound_ResetCurrentSound">Sound_ResetCurrentSound</a></span></span></span>
 <span class="l"></span>
-<a name=":8a1c:@_play"></a><span class="l"><a class="anc" name="8a1c" href="#8a1c">[8a1c]</a><a href="#:8a1c:@_play" class="lla">@_play:</a><span class="ce">; [$8a1c]</span></span>
+<a name="8a1c:@_play"></a><span class="l"><a class="anc" name="8a1c" href="#8a1c">[8a1c]</a><a href="#8a1c:@_play" class="lla">@_play:</a><span class="ce">; [$8a1c]</span></span>
 <span class="l"><a class="anc" name="8a1c" href="#8a1c">[8a1c]</a><span class="cd"><span class="i">LDA</span> <span class="o">a:<a href="RAM.html#SoundEffect_State_Counter">SoundEffect_State_Counter</a></span></span></span>
 <span class="l"><a class="anc" name="8a1f" href="#8a1f">[8a1f]</a><span class="cd"><span class="i">ORA</span> <span class="o">#$90</span></span></span>
 <span class="l"><a class="anc" name="8a21" href="#8a21">[8a21]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#SQ2_VOL">SQ2_VOL</a></span></span></span>
@@ -3479,7 +3479,7 @@ pre {
 <span class="l"><a class="anc" name="8a59" href="#8a59">[8a59]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#SQ2_VOL">SQ2_VOL</a></span></span></span>
 <span class="l"><a class="anc" name="8a5c" href="#8a5c">[8a5c]</a><span class="cd"><span class="i">JMP</span> <span class="o"><a href="#Sound_ResetCurrentSound">Sound_ResetCurrentSound</a></span></span></span>
 <span class="l"></span>
-<a name=":8a5f:@_play"></a><span class="l"><a class="anc" name="8a5f" href="#8a5f">[8a5f]</a><a href="#:8a5f:@_play" class="lla">@_play:</a><span class="ce">; [$8a5f]</span></span>
+<a name="8a5f:@_play"></a><span class="l"><a class="anc" name="8a5f" href="#8a5f">[8a5f]</a><a href="#8a5f:@_play" class="lla">@_play:</a><span class="ce">; [$8a5f]</span></span>
 <span class="l"><a class="anc" name="8a5f" href="#8a5f">[8a5f]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#SoundEffect_SetNote">SoundEffect_SetNote</a></span></span></span>
 <span class="l"><a class="anc" name="8a62" href="#8a62">[8a62]</a><span class="cd"><span class="i">LDA</span> <span class="o">#$bf</span></span></span>
 <span class="l"><a class="anc" name="8a64" href="#8a64">[8a64]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#SQ2_VOL">SQ2_VOL</a></span></span></span>
@@ -3561,7 +3561,7 @@ pre {
 <span class="l"><a class="anc" name="8aae" href="#8aae">[8aae]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#NOISE_VOL">NOISE_VOL</a></span></span></span>
 <span class="l"><a class="anc" name="8ab1" href="#8ab1">[8ab1]</a><span class="cd"><span class="i">JMP</span> <span class="o"><a href="#Sound_ResetCurrentSound">Sound_ResetCurrentSound</a></span></span></span>
 <span class="l"></span>
-<a name=":8ab4:@_play"></a><span class="l"><a class="anc" name="8ab4" href="#8ab4">[8ab4]</a><a href="#:8ab4:@_play" class="lla">@_play:</a><span class="ce">; [$8ab4]</span></span>
+<a name="8ab4:@_play"></a><span class="l"><a class="anc" name="8ab4" href="#8ab4">[8ab4]</a><a href="#8ab4:@_play" class="lla">@_play:</a><span class="ce">; [$8ab4]</span></span>
 <span class="l"><a class="anc" name="8ab4" href="#8ab4">[8ab4]</a><span class="cd"><span class="i">LDA</span> <span class="o">#$1f</span></span></span>
 <span class="l"><a class="anc" name="8ab6" href="#8ab6">[8ab6]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#NOISE_VOL">NOISE_VOL</a></span></span></span>
 <span class="l"><a class="anc" name="8ab9" href="#8ab9">[8ab9]</a><span class="cd"><span class="i">LDA</span> <span class="o">a:<a href="RAM.html#SoundEffect_State_Counter">SoundEffect_State_Counter</a></span></span></span>
@@ -3622,7 +3622,7 @@ pre {
 <span class="l"><a class="anc" name="8af0" href="#8af0">[8af0]</a><span class="cd"><span class="i">LDA</span> <span class="o">#$20</span></span></span>
 <span class="l"><a class="anc" name="8af2" href="#8af2">[8af2]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#SQ2_HI">SQ2_HI</a></span></span></span>
 <span class="l"></span>
-<a name=":8af5:@_checkUpdateCounter"></a><span class="l"><a class="anc" name="8af5" href="#8af5">[8af5]</a><a href="#:8af5:@_checkUpdateCounter" class="lla">@_checkUpdateCounter:</a><span class="ce">; [$8af5]</span></span>
+<a name="8af5:@_checkUpdateCounter"></a><span class="l"><a class="anc" name="8af5" href="#8af5">[8af5]</a><a href="#8af5:@_checkUpdateCounter" class="lla">@_checkUpdateCounter:</a><span class="ce">; [$8af5]</span></span>
 <span class="l"><a class="anc" name="8af5" href="#8af5">[8af5]</a><span class="cd"><span class="i">DEC</span> <span class="o">a:<a href="RAM.html#SoundEffect_State_Counter">SoundEffect_State_Counter</a></span></span></span>
 <span class="l"><a class="anc" name="8af8" href="#8af8">[8af8]</a><span class="cd"><span class="i">BNE</span> <span class="o"><a href="#@_return">@_return</a></span></span></span>
 <span class="l"><a class="anc" name="8afa" href="#8afa">[8afa]</a><span class="cd"><span class="i">LDA</span> <span class="o">#$20</span></span></span>
@@ -3631,7 +3631,7 @@ pre {
 <span class="l"><a class="anc" name="8b01" href="#8b01">[8b01]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#SQ2_HI">SQ2_HI</a></span></span></span>
 <span class="l"><a class="anc" name="8b04" href="#8b04">[8b04]</a><span class="cd"><span class="i">JMP</span> <span class="o"><a href="#Sound_ResetCurrentSound">Sound_ResetCurrentSound</a></span></span></span>
 <span class="l"></span>
-<a name=":8b07:@_return"></a><span class="l"><a class="anc" name="8b07" href="#8b07">[8b07]</a><a href="#:8b07:@_return" class="lla">@_return:</a><span class="ce">; [$8b07]</span></span>
+<a name="8b07:@_return"></a><span class="l"><a class="anc" name="8b07" href="#8b07">[8b07]</a><a href="#8b07:@_return" class="lla">@_return:</a><span class="ce">; [$8b07]</span></span>
 <span class="l"><a class="anc" name="8b07" href="#8b07">[8b07]</a><span class="cd"><span class="i">RTS</span></span></span>
 <span class="l"></span>
 </pre><pre><a name="SoundEffect_0x48_Setup"></a><div class="cp">;============================================================================
@@ -3675,7 +3675,7 @@ pre {
 <span class="l"><a class="anc" name="8b29" href="#8b29">[8b29]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#NOISE_VOL">NOISE_VOL</a></span></span></span>
 <span class="l"><a class="anc" name="8b2c" href="#8b2c">[8b2c]</a><span class="cd"><span class="i">JMP</span> <span class="o"><a href="#Sound_ResetCurrentSound">Sound_ResetCurrentSound</a></span></span></span>
 <span class="l"></span>
-<a name=":8b2f:@_play"></a><span class="l"><a class="anc" name="8b2f" href="#8b2f">[8b2f]</a><a href="#:8b2f:@_play" class="lla">@_play:</a><span class="ce">; [$8b2f]</span></span>
+<a name="8b2f:@_play"></a><span class="l"><a class="anc" name="8b2f" href="#8b2f">[8b2f]</a><a href="#8b2f:@_play" class="lla">@_play:</a><span class="ce">; [$8b2f]</span></span>
 <span class="l"><a class="anc" name="8b2f" href="#8b2f">[8b2f]</a><span class="cd"><span class="i">LDA</span> <span class="o">a:<a href="RAM.html#SoundEffect_TicksRemaining_1_">SoundEffect_TicksRemaining_1_</a></span></span></span>
 <span class="l"><a class="anc" name="8b32" href="#8b32">[8b32]</a><span class="cd"><span class="i">AND</span> <span class="o">#$01</span></span></span>
 <span class="l"><a class="anc" name="8b34" href="#8b34">[8b34]</a><span class="cd"><span class="i">BNE</span> <span class="o"><a href="#@_return">@_return</a></span></span></span>
@@ -3698,7 +3698,7 @@ pre {
 <span class="l"><a class="anc" name="8b5e" href="#8b5e">[8b5e]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#SQ2_HI">SQ2_HI</a></span></span></span>
 <span class="l"><a class="anc" name="8b61" href="#8b61">[8b61]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#NOISE_HI">NOISE_HI</a></span></span></span>
 <span class="l"></span>
-<a name=":8b64:@_return"></a><span class="l"><a class="anc" name="8b64" href="#8b64">[8b64]</a><a href="#:8b64:@_return" class="lla">@_return:</a><span class="ce">; [$8b64]</span></span>
+<a name="8b64:@_return"></a><span class="l"><a class="anc" name="8b64" href="#8b64">[8b64]</a><a href="#8b64:@_return" class="lla">@_return:</a><span class="ce">; [$8b64]</span></span>
 <span class="l"><a class="anc" name="8b64" href="#8b64">[8b64]</a><span class="cd"><span class="i">RTS</span></span></span>
 <span class="l"></span>
 </pre><pre><a name="SoundEffect_Pakukame_Setup"></a><div class="cp">;============================================================================
@@ -3736,7 +3736,7 @@ pre {
 <span class="l"><a class="anc" name="8b76" href="#8b76">[8b76]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#SQ2_VOL">SQ2_VOL</a></span></span></span>
 <span class="l"><a class="anc" name="8b79" href="#8b79">[8b79]</a><span class="cd"><span class="i">JMP</span> <span class="o"><a href="#Sound_ResetCurrentSound">Sound_ResetCurrentSound</a></span></span></span>
 <span class="l"></span>
-<a name=":8b7c:@_play"></a><span class="l"><a class="anc" name="8b7c" href="#8b7c">[8b7c]</a><a href="#:8b7c:@_play" class="lla">@_play:</a><span class="ce">; [$8b7c]</span></span>
+<a name="8b7c:@_play"></a><span class="l"><a class="anc" name="8b7c" href="#8b7c">[8b7c]</a><a href="#8b7c:@_play" class="lla">@_play:</a><span class="ce">; [$8b7c]</span></span>
 <span class="l"><a class="anc" name="8b7c" href="#8b7c">[8b7c]</a><span class="cd"><span class="i">LDA</span> <span class="o">a:<a href="RAM.html#SoundEffect_State_Counter">SoundEffect_State_Counter</a></span></span></span>
 <span class="l"><a class="anc" name="8b7f" href="#8b7f">[8b7f]</a><span class="cd"><span class="i">AND</span> <span class="o">#$3c</span></span></span>
 <span class="l"><a class="anc" name="8b81" href="#8b81">[8b81]</a><span class="cd"><span class="i">LSR</span> <span class="o">A</span></span></span>
@@ -3805,7 +3805,7 @@ pre {
 <span class="l"><a class="anc" name="8bcc" href="#8bcc">[8bcc]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#SQ2_VOL">SQ2_VOL</a></span></span></span>
 <span class="l"><a class="anc" name="8bcf" href="#8bcf">[8bcf]</a><span class="cd"><span class="i">JMP</span> <span class="o"><a href="#Sound_ResetCurrentSound">Sound_ResetCurrentSound</a></span></span></span>
 <span class="l"></span>
-<a name=":8bd2:@_play"></a><span class="l"><a class="anc" name="8bd2" href="#8bd2">[8bd2]</a><a href="#:8bd2:@_play" class="lla">@_play:</a><span class="ce">; [$8bd2]</span></span>
+<a name="8bd2:@_play"></a><span class="l"><a class="anc" name="8bd2" href="#8bd2">[8bd2]</a><a href="#8bd2:@_play" class="lla">@_play:</a><span class="ce">; [$8bd2]</span></span>
 <span class="l"><a class="anc" name="8bd2" href="#8bd2">[8bd2]</a><span class="cd"><span class="i">LDA</span> <span class="o">a:<a href="RAM.html#SoundEffect_State_Counter">SoundEffect_State_Counter</a></span></span></span>
 <span class="l"><a class="anc" name="8bd5" href="#8bd5">[8bd5]</a><span class="cd"><span class="i">AND</span> <span class="o">#$03</span></span></span>
 <span class="l"><a class="anc" name="8bd7" href="#8bd7">[8bd7]</a><span class="cd"><span class="i">TAY</span></span></span>
@@ -3885,7 +3885,7 @@ pre {
 <span class="l"><a class="anc" name="8c33" href="#8c33">[8c33]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#NOISE_VOL">NOISE_VOL</a></span></span></span>
 <span class="l"><a class="anc" name="8c36" href="#8c36">[8c36]</a><span class="cd"><span class="i">JMP</span> <span class="o"><a href="#Sound_ResetCurrentSound">Sound_ResetCurrentSound</a></span></span></span>
 <span class="l"></span>
-<a name=":8c39:@_play"></a><span class="l"><a class="anc" name="8c39" href="#8c39">[8c39]</a><a href="#:8c39:@_play" class="lla">@_play:</a><span class="ce">; [$8c39]</span></span>
+<a name="8c39:@_play"></a><span class="l"><a class="anc" name="8c39" href="#8c39">[8c39]</a><a href="#8c39:@_play" class="lla">@_play:</a><span class="ce">; [$8c39]</span></span>
 <span class="l"><a class="anc" name="8c39" href="#8c39">[8c39]</a><span class="cd"><span class="i">LDA</span> <span class="o">#$48</span></span></span>
 <span class="l"><a class="anc" name="8c3b" href="#8c3b">[8c3b]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#SQ2_VOL">SQ2_VOL</a></span></span></span>
 <span class="l"><a class="anc" name="8c3e" href="#8c3e">[8c3e]</a><span class="cd"><span class="i">LDA</span> <span class="o">#$00</span></span></span>
@@ -3905,7 +3905,7 @@ pre {
 <span class="l"><a class="anc" name="8c62" href="#8c62">[8c62]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#SQ2_HI">SQ2_HI</a></span></span></span>
 <span class="l"><a class="anc" name="8c65" href="#8c65">[8c65]</a><span class="cd"><span class="i">DEC</span> <span class="o">a:<a href="RAM.html#SoundEffect_State_0129">SoundEffect_State_0129</a></span></span></span>
 <span class="l"></span>
-<a name=":8c68:@_return"></a><span class="l"><a class="anc" name="8c68" href="#8c68">[8c68]</a><a href="#:8c68:@_return" class="lla">@_return:</a><span class="ce">; [$8c68]</span></span>
+<a name="8c68:@_return"></a><span class="l"><a class="anc" name="8c68" href="#8c68">[8c68]</a><a href="#8c68:@_return" class="lla">@_return:</a><span class="ce">; [$8c68]</span></span>
 <span class="l"><a class="anc" name="8c68" href="#8c68">[8c68]</a><span class="cd"><span class="i">RTS</span></span></span>
 <span class="l"></span>
 </pre><pre><a name="SoundEffect_Maybe_Step_Setup"></a><div class="cp">;============================================================================
@@ -3947,7 +3947,7 @@ pre {
 <span class="l"><a class="anc" name="8c84" href="#8c84">[8c84]</a><span class="cd"><span class="i">LDA</span> <span class="o">#$00</span></span></span>
 <span class="l"><a class="anc" name="8c86" href="#8c86">[8c86]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#NOISE_HI">NOISE_HI</a></span></span></span>
 <span class="l"></span>
-<a name=":8c89:@_updateCheckCounter"></a><span class="l"><a class="anc" name="8c89" href="#8c89">[8c89]</a><a href="#:8c89:@_updateCheckCounter" class="lla">@_updateCheckCounter:</a><span class="ce">; [$8c89]</span></span>
+<a name="8c89:@_updateCheckCounter"></a><span class="l"><a class="anc" name="8c89" href="#8c89">[8c89]</a><a href="#8c89:@_updateCheckCounter" class="lla">@_updateCheckCounter:</a><span class="ce">; [$8c89]</span></span>
 <span class="l"><a class="anc" name="8c89" href="#8c89">[8c89]</a><span class="cd"><span class="i">DEC</span> <span class="o">a:<a href="RAM.html#SoundEffect_State_Counter">SoundEffect_State_Counter</a></span></span></span>
 <span class="l"><a class="anc" name="8c8c" href="#8c8c">[8c8c]</a><span class="cd"><span class="i">BNE</span> <span class="o"><a href="#@_return">@_return</a></span></span></span>
 <span class="l"><a class="anc" name="8c8e" href="#8c8e">[8c8e]</a><span class="cd"><span class="i">LDA</span> <span class="o">#$02</span></span></span>
@@ -3956,7 +3956,7 @@ pre {
 <span class="l"><a class="anc" name="8c95" href="#8c95">[8c95]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#NOISE_HI">NOISE_HI</a></span></span></span>
 <span class="l"><a class="anc" name="8c98" href="#8c98">[8c98]</a><span class="cd"><span class="i">JMP</span> <span class="o"><a href="#Sound_ResetCurrentSound">Sound_ResetCurrentSound</a></span></span></span>
 <span class="l"></span>
-<a name=":8c9b:@_return"></a><span class="l"><a class="anc" name="8c9b" href="#8c9b">[8c9b]</a><a href="#:8c9b:@_return" class="lla">@_return:</a><span class="ce">; [$8c9b]</span></span>
+<a name="8c9b:@_return"></a><span class="l"><a class="anc" name="8c9b" href="#8c9b">[8c9b]</a><a href="#8c9b:@_return" class="lla">@_return:</a><span class="ce">; [$8c9b]</span></span>
 <span class="l"><a class="anc" name="8c9b" href="#8c9b">[8c9b]</a><span class="cd"><span class="i">RTS</span></span></span>
 <span class="l"></span>
 </pre><pre><a name="SoundEffect_PlayerDied_Setup"></a><div class="cp">;============================================================================
@@ -4005,7 +4005,7 @@ pre {
 <span class="l"><a class="anc" name="8ccc" href="#8ccc">[8ccc]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#NOISE_VOL">NOISE_VOL</a></span></span></span>
 <span class="l"><a class="anc" name="8ccf" href="#8ccf">[8ccf]</a><span class="cd"><span class="i">JMP</span> <span class="o"><a href="#Sound_ResetCurrentSound">Sound_ResetCurrentSound</a></span></span></span>
 <span class="l"></span>
-<a name=":8cd2:@_play"></a><span class="l"><a class="anc" name="8cd2" href="#8cd2">[8cd2]</a><a href="#:8cd2:@_play" class="lla">@_play:</a><span class="ce">; [$8cd2]</span></span>
+<a name="8cd2:@_play"></a><span class="l"><a class="anc" name="8cd2" href="#8cd2">[8cd2]</a><a href="#8cd2:@_play" class="lla">@_play:</a><span class="ce">; [$8cd2]</span></span>
 <span class="l"><a class="anc" name="8cd2" href="#8cd2">[8cd2]</a><span class="cd"><span class="i">LDA</span> <span class="o">a:<a href="RAM.html#SoundEffect_State_Counter">SoundEffect_State_Counter</a></span></span></span>
 <span class="l"><a class="anc" name="8cd5" href="#8cd5">[8cd5]</a><span class="cd"><span class="i">EOR</span> <span class="o">#$ff</span></span></span>
 <span class="l"><a class="anc" name="8cd7" href="#8cd7">[8cd7]</a><span class="cd"><span class="i">LSR</span> <span class="o">A</span></span></span>
@@ -4089,7 +4089,7 @@ pre {
 <span class="l"><a class="anc" name="8d47" href="#8d47">[8d47]</a><span class="cd"><span class="i">LDA</span> <span class="o">#$18</span></span></span>
 <span class="l"><a class="anc" name="8d49" href="#8d49">[8d49]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#NOISE_HI">NOISE_HI</a></span></span></span>
 <span class="l"></span>
-<a name=":8d4c:@_updateCheckCounter"></a><span class="l"><a class="anc" name="8d4c" href="#8d4c">[8d4c]</a><a href="#:8d4c:@_updateCheckCounter" class="lla">@_updateCheckCounter:</a><span class="ce">; [$8d4c]</span></span>
+<a name="8d4c:@_updateCheckCounter"></a><span class="l"><a class="anc" name="8d4c" href="#8d4c">[8d4c]</a><a href="#8d4c:@_updateCheckCounter" class="lla">@_updateCheckCounter:</a><span class="ce">; [$8d4c]</span></span>
 <span class="l"><a class="anc" name="8d4c" href="#8d4c">[8d4c]</a><span class="cd"><span class="i">DEC</span> <span class="o">a:<a href="RAM.html#SoundEffect_State_Counter">SoundEffect_State_Counter</a></span></span></span>
 <span class="l"><a class="anc" name="8d4f" href="#8d4f">[8d4f]</a><span class="cd"><span class="i">BNE</span> <span class="o"><a href="#@_return">@_return</a></span></span></span>
 <span class="l"><a class="anc" name="8d51" href="#8d51">[8d51]</a><span class="cd"><span class="i">LDA</span> <span class="o">#$05</span></span></span>
@@ -4098,7 +4098,7 @@ pre {
 <span class="l"><a class="anc" name="8d58" href="#8d58">[8d58]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#NOISE_HI">NOISE_HI</a></span></span></span>
 <span class="l"><a class="anc" name="8d5b" href="#8d5b">[8d5b]</a><span class="cd"><span class="i">JMP</span> <span class="o"><a href="#Sound_ResetCurrentSound">Sound_ResetCurrentSound</a></span></span></span>
 <span class="l"></span>
-<a name=":8d5e:@_return"></a><span class="l"><a class="anc" name="8d5e" href="#8d5e">[8d5e]</a><a href="#:8d5e:@_return" class="lla">@_return:</a><span class="ce">; [$8d5e]</span></span>
+<a name="8d5e:@_return"></a><span class="l"><a class="anc" name="8d5e" href="#8d5e">[8d5e]</a><a href="#8d5e:@_return" class="lla">@_return:</a><span class="ce">; [$8d5e]</span></span>
 <span class="l"><a class="anc" name="8d5e" href="#8d5e">[8d5e]</a><span class="cd"><span class="i">RTS</span></span></span>
 <span class="l"></span>
 </pre><pre><a name="SoundEffect_ShowPlayerMenu_Setup"></a><div class="cp">;============================================================================
@@ -4141,7 +4141,7 @@ pre {
 <span class="l"><a class="anc" name="8d7c" href="#8d7c">[8d7c]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#SQ2_VOL">SQ2_VOL</a></span></span></span>
 <span class="l"><a class="anc" name="8d7f" href="#8d7f">[8d7f]</a><span class="cd"><span class="i">JMP</span> <span class="o"><a href="#Sound_ResetCurrentSound">Sound_ResetCurrentSound</a></span></span></span>
 <span class="l"></span>
-<a name=":8d82:@_play"></a><span class="l"><a class="anc" name="8d82" href="#8d82">[8d82]</a><a href="#:8d82:@_play" class="lla">@_play:</a><span class="ce">; [$8d82]</span></span>
+<a name="8d82:@_play"></a><span class="l"><a class="anc" name="8d82" href="#8d82">[8d82]</a><a href="#8d82:@_play" class="lla">@_play:</a><span class="ce">; [$8d82]</span></span>
 <span class="l"><a class="anc" name="8d82" href="#8d82">[8d82]</a><span class="cd"><span class="i">ORA</span> <span class="o">#$d0</span></span></span>
 <span class="l"><a class="anc" name="8d84" href="#8d84">[8d84]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#SQ2_VOL">SQ2_VOL</a></span></span></span>
 <span class="l"><a class="anc" name="8d87" href="#8d87">[8d87]</a><span class="cd"><span class="i">LDA</span> <span class="o">#$00</span></span></span>
@@ -4236,7 +4236,7 @@ pre {
 <span class="l"><a class="anc" name="8dfa" href="#8dfa">[8dfa]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#NOISE_VOL">NOISE_VOL</a></span></span></span>
 <span class="l"><a class="anc" name="8dfd" href="#8dfd">[8dfd]</a><span class="cd"><span class="i">JMP</span> <span class="o"><a href="#Sound_ResetCurrentSound">Sound_ResetCurrentSound</a></span></span></span>
 <span class="l"></span>
-<a name=":8e00:@_hasNoise"></a><span class="l"><a class="anc" name="8e00" href="#8e00">[8e00]</a><a href="#:8e00:@_hasNoise" class="lla">@_hasNoise:</a><span class="ce">; [$8e00]</span></span>
+<a name="8e00:@_hasNoise"></a><span class="l"><a class="anc" name="8e00" href="#8e00">[8e00]</a><a href="#8e00:@_hasNoise" class="lla">@_hasNoise:</a><span class="ce">; [$8e00]</span></span>
 <span class="l"><a class="anc" name="8e00" href="#8e00">[8e00]</a><span class="cd"><span class="i">ORA</span> <span class="o">#$90</span></span></span>
 <span class="l"><a class="anc" name="8e02" href="#8e02">[8e02]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#NOISE_VOL">NOISE_VOL</a></span></span></span>
 <span class="l"><a class="anc" name="8e05" href="#8e05">[8e05]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#SQ2_VOL">SQ2_VOL</a></span></span></span>
@@ -4272,10 +4272,10 @@ pre {
 <span class="l"><a class="anc" name="8e50" href="#8e50">[8e50]</a><span class="cd"><span class="i">BNE</span> <span class="o"><a href="#@_return">@_return</a></span></span></span>
 <span class="l"><a class="anc" name="8e52" href="#8e52">[8e52]</a><span class="cd"><span class="i">INC</span> <span class="o">a:<a href="RAM.html#SoundEffect_State_0129">SoundEffect_State_0129</a></span></span></span>
 <span class="l"></span>
-<a name=":8e55:@_return"></a><span class="l"><a class="anc" name="8e55" href="#8e55">[8e55]</a><a href="#:8e55:@_return" class="lla">@_return:</a><span class="ce">; [$8e55]</span></span>
+<a name="8e55:@_return"></a><span class="l"><a class="anc" name="8e55" href="#8e55">[8e55]</a><a href="#8e55:@_return" class="lla">@_return:</a><span class="ce">; [$8e55]</span></span>
 <span class="l"><a class="anc" name="8e55" href="#8e55">[8e55]</a><span class="cd"><span class="i">RTS</span></span></span>
 <span class="l"></span>
-<a name=":8e56:@_hasNotes"></a><span class="l"><a class="anc" name="8e56" href="#8e56">[8e56]</a><a href="#:8e56:@_hasNotes" class="lla">@_hasNotes:</a><span class="ce">; [$8e56]</span></span>
+<a name="8e56:@_hasNotes"></a><span class="l"><a class="anc" name="8e56" href="#8e56">[8e56]</a><a href="#8e56:@_hasNotes" class="lla">@_hasNotes:</a><span class="ce">; [$8e56]</span></span>
 <span class="l"><a class="anc" name="8e56" href="#8e56">[8e56]</a><span class="cd"><span class="i">LDA</span> <span class="o">#$00</span></span></span>
 <span class="l"><a class="anc" name="8e58" href="#8e58">[8e58]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#SoundEffect_State_Counter">SoundEffect_State_Counter</a></span></span></span>
 <span class="l"><a class="anc" name="8e5b" href="#8e5b">[8e5b]</a><span class="cd"><span class="i">INC</span> <span class="o">a:<a href="RAM.html#SoundEffect_State_0129">SoundEffect_State_0129</a></span></span></span>
@@ -4346,7 +4346,7 @@ pre {
 <span class="l"><a class="anc" name="8e98" href="#8e98">[8e98]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#SQ2_VOL">SQ2_VOL</a></span></span></span>
 <span class="l"><a class="anc" name="8e9b" href="#8e9b">[8e9b]</a><span class="cd"><span class="i">JMP</span> <span class="o"><a href="#Sound_ResetCurrentSound">Sound_ResetCurrentSound</a></span></span></span>
 <span class="l"></span>
-<a name=":8e9e:@_play"></a><span class="l"><a class="anc" name="8e9e" href="#8e9e">[8e9e]</a><a href="#:8e9e:@_play" class="lla">@_play:</a><span class="ce">; [$8e9e]</span></span>
+<a name="8e9e:@_play"></a><span class="l"><a class="anc" name="8e9e" href="#8e9e">[8e9e]</a><a href="#8e9e:@_play" class="lla">@_play:</a><span class="ce">; [$8e9e]</span></span>
 <span class="l"><a class="anc" name="8e9e" href="#8e9e">[8e9e]</a><span class="cd"><span class="i">LDA</span> <span class="o">#$df</span></span></span>
 <span class="l"><a class="anc" name="8ea0" href="#8ea0">[8ea0]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#SQ2_VOL">SQ2_VOL</a></span></span></span>
 <span class="l"><a class="anc" name="8ea3" href="#8ea3">[8ea3]</a><span class="cd"><span class="i">LDA</span> <span class="o">#$00</span></span></span>
@@ -4430,7 +4430,7 @@ pre {
 </div><span class="l"><a class="anc" name="8ed4" href="#8ed4">[8ed4]</a><span class="cd"><span class="i">LDY</span> <span class="o">#$01</span></span></span>
 <span class="l"><a class="anc" name="8ed6" href="#8ed6">[8ed6]</a><span class="cd"><span class="i">SEC</span></span></span>
 <span class="l"></span>
-<a name=":8ed7:@_loop"></a><span class="l"><a class="anc" name="8ed7" href="#8ed7">[8ed7]</a><a href="#:8ed7:@_loop" class="lla">@_loop:</a><span class="ce">; [$8ed7]</span></span>
+<a name="8ed7:@_loop"></a><span class="l"><a class="anc" name="8ed7" href="#8ed7">[8ed7]</a><a href="#8ed7:@_loop" class="lla">@_loop:</a><span class="ce">; [$8ed7]</span></span>
 <span class="l"><a class="anc" name="8ed7" href="#8ed7">[8ed7]</a><span class="cd"><span class="i">SBC</span> <span class="o">#$0c</span></span></span>
 <span class="l"><a class="anc" name="8ed9" href="#8ed9">[8ed9]</a><span class="cd"><span class="i">INY</span></span></span>
 <span class="l"><a class="anc" name="8eda" href="#8eda">[8eda]</a><span class="cd"><span class="i">BCS</span> <span class="o"><a href="#@_loop">@_loop</a></span></span></span>
@@ -4444,18 +4444,18 @@ pre {
 <span class="l"><a class="anc" name="8eea" href="#8eea">[8eea]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#SoundEffect_Note_High">SoundEffect_Note_High</a></span></span></span>
 <span class="l"></span>
 <span class="l"></span>
-<a name=":8eed:@_octaveLoop"></a><div class="c">;
+<a name="8eed:@_octaveLoop"></a><div class="c">;
 ; Convert to the note in the right octave based on
 ; the starting value.
 ;
-</div><span class="l"><a class="anc" name="8eed" href="#8eed">[8eed]</a><a href="#:8eed:@_octaveLoop" class="lla">@_octaveLoop:</a><span class="ce">; [$8eed]</span></span>
+</div><span class="l"><a class="anc" name="8eed" href="#8eed">[8eed]</a><a href="#8eed:@_octaveLoop" class="lla">@_octaveLoop:</a><span class="ce">; [$8eed]</span></span>
 <span class="l"><a class="anc" name="8eed" href="#8eed">[8eed]</a><span class="cd"><span class="i">DEY</span></span></span>
 <span class="l"><a class="anc" name="8eee" href="#8eee">[8eee]</a><span class="cd"><span class="i">BEQ</span> <span class="o"><a href="#@_return">@_return</a></span></span></span>
 <span class="l"><a class="anc" name="8ef0" href="#8ef0">[8ef0]</a><span class="cd"><span class="i">LSR</span> <span class="o">a:<a href="RAM.html#SoundEffect_Note_High">SoundEffect_Note_High</a></span></span></span>
 <span class="l"><a class="anc" name="8ef3" href="#8ef3">[8ef3]</a><span class="cd"><span class="i">ROR</span> <span class="o">a:<a href="RAM.html#SoundEffect_Note_Low">SoundEffect_Note_Low</a></span></span></span>
 <span class="l"><a class="anc" name="8ef6" href="#8ef6">[8ef6]</a><span class="cd"><span class="i">JMP</span> <span class="o"><a href="#@_octaveLoop">@_octaveLoop</a></span></span></span>
 <span class="l"></span>
-<a name=":8ef9:@_return"></a><span class="l"><a class="anc" name="8ef9" href="#8ef9">[8ef9]</a><a href="#:8ef9:@_return" class="lla">@_return:</a><span class="ce">; [$8ef9]</span></span>
+<a name="8ef9:@_return"></a><span class="l"><a class="anc" name="8ef9" href="#8ef9">[8ef9]</a><a href="#8ef9:@_return" class="lla">@_return:</a><span class="ce">; [$8ef9]</span></span>
 <span class="l"><a class="anc" name="8ef9" href="#8ef9">[8ef9]</a><span class="cd"><span class="i">RTS</span></span></span>
 <span class="l"></span>
 <span class="l"></span>
@@ -6289,7 +6289,7 @@ pre {
 <span class="l"><a class="anc" name="96c1" href="#96c1">[96c1]</a><span class="cd"><span class="i">.byte</span> <span class="o">MSCRIPT_OP_RESTART_CHANNEL</span></span><span class="ce">; Op: Restart channel</span></span>
 <span class="l"><a class="anc" name="96c2" href="#96c2">[96c2]</a><span class="cd"><span class="i">.byte</span> <span class="o">MSCRIPT_OP_END</span></span><span class="ce">; Op: End</span></span>
 <span class="l"></span>
-<a name=":96c3:@_subroutine"></a><span class="l"><a class="anc" name="96c3" href="#96c3">[96c3]</a><a href="#:96c3:@_subroutine" class="lla">@_subroutine:</a><span class="ce">; [$96c3]</span></span>
+<a name="96c3:@_subroutine"></a><span class="l"><a class="anc" name="96c3" href="#96c3">[96c3]</a><a href="#96c3:@_subroutine" class="lla">@_subroutine:</a><span class="ce">; [$96c3]</span></span>
 <span class="l"><a class="anc" name="96c3" href="#96c3">[96c3]</a><span class="cd"><span class="i">.byte</span> <span class="o">MSCRIPT_OP_SET_SQ_FADE</span></span><span class="ce">; Op: Set SQ fade</span></span>
 <span class="l"><a class="anc" name="96c4" href="#96c4">[96c4]</a><span class="cd"><span class="i">.byte</span> <span class="o">$02</span></span><span class="ce">;  '- Reduce volume by 2</span></span>
 <span class="l"><a class="anc" name="96c5" href="#96c5">[96c5]</a><span class="cd"><span class="i">.byte</span> <span class="o">MSCRIPT_OP_SET_SQ_CONTROL_BITS</span></span><span class="ce">; Op: Set SQ control bits</span></span>
@@ -6524,7 +6524,7 @@ pre {
 <span class="l"><a class="anc" name="97a4" href="#97a4">[97a4]</a><span class="cd"><span class="i">.byte</span> <span class="o">MSCRIPT_OP_RESTART_CHANNEL</span></span><span class="ce">; Op: Restart channel</span></span>
 <span class="l"><a class="anc" name="97a5" href="#97a5">[97a5]</a><span class="cd"><span class="i">.byte</span> <span class="o">MSCRIPT_OP_END</span></span><span class="ce">; Op: End</span></span>
 <span class="l"></span>
-<a name=":97a6:@_subroutine"></a><span class="l"><a class="anc" name="97a6" href="#97a6">[97a6]</a><a href="#:97a6:@_subroutine" class="lla">@_subroutine:</a><span class="ce">; [$97a6]</span></span>
+<a name="97a6:@_subroutine"></a><span class="l"><a class="anc" name="97a6" href="#97a6">[97a6]</a><a href="#97a6:@_subroutine" class="lla">@_subroutine:</a><span class="ce">; [$97a6]</span></span>
 <span class="l"><a class="anc" name="97a6" href="#97a6">[97a6]</a><span class="cd"><span class="i">.byte</span> <span class="o">MSCRIPT_OP_SET_SQ_FADE</span></span><span class="ce">; Op: Set SQ fade</span></span>
 <span class="l"><a class="anc" name="97a7" href="#97a7">[97a7]</a><span class="cd"><span class="i">.byte</span> <span class="o">$04</span></span><span class="ce">;  '- Reduce volume by 4</span></span>
 <span class="l"><a class="anc" name="97a8" href="#97a8">[97a8]</a><span class="cd"><span class="i">.byte</span> <span class="o">MSCRIPT_OP_SET_SQ_CONTROL_BITS</span></span><span class="ce">; Op: Set SQ control bits</span></span>
@@ -6916,7 +6916,7 @@ pre {
 <span class="l"><a class="anc" name="9925" href="#9925">[9925]</a><span class="cd"><span class="i">.byte</span> <span class="o">MSCRIPT_OP_RESTART_CHANNEL</span></span><span class="ce">; Op: Restart channel</span></span>
 <span class="l"><a class="anc" name="9926" href="#9926">[9926]</a><span class="cd"><span class="i">.byte</span> <span class="o">MSCRIPT_OP_END</span></span><span class="ce">; Op: End</span></span>
 <span class="l"></span>
-<a name=":9927:@_subroutine"></a><span class="l"><a class="anc" name="9927" href="#9927">[9927]</a><a href="#:9927:@_subroutine" class="lla">@_subroutine:</a><span class="ce">; [$9927]</span></span>
+<a name="9927:@_subroutine"></a><span class="l"><a class="anc" name="9927" href="#9927">[9927]</a><a href="#9927:@_subroutine" class="lla">@_subroutine:</a><span class="ce">; [$9927]</span></span>
 <span class="l"><a class="anc" name="9927" href="#9927">[9927]</a><span class="cd"><span class="i">.byte</span> <span class="o">$8c</span></span><span class="ce">; Note length: 12</span></span>
 <span class="l"><a class="anc" name="9928" href="#9928">[9928]</a><span class="cd"><span class="i">.byte</span> <span class="o">$15</span></span><span class="ce">; C7</span></span>
 <span class="l"><a class="anc" name="9929" href="#9929">[9929]</a><span class="cd"><span class="i">.byte</span> <span class="o">$86</span></span><span class="ce">; Note length: 6</span></span>
@@ -7229,7 +7229,7 @@ pre {
 <span class="l"><a class="anc" name="9a6e" href="#9a6e">[9a6e]</a><span class="cd"><span class="i">.byte</span> <span class="o">MSCRIPT_OP_RESTART_CHANNEL</span></span><span class="ce">; Op: Restart channel</span></span>
 <span class="l"><a class="anc" name="9a6f" href="#9a6f">[9a6f]</a><span class="cd"><span class="i">.byte</span> <span class="o">MSCRIPT_OP_END</span></span><span class="ce">; Op: End</span></span>
 <span class="l"></span>
-<a name=":9a70:@_subroutine"></a><span class="l"><a class="anc" name="9a70" href="#9a70">[9a70]</a><a href="#:9a70:@_subroutine" class="lla">@_subroutine:</a><span class="ce">; [$9a70]</span></span>
+<a name="9a70:@_subroutine"></a><span class="l"><a class="anc" name="9a70" href="#9a70">[9a70]</a><a href="#9a70:@_subroutine" class="lla">@_subroutine:</a><span class="ce">; [$9a70]</span></span>
 <span class="l"><a class="anc" name="9a70" href="#9a70">[9a70]</a><span class="cd"><span class="i">.byte</span> <span class="o">MSCRIPT_OP_BEGIN_LOOP</span></span><span class="ce">; Op: Begin loop</span></span>
 <span class="l"><a class="anc" name="9a71" href="#9a71">[9a71]</a><span class="cd"><span class="i">.byte</span> <span class="o">$08</span></span><span class="ce">;  '- 8 iterations</span></span>
 <span class="l"><a class="anc" name="9a72" href="#9a72">[9a72]</a><span class="cd"><span class="i">.byte</span> <span class="o">$8c,$00,$21,$00,$21,$00,$21,$00</span></span><span class="ce">; [$9a72] byte</span></span>
