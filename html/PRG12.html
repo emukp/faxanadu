@@ -121,6 +121,22 @@ pre {
   min-width: 3em;
 }
 
+.idx {
+  display: grid;
+  grid-column: 2 / 3;
+  grid-template-columns: minmax(50ch, max-content) auto;
+  gap: 0 1em;
+}
+
+.idx-name {
+  font-weight: bold;
+}
+
+.idx-targets {
+  display: flex;
+  flex-direction: row;
+}
+
 .o {
   color: #e3e3e3;
   margin-left: 1ch;
@@ -1266,15 +1282,21 @@ pre {
 <span class="l"><a class="anc" name="82dc" href="#82dc">[82dc]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="PRG15_MIRROR.html#Messages_Load">Messages_Load</a></span></span><span class="ce">; Load the message.</span></span>
 <span class="l"></span>
 <span class="l"></span>
-<a name=":82df:@_loop"></a><div class="c">;
+<a name=":82df:@_writeLoop"></a><div class="c">;
 ; Draw the characters one-by-one until the message is done.
 ;
-</div><span class="l"><a class="anc" name="82df" href="#82df">[82df]</a><a href="#:82df:@_loop" class="lla">@_loop:</a><span class="ce">; [$82df]</span></span>
+</div><span class="l"><a class="anc" name="82df" href="#82df">[82df]</a><a href="#:82df:@_writeLoop" class="lla">@_writeLoop:</a><span class="ce">; [$82df]</span></span>
 <span class="l"><a class="anc" name="82df" href="#82df">[82df]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#IScripts_UpdatePortraitAnimation">IScripts_UpdatePortraitAnimation</a></span></span><span class="ce">; Update the portrait animation.</span></span>
 <span class="l"><a class="anc" name="82e2" href="#82e2">[82e2]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="PRG15_MIRROR.html#TextBox_ShowNextChar">TextBox_ShowNextChar</a></span></span><span class="ce">; Draw the next character in the textbox.</span></span>
 <span class="l"><a class="anc" name="82e5" href="#82e5">[82e5]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#TextBox_CheckShouldContinueOrDismissMessage">TextBox_CheckShouldContinueOrDismissMessage</a></span></span><span class="ce">; Check if the message is done or continued.</span></span>
-<span class="l"><a class="anc" name="82e8" href="#82e8">[82e8]</a><span class="cd"><span class="i">BCS</span> <span class="o"><a href="#IScriptAction_EndScript">IScriptAction_EndScript</a></span></span><span class="ce">; If dismissed, end the script.</span></span>
-<span class="l"><a class="anc" name="82ea" href="#82ea">[82ea]</a><span class="cd"><span class="i">BNE</span> <span class="o"><a href="#@_loop">@_loop</a></span></span><span class="ce">; If not done, loop.</span></span>
+<span class="l"></span>
+<span class="l"></span>
+<div class="c">;
+; Check if the player has dismissed the message by pressing B,
+; or if the message has finished.
+;
+</div><span class="l"><a class="anc" name="82e8" href="#82e8">[82e8]</a><span class="cd"><span class="i">BCS</span> <span class="o"><a href="#IScriptAction_EndScript">IScriptAction_EndScript</a></span></span><span class="ce">; If dismissed (C=1), end the script.</span></span>
+<span class="l"><a class="anc" name="82ea" href="#82ea">[82ea]</a><span class="cd"><span class="i">BNE</span> <span class="o"><a href="#@_writeLoop">@_writeLoop</a></span></span><span class="ce">; If not done writing (Z=1), loop.</span></span>
 <span class="l"></span>
 <span class="l"></span>
 <div class="c">;
@@ -1311,8 +1333,8 @@ pre {
 <span class="l"><a class="anc" name="82f5" href="#82f5">[82f5]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#IScripts_UpdatePortraitAnimation">IScripts_UpdatePortraitAnimation</a></span></span><span class="ce">; Update the portrait animation.</span></span>
 <span class="l"><a class="anc" name="82f8" href="#82f8">[82f8]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="PRG15_MIRROR.html#TextBox_ShowNextChar">TextBox_ShowNextChar</a></span></span><span class="ce">; Show the next character in the textbox.</span></span>
 <span class="l"><a class="anc" name="82fb" href="#82fb">[82fb]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#TextBox_CheckShouldContinueOrDismissQuestion">TextBox_CheckShouldContinueOrDismissQuestion</a></span></span><span class="ce">; Check whether to continue or dismiss.</span></span>
-<span class="l"><a class="anc" name="82fe" href="#82fe">[82fe]</a><span class="cd"><span class="i">BCS</span> <span class="o"><a href="#IScriptAction_EndScript">IScriptAction_EndScript</a></span></span><span class="ce">; If dismissed, end the script.</span></span>
-<span class="l"><a class="anc" name="8300" href="#8300">[8300]</a><span class="cd"><span class="i">BNE</span> <span class="o"><a href="#@_messageLoop">@_messageLoop</a></span></span><span class="ce">; Else, if message text remains, loop.</span></span>
+<span class="l"><a class="anc" name="82fe" href="#82fe">[82fe]</a><span class="cd"><span class="i">BCS</span> <span class="o"><a href="#IScriptAction_EndScript">IScriptAction_EndScript</a></span></span><span class="ce">; If dismissed (C=1), end the script.</span></span>
+<span class="l"><a class="anc" name="8300" href="#8300">[8300]</a><span class="cd"><span class="i">BNE</span> <span class="o"><a href="#@_messageLoop">@_messageLoop</a></span></span><span class="ce">; Else, if message text remains (Z=1), loop.</span></span>
 <span class="l"></span>
 <span class="l"></span>
 <div class="c">;
@@ -1355,8 +1377,8 @@ pre {
 <span class="l"><a class="anc" name="830e" href="#830e">[830e]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#IScripts_UpdatePortraitAnimation">IScripts_UpdatePortraitAnimation</a></span></span><span class="ce">; Update the portrait animation.</span></span>
 <span class="l"><a class="anc" name="8311" href="#8311">[8311]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="PRG15_MIRROR.html#TextBox_ShowNextChar">TextBox_ShowNextChar</a></span></span><span class="ce">; Show the next character in the textbox.</span></span>
 <span class="l"><a class="anc" name="8314" href="#8314">[8314]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#TextBox_CheckShouldContinueOrDismissQuestion">TextBox_CheckShouldContinueOrDismissQuestion</a></span></span><span class="ce">; Check whether to continue or dismiss.</span></span>
-<span class="l"><a class="anc" name="8317" href="#8317">[8317]</a><span class="cd"><span class="i">BCS</span> <span class="o"><a href="#@_messageDismissed">@_messageDismissed</a></span></span><span class="ce">; If dismissed, jump to continue this script.</span></span>
-<span class="l"><a class="anc" name="8319" href="#8319">[8319]</a><span class="cd"><span class="i">BNE</span> <span class="o"><a href="#@_messageLoop">@_messageLoop</a></span></span><span class="ce">; Else, if message text remains, loop.</span></span>
+<span class="l"><a class="anc" name="8317" href="#8317">[8317]</a><span class="cd"><span class="i">BCS</span> <span class="o"><a href="#@_messageDismissed">@_messageDismissed</a></span></span><span class="ce">; If dismissed (C=1), jump to continue this script.</span></span>
+<span class="l"><a class="anc" name="8319" href="#8319">[8319]</a><span class="cd"><span class="i">BNE</span> <span class="o"><a href="#@_messageLoop">@_messageLoop</a></span></span><span class="ce">; Else, if message text remains (Z=1), loop.</span></span>
 <span class="l"></span>
 <span class="l"></span>
 <div class="c">;
@@ -1523,8 +1545,8 @@ pre {
 </pre><pre><a name="IScripts_ShowFinalMessage"></a><div class="cp">;============================================================================
 ; Show a message for shop purposes, ending the script once finished.
 ;
-; This will show the message and, once dismissed or completed,
-; end the current IScript.
+; This will show the message and, once dismissed or
+; completed, end the current IScript.
 ;
 ; INPUTS:
 ;     A:
@@ -1675,13 +1697,13 @@ pre {
 ;============================================================================
 </div><span class="l"><a class="anc" name="83d8" href="#83d8">[83d8]</a><a href="#IScriptAction_OpenShop" class="la">IScriptAction_OpenShop:</a><span class="ce">; [$83d8]</span></span>
 <span class="l"><a class="anc" name="83d8" href="#83d8">[83d8]</a><span class="cd"><span class="i">LDA</span> <span class="o">#$14</span></span><span class="ce">; "What would you like?"</span></span>
-<span class="l"><a class="anc" name="83da" href="#83da">[83da]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="PRG15_MIRROR.html#Messages_Load">Messages_Load</a></span></span></span>
+<span class="l"><a class="anc" name="83da" href="#83da">[83da]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="PRG15_MIRROR.html#Messages_Load">Messages_Load</a></span></span><span class="ce">; Load the message.</span></span>
 <span class="l"></span>
 <a name=":83dd:@LAB_PRG12__83dd"></a><span class="l"><a class="anc" name="83dd" href="#83dd">[83dd]</a><a href="#:83dd:@LAB_PRG12__83dd" class="lla">@LAB_PRG12__83dd:</a><span class="ce">; [$83dd]</span></span>
-<span class="l"><a class="anc" name="83dd" href="#83dd">[83dd]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#IScripts_UpdatePortraitAnimation">IScripts_UpdatePortraitAnimation</a></span></span></span>
-<span class="l"><a class="anc" name="83e0" href="#83e0">[83e0]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="PRG15_MIRROR.html#TextBox_ShowNextChar">TextBox_ShowNextChar</a></span></span></span>
-<span class="l"><a class="anc" name="83e3" href="#83e3">[83e3]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#TextBox_CheckShouldContinueOrDismissMessage">TextBox_CheckShouldContinueOrDismissMessage</a></span></span></span>
-<span class="l"><a class="anc" name="83e6" href="#83e6">[83e6]</a><span class="cd"><span class="i">BCS</span> <span class="o"><a href="#@_endScript">@_endScript</a></span></span></span>
+<span class="l"><a class="anc" name="83dd" href="#83dd">[83dd]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#IScripts_UpdatePortraitAnimation">IScripts_UpdatePortraitAnimation</a></span></span><span class="ce">; Update the portrait animation.</span></span>
+<span class="l"><a class="anc" name="83e0" href="#83e0">[83e0]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="PRG15_MIRROR.html#TextBox_ShowNextChar">TextBox_ShowNextChar</a></span></span><span class="ce">; Show the next character in the textbox.</span></span>
+<span class="l"><a class="anc" name="83e3" href="#83e3">[83e3]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#TextBox_CheckShouldContinueOrDismissMessage">TextBox_CheckShouldContinueOrDismissMessage</a></span></span><span class="ce">; Check whether to continue displaying the message or if the user pressed to dismiss.</span></span>
+<span class="l"><a class="anc" name="83e6" href="#83e6">[83e6]</a><span class="cd"><span class="i">BCS</span> <span class="o"><a href="#@_endScript">@_endScript</a></span></span><span class="ce">; If they pressed to dismiss, end the script.</span></span>
 <span class="l"><a class="anc" name="83e8" href="#83e8">[83e8]</a><span class="cd"><span class="i">BNE</span> <span class="o"><a href="#@LAB_PRG12__83dd">@LAB_PRG12__83dd</a></span></span></span>
 <span class="l"><a class="anc" name="83ea" href="#83ea">[83ea]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#IScripts_LoadByte">IScripts_LoadByte</a></span></span></span>
 <span class="l"><a class="anc" name="83ed" href="#83ed">[83ed]</a><span class="cd"><span class="i">STA</span> <span class="o"><a href="RAM.html#Temp_Int24">Temp_Int24</a></span></span><span class="ce">; Probably shop inventory table</span></span>
@@ -8349,14 +8371,33 @@ If overflow, C = 1</span></span>
 <span class="l"><a class="anc" name="9950" href="#9950">[9950]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#Unused_Arg_Text_NumLines">Unused_Arg_Text_NumLines</a></span></span></span>
 <span class="l"><a class="anc" name="9953" href="#9953">[9953]</a><span class="cd"><span class="i">JMP</span> <span class="o"><a href="PRG15_MIRROR.html#TextBox_ShowMessage_Prepare4Lines">TextBox_ShowMessage_Prepare4Lines</a></span></span></span>
 <span class="l"></span>
+<span class="l"></span>
 </pre><pre><a name="TextBox_CheckShouldContinueOrDismissMessage"></a><div class="cp">;============================================================================
-; TODO: Document TextBox_CheckShouldContinueOrDismissMessage
+; Check if the message should be continued or dismissed.
 ;
 ; INPUTS:
-;     None.
+;     <a href="RAM.html#MessageID">MessageID</a>:
+;         The ID of the message being displayed.
+;
+;     <a href="RAM.html#Joy1_ChangedButtonMask">Joy1_ChangedButtonMask</a>:
+;         The newly-pressed buttons.
 ;
 ; OUTPUTS:
-;     C
+;     A:
+;         Clobbered.
+;
+;     C:
+;         0 = Don't dismiss (B not pressed)
+;         1 = Dismiss (B pressed)
+;
+;     Z:
+;         0 = Message finished
+;         1 = Continue writing message
+;
+; CALLS:
+;     <a href="#TextBox_CheckForDismiss">TextBox_CheckForDismiss</a>
+;     <a href="#TextBox_DrawUpArrowTerminatorSymbol">TextBox_DrawUpArrowTerminatorSymbol</a>
+;     <a href="#TextBox_SetContinueWriteMessage">TextBox_SetContinueWriteMessage</a>
 ;
 ; XREFS:
 ;     <a href="#IScriptAction_OpenShop">IScriptAction_OpenShop</a>
@@ -8365,21 +8406,26 @@ If overflow, C = 1</span></span>
 ;     <a href="#IScripts_ShowFinalMessage">IScripts_ShowFinalMessage</a>
 ;============================================================================
 </div><span class="l"><a class="anc" name="9956" href="#9956">[9956]</a><a href="#TextBox_CheckShouldContinueOrDismissMessage" class="la">TextBox_CheckShouldContinueOrDismissMessage:</a><span class="ce">; [$9956]</span></span>
-<span class="l"><a class="anc" name="9956" href="#9956">[9956]</a><span class="cd"><span class="i">LDA</span> <span class="o">a:<a href="RAM.html#MessageID">MessageID</a></span></span></span>
-<span class="l"><a class="anc" name="9959" href="#9959">[9959]</a><span class="cd"><span class="i">BNE</span> <span class="o"><a href="#TextBox_CheckForDismiss">TextBox_CheckForDismiss</a></span></span></span>
-<span class="l"><a class="anc" name="995b" href="#995b">[995b]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#TextBox_DrawUpArrowTerminatorSymbol">TextBox_DrawUpArrowTerminatorSymbol</a></span></span></span>
-<span class="l"><a class="anc" name="995e" href="#995e">[995e]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="RAM.html#Joy1_ChangedButtonMask">Joy1_ChangedButtonMask</a></span></span></span>
-<span class="l"><a class="anc" name="9960" href="#9960">[9960]</a><span class="cd"><span class="i">BMI</span> <span class="o"><a href="#IScripts_ReturnFalse">IScripts_ReturnFalse</a></span></span></span>
+<span class="l"><a class="anc" name="9956" href="#9956">[9956]</a><span class="cd"><span class="i">LDA</span> <span class="o">a:<a href="RAM.html#MessageID">MessageID</a></span></span><span class="ce">; Load the message ID.</span></span>
+<span class="l"><a class="anc" name="9959" href="#9959">[9959]</a><span class="cd"><span class="i">BNE</span> <span class="o"><a href="#TextBox_CheckForDismiss">TextBox_CheckForDismiss</a></span></span><span class="ce">; If set, check if the message is dismissed and return the result.</span></span>
+<span class="l"><a class="anc" name="995b" href="#995b">[995b]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#TextBox_DrawUpArrowTerminatorSymbol">TextBox_DrawUpArrowTerminatorSymbol</a></span></span><span class="ce">; Draw the Up arrow terminator symbol.</span></span>
+<span class="l"></span>
+<span class="l"></span>
+<div class="c">;
+; The message is unloaded, so it finished. Check if the
+; player has pressed the B button to close the textbox.
+;
+</div><span class="l"><a class="anc" name="995e" href="#995e">[995e]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="RAM.html#Joy1_ChangedButtonMask">Joy1_ChangedButtonMask</a></span></span><span class="ce">; Load the changed button mask.</span></span>
+<span class="l"><a class="anc" name="9960" href="#9960">[9960]</a><span class="cd"><span class="i">BMI</span> <span class="o"><a href="#TextBox_SetContinueWriteMessage">TextBox_SetContinueWriteMessage</a></span></span><span class="ce">; If A is pressed, continue writing.
+Else, check for dismiss.</span></span>
 <span class="l"></span>
 <div class="c">;
 ; v-- Fall through --v
 ;
 </div><span class="l"></span>
 <span class="l"></span>
-</pre><pre><a name="TextBox_IsBPressed"></a><div class="cp">;============================================================================
-; Return whether the B button was pressed.
-;
-; This is used to dismiss textboxes.
+</pre><pre><a name="TextBox_DismissIfBElseContinue"></a><div class="cp">;============================================================================
+; Dismiss the textbox if B is pressed, else continue on.
 ;
 ; INPUTS:
 ;     <a href="RAM.html#Joy1_ChangedButtonMask">Joy1_ChangedButtonMask</a>:
@@ -8387,60 +8433,109 @@ If overflow, C = 1</span></span>
 ;
 ; OUTPUTS:
 ;     A:
-;         Set to 1.
+;         Set to 1 (continue if not dismissed).
 ;
 ;     C:
-;         0 = Not pressed.
-;         1 = Pressed.
+;         0 = B not pressed (don't dismiss).
+;         1 = B pressed (dismiss).
+;
+;     Z:
+;         Set to 0 (don't wait for input).
 ;
 ; XREFS:
 ;     <a href="#TextBox_CheckForDismiss">TextBox_CheckForDismiss</a>
 ;     <a href="#TextBox_CheckShouldContinueOrDismissQuestion">TextBox_CheckShouldContinueOrDismissQuestion</a>
 ;============================================================================
-</div><span class="l"><a class="anc" name="9962" href="#9962">[9962]</a><a href="#TextBox_IsBPressed" class="la">TextBox_IsBPressed:</a><span class="ce">; [$9962]</span></span>
+</div><span class="l"><a class="anc" name="9962" href="#9962">[9962]</a><a href="#TextBox_DismissIfBElseContinue" class="la">TextBox_DismissIfBElseContinue:</a><span class="ce">; [$9962]</span></span>
 <span class="l"><a class="anc" name="9962" href="#9962">[9962]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="RAM.html#Joy1_ChangedButtonMask">Joy1_ChangedButtonMask</a></span></span><span class="ce">; Load the changed button mask.</span></span>
-<span class="l"><a class="anc" name="9964" href="#9964">[9964]</a><span class="cd"><span class="i">ASL</span> <span class="o">A</span></span><span class="ce">; Shift B into Carry.</span></span>
+<span class="l"><a class="anc" name="9964" href="#9964">[9964]</a><span class="cd"><span class="i">ASL</span> <span class="o">A</span></span><span class="ce">; Shift the B button flag into Carry.</span></span>
 <span class="l"><a class="anc" name="9965" href="#9965">[9965]</a><span class="cd"><span class="i">ASL</span> <span class="o">A</span></span></span>
-<span class="l"><a class="anc" name="9966" href="#9966">[9966]</a><span class="cd"><span class="i">LDA</span> <span class="o">#$01</span></span><span class="ce">; A = 1</span></span>
+<span class="l"><a class="anc" name="9966" href="#9966">[9966]</a><span class="cd"><span class="i">LDA</span> <span class="o">#$01</span></span><span class="ce">; Set A=1 to indicate to continue if not dismissed.</span></span>
 <span class="l"><a class="anc" name="9968" href="#9968">[9968]</a><span class="cd"><span class="i">RTS</span></span><span class="ce">; Return.</span></span>
 <span class="l"></span>
+<span class="l"></span>
 </pre><pre><a name="TextBox_CheckForDismiss"></a><div class="cp">;============================================================================
-; TODO: Document TextBox_CheckForDismiss
+; Check if the message has been dismissed.
+;
+; The message will be dismissed if it's:
+;
+; 1. Not paused, and
+; 2. B is pressed, and
+; 3. A is not pressed.
 ;
 ; INPUTS:
-;     None.
+;     <a href="RAM.html#Joy1_ChangedButtonMask">Joy1_ChangedButtonMask</a>:
+;         The joystick button changed mask.
+;
+;     <a href="RAM.html#TextBox_MessagePaused">TextBox_MessagePaused</a>:
+;         Whether the message has been paused.
 ;
 ; OUTPUTS:
-;     C
+;     A:
+;         Clobbered.
+;
+;     C:
+;         0 = Not dismissed.
+;         1 = Dismissed.
+;
+;     Z:
+;         Set to 0 (message finished).
+;
+; CALLS:
+;     <a href="#TextBox_DrawDownArrowTerminatorSymbol">TextBox_DrawDownArrowTerminatorSymbol</a>
+;     <a href="#TextBox_DismissIfBElseContinue">TextBox_DismissIfBElseContinue</a>
+;     <a href="#TextBox_PrepareContinueMessage">TextBox_PrepareContinueMessage</a>
 ;
 ; XREFS:
 ;     <a href="#TextBox_CheckShouldContinueOrDismissMessage">TextBox_CheckShouldContinueOrDismissMessage</a>
 ;============================================================================
 </div><span class="l"><a class="anc" name="9969" href="#9969">[9969]</a><a href="#TextBox_CheckForDismiss" class="la">TextBox_CheckForDismiss:</a><span class="ce">; [$9969]</span></span>
-<span class="l"><a class="anc" name="9969" href="#9969">[9969]</a><span class="cd"><span class="i">LDA</span> <span class="o">a:<a href="RAM.html#TextBox_MessagePaused">TextBox_MessagePaused</a></span></span></span>
-<span class="l"><a class="anc" name="996c" href="#996c">[996c]</a><span class="cd"><span class="i">BEQ</span> <span class="o"><a href="#TextBox_IsBPressed">TextBox_IsBPressed</a></span></span></span>
-<span class="l"><a class="anc" name="996e" href="#996e">[996e]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#TextBox_DrawDownArrowTerminatorSymbol">TextBox_DrawDownArrowTerminatorSymbol</a></span></span></span>
-<span class="l"><a class="anc" name="9971" href="#9971">[9971]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="RAM.html#Joy1_ChangedButtonMask">Joy1_ChangedButtonMask</a></span></span></span>
-<span class="l"><a class="anc" name="9973" href="#9973">[9973]</a><span class="cd"><span class="i">BPL</span> <span class="o"><a href="#TextBox_IsBPressed">TextBox_IsBPressed</a></span></span></span>
-<span class="l"><a class="anc" name="9975" href="#9975">[9975]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#TextBox_PrepareContinueMessage">TextBox_PrepareContinueMessage</a></span></span></span>
-<span class="l"><a class="anc" name="9978" href="#9978">[9978]</a><span class="cd"><span class="i">CLC</span></span></span>
-<span class="l"><a class="anc" name="9979" href="#9979">[9979]</a><span class="cd"><span class="i">LDA</span> <span class="o">#$01</span></span></span>
-<span class="l"><a class="anc" name="997b" href="#997b">[997b]</a><span class="cd"><span class="i">RTS</span></span></span>
+<div class="c">;
+; Check if the message is dismissed. This will be the case
+; if the B button is pressed and the message is not paused.
+;
+</div><span class="l"><a class="anc" name="9969" href="#9969">[9969]</a><span class="cd"><span class="i">LDA</span> <span class="o">a:<a href="RAM.html#TextBox_MessagePaused">TextBox_MessagePaused</a></span></span><span class="ce">; Is the message paused?</span></span>
+<span class="l"><a class="anc" name="996c" href="#996c">[996c]</a><span class="cd"><span class="i">BEQ</span> <span class="o"><a href="#TextBox_DismissIfBElseContinue">TextBox_DismissIfBElseContinue</a></span></span><span class="ce">; If not, dismiss if B is pressed, else continue.</span></span>
+<span class="l"><a class="anc" name="996e" href="#996e">[996e]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#TextBox_DrawDownArrowTerminatorSymbol">TextBox_DrawDownArrowTerminatorSymbol</a></span></span><span class="ce">; Draw the down arrow terminator symbol.</span></span>
+<span class="l"><a class="anc" name="9971" href="#9971">[9971]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="RAM.html#Joy1_ChangedButtonMask">Joy1_ChangedButtonMask</a></span></span><span class="ce">; Is the A button pressed?</span></span>
 <span class="l"></span>
-</pre><pre><a name="IScripts_ReturnFalse"></a><div class="cp">;============================================================================
-; TODO: Document IScripts_ReturnFalse
+<span class="l"></span>
+<div class="c">;
+; Check if the player pressed A to continue or B to dismiss.
+;
+</div><span class="l"><a class="anc" name="9973" href="#9973">[9973]</a><span class="cd"><span class="i">BPL</span> <span class="o"><a href="#TextBox_DismissIfBElseContinue">TextBox_DismissIfBElseContinue</a></span></span><span class="ce">; If not, dismiss if B is pressed.</span></span>
+<span class="l"></span>
+<span class="l"></span>
+<div class="c">;
+; A was pressed. Continue the message.
+;
+</div><span class="l"><a class="anc" name="9975" href="#9975">[9975]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#TextBox_PrepareContinueMessage">TextBox_PrepareContinueMessage</a></span></span><span class="ce">; Continue the message.</span></span>
+<span class="l"><a class="anc" name="9978" href="#9978">[9978]</a><span class="cd"><span class="i">CLC</span></span><span class="ce">; Set C=0 to indicate not dismissed.</span></span>
+<span class="l"><a class="anc" name="9979" href="#9979">[9979]</a><span class="cd"><span class="i">LDA</span> <span class="o">#$01</span></span><span class="ce">; Set A=1 to indicate to continue.</span></span>
+<span class="l"><a class="anc" name="997b" href="#997b">[997b]</a><span class="cd"><span class="i">RTS</span></span><span class="ce">; And return.</span></span>
+<span class="l"></span>
+<span class="l"></span>
+</pre><pre><a name="TextBox_SetContinueWriteMessage"></a><div class="cp">;============================================================================
+; Set state indicating the message should continue to display.
 ;
 ; INPUTS:
 ;     None.
 ;
 ; OUTPUTS:
-;     C
+;     A:
+;         Clobbered.
+;
+;     C:
+;         Set to 0 (not dismissed).
+;
+;     Z:
+;         Set to 1 (continue writing).
 ;
 ; XREFS:
 ;     <a href="#TextBox_CheckShouldContinueOrDismissMessage">TextBox_CheckShouldContinueOrDismissMessage</a>
 ;     <a href="#TextBox_CheckShouldContinueOrDismissQuestion">TextBox_CheckShouldContinueOrDismissQuestion</a>
 ;============================================================================
-</div><span class="l"><a class="anc" name="997c" href="#997c">[997c]</a><a href="#IScripts_ReturnFalse" class="la">IScripts_ReturnFalse:</a><span class="ce">; [$997c]</span></span>
+</div><span class="l"><a class="anc" name="997c" href="#997c">[997c]</a><a href="#TextBox_SetContinueWriteMessage" class="la">TextBox_SetContinueWriteMessage:</a><span class="ce">; [$997c]</span></span>
 <span class="l"><a class="anc" name="997c" href="#997c">[997c]</a><span class="cd"><span class="i">CLC</span></span></span>
 <span class="l"><a class="anc" name="997d" href="#997d">[997d]</a><span class="cd"><span class="i">LDA</span> <span class="o">#$00</span></span></span>
 <span class="l"><a class="anc" name="997f" href="#997f">[997f]</a><span class="cd"><span class="i">RTS</span></span></span>
@@ -8463,18 +8558,18 @@ If overflow, C = 1</span></span>
 <span class="l"><a class="anc" name="9983" href="#9983">[9983]</a><span class="cd"><span class="i">BNE</span> <span class="o"><a href="#@LAB_PRG12__998e">@LAB_PRG12__998e</a></span></span></span>
 <span class="l"><a class="anc" name="9985" href="#9985">[9985]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#TextBox_DrawQuestionMarkTerminatorSymbol">TextBox_DrawQuestionMarkTerminatorSymbol</a></span></span></span>
 <span class="l"><a class="anc" name="9988" href="#9988">[9988]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="RAM.html#Joy1_ChangedButtonMask">Joy1_ChangedButtonMask</a></span></span></span>
-<span class="l"><a class="anc" name="998a" href="#998a">[998a]</a><span class="cd"><span class="i">BMI</span> <span class="o"><a href="#IScripts_ReturnFalse">IScripts_ReturnFalse</a></span></span></span>
-<span class="l"><a class="anc" name="998c" href="#998c">[998c]</a><span class="cd"><span class="i">BPL</span> <span class="o"><a href="#TextBox_IsBPressed">TextBox_IsBPressed</a></span></span></span>
+<span class="l"><a class="anc" name="998a" href="#998a">[998a]</a><span class="cd"><span class="i">BMI</span> <span class="o"><a href="#TextBox_SetContinueWriteMessage">TextBox_SetContinueWriteMessage</a></span></span></span>
+<span class="l"><a class="anc" name="998c" href="#998c">[998c]</a><span class="cd"><span class="i">BPL</span> <span class="o"><a href="#TextBox_DismissIfBElseContinue">TextBox_DismissIfBElseContinue</a></span></span></span>
 <span class="l"></span>
 <a name=":998e:@LAB_PRG12__998e"></a><span class="l"><a class="anc" name="998e" href="#998e">[998e]</a><a href="#:998e:@LAB_PRG12__998e" class="lla">@LAB_PRG12__998e:</a><span class="ce">; [$998e]</span></span>
 <span class="l"><a class="anc" name="998e" href="#998e">[998e]</a><span class="cd"><span class="i">LDA</span> <span class="o">a:<a href="RAM.html#TextBox_MessagePaused">TextBox_MessagePaused</a></span></span></span>
-<span class="l"><a class="anc" name="9991" href="#9991">[9991]</a><span class="cd"><span class="i">BEQ</span> <span class="o"><a href="#TextBox_IsBPressed">TextBox_IsBPressed</a></span></span></span>
+<span class="l"><a class="anc" name="9991" href="#9991">[9991]</a><span class="cd"><span class="i">BEQ</span> <span class="o"><a href="#TextBox_DismissIfBElseContinue">TextBox_DismissIfBElseContinue</a></span></span></span>
 <span class="l"><a class="anc" name="9993" href="#9993">[9993]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#TextBox_DrawDownArrowTerminatorSymbol">TextBox_DrawDownArrowTerminatorSymbol</a></span></span></span>
 <span class="l"><a class="anc" name="9996" href="#9996">[9996]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="RAM.html#Joy1_ChangedButtonMask">Joy1_ChangedButtonMask</a></span></span></span>
-<span class="l"><a class="anc" name="9998" href="#9998">[9998]</a><span class="cd"><span class="i">BPL</span> <span class="o"><a href="#TextBox_IsBPressed">TextBox_IsBPressed</a></span></span></span>
+<span class="l"><a class="anc" name="9998" href="#9998">[9998]</a><span class="cd"><span class="i">BPL</span> <span class="o"><a href="#TextBox_DismissIfBElseContinue">TextBox_DismissIfBElseContinue</a></span></span></span>
 <span class="l"><a class="anc" name="999a" href="#999a">[999a]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#TextBox_PrepareContinueMessage">TextBox_PrepareContinueMessage</a></span></span></span>
-<span class="l"><a class="anc" name="999d" href="#999d">[999d]</a><span class="cd"><span class="i">CLC</span></span></span>
-<span class="l"><a class="anc" name="999e" href="#999e">[999e]</a><span class="cd"><span class="i">LDA</span> <span class="o">#$01</span></span></span>
+<span class="l"><a class="anc" name="999d" href="#999d">[999d]</a><span class="cd"><span class="i">CLC</span></span><span class="ce">; Set C=0 to indicate not dismissed.</span></span>
+<span class="l"><a class="anc" name="999e" href="#999e">[999e]</a><span class="cd"><span class="i">LDA</span> <span class="o">#$01</span></span><span class="ce">; Set A=1 to indicate to continue.</span></span>
 <span class="l"></span>
 <a name="RETURN_99A0"></a><div class="c">;
 ; XREFS:

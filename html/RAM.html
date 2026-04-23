@@ -121,6 +121,22 @@ pre {
   min-width: 3em;
 }
 
+.idx {
+  display: grid;
+  grid-column: 2 / 3;
+  grid-template-columns: minmax(50ch, max-content) auto;
+  gap: 0 1em;
+}
+
+.idx-name {
+  font-weight: bold;
+}
+
+.idx-targets {
+  display: flex;
+  flex-direction: row;
+}
+
 .o {
   color: #e3e3e3;
   margin-left: 1ch;
@@ -1515,9 +1531,9 @@ pre {
 ;     <a href="PRG12.html#TextBox_CheckShouldContinueOrDismissMessage">TextBox_CheckShouldContinueOrDismissMessage</a>
 ;     <a href="PRG12.html#TextBox_CheckShouldContinueOrDismissQuestion">TextBox_CheckShouldContinueOrDismissQuestion</a>
 ;     <a href="PRG15_MIRROR.html#IScripts_LoadAndShowMessage">IScripts_LoadAndShowMessage</a>
-;     <a href="PRG15_MIRROR.html#Maybe_TextBox_ShowCurrentMessageID">Maybe_TextBox_ShowCurrentMessageID</a>
 ;     <a href="PRG15_MIRROR.html#Messages_Load">Messages_Load</a>
 ;     <a href="PRG15_MIRROR.html#TextBox_ShowMessage_Pause">TextBox_ShowMessage_Pause</a>
+;     <a href="PRG15_MIRROR.html#TextBox_ShowNextChar_IfReady">TextBox_ShowNextChar_IfReady</a>
 ;============================================================================
 </div><span class="l"></span>
 <div class="c">;
@@ -1527,9 +1543,9 @@ pre {
 ;     <a href="PRG12.html#TextBox_CheckShouldContinueOrDismissMessage">TextBox_CheckShouldContinueOrDismissMessage</a>
 ;     <a href="PRG12.html#TextBox_CheckShouldContinueOrDismissQuestion">TextBox_CheckShouldContinueOrDismissQuestion</a>
 ;     <a href="PRG15_MIRROR.html#IScripts_LoadAndShowMessage">IScripts_LoadAndShowMessage</a>
-;     <a href="PRG15_MIRROR.html#Maybe_TextBox_ShowCurrentMessageID">Maybe_TextBox_ShowCurrentMessageID</a>
 ;     <a href="PRG15_MIRROR.html#Messages_Load">Messages_Load</a>
 ;     <a href="PRG15_MIRROR.html#TextBox_ShowMessage_Pause">TextBox_ShowMessage_Pause</a>
+;     <a href="PRG15_MIRROR.html#TextBox_ShowNextChar_IfReady">TextBox_ShowNextChar_IfReady</a>
 ;
 </div><span class="l"><a class="anc" name="0213" href="#0213">[0213]</a><a href="#MessageID" class="la">MessageID:</a><span class="ce">; [$0213]</span></span>
 <span class="l"><a class="anc" name="0213" href="#0213">[0213]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [$0213] Message</span></span>
@@ -1540,17 +1556,17 @@ pre {
 ;
 ; XREFS:
 ;     <a href="PRG15_MIRROR.html#Messages_Load">Messages_Load</a>
+;     <a href="PRG15_MIRROR.html#TextBox_ShowMessage_HandleSpaceOrEndOfLine">TextBox_ShowMessage_HandleSpaceOrEndOfLine</a>
 ;     <a href="PRG15_MIRROR.html#TextBox_ShowMessage_LoadMessage">TextBox_ShowMessage_LoadMessage</a>
 ;     <a href="PRG15_MIRROR.html#TextBox_ShowMessage_Pause">TextBox_ShowMessage_Pause</a>
-;     <a href="PRG15_MIRROR.html#TextBox_ShowMessage_Space">TextBox_ShowMessage_Space</a>
 ;============================================================================
 </div><span class="l"></span>
 <div class="c">;
 ; XREFS:
 ;     <a href="PRG15_MIRROR.html#Messages_Load">Messages_Load</a>
+;     <a href="PRG15_MIRROR.html#TextBox_ShowMessage_HandleSpaceOrEndOfLine">TextBox_ShowMessage_HandleSpaceOrEndOfLine</a>
 ;     <a href="PRG15_MIRROR.html#TextBox_ShowMessage_LoadMessage">TextBox_ShowMessage_LoadMessage</a>
 ;     <a href="PRG15_MIRROR.html#TextBox_ShowMessage_Pause">TextBox_ShowMessage_Pause</a>
-;     <a href="PRG15_MIRROR.html#TextBox_ShowMessage_Space">TextBox_ShowMessage_Space</a>
 ;
 </div><span class="l"><a class="anc" name="0214" href="#0214">[0214]</a><a href="#Message_ProcessedLength" class="la">Message_ProcessedLength:</a><span class="ce">; [$0214]</span></span>
 <span class="l"><a class="anc" name="0214" href="#0214">[0214]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [$0214] byte</span></span>
@@ -1569,9 +1585,9 @@ pre {
 ;     <a href="PRG12.html#TextBox_CheckShouldContinue">TextBox_CheckShouldContinue</a>
 ;     <a href="PRG12.html#TextBox_CheckShouldContinueOrDismissQuestion">TextBox_CheckShouldContinueOrDismissQuestion</a>
 ;     <a href="PRG12.html#TextBox_PrepareContinueMessage">TextBox_PrepareContinueMessage</a>
-;     <a href="PRG15_MIRROR.html#Maybe_TextBox_ShowCurrentMessageID">Maybe_TextBox_ShowCurrentMessageID</a>
 ;     <a href="PRG15_MIRROR.html#TextBox_ClearPasswordSize">TextBox_ClearPasswordSize</a>
 ;     <a href="PRG15_MIRROR.html#TextBox_ShowMessage_Pause">TextBox_ShowMessage_Pause</a>
+;     <a href="PRG15_MIRROR.html#TextBox_ShowNextChar_IfReady">TextBox_ShowNextChar_IfReady</a>
 ;
 </div><span class="l"><a class="anc" name="0215" href="#0215">[0215]</a><a href="#TextBox_MessagePaused" class="la">TextBox_MessagePaused:</a><span class="ce">; [$0215]</span></span>
 <span class="l"><a class="anc" name="0215" href="#0215">[0215]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [$0215] byte</span></span>
@@ -1579,10 +1595,10 @@ pre {
 <a name="TextBox_CharPosForLine"></a><div class="c">;
 ; XREFS:
 ;     <a href="PRG15_MIRROR.html#TextBox_ClearPasswordSize">TextBox_ClearPasswordSize</a>
+;     <a href="PRG15_MIRROR.html#TextBox_ShowMessage_HandleSpaceOrEndOfLine">TextBox_ShowMessage_HandleSpaceOrEndOfLine</a>
 ;     <a href="PRG15_MIRROR.html#TextBox_ShowMessage_IncLineAndReset">TextBox_ShowMessage_IncLineAndReset</a>
 ;     <a href="PRG15_MIRROR.html#TextBox_ShowMessage_Newline">TextBox_ShowMessage_Newline</a>
 ;     <a href="PRG15_MIRROR.html#TextBox_ShowMessage_Prepare4Lines">TextBox_ShowMessage_Prepare4Lines</a>
-;     <a href="PRG15_MIRROR.html#TextBox_ShowMessage_Space">TextBox_ShowMessage_Space</a>
 ;     <a href="PRG15_MIRROR.html#TextBox_WriteChar">TextBox_WriteChar</a>
 ;
 </div><span class="l"><a class="anc" name="0216" href="#0216">[0216]</a><a href="#TextBox_CharPosForLine" class="la">TextBox_CharPosForLine:</a><span class="ce">; [$0216]</span></span>
@@ -1610,9 +1626,9 @@ pre {
 <a name="Message_StartAddr"></a><div class="c">;
 ; XREFS:
 ;     <a href="PRG15_MIRROR.html#Messages_Load">Messages_Load</a>
+;     <a href="PRG15_MIRROR.html#TextBox_ShowMessage_HandleSpaceOrEndOfLine">TextBox_ShowMessage_HandleSpaceOrEndOfLine</a>
 ;     <a href="PRG15_MIRROR.html#TextBox_ShowMessage_LoadMessage">TextBox_ShowMessage_LoadMessage</a>
 ;     <a href="PRG15_MIRROR.html#TextBox_ShowMessage_Pause">TextBox_ShowMessage_Pause</a>
-;     <a href="PRG15_MIRROR.html#TextBox_ShowMessage_Space">TextBox_ShowMessage_Space</a>
 ;
 </div><span class="l"><a class="anc" name="0218" href="#0218">[0218]</a><a href="#Message_StartAddr" class="la">Message_StartAddr:</a><span class="ce">; [$0218]</span></span>
 <span class="l"><a class="anc" name="0218" href="#0218">[0218]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [$0218] byte</span></span>
@@ -1620,9 +1636,9 @@ pre {
 <a name="Message_StartAddr_U"></a><div class="c">;
 ; XREFS:
 ;     <a href="PRG15_MIRROR.html#Messages_Load">Messages_Load</a>
+;     <a href="PRG15_MIRROR.html#TextBox_ShowMessage_HandleSpaceOrEndOfLine">TextBox_ShowMessage_HandleSpaceOrEndOfLine</a>
 ;     <a href="PRG15_MIRROR.html#TextBox_ShowMessage_LoadMessage">TextBox_ShowMessage_LoadMessage</a>
 ;     <a href="PRG15_MIRROR.html#TextBox_ShowMessage_Pause">TextBox_ShowMessage_Pause</a>
-;     <a href="PRG15_MIRROR.html#TextBox_ShowMessage_Space">TextBox_ShowMessage_Space</a>
 ;
 </div><span class="l"><a class="anc" name="0219" href="#0219">[0219]</a><a href="#Message_StartAddr_U" class="la">Message_StartAddr_U:</a><span class="ce">; [$0219]</span></span>
 <span class="l"><a class="anc" name="0219" href="#0219">[0219]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [$0219] byte</span></span>
@@ -1672,22 +1688,21 @@ pre {
 ; characters are shown in textboxes.
 ;
 ; This will increment up by 1 every tick of the message box.
-; <a href="PRG15_MIRROR.html#Maybe_TextBox_ShowCurrentMessageID">Maybe_TextBox_ShowCurrentMessageID</a> will AND this
-; with
+; <a href="PRG15_MIRROR.html#TextBox_ShowNextChar_IfReady">TextBox_ShowNextChar_IfReady</a> will AND this with
 ; 3 and only process/display the next character if the
 ; result is 0.
 ;
 ; XREFS:
-;     <a href="PRG15_MIRROR.html#Maybe_TextBox_ShowCurrentMessageID">Maybe_TextBox_ShowCurrentMessageID</a>
 ;     <a href="PRG15_MIRROR.html#Messages_Load">Messages_Load</a>
 ;     <a href="PRG15_MIRROR.html#TextBox_ShowNextChar">TextBox_ShowNextChar</a>
+;     <a href="PRG15_MIRROR.html#TextBox_ShowNextChar_IfReady">TextBox_ShowNextChar_IfReady</a>
 ;============================================================================
 </div><span class="l"></span>
 <div class="c">;
 ; XREFS:
-;     <a href="PRG15_MIRROR.html#Maybe_TextBox_ShowCurrentMessageID">Maybe_TextBox_ShowCurrentMessageID</a>
 ;     <a href="PRG15_MIRROR.html#Messages_Load">Messages_Load</a>
 ;     <a href="PRG15_MIRROR.html#TextBox_ShowNextChar">TextBox_ShowNextChar</a>
+;     <a href="PRG15_MIRROR.html#TextBox_ShowNextChar_IfReady">TextBox_ShowNextChar_IfReady</a>
 ;
 </div><span class="l"><a class="anc" name="021d" href="#021d">[021d]</a><a href="#TextBox_Timer" class="la">TextBox_Timer:</a><span class="ce">; [$021d]</span></span>
 <span class="l"><a class="anc" name="021d" href="#021d">[021d]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [$021d] byte</span></span>
@@ -2307,11 +2322,11 @@ pre {
 ;     <a href="PRG14.html#Player_HitEnemyWithMagic">Player_HitEnemyWithMagic</a>
 ;     <a href="PRG14.html#Player_HitSpriteWithWeapon">Player_HitSpriteWithWeapon</a>
 ;     <a href="PRG14.html#SpriteBehavior_BossDeath">SpriteBehavior_BossDeath</a>
+;     <a href="PRG14.html#SpriteBehavior_EnemyDeath">SpriteBehavior_EnemyDeath</a>
 ;     <a href="PRG14.html#SpriteBehavior_EnemyMagic">SpriteBehavior_EnemyMagic</a>
 ;     <a href="PRG14.html#SpriteBehavior_EnemyUnused18__9991">SpriteBehavior_EnemyUnused18__9991</a>
 ;     <a href="PRG14.html#SpriteBehavior_ExecutionHood__a0ad">SpriteBehavior_ExecutionHood__a0ad</a>
 ;     <a href="PRG14.html#SpriteBehavior_Garbled3">SpriteBehavior_Garbled3</a>
-;     <a href="PRG14.html#SpriteBehavior_LightningBallOrCharron">SpriteBehavior_LightningBallOrCharron</a>
 ;     <a href="PRG14.html#SpriteBehavior_MaybeFallingRocks__ClearEntity">SpriteBehavior_MaybeFallingRocks__ClearEntity</a>
 ;     <a href="PRG14.html#SpriteBehavior_Pakukame">SpriteBehavior_Pakukame</a>
 ;     <a href="PRG14.html#SpriteBehavior_ShadowEura__a12d">SpriteBehavior_ShadowEura__a12d</a>
@@ -2351,11 +2366,11 @@ pre {
 ;     <a href="PRG14.html#Player_HitEnemyWithMagic">Player_HitEnemyWithMagic</a>
 ;     <a href="PRG14.html#Player_HitSpriteWithWeapon">Player_HitSpriteWithWeapon</a>
 ;     <a href="PRG14.html#SpriteBehavior_BossDeath">SpriteBehavior_BossDeath</a>
+;     <a href="PRG14.html#SpriteBehavior_EnemyDeath">SpriteBehavior_EnemyDeath</a>
 ;     <a href="PRG14.html#SpriteBehavior_EnemyMagic">SpriteBehavior_EnemyMagic</a>
 ;     <a href="PRG14.html#SpriteBehavior_EnemyUnused18__9991">SpriteBehavior_EnemyUnused18__9991</a>
 ;     <a href="PRG14.html#SpriteBehavior_ExecutionHood__a0ad">SpriteBehavior_ExecutionHood__a0ad</a>
 ;     <a href="PRG14.html#SpriteBehavior_Garbled3">SpriteBehavior_Garbled3</a>
-;     <a href="PRG14.html#SpriteBehavior_LightningBallOrCharron">SpriteBehavior_LightningBallOrCharron</a>
 ;     <a href="PRG14.html#SpriteBehavior_MaybeFallingRocks__ClearEntity">SpriteBehavior_MaybeFallingRocks__ClearEntity</a>
 ;     <a href="PRG14.html#SpriteBehavior_Pakukame">SpriteBehavior_Pakukame</a>
 ;     <a href="PRG14.html#SpriteBehavior_ShadowEura__a12d">SpriteBehavior_ShadowEura__a12d</a>
@@ -2497,8 +2512,6 @@ pre {
 ;     <a href="PRG14.html#CurrentSprite_HandleFall">CurrentSprite_HandleFall</a>
 ;     <a href="PRG14.html#CurrentSprite_UpdateFlipMask">CurrentSprite_UpdateFlipMask</a>
 ;     <a href="PRG14.html#FUN_PRG14__844b">FUN_PRG14__844b</a>
-;     <a href="PRG14.html#FUN_PRG14__849a">FUN_PRG14__849a</a>
-;     <a href="PRG14.html#FUN_PRG14__854c">FUN_PRG14__854c</a>
 ;     <a href="PRG14.html#FUN_PRG14__a1cc">FUN_PRG14__a1cc</a>
 ;     <a href="PRG14.html#MoveSpriteHorizIfPossible">MoveSpriteHorizIfPossible</a>
 ;     <a href="PRG14.html#MoveSpriteVerticalIfPossible">MoveSpriteVerticalIfPossible</a>
@@ -2539,11 +2552,13 @@ pre {
 ;     <a href="PRG14.html#Sprite_Maybe_ResetState">Sprite_Maybe_ResetState</a>
 ;     <a href="PRG14.html#Sprite_Maybe_TurnAroundIfAtScreenEdgeHoriz">Sprite_Maybe_TurnAroundIfAtScreenEdgeHoriz</a>
 ;     <a href="PRG14.html#Sprite_Maybe_TurnAroundIfAtScreenEdgeVert">Sprite_Maybe_TurnAroundIfAtScreenEdgeVert</a>
+;     <a href="PRG14.html#Sprite_MoveForwardX">Sprite_MoveForwardX</a>
 ;     <a href="PRG14.html#Sprite_MoveHorizAndTurnAroundIfNeeded">Sprite_MoveHorizAndTurnAroundIfNeeded</a>
 ;     <a href="PRG14.html#Sprite_MoveVertAndFlipIfNeeded">Sprite_MoveVertAndFlipIfNeeded</a>
 ;     <a href="PRG14.html#Sprite_SetBehaviorNotReady">Sprite_SetBehaviorNotReady</a>
 ;     <a href="PRG14.html#Sprite_SetBehaviorReady">Sprite_SetBehaviorReady</a>
 ;     <a href="PRG14.html#Sprite_SetVisible">Sprite_SetVisible</a>
+;     <a href="PRG14.html#Sprites_CheckPlacementInvalidAtY">Sprites_CheckPlacementInvalidAtY</a>
 ;     <a href="PRG14.html#Sprites_HideSprite">Sprites_HideSprite</a>
 ;     <a href="PRG14.html#Sprites_IsSpriteHidden">Sprites_IsSpriteHidden</a>
 ;     <a href="PRG14.html#Sprites_SetCurrentSpriteCanMove">Sprites_SetCurrentSpriteCanMove</a>
@@ -2684,6 +2699,7 @@ pre {
 ;     <a href="PRG14.html#SpriteBehavior_Borabohra">SpriteBehavior_Borabohra</a>
 ;     <a href="PRG14.html#SpriteBehavior_BossDeath">SpriteBehavior_BossDeath</a>
 ;     <a href="PRG14.html#SpriteBehavior_BuzzAround">SpriteBehavior_BuzzAround</a>
+;     <a href="PRG14.html#SpriteBehavior_EnemyDeath">SpriteBehavior_EnemyDeath</a>
 ;     <a href="PRG14.html#SpriteBehavior_EnemyUnused18__994a">SpriteBehavior_EnemyUnused18__994a</a>
 ;     <a href="PRG14.html#SpriteBehavior_EnemyUnused18__9991">SpriteBehavior_EnemyUnused18__9991</a>
 ;     <a href="PRG14.html#SpriteBehavior_EnemyUnused36">SpriteBehavior_EnemyUnused36</a>
@@ -2696,7 +2712,6 @@ pre {
 ;     <a href="PRG14.html#SpriteBehavior_KingGrieve">SpriteBehavior_KingGrieve</a>
 ;     <a href="PRG14.html#SpriteBehavior_KingGrieve_9f86">SpriteBehavior_KingGrieve_9f86</a>
 ;     <a href="PRG14.html#SpriteBehavior_KingGrieve_MoveDown">SpriteBehavior_KingGrieve_MoveDown</a>
-;     <a href="PRG14.html#SpriteBehavior_LightningBallOrCharron">SpriteBehavior_LightningBallOrCharron</a>
 ;     <a href="PRG14.html#SpriteBehavior_Lilith">SpriteBehavior_Lilith</a>
 ;     <a href="PRG14.html#SpriteBehavior_Magman">SpriteBehavior_Magman</a>
 ;     <a href="PRG14.html#SpriteBehavior_MoveTowardPlayer">SpriteBehavior_MoveTowardPlayer</a>
@@ -2822,7 +2837,6 @@ pre {
 ; XREFS:
 ;     <a href="PRG14.html#FUN_PRG14__9aa1">FUN_PRG14__9aa1</a>
 ;     <a href="PRG14.html#Maybe_SpriteBody__99f3">Maybe_SpriteBody__99f3</a>
-;     <a href="PRG14.html#Maybe_Sprite_HandleDeathDrop">Maybe_Sprite_HandleDeathDrop</a>
 ;     <a href="PRG14.html#SpriteBehavior_BounceAndExpire">SpriteBehavior_BounceAndExpire</a>
 ;     <a href="PRG14.html#SpriteBehavior_EnemyUnused18__994a">SpriteBehavior_EnemyUnused18__994a</a>
 ;     <a href="PRG14.html#SpriteBehavior_EnemyUnused18__9991">SpriteBehavior_EnemyUnused18__9991</a>
@@ -2835,6 +2849,7 @@ pre {
 ;     <a href="PRG14.html#SpriteUpdateHandler_Boss_ShadowEura">SpriteUpdateHandler_Boss_ShadowEura</a>
 ;     <a href="PRG14.html#SpriteUpdateHandler_Coin">SpriteUpdateHandler_Coin</a>
 ;     <a href="PRG14.html#SpriteUpdateHandler_Magic_83">SpriteUpdateHandler_Magic_83</a>
+;     <a href="PRG14.html#Sprite_RunDeathDropHandler">Sprite_RunDeathDropHandler</a>
 ;     <a href="PRG14.html#Sprite_SetDeathEntity">Sprite_SetDeathEntity</a>
 ;============================================================================
 </div><span class="l"></span>
@@ -2842,7 +2857,6 @@ pre {
 ; XREFS:
 ;     <a href="PRG14.html#FUN_PRG14__9aa1">FUN_PRG14__9aa1</a>
 ;     <a href="PRG14.html#Maybe_SpriteBody__99f3">Maybe_SpriteBody__99f3</a>
-;     <a href="PRG14.html#Maybe_Sprite_HandleDeathDrop">Maybe_Sprite_HandleDeathDrop</a>
 ;     <a href="PRG14.html#SpriteBehavior_BounceAndExpire">SpriteBehavior_BounceAndExpire</a>
 ;     <a href="PRG14.html#SpriteBehavior_EnemyUnused18__994a">SpriteBehavior_EnemyUnused18__994a</a>
 ;     <a href="PRG14.html#SpriteBehavior_EnemyUnused18__9991">SpriteBehavior_EnemyUnused18__9991</a>
@@ -2855,6 +2869,7 @@ pre {
 ;     <a href="PRG14.html#SpriteUpdateHandler_Boss_ShadowEura">SpriteUpdateHandler_Boss_ShadowEura</a>
 ;     <a href="PRG14.html#SpriteUpdateHandler_Coin">SpriteUpdateHandler_Coin</a>
 ;     <a href="PRG14.html#SpriteUpdateHandler_Magic_83">SpriteUpdateHandler_Magic_83</a>
+;     <a href="PRG14.html#Sprite_RunDeathDropHandler">Sprite_RunDeathDropHandler</a>
 ;     <a href="PRG14.html#Sprite_SetDeathEntity">Sprite_SetDeathEntity</a>
 ;
 </div><span class="l"><a class="anc" name="02fc" href="#02fc">[02fc]</a><a href="#CurrentSprites_InternalBehaviorStates" class="la">CurrentSprites_InternalBehaviorStates:</a><span class="ce">; [$02fc]</span></span>
@@ -2876,6 +2891,7 @@ pre {
 <a name="CurrentSprites_HitBoxTypes"></a><div class="c">;
 ; XREFS:
 ;     <a href="PRG14.html#CurrentSprite_CanMoveInDirection">CurrentSprite_CanMoveInDirection</a>
+;     <a href="PRG14.html#DEADCODE_Sprites_CanMoveDownBelowHitbox">DEADCODE_Sprites_CanMoveDownBelowHitbox</a>
 ;     <a href="PRG14.html#FUN_PRG14__9917">FUN_PRG14__9917</a>
 ;     <a href="PRG14.html#SpriteBehavior_Borabohra">SpriteBehavior_Borabohra</a>
 ;     <a href="PRG14.html#SpriteBehavior_Garbled3">SpriteBehavior_Garbled3</a>
@@ -2885,12 +2901,11 @@ pre {
 ;     <a href="PRG14.html#SpriteBehavior_ShadowEura">SpriteBehavior_ShadowEura</a>
 ;     <a href="PRG14.html#SpriteBehavior_Zorugeriru">SpriteBehavior_Zorugeriru</a>
 ;     <a href="PRG14.html#Sprite_CalcDistanceXToPlayer">Sprite_CalcDistanceXToPlayer</a>
-;     <a href="PRG14.html#Sprite_CanClimb">Sprite_CanClimb</a>
 ;     <a href="PRG14.html#Sprite_CheckHitByCastMagic">Sprite_CheckHitByCastMagic</a>
 ;     <a href="PRG14.html#Sprite_Maybe_ResetState">Sprite_Maybe_ResetState</a>
 ;     <a href="PRG14.html#Sprite_ReplaceWithDroppedItem">Sprite_ReplaceWithDroppedItem</a>
 ;     <a href="PRG14.html#Sprite_ReplaceWithMattock">Sprite_ReplaceWithMattock</a>
-;     <a href="PRG14.html#Sprites_CanSpriteWalk">Sprites_CanSpriteWalk</a>
+;     <a href="PRG14.html#Sprites_CanMoveDownByHitbox">Sprites_CanMoveDownByHitbox</a>
 ;     <a href="PRG14.html#Sprites_MoveRight">Sprites_MoveRight</a>
 ;     <a href="PRG14.html#Sprites_MoveRight__86c6">Sprites_MoveRight__86c6</a>
 ;
@@ -3109,20 +3124,20 @@ pre {
 ; $FF = Not hit by magic
 ;
 ; XREFS:
-;     <a href="PRG14.html#Maybe_Sprite_HandleDeathDrop">Maybe_Sprite_HandleDeathDrop</a>
 ;     <a href="PRG14.html#SpriteBehavior_Zorugeriru__9e13">SpriteBehavior_Zorugeriru__9e13</a>
 ;     <a href="PRG14.html#Sprite_CheckHitByCastMagic">Sprite_CheckHitByCastMagic</a>
 ;     <a href="PRG14.html#Sprite_Maybe_ResetState">Sprite_Maybe_ResetState</a>
+;     <a href="PRG14.html#Sprite_RunDeathDropHandler">Sprite_RunDeathDropHandler</a>
 ;     <a href="PRG14.html#Sprite_SetDeathEntity">Sprite_SetDeathEntity</a>
 ;     <a href="PRG14.html#Sprites_Maybe_UpdateHitByMagic">Sprites_Maybe_UpdateHitByMagic</a>
 ;============================================================================
 </div><span class="l"></span>
 <div class="c">;
 ; XREFS:
-;     <a href="PRG14.html#Maybe_Sprite_HandleDeathDrop">Maybe_Sprite_HandleDeathDrop</a>
 ;     <a href="PRG14.html#SpriteBehavior_Zorugeriru__9e13">SpriteBehavior_Zorugeriru__9e13</a>
 ;     <a href="PRG14.html#Sprite_CheckHitByCastMagic">Sprite_CheckHitByCastMagic</a>
 ;     <a href="PRG14.html#Sprite_Maybe_ResetState">Sprite_Maybe_ResetState</a>
+;     <a href="PRG14.html#Sprite_RunDeathDropHandler">Sprite_RunDeathDropHandler</a>
 ;     <a href="PRG14.html#Sprite_SetDeathEntity">Sprite_SetDeathEntity</a>
 ;     <a href="PRG14.html#Sprites_Maybe_UpdateHitByMagic">Sprites_Maybe_UpdateHitByMagic</a>
 ;
@@ -3192,16 +3207,16 @@ pre {
 ;
 ; XREFS:
 ;     <a href="PRG14.html#CurrentSprite_UpdateState">CurrentSprite_UpdateState</a>
-;     <a href="PRG14.html#Maybe_Sprite_HandleDeathDrop">Maybe_Sprite_HandleDeathDrop</a>
 ;     <a href="PRG14.html#Player_HitSpriteWithWeapon">Player_HitSpriteWithWeapon</a>
+;     <a href="PRG14.html#Sprite_RunDeathDropHandler">Sprite_RunDeathDropHandler</a>
 ;     <a href="PRG14.html#_handleHit">_handleHit</a> [$PRG14::804e]
 ;============================================================================
 </div><span class="l"></span>
 <div class="c">;
 ; XREFS:
 ;     <a href="PRG14.html#CurrentSprite_UpdateState">CurrentSprite_UpdateState</a>
-;     <a href="PRG14.html#Maybe_Sprite_HandleDeathDrop">Maybe_Sprite_HandleDeathDrop</a>
 ;     <a href="PRG14.html#Player_HitSpriteWithWeapon">Player_HitSpriteWithWeapon</a>
+;     <a href="PRG14.html#Sprite_RunDeathDropHandler">Sprite_RunDeathDropHandler</a>
 ;     <a href="PRG14.html#_handleHit">_handleHit</a> [$PRG14::804e]
 ;
 </div><span class="l"><a class="anc" name="034c" href="#034c">[034c]</a><a href="#CurrentSprites_HitCounter" class="la">CurrentSprites_HitCounter:</a><span class="ce">; [$034c]</span></span>
@@ -3296,21 +3311,21 @@ pre {
 ; Message IDs of the NPC messages
 ;
 ; XREFS:
-;     <a href="PRG14.html#Maybe_Sprite_HandleDeathDrop">Maybe_Sprite_HandleDeathDrop</a>
 ;     <a href="PRG14.html#Player_CheckHandlePressUpOnNPC">Player_CheckHandlePressUpOnNPC</a>
 ;     <a href="PRG14.html#Player_HandleTouchBread">Player_HandleTouchBread</a>
 ;     <a href="PRG14.html#Player_HandleTouchCoin">Player_HandleTouchCoin</a>
 ;     <a href="PRG14.html#Player_HandleTouchNPC">Player_HandleTouchNPC</a>
+;     <a href="PRG14.html#Sprite_RunDeathDropHandler">Sprite_RunDeathDropHandler</a>
 ;     <a href="PRG15_MIRROR.html#Sprites_LoadSpriteValue">Sprites_LoadSpriteValue</a>
 ;============================================================================
 </div><span class="l"></span>
 <div class="c">;
 ; XREFS:
-;     <a href="PRG14.html#Maybe_Sprite_HandleDeathDrop">Maybe_Sprite_HandleDeathDrop</a>
 ;     <a href="PRG14.html#Player_CheckHandlePressUpOnNPC">Player_CheckHandlePressUpOnNPC</a>
 ;     <a href="PRG14.html#Player_HandleTouchBread">Player_HandleTouchBread</a>
 ;     <a href="PRG14.html#Player_HandleTouchCoin">Player_HandleTouchCoin</a>
 ;     <a href="PRG14.html#Player_HandleTouchNPC">Player_HandleTouchNPC</a>
+;     <a href="PRG14.html#Sprite_RunDeathDropHandler">Sprite_RunDeathDropHandler</a>
 ;     <a href="PRG15_MIRROR.html#Sprites_LoadSpriteValue">Sprites_LoadSpriteValue</a>
 ;
 </div><span class="l"><a class="anc" name="036c" href="#036c">[036c]</a><a href="#CurrentSprites_Values" class="la">CurrentSprites_Values:</a><span class="ce">; [$036c]</span></span>
@@ -3468,7 +3483,7 @@ pre {
 ;     <a href="PRG14.html#CurrentSprite_CheckHitPlayer">CurrentSprite_CheckHitPlayer</a>
 ;     <a href="PRG14.html#CurrentSprite_HandleFall">CurrentSprite_HandleFall</a>
 ;     <a href="PRG14.html#CurrentSprite_UpdateState">CurrentSprite_UpdateState</a>
-;     <a href="PRG14.html#FUN_PRG14__84f4">FUN_PRG14__84f4</a>
+;     <a href="PRG14.html#DEADCODE_FUN_PRG14__84f4">DEADCODE_FUN_PRG14__84f4</a>
 ;     <a href="PRG14.html#FUN_PRG14__9a61">FUN_PRG14__9a61</a>
 ;     <a href="PRG14.html#LAB_PRG14__8043">LAB_PRG14__8043</a> [$PRG14::8043]
 ;     <a href="PRG14.html#MoveSpriteHorizIfPossible">MoveSpriteHorizIfPossible</a>
@@ -3519,7 +3534,7 @@ pre {
 ;     <a href="PRG14.html#CurrentSprite_CheckHitPlayer">CurrentSprite_CheckHitPlayer</a>
 ;     <a href="PRG14.html#CurrentSprite_HandleFall">CurrentSprite_HandleFall</a>
 ;     <a href="PRG14.html#CurrentSprite_UpdateState">CurrentSprite_UpdateState</a>
-;     <a href="PRG14.html#FUN_PRG14__84f4">FUN_PRG14__84f4</a>
+;     <a href="PRG14.html#DEADCODE_FUN_PRG14__84f4">DEADCODE_FUN_PRG14__84f4</a>
 ;     <a href="PRG14.html#FUN_PRG14__9a61">FUN_PRG14__9a61</a>
 ;     <a href="PRG14.html#LAB_PRG14__8043">LAB_PRG14__8043</a> [$PRG14::8043]
 ;     <a href="PRG14.html#MoveSpriteHorizIfPossible">MoveSpriteHorizIfPossible</a>

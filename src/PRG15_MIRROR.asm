@@ -17815,9 +17815,9 @@ Area_SetStateFromDoorDestination:           ; [$e7c5]
 ;     CastMagic_CheckDirection_CheckImpassable
 ;     CurrentSprite_CalculateVisibility
 ;     CurrentSprite_CanMoveInDirection
-;     FUN_PRG14__854c
 ;     Player_CalculateVisibility
 ;     SpriteBehavior_NecronAides
+;     Sprites_CheckPlacementInvalidAtY
 ;     Sprites_MoveRight__86c6
 ;     Area_CanMoveImmediatelyRight
 ;     Area_CanPlayerMoveAtY
@@ -17961,7 +17961,7 @@ Area_GetFromImpassableMap:                  ; [$e882]
 ;     Area_GetBlockProperty
 ;
 ; XREFS:
-;     FUN_PRG14__854c
+;     Sprites_CheckPlacementInvalidAtY
 ;============================================================================
 Area_IsBlockImpassableOrLadder:             ; [$e887]
     LDY ScreenBuffer,X                      ; Load the block property offset
@@ -23423,12 +23423,11 @@ Messages_Load:                              ; [$f3f5]
 
 
     ;
-    ; Set the start of our message length for the
-    ; string scan.
+    ; Reset the display timer.
     ;
     LDY #$00                                ; Y = 0 (start of our lookup
                                             ; offset)
-    STY a:TextBox_Timer                     ; Set start character pos to 0
+    STY a:TextBox_Timer                     ; Set the timer counter to 0.
 
 
     ;
@@ -23600,7 +23599,7 @@ TextBox_ClearTextTiles:                     ; [$f44a]
 
     ;
     ; XREFS:
-    ;     Maybe_TextBox_ShowCurrentMessageID
+    ;     TextBox_ShowNextChar_IfReady
     ;
 TextBox_ClearShopSizeAtOffset_return:       ; [$f465]
     RTS
@@ -23629,7 +23628,7 @@ TextBox_ClearShopSizeAtOffset_return:       ; [$f465]
 ; CALLS:
 ;     MMC1_UpdateROMBank
 ;     MMC1_UpdatePRGBankToStackA
-;     Maybe_TextBox_ShowCurrentMessageID
+;     TextBox_ShowNextChar_IfReady
 ;
 ; XREFS:
 ;     IScriptAction_OpenShop
@@ -23653,11 +23652,10 @@ TextBox_ShowNextChar:                       ; [$f466]
     ;
     ; Show the next character.
     ;
-    INC a:TextBox_Timer                     ; Increment the next character
-                                            ; position.
+    INC a:TextBox_Timer                     ; Increment the timer delay.
     LDA #$01                                ; A = 1
     STA a:TextBox_PlayTextSound             ; Store it.
-    JSR Maybe_TextBox_ShowCurrentMessageID  ; Show this character in the
+    JSR TextBox_ShowNextChar_IfReady        ; Show this character in the
                                             ; message.
 
 
@@ -23700,27 +23698,45 @@ TextBox_LoadAndShowMessage:                 ; [$f47d]
     ;
     JMP MMC1_UpdatePRGBankToStackA
 
+
 ;============================================================================
-; TODO: Document Maybe_TextBox_ShowCurrentMessageID
+; Show the next character in a message if the state allows it.
+;
+; A character will be shown if:
+;
+; 1. A message is loaded.
+; 2. The message is not paused.
+; 3. The delay timer is a multiple of 3.
+;
+; This falls through to TextBox_DisplayMessage.
 ;
 ; INPUTS:
-;     None.
+;     MessageID:
+;         The loaded message ID.
+;
+;     TextBox_MessagePaused:
+;         Whether the message is currently paused.
+;
+;     TextBox_Timer:
+;         The character display timer.
 ;
 ; OUTPUTS:
-;     TODO
+;     None.
 ;
 ; XREFS:
 ;     TextBox_ShowNextChar
 ;============================================================================
-Maybe_TextBox_ShowCurrentMessageID:         ; [$f491]
+TextBox_ShowNextChar_IfReady:               ; [$f491]
     LDA a:MessageID                         ; Load the message ID to show.
     BEQ TextBox_ClearShopSizeAtOffset_return ; If unset, return.
-    LDA a:TextBox_MessagePaused
-    BNE TextBox_ClearShopSizeAtOffset_return
-    LDA a:TextBox_Timer                     ; Load the character position to
-                                            ; display.
-    AND #$03                                ; Check the first 2 bits.
-    BNE TextBox_ClearShopSizeAtOffset_return ; If neither bit is set, return.
+    LDA a:TextBox_MessagePaused             ; Is the message paused?
+    BNE TextBox_ClearShopSizeAtOffset_return ; If so, return.
+    LDA a:TextBox_Timer                     ; Load the character display
+                                            ; timer.
+    AND #$03                                ; Is it 3?
+    BNE TextBox_ClearShopSizeAtOffset_return ; If not, we're not ready to
+                                             ; display the next character.
+                                             ; Return.
 
     ;
     ; v-- Fall through --v
@@ -23801,7 +23817,7 @@ TextBox_ShowMessage_LoadMessage:            ; [$f4c8]
     CMP #$fe
     BEQ TextBox_ShowMessage_Newline
     CMP #$fd
-    BEQ TextBox_ShowMessage_Space
+    BEQ TextBox_ShowMessage_HandleSpaceOrEndOfLine
     CMP #$fb
     BEQ TextBox_ShowMessage_ShowPlayerTitle
     CMP #$fc
@@ -23861,7 +23877,7 @@ TextBox_ShowMessage:                        ; [$f4ff]
     ; v-- Fall through --v
     ;
 ;============================================================================
-; TODO: Document TextBox_ShowMessage_Space
+; TODO: Document TextBox_ShowMessage_HandleSpaceOrEndOfLine
 ;
 ; INPUTS:
 ;     None.
@@ -23872,7 +23888,7 @@ TextBox_ShowMessage:                        ; [$f4ff]
 ; XREFS:
 ;     TextBox_ShowMessage_LoadMessage
 ;============================================================================
-TextBox_ShowMessage_Space:                  ; [$f502]
+TextBox_ShowMessage_HandleSpaceOrEndOfLine: ; [$f502]
     ;
     ; If it's 0xFD, it's a space.
     ;
@@ -24087,7 +24103,7 @@ TextBox_ShowMessage_Pause:                  ; [$f53f]
 
     ;
     ; XREFS:
-    ;     TextBox_ShowMessage_Space
+    ;     TextBox_ShowMessage_HandleSpaceOrEndOfLine
     ;
 TextBox_ShowMessage_Return:                 ; [$f557]
     RTS
@@ -24098,9 +24114,9 @@ TextBox_ShowMessage_Return:                 ; [$f557]
     ;
     ;
     ; XREFS:
+    ;     TextBox_ShowMessage_HandleSpaceOrEndOfLine
     ;     TextBox_ShowMessage_LoadMessage
     ;     TextBox_ShowMessage_Pause
-    ;     TextBox_ShowMessage_Space
     ;
 TextBox_ShowMessage_EndOfMessage:           ; [$f558]
     LDA #$00                                ; A = 0

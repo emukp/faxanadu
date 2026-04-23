@@ -1171,14 +1171,22 @@ IScriptAction_ShowMessage:                  ; [$82d9]
     ;
     ; Draw the characters one-by-one until the message is done.
     ;
-  @_loop:                                   ; [$82df]
+  @_writeLoop:                              ; [$82df]
     JSR IScripts_UpdatePortraitAnimation    ; Update the portrait animation.
     JSR TextBox_ShowNextChar                ; Draw the next character in the
                                             ; textbox.
     JSR TextBox_CheckShouldContinueOrDismissMessage ; Check if the message is
                                                     ; done or continued.
-    BCS IScriptAction_EndScript             ; If dismissed, end the script.
-    BNE @_loop                              ; If not done, loop.
+
+
+    ;
+    ; Check if the player has dismissed the message by pressing B,
+    ; or if the message has finished.
+    ;
+    BCS IScriptAction_EndScript             ; If dismissed (C=1), end the
+                                            ; script.
+    BNE @_writeLoop                         ; If not done writing (Z=1),
+                                            ; loop.
 
 
     ;
@@ -1218,9 +1226,10 @@ IScriptAction_ShowQuestionMessage:          ; [$82ef]
                                             ; textbox.
     JSR TextBox_CheckShouldContinueOrDismissQuestion ; Check whether to
                                                      ; continue or dismiss.
-    BCS IScriptAction_EndScript             ; If dismissed, end the script.
-    BNE @_messageLoop                       ; Else, if message text remains,
-                                            ; loop.
+    BCS IScriptAction_EndScript             ; If dismissed (C=1), end the
+                                            ; script.
+    BNE @_messageLoop                       ; Else, if message text remains
+                                            ; (Z=1), loop.
 
 
     ;
@@ -1266,10 +1275,10 @@ IScriptAction_ShowQuestionMessageCheckIfDismissed: ; [$8308]
                                             ; textbox.
     JSR TextBox_CheckShouldContinueOrDismissQuestion ; Check whether to
                                                      ; continue or dismiss.
-    BCS @_messageDismissed                  ; If dismissed, jump to continue
-                                            ; this script.
-    BNE @_messageLoop                       ; Else, if message text remains,
-                                            ; loop.
+    BCS @_messageDismissed                  ; If dismissed (C=1), jump to
+                                            ; continue this script.
+    BNE @_messageLoop                       ; Else, if message text remains
+                                            ; (Z=1), loop.
 
 
     ;
@@ -1454,8 +1463,8 @@ IScripts_ShowNotEnoughMoney:                ; [$837c]
 ;============================================================================
 ; Show a message for shop purposes, ending the script once finished.
 ;
-; This will show the message and, once dismissed or completed,
-; end the current IScript.
+; This will show the message and, once dismissed or
+; completed, end the current IScript.
 ;
 ; INPUTS:
 ;     A:
@@ -1621,13 +1630,18 @@ IScriptAction_AddInventoryItem:             ; [$839f]
 ;============================================================================
 IScriptAction_OpenShop:                     ; [$83d8]
     LDA #$14                                ; "What would you like?"
-    JSR Messages_Load
+    JSR Messages_Load                       ; Load the message.
 
   @LAB_PRG12__83dd:                         ; [$83dd]
-    JSR IScripts_UpdatePortraitAnimation
-    JSR TextBox_ShowNextChar
-    JSR TextBox_CheckShouldContinueOrDismissMessage
-    BCS @_endScript
+    JSR IScripts_UpdatePortraitAnimation    ; Update the portrait animation.
+    JSR TextBox_ShowNextChar                ; Show the next character in the
+                                            ; textbox.
+    JSR TextBox_CheckShouldContinueOrDismissMessage ; Check whether to
+                                                    ; continue displaying the
+                                                    ; message or if the user
+                                                    ; pressed to dismiss.
+    BCS @_endScript                         ; If they pressed to dismiss, end
+                                            ; the script.
     BNE @LAB_PRG12__83dd
     JSR IScripts_LoadByte
     STA Temp_Int24                          ; Probably shop inventory table
@@ -8562,14 +8576,33 @@ TextBox_PrepareContinueMessage:             ; [$9949]
     STA a:Unused_Arg_Text_NumLines
     JMP TextBox_ShowMessage_Prepare4Lines
 
+
 ;============================================================================
-; TODO: Document TextBox_CheckShouldContinueOrDismissMessage
+; Check if the message should be continued or dismissed.
 ;
 ; INPUTS:
-;     None.
+;     MessageID:
+;         The ID of the message being displayed.
+;
+;     Joy1_ChangedButtonMask:
+;         The newly-pressed buttons.
 ;
 ; OUTPUTS:
-;     C
+;     A:
+;         Clobbered.
+;
+;     C:
+;         0 = Don't dismiss (B not pressed)
+;         1 = Dismiss (B pressed)
+;
+;     Z:
+;         0 = Message finished
+;         1 = Continue writing message
+;
+; CALLS:
+;     TextBox_CheckForDismiss
+;     TextBox_DrawUpArrowTerminatorSymbol
+;     TextBox_SetContinueWriteMessage
 ;
 ; XREFS:
 ;     IScriptAction_OpenShop
@@ -8578,11 +8611,22 @@ TextBox_PrepareContinueMessage:             ; [$9949]
 ;     IScripts_ShowFinalMessage
 ;============================================================================
 TextBox_CheckShouldContinueOrDismissMessage: ; [$9956]
-    LDA a:MessageID
-    BNE TextBox_CheckForDismiss
-    JSR TextBox_DrawUpArrowTerminatorSymbol
-    LDA Joy1_ChangedButtonMask
-    BMI IScripts_ReturnFalse
+    LDA a:MessageID                         ; Load the message ID.
+    BNE TextBox_CheckForDismiss             ; If set, check if the message is
+                                            ; dismissed and return the
+                                            ; result.
+    JSR TextBox_DrawUpArrowTerminatorSymbol ; Draw the Up arrow terminator
+                                            ; symbol.
+
+
+    ;
+    ; The message is unloaded, so it finished. Check if the
+    ; player has pressed the B button to close the textbox.
+    ;
+    LDA Joy1_ChangedButtonMask              ; Load the changed button mask.
+    BMI TextBox_SetContinueWriteMessage     ; If A is pressed, continue
+                                            ; writing. Else, check for
+                                            ; dismiss.
 
     ;
     ; v-- Fall through --v
@@ -8590,9 +8634,7 @@ TextBox_CheckShouldContinueOrDismissMessage: ; [$9956]
 
 
 ;============================================================================
-; Return whether the B button was pressed.
-;
-; This is used to dismiss textboxes.
+; Dismiss the textbox if B is pressed, else continue on.
 ;
 ; INPUTS:
 ;     Joy1_ChangedButtonMask:
@@ -8600,60 +8642,116 @@ TextBox_CheckShouldContinueOrDismissMessage: ; [$9956]
 ;
 ; OUTPUTS:
 ;     A:
-;         Set to 1.
+;         Set to 1 (continue if not dismissed).
 ;
 ;     C:
-;         0 = Not pressed.
-;         1 = Pressed.
+;         0 = B not pressed (don't dismiss).
+;         1 = B pressed (dismiss).
+;
+;     Z:
+;         Set to 0 (don't wait for input).
 ;
 ; XREFS:
 ;     TextBox_CheckForDismiss
 ;     TextBox_CheckShouldContinueOrDismissQuestion
 ;============================================================================
-TextBox_IsBPressed:                         ; [$9962]
+TextBox_DismissIfBElseContinue:             ; [$9962]
     LDA Joy1_ChangedButtonMask              ; Load the changed button mask.
-    ASL A                                   ; Shift B into Carry.
+    ASL A                                   ; Shift the B button flag into
+                                            ; Carry.
     ASL A
-    LDA #$01                                ; A = 1
+    LDA #$01                                ; Set A=1 to indicate to continue
+                                            ; if not dismissed.
     RTS                                     ; Return.
 
+
 ;============================================================================
-; TODO: Document TextBox_CheckForDismiss
+; Check if the message has been dismissed.
+;
+; The message will be dismissed if it's:
+;
+; 1. Not paused, and
+; 2. B is pressed, and
+; 3. A is not pressed.
 ;
 ; INPUTS:
-;     None.
+;     Joy1_ChangedButtonMask:
+;         The joystick button changed mask.
+;
+;     TextBox_MessagePaused:
+;         Whether the message has been paused.
 ;
 ; OUTPUTS:
-;     C
+;     A:
+;         Clobbered.
+;
+;     C:
+;         0 = Not dismissed.
+;         1 = Dismissed.
+;
+;     Z:
+;         Set to 0 (message finished).
+;
+; CALLS:
+;     TextBox_DrawDownArrowTerminatorSymbol
+;     TextBox_DismissIfBElseContinue
+;     TextBox_PrepareContinueMessage
 ;
 ; XREFS:
 ;     TextBox_CheckShouldContinueOrDismissMessage
 ;============================================================================
 TextBox_CheckForDismiss:                    ; [$9969]
-    LDA a:TextBox_MessagePaused
-    BEQ TextBox_IsBPressed
-    JSR TextBox_DrawDownArrowTerminatorSymbol
-    LDA Joy1_ChangedButtonMask
-    BPL TextBox_IsBPressed
-    JSR TextBox_PrepareContinueMessage
-    CLC
-    LDA #$01
-    RTS
+    ;
+    ; Check if the message is dismissed. This will be the case
+    ; if the B button is pressed and the message is not paused.
+    ;
+    LDA a:TextBox_MessagePaused             ; Is the message paused?
+    BEQ TextBox_DismissIfBElseContinue      ; If not, dismiss if B is
+                                            ; pressed, else continue.
+    JSR TextBox_DrawDownArrowTerminatorSymbol ; Draw the down arrow
+                                              ; terminator symbol.
+    LDA Joy1_ChangedButtonMask              ; Is the A button pressed?
+
+
+    ;
+    ; Check if the player pressed A to continue or B to dismiss.
+    ;
+    BPL TextBox_DismissIfBElseContinue      ; If not, dismiss if B is
+                                            ; pressed.
+
+
+    ;
+    ; A was pressed. Continue the message.
+    ;
+    JSR TextBox_PrepareContinueMessage      ; Continue the message.
+    CLC                                     ; Set C=0 to indicate not
+                                            ; dismissed.
+    LDA #$01                                ; Set A=1 to indicate to
+                                            ; continue.
+    RTS                                     ; And return.
+
 
 ;============================================================================
-; TODO: Document IScripts_ReturnFalse
+; Set state indicating the message should continue to display.
 ;
 ; INPUTS:
 ;     None.
 ;
 ; OUTPUTS:
-;     C
+;     A:
+;         Clobbered.
+;
+;     C:
+;         Set to 0 (not dismissed).
+;
+;     Z:
+;         Set to 1 (continue writing).
 ;
 ; XREFS:
 ;     TextBox_CheckShouldContinueOrDismissMessage
 ;     TextBox_CheckShouldContinueOrDismissQuestion
 ;============================================================================
-IScripts_ReturnFalse:                       ; [$997c]
+TextBox_SetContinueWriteMessage:            ; [$997c]
     CLC
     LDA #$00
     RTS
@@ -8676,18 +8774,20 @@ TextBox_CheckShouldContinueOrDismissQuestion: ; [$9980]
     BNE @LAB_PRG12__998e
     JSR TextBox_DrawQuestionMarkTerminatorSymbol
     LDA Joy1_ChangedButtonMask
-    BMI IScripts_ReturnFalse
-    BPL TextBox_IsBPressed
+    BMI TextBox_SetContinueWriteMessage
+    BPL TextBox_DismissIfBElseContinue
 
   @LAB_PRG12__998e:                         ; [$998e]
     LDA a:TextBox_MessagePaused
-    BEQ TextBox_IsBPressed
+    BEQ TextBox_DismissIfBElseContinue
     JSR TextBox_DrawDownArrowTerminatorSymbol
     LDA Joy1_ChangedButtonMask
-    BPL TextBox_IsBPressed
+    BPL TextBox_DismissIfBElseContinue
     JSR TextBox_PrepareContinueMessage
-    CLC
-    LDA #$01
+    CLC                                     ; Set C=0 to indicate not
+                                            ; dismissed.
+    LDA #$01                                ; Set A=1 to indicate to
+                                            ; continue.
 
     ;
     ; XREFS:

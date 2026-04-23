@@ -121,6 +121,22 @@ pre {
   min-width: 3em;
 }
 
+.idx {
+  display: grid;
+  grid-column: 2 / 3;
+  grid-template-columns: minmax(50ch, max-content) auto;
+  gap: 0 1em;
+}
+
+.idx-name {
+  font-weight: bold;
+}
+
+.idx-targets {
+  display: flex;
+  flex-direction: row;
+}
+
 .o {
   color: #e3e3e3;
   margin-left: 1ch;
@@ -463,68 +479,154 @@ pre {
 ;     <a href="#Sprite_CheckHitByCastMagic">Sprite_CheckHitByCastMagic</a>
 ;============================================================================
 </div><span class="l"><a class="anc" name="81a7" href="#81a7">[81a7]</a><a href="#Player_HitEnemyWithMagic" class="la">Player_HitEnemyWithMagic:</a><span class="ce">; [$81a7]</span></span>
-<span class="l"><a class="anc" name="81a7" href="#81a7">[81a7]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="RAM.html#CurrentSprites_Entities">CurrentSprites_Entities</a>,X</span></span></span>
-<span class="l"><a class="anc" name="81aa" href="#81aa">[81aa]</a><span class="cd"><span class="i">CMP</span> <span class="o">#$05</span></span></span>
-<span class="l"><a class="anc" name="81ac" href="#81ac">[81ac]</a><span class="cd"><span class="i">BNE</span> <span class="o"><a href="#@LAB_PRG14__81b6">@LAB_PRG14__81b6</a></span></span></span>
-<span class="l"><a class="anc" name="81ae" href="#81ae">[81ae]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="RAM.html#CurrentSprites_Phases">CurrentSprites_Phases</a>,X</span></span></span>
-<span class="l"><a class="anc" name="81b1" href="#81b1">[81b1]</a><span class="cd"><span class="i">ORA</span> <span class="o">#$80</span></span></span>
-<span class="l"><a class="anc" name="81b3" href="#81b3">[81b3]</a><span class="cd"><span class="i">STA</span> <span class="o"><a href="RAM.html#CurrentSprites_Phases">CurrentSprites_Phases</a>,X</span></span></span>
-<span class="l"></span>
-<a name=":81b6:@LAB_PRG14__81b6"></a><span class="l"><a class="anc" name="81b6" href="#81b6">[81b6]</a><a href="#:81b6:@LAB_PRG14__81b6" class="lla">@LAB_PRG14__81b6:</a><span class="ce">; [$81b6]</span></span>
-<span class="l"><a class="anc" name="81b6" href="#81b6">[81b6]</a><span class="cd"><span class="i">LDA</span> <span class="o">#$02</span></span></span>
-<span class="l"><a class="anc" name="81b8" href="#81b8">[81b8]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="PRG15_MIRROR.html#Sound_PlayEffect">Sound_PlayEffect</a></span></span></span>
-<span class="l"><a class="anc" name="81bb" href="#81bb">[81bb]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="#MAGIC_DAMAGE">MAGIC_DAMAGE</a>,Y</span></span></span>
-<span class="l"><a class="anc" name="81be" href="#81be">[81be]</a><span class="cd"><span class="i">STA</span> <span class="o"><a href="RAM.html#Temp_00">Temp_00</a></span></span></span>
-<span class="l"><a class="anc" name="81c0" href="#81c0">[81c0]</a><span class="cd"><span class="i">LDA</span> <span class="o">a:<a href="RAM.html#SpecialItems">SpecialItems</a></span></span></span>
-<span class="l"><a class="anc" name="81c3" href="#81c3">[81c3]</a><span class="cd"><span class="i">AND</span> <span class="o">#$04</span></span></span>
-<span class="l"><a class="anc" name="81c5" href="#81c5">[81c5]</a><span class="cd"><span class="i">BEQ</span> <span class="o"><a href="#@LAB_PRG14__81cf">@LAB_PRG14__81cf</a></span></span></span>
-<span class="l"><a class="anc" name="81c7" href="#81c7">[81c7]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="RAM.html#Temp_00">Temp_00</a></span></span></span>
-<span class="l"><a class="anc" name="81c9" href="#81c9">[81c9]</a><span class="cd"><span class="i">LSR</span> <span class="o">A</span></span></span>
-<span class="l"><a class="anc" name="81ca" href="#81ca">[81ca]</a><span class="cd"><span class="i">CLC</span></span></span>
-<span class="l"><a class="anc" name="81cb" href="#81cb">[81cb]</a><span class="cd"><span class="i">ADC</span> <span class="o"><a href="RAM.html#Temp_00">Temp_00</a></span></span></span>
-<span class="l"><a class="anc" name="81cd" href="#81cd">[81cd]</a><span class="cd"><span class="i">STA</span> <span class="o"><a href="RAM.html#Temp_00">Temp_00</a></span></span></span>
-<span class="l"></span>
-<a name=":81cf:@LAB_PRG14__81cf"></a><span class="l"><a class="anc" name="81cf" href="#81cf">[81cf]</a><a href="#:81cf:@LAB_PRG14__81cf" class="lla">@LAB_PRG14__81cf:</a><span class="ce">; [$81cf]</span></span>
-<span class="l"><a class="anc" name="81cf" href="#81cf">[81cf]</a><span class="cd"><span class="i">LDA</span> <span class="o">#$00</span></span></span>
-<span class="l"><a class="anc" name="81d1" href="#81d1">[81d1]</a><span class="cd"><span class="i">STA</span> <span class="o"><a href="RAM.html#Temp_Addr_L">Temp_Addr_L</a></span></span></span>
-<span class="l"><a class="anc" name="81d3" href="#81d3">[81d3]</a><span class="cd"><span class="i">STY</span> <span class="o"><a href="RAM.html#Temp_01">Temp_01</a></span></span></span>
-<span class="l"><a class="anc" name="81d5" href="#81d5">[81d5]</a><span class="cd"><span class="i">CPY</span> <span class="o">#$00</span></span></span>
-<span class="l"><a class="anc" name="81d7" href="#81d7">[81d7]</a><span class="cd"><span class="i">BEQ</span> <span class="o"><a href="#@LAB_PRG14__81fd">@LAB_PRG14__81fd</a></span></span></span>
-<span class="l"><a class="anc" name="81d9" href="#81d9">[81d9]</a><span class="cd"><span class="i">LDY</span> <span class="o"><a href="RAM.html#CurrentSprites_Entities">CurrentSprites_Entities</a>,X</span></span></span>
-<span class="l"><a class="anc" name="81dc" href="#81dc">[81dc]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="#SPRITE_ENTITY_MAYBE_MAGIC_DEFENSE">SPRITE_ENTITY_MAYBE_MAGIC_DEFENSE</a>,Y</span></span></span>
-<span class="l"></span>
-<a name=":81df:@LAB_PRG14__81df"></a><span class="l"><a class="anc" name="81df" href="#81df">[81df]</a><a href="#:81df:@LAB_PRG14__81df" class="lla">@LAB_PRG14__81df:</a><span class="ce">; [$81df]</span></span>
-<span class="l"><a class="anc" name="81df" href="#81df">[81df]</a><span class="cd"><span class="i">ASL</span> <span class="o">A</span></span></span>
-<span class="l"><a class="anc" name="81e0" href="#81e0">[81e0]</a><span class="cd"><span class="i">ROL</span> <span class="o"><a href="RAM.html#Temp_Addr_L">Temp_Addr_L</a></span></span></span>
-<span class="l"><a class="anc" name="81e2" href="#81e2">[81e2]</a><span class="cd"><span class="i">ASL</span> <span class="o">A</span></span></span>
-<span class="l"><a class="anc" name="81e3" href="#81e3">[81e3]</a><span class="cd"><span class="i">ROL</span> <span class="o"><a href="RAM.html#Temp_Addr_L">Temp_Addr_L</a></span></span></span>
-<span class="l"><a class="anc" name="81e5" href="#81e5">[81e5]</a><span class="cd"><span class="i">DEC</span> <span class="o"><a href="RAM.html#Temp_01">Temp_01</a></span></span></span>
-<span class="l"><a class="anc" name="81e7" href="#81e7">[81e7]</a><span class="cd"><span class="i">BNE</span> <span class="o"><a href="#@LAB_PRG14__81df">@LAB_PRG14__81df</a></span></span></span>
-<span class="l"><a class="anc" name="81e9" href="#81e9">[81e9]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="RAM.html#Temp_Addr_L">Temp_Addr_L</a></span></span></span>
-<span class="l"><a class="anc" name="81eb" href="#81eb">[81eb]</a><span class="cd"><span class="i">AND</span> <span class="o">#$03</span></span></span>
-<span class="l"><a class="anc" name="81ed" href="#81ed">[81ed]</a><span class="cd"><span class="i">TAY</span></span></span>
-<span class="l"><a class="anc" name="81ee" href="#81ee">[81ee]</a><span class="cd"><span class="i">BEQ</span> <span class="o"><a href="#@LAB_PRG14__81fd">@LAB_PRG14__81fd</a></span></span></span>
-<span class="l"><a class="anc" name="81f0" href="#81f0">[81f0]</a><span class="cd"><span class="i">LSR</span> <span class="o"><a href="RAM.html#Temp_00">Temp_00</a></span></span></span>
-<span class="l"><a class="anc" name="81f2" href="#81f2">[81f2]</a><span class="cd"><span class="i">DEY</span></span></span>
-<span class="l"><a class="anc" name="81f3" href="#81f3">[81f3]</a><span class="cd"><span class="i">BEQ</span> <span class="o"><a href="#@LAB_PRG14__81fd">@LAB_PRG14__81fd</a></span></span></span>
-<span class="l"><a class="anc" name="81f5" href="#81f5">[81f5]</a><span class="cd"><span class="i">LSR</span> <span class="o"><a href="RAM.html#Temp_00">Temp_00</a></span></span></span>
-<span class="l"><a class="anc" name="81f7" href="#81f7">[81f7]</a><span class="cd"><span class="i">BEQ</span> <span class="o"><a href="#@LAB_PRG14__81fd">@LAB_PRG14__81fd</a></span></span></span>
-<span class="l"><a class="anc" name="81f9" href="#81f9">[81f9]</a><span class="cd"><span class="i">LDA</span> <span class="o">#$00</span></span></span>
-<span class="l"><a class="anc" name="81fb" href="#81fb">[81fb]</a><span class="cd"><span class="i">STA</span> <span class="o"><a href="RAM.html#Temp_00">Temp_00</a></span></span></span>
-<span class="l"></span>
-<a name=":81fd:@LAB_PRG14__81fd"></a><span class="l"><a class="anc" name="81fd" href="#81fd">[81fd]</a><a href="#:81fd:@LAB_PRG14__81fd" class="lla">@LAB_PRG14__81fd:</a><span class="ce">; [$81fd]</span></span>
-<span class="l"><a class="anc" name="81fd" href="#81fd">[81fd]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="RAM.html#CurrentSprites_HP">CurrentSprites_HP</a>,X</span></span></span>
-<span class="l"><a class="anc" name="8200" href="#8200">[8200]</a><span class="cd"><span class="i">SEC</span></span></span>
-<span class="l"><a class="anc" name="8201" href="#8201">[8201]</a><span class="cd"><span class="i">SBC</span> <span class="o"><a href="RAM.html#Temp_00">Temp_00</a></span></span></span>
-<span class="l"><a class="anc" name="8203" href="#8203">[8203]</a><span class="cd"><span class="i">STA</span> <span class="o"><a href="RAM.html#CurrentSprites_HP">CurrentSprites_HP</a>,X</span></span></span>
-<span class="l"><a class="anc" name="8206" href="#8206">[8206]</a><span class="cd"><span class="i">BCS</span> <span class="o"><a href="#RETURN_822D">RETURN_822D</a></span></span></span>
-<span class="l"><a class="anc" name="8208" href="#8208">[8208]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="RAM.html#CurrentSprites_Entities">CurrentSprites_Entities</a>,X</span></span></span>
-<span class="l"><a class="anc" name="820b" href="#820b">[820b]</a><span class="cd"><span class="i">CMP</span> <span class="o">#$18</span></span></span>
-<span class="l"><a class="anc" name="820d" href="#820d">[820d]</a><span class="cd"><span class="i">BNE</span> <span class="o"><a href="#@LAB_PRG14__8215">@LAB_PRG14__8215</a></span></span></span>
+<span class="l"><a class="anc" name="81a7" href="#81a7">[81a7]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="RAM.html#CurrentSprites_Entities">CurrentSprites_Entities</a>,X</span></span><span class="ce">; Load the sprite entity at the given index.</span></span>
+<span class="l"><a class="anc" name="81aa" href="#81aa">[81aa]</a><span class="cd"><span class="i">CMP</span> <span class="o">#$05</span></span><span class="ce">; Is this Necron Aides?</span></span>
+<span class="l"><a class="anc" name="81ac" href="#81ac">[81ac]</a><span class="cd"><span class="i">BNE</span> <span class="o"><a href="#@_handleHitWithMagic">@_handleHitWithMagic</a></span></span><span class="ce">; If not, jump.</span></span>
 <span class="l"></span>
 <span class="l"></span>
 <div class="c">;
-; If the enemy is Sugata, clear the greyscale set when it
+; This is Necron Aides. Set bit 7 on its phase.
+;
+</div><span class="l"><a class="anc" name="81ae" href="#81ae">[81ae]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="RAM.html#CurrentSprites_Phases">CurrentSprites_Phases</a>,X</span></span><span class="ce">; Load the phase for Necron Aides.</span></span>
+<span class="l"><a class="anc" name="81b1" href="#81b1">[81b1]</a><span class="cd"><span class="i">ORA</span> <span class="o">#$80</span></span><span class="ce">; Set bit 7.</span></span>
+<span class="l"><a class="anc" name="81b3" href="#81b3">[81b3]</a><span class="cd"><span class="i">STA</span> <span class="o"><a href="RAM.html#CurrentSprites_Phases">CurrentSprites_Phases</a>,X</span></span><span class="ce">; Save it.</span></span>
+<span class="l"></span>
+<span class="l"></span>
+<a name=":81b6:@_handleHitWithMagic"></a><div class="c">;
+; Handle hitting the enemy with magic.
+;
+; This will first play the sound effect, and then begin
+; calculating damage to the enemy, factoring in the spell
+; and the enemy's magic defense.
+;
+</div><span class="l"><a class="anc" name="81b6" href="#81b6">[81b6]</a><a href="#:81b6:@_handleHitWithMagic" class="lla">@_handleHitWithMagic:</a><span class="ce">; [$81b6]</span></span>
+<span class="l"><a class="anc" name="81b6" href="#81b6">[81b6]</a><span class="cd"><span class="i">LDA</span> <span class="o">#$02</span></span><span class="ce">; 2 == Enemy Hit With Magic sound effect</span></span>
+<span class="l"><a class="anc" name="81b8" href="#81b8">[81b8]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="PRG15_MIRROR.html#Sound_PlayEffect">Sound_PlayEffect</a></span></span><span class="ce">; Play it.</span></span>
+<span class="l"></span>
+<span class="l"></span>
+<div class="c">;
+; Load the standard damage amount for the current spell.
+;
+</div><span class="l"><a class="anc" name="81bb" href="#81bb">[81bb]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="#MAGIC_DAMAGE">MAGIC_DAMAGE</a>,Y</span></span><span class="ce">; Load the magic damage for the current spell.</span></span>
+<span class="l"><a class="anc" name="81be" href="#81be">[81be]</a><span class="cd"><span class="i">STA</span> <span class="o"><a href="RAM.html#Temp_00">Temp_00</a></span></span><span class="ce">; Store it temporarily.</span></span>
+<span class="l"></span>
+<span class="l"></span>
+<div class="c">;
+; Check if the player has the Magical Rod.
+;
+</div><span class="l"><a class="anc" name="81c0" href="#81c0">[81c0]</a><span class="cd"><span class="i">LDA</span> <span class="o">a:<a href="RAM.html#SpecialItems">SpecialItems</a></span></span><span class="ce">; Load the player's special items.</span></span>
+<span class="l"><a class="anc" name="81c3" href="#81c3">[81c3]</a><span class="cd"><span class="i">AND</span> <span class="o">#$04</span></span><span class="ce">; Is the Magical Rod equipped?</span></span>
+<span class="l"><a class="anc" name="81c5" href="#81c5">[81c5]</a><span class="cd"><span class="i">BEQ</span> <span class="o"><a href="#@_prepareCalcDefense">@_prepareCalcDefense</a></span></span></span>
+<span class="l"></span>
+<span class="l"></span>
+<div class="c">;
+; The player has the Magical Rod.
+;
+; If they do, increase damage by 50%.
+;
+</div><span class="l"><a class="anc" name="81c7" href="#81c7">[81c7]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="RAM.html#Temp_00">Temp_00</a></span></span><span class="ce">; Load the magic damage for the spell.</span></span>
+<span class="l"><a class="anc" name="81c9" href="#81c9">[81c9]</a><span class="cd"><span class="i">LSR</span> <span class="o">A</span></span><span class="ce">; Reduce that amount by half (we'll add it back).</span></span>
+<span class="l"><a class="anc" name="81ca" href="#81ca">[81ca]</a><span class="cd"><span class="i">CLC</span></span></span>
+<span class="l"><a class="anc" name="81cb" href="#81cb">[81cb]</a><span class="cd"><span class="i">ADC</span> <span class="o"><a href="RAM.html#Temp_00">Temp_00</a></span></span><span class="ce">; Now add it back to the magic damage (yielding a 50% increase).</span></span>
+<span class="l"><a class="anc" name="81cd" href="#81cd">[81cd]</a><span class="cd"><span class="i">STA</span> <span class="o"><a href="RAM.html#Temp_00">Temp_00</a></span></span><span class="ce">; Store it.</span></span>
+<span class="l"></span>
+<a name=":81cf:@_prepareCalcDefense"></a><span class="l"><a class="anc" name="81cf" href="#81cf">[81cf]</a><a href="#:81cf:@_prepareCalcDefense" class="lla">@_prepareCalcDefense:</a><span class="ce">; [$81cf]</span></span>
+<span class="l"><a class="anc" name="81cf" href="#81cf">[81cf]</a><span class="cd"><span class="i">LDA</span> <span class="o">#$00</span></span></span>
+<span class="l"><a class="anc" name="81d1" href="#81d1">[81d1]</a><span class="cd"><span class="i">STA</span> <span class="o"><a href="RAM.html#Temp_Addr_L">Temp_Addr_L</a></span></span><span class="ce">; Set the default magic defense flags to 0 (0%).</span></span>
+<span class="l"><a class="anc" name="81d3" href="#81d3">[81d3]</a><span class="cd"><span class="i">STY</span> <span class="o"><a href="RAM.html#Temp_01">Temp_01</a></span></span><span class="ce">; Store the current magic spell ID as a loop counter.</span></span>
+<span class="l"></span>
+<span class="l"></span>
+<div class="c">;
+; Check if we're hitting the enemy with Deluge or another
+; spell.
+;
+</div><span class="l"><a class="anc" name="81d5" href="#81d5">[81d5]</a><span class="cd"><span class="i">CPY</span> <span class="o">#$00</span></span><span class="ce">; Is the spell Deluge?</span></span>
+<span class="l"><a class="anc" name="81d7" href="#81d7">[81d7]</a><span class="cd"><span class="i">BEQ</span> <span class="o"><a href="#@_reduceEnemyHP">@_reduceEnemyHP</a></span></span></span>
+<span class="l"></span>
+<span class="l"></span>
+<div class="c">;
+; This is not the Deluge spell.
+;
+</div><span class="l"><a class="anc" name="81d9" href="#81d9">[81d9]</a><span class="cd"><span class="i">LDY</span> <span class="o"><a href="RAM.html#CurrentSprites_Entities">CurrentSprites_Entities</a>,X</span></span><span class="ce">; Load the entity that's been hit.</span></span>
+<span class="l"><a class="anc" name="81dc" href="#81dc">[81dc]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="#SPRITE_ENTITY_MAGIC_DEFENSE">SPRITE_ENTITY_MAGIC_DEFENSE</a>,Y</span></span><span class="ce">; Load the enemy's magic defenses.</span></span>
+<span class="l"></span>
+<span class="l"></span>
+<a name=":81df:@_calcDefenseLoop"></a><div class="c">;
+; Begin calculating the magic defense.
+;
+; This is only called for Thunder, Fire, Death, and Tilte.
+;
+; Starting with the current magic spell ID, we'll rotate the
+; most-significant bits into bits 0 and 1 until the current
+; spell's magic defense stats are placed there.
+;
+; Effectively, this makes sure we can operate on the right
+; defense flags for the given magic spell as bits 0-1.
+;
+</div><span class="l"><a class="anc" name="81df" href="#81df">[81df]</a><a href="#:81df:@_calcDefenseLoop" class="lla">@_calcDefenseLoop:</a><span class="ce">; [$81df]</span></span>
+<span class="l"><a class="anc" name="81df" href="#81df">[81df]</a><span class="cd"><span class="i">ASL</span> <span class="o">A</span></span><span class="ce">; Shift left, placing the most-significant bit into carry.</span></span>
+<span class="l"><a class="anc" name="81e0" href="#81e0">[81e0]</a><span class="cd"><span class="i">ROL</span> <span class="o"><a href="RAM.html#Temp_Addr_L">Temp_Addr_L</a></span></span><span class="ce">; Rotate left, placing that into bit 0.</span></span>
+<span class="l"><a class="anc" name="81e2" href="#81e2">[81e2]</a><span class="cd"><span class="i">ASL</span> <span class="o">A</span></span><span class="ce">; Shift left, placing the most-significant bit into carry.</span></span>
+<span class="l"><a class="anc" name="81e3" href="#81e3">[81e3]</a><span class="cd"><span class="i">ROL</span> <span class="o"><a href="RAM.html#Temp_Addr_L">Temp_Addr_L</a></span></span><span class="ce">; Rotate left, placing that into bit 0.</span></span>
+<span class="l"><a class="anc" name="81e5" href="#81e5">[81e5]</a><span class="cd"><span class="i">DEC</span> <span class="o"><a href="RAM.html#Temp_01">Temp_01</a></span></span><span class="ce">; Decrement the magic spell counter.</span></span>
+<span class="l"><a class="anc" name="81e7" href="#81e7">[81e7]</a><span class="cd"><span class="i">BNE</span> <span class="o"><a href="#@_calcDefenseLoop">@_calcDefenseLoop</a></span></span><span class="ce">; If the current spell's defense flags aren't in bits 0 and 1, loop.</span></span>
+<span class="l"></span>
+<span class="l"></span>
+<div class="c">;
+; Process those defense stats.
+;
+; This applies the following logic:
+;
+;     If flags are not empty:
+;         Reduce damage by 50%.
+;
+;     Flags--;  // 11 =&gt; 10, 10 =&gt; 01, 01 =&gt; 0
+;
+;     If flags are not empty:
+;         Reduce damage by another 50% (75% total).
+;
+;     If damage hasn't been reduced to 0:
+;         Change that to 100%.
+;
+; NOTE: This is kind of weird. It seems to specially handle 75%
+;       reduction, and then just throws that out and turns it
+;       into 100%. Maybe they just patched that in to simplify
+;       later.
+;
+</div><span class="l"><a class="anc" name="81e9" href="#81e9">[81e9]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="RAM.html#Temp_Addr_L">Temp_Addr_L</a></span></span><span class="ce">; Load the magic defense flags.</span></span>
+<span class="l"><a class="anc" name="81eb" href="#81eb">[81eb]</a><span class="cd"><span class="i">AND</span> <span class="o">#$03</span></span><span class="ce">; Keep only bits 0 and 1.</span></span>
+<span class="l"><a class="anc" name="81ed" href="#81ed">[81ed]</a><span class="cd"><span class="i">TAY</span></span><span class="ce">; Transfer to Y.</span></span>
+<span class="l"><a class="anc" name="81ee" href="#81ee">[81ee]</a><span class="cd"><span class="i">BEQ</span> <span class="o"><a href="#@_reduceEnemyHP">@_reduceEnemyHP</a></span></span><span class="ce">; If flags are 0, there's no defense. Jump.</span></span>
+<span class="l"><a class="anc" name="81f0" href="#81f0">[81f0]</a><span class="cd"><span class="i">LSR</span> <span class="o"><a href="RAM.html#Temp_00">Temp_00</a></span></span><span class="ce">; There's magic defense. Half the damage.</span></span>
+<span class="l"><a class="anc" name="81f2" href="#81f2">[81f2]</a><span class="cd"><span class="i">DEY</span></span><span class="ce">; Y-- (defense flags).</span></span>
+<span class="l"><a class="anc" name="81f3" href="#81f3">[81f3]</a><span class="cd"><span class="i">BEQ</span> <span class="o"><a href="#@_reduceEnemyHP">@_reduceEnemyHP</a></span></span><span class="ce">; If flags are 0, we're done. Jump.</span></span>
+<span class="l"><a class="anc" name="81f5" href="#81f5">[81f5]</a><span class="cd"><span class="i">LSR</span> <span class="o"><a href="RAM.html#Temp_00">Temp_00</a></span></span><span class="ce">; Half the damage again (75% now).</span></span>
+<span class="l"><a class="anc" name="81f7" href="#81f7">[81f7]</a><span class="cd"><span class="i">BEQ</span> <span class="o"><a href="#@_reduceEnemyHP">@_reduceEnemyHP</a></span></span><span class="ce">; If 0 magic damage remains, we're done. Jump.</span></span>
+<span class="l"><a class="anc" name="81f9" href="#81f9">[81f9]</a><span class="cd"><span class="i">LDA</span> <span class="o">#$00</span></span><span class="ce">; Ignore that 75%. Make it 100%. Why not.</span></span>
+<span class="l"><a class="anc" name="81fb" href="#81fb">[81fb]</a><span class="cd"><span class="i">STA</span> <span class="o"><a href="RAM.html#Temp_00">Temp_00</a></span></span><span class="ce">; Save it.</span></span>
+<span class="l"></span>
+<span class="l"></span>
+<a name=":81fd:@_reduceEnemyHP"></a><div class="c">;
+; Subtract the magic damage from entity's HP.
+;
+</div><span class="l"><a class="anc" name="81fd" href="#81fd">[81fd]</a><a href="#:81fd:@_reduceEnemyHP" class="lla">@_reduceEnemyHP:</a><span class="ce">; [$81fd]</span></span>
+<span class="l"><a class="anc" name="81fd" href="#81fd">[81fd]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="RAM.html#CurrentSprites_HP">CurrentSprites_HP</a>,X</span></span><span class="ce">; Load the current HP for the entity being hit.</span></span>
+<span class="l"><a class="anc" name="8200" href="#8200">[8200]</a><span class="cd"><span class="i">SEC</span></span></span>
+<span class="l"><a class="anc" name="8201" href="#8201">[8201]</a><span class="cd"><span class="i">SBC</span> <span class="o"><a href="RAM.html#Temp_00">Temp_00</a></span></span><span class="ce">; Subtract the normalized magic damage.</span></span>
+<span class="l"><a class="anc" name="8203" href="#8203">[8203]</a><span class="cd"><span class="i">STA</span> <span class="o"><a href="RAM.html#CurrentSprites_HP">CurrentSprites_HP</a>,X</span></span><span class="ce">; Store it back.</span></span>
+<span class="l"><a class="anc" name="8206" href="#8206">[8206]</a><span class="cd"><span class="i">BCS</span> <span class="o"><a href="#RETURN_822D">RETURN_822D</a></span></span><span class="ce">; If HP &gt; 0, return.</span></span>
+<span class="l"></span>
+<span class="l"></span>
+<div class="c">;
+; The entity is dead.
+;
+</div><span class="l"><a class="anc" name="8208" href="#8208">[8208]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="RAM.html#CurrentSprites_Entities">CurrentSprites_Entities</a>,X</span></span><span class="ce">; Load the ID of this entity.</span></span>
+<span class="l"><a class="anc" name="820b" href="#820b">[820b]</a><span class="cd"><span class="i">CMP</span> <span class="o">#$18</span></span><span class="ce">; Is this Sugata?</span></span>
+<span class="l"><a class="anc" name="820d" href="#820d">[820d]</a><span class="cd"><span class="i">BNE</span> <span class="o"><a href="#@_addExperience">@_addExperience</a></span></span><span class="ce">; If not, jump.</span></span>
+<span class="l"></span>
+<span class="l"></span>
+<div class="c">;
+; The enemy is Sugata. Clear the greyscale set when it
 ; attacked so we don't get stuck in greyscale forever.
 ;
 </div><span class="l"><a class="anc" name="820f" href="#820f">[820f]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="RAM.html#PPU_Mask">PPU_Mask</a></span></span><span class="ce">; Load the screen color mode.</span></span>
@@ -532,37 +634,37 @@ pre {
 <span class="l"><a class="anc" name="8213" href="#8213">[8213]</a><span class="cd"><span class="i">STA</span> <span class="o"><a href="RAM.html#PPU_Mask">PPU_Mask</a></span></span><span class="ce">; Store it.</span></span>
 <span class="l"></span>
 <span class="l"></span>
-<a name=":8215:@LAB_PRG14__8215"></a><div class="c">;
+<a name=":8215:@_addExperience"></a><div class="c">;
 ; Add experience from the sprite.
 ;
-</div><span class="l"><a class="anc" name="8215" href="#8215">[8215]</a><a href="#:8215:@LAB_PRG14__8215" class="lla">@LAB_PRG14__8215:</a><span class="ce">; [$8215]</span></span>
-<span class="l"><a class="anc" name="8215" href="#8215">[8215]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#Player_AddExperienceFromSprite">Player_AddExperienceFromSprite</a></span></span></span>
+</div><span class="l"><a class="anc" name="8215" href="#8215">[8215]</a><a href="#:8215:@_addExperience" class="lla">@_addExperience:</a><span class="ce">; [$8215]</span></span>
+<span class="l"><a class="anc" name="8215" href="#8215">[8215]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#Player_AddExperienceFromSprite">Player_AddExperienceFromSprite</a></span></span><span class="ce">; Add experience to the player.</span></span>
 <span class="l"></span>
 <span class="l"></span>
 <div class="c">;
 ; Play the killed enemy sound effect.
 ;
-</div><span class="l"><a class="anc" name="8218" href="#8218">[8218]</a><span class="cd"><span class="i">LDA</span> <span class="o">#$03</span></span></span>
-<span class="l"><a class="anc" name="821a" href="#821a">[821a]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="PRG15_MIRROR.html#Sound_PlayEffect">Sound_PlayEffect</a></span></span></span>
+</div><span class="l"><a class="anc" name="8218" href="#8218">[8218]</a><span class="cd"><span class="i">LDA</span> <span class="o">#$03</span></span><span class="ce">; 3 == Enemy Death sound effect</span></span>
+<span class="l"><a class="anc" name="821a" href="#821a">[821a]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="PRG15_MIRROR.html#Sound_PlayEffect">Sound_PlayEffect</a></span></span><span class="ce">; Play it.</span></span>
 <span class="l"></span>
 <span class="l"></span>
 <div class="c">;
 ; Check if this is a normal and big enemy. They need to be
 ; handled differently.
 ;
-</div><span class="l"><a class="anc" name="821d" href="#821d">[821d]</a><span class="cd"><span class="i">LDY</span> <span class="o"><a href="RAM.html#CurrentSprites_Entities">CurrentSprites_Entities</a>,X</span></span></span>
-<span class="l"><a class="anc" name="8220" href="#8220">[8220]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="#SPRITE_CATEGORIES_BY_ENTITY">SPRITE_CATEGORIES_BY_ENTITY</a>,Y</span></span></span>
-<span class="l"><a class="anc" name="8223" href="#8223">[8223]</a><span class="cd"><span class="i">CMP</span> <span class="o">#$07</span></span></span>
-<span class="l"><a class="anc" name="8225" href="#8225">[8225]</a><span class="cd"><span class="i">BNE</span> <span class="o"><a href="#@_isSmallEnemy">@_isSmallEnemy</a></span></span></span>
+</div><span class="l"><a class="anc" name="821d" href="#821d">[821d]</a><span class="cd"><span class="i">LDY</span> <span class="o"><a href="RAM.html#CurrentSprites_Entities">CurrentSprites_Entities</a>,X</span></span><span class="ce">; Load the ID of this entity.</span></span>
+<span class="l"><a class="anc" name="8220" href="#8220">[8220]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="#SPRITE_CATEGORIES_BY_ENTITY">SPRITE_CATEGORIES_BY_ENTITY</a>,Y</span></span><span class="ce">; Load the entity's category.</span></span>
+<span class="l"><a class="anc" name="8223" href="#8223">[8223]</a><span class="cd"><span class="i">CMP</span> <span class="o">#$07</span></span><span class="ce">; Is it a boss?</span></span>
+<span class="l"><a class="anc" name="8225" href="#8225">[8225]</a><span class="cd"><span class="i">BNE</span> <span class="o"><a href="#@_isSmallEnemy">@_isSmallEnemy</a></span></span><span class="ce">; If not, jump. It should be a small enemy.</span></span>
 <span class="l"></span>
 <span class="l"></span>
 <div class="c">;
 ; This is a big enemy. Handle cleanup specially.
 ;
-</div><span class="l"><a class="anc" name="8227" href="#8227">[8227]</a><span class="cd"><span class="i">JMP</span> <span class="o"><a href="#Sprite_ShowBigEnemyDeathByMagicOrWeapon">Sprite_ShowBigEnemyDeathByMagicOrWeapon</a></span></span></span>
+</div><span class="l"><a class="anc" name="8227" href="#8227">[8227]</a><span class="cd"><span class="i">JMP</span> <span class="o"><a href="#Sprite_ShowBigEnemyDeathByMagicOrWeapon">Sprite_ShowBigEnemyDeathByMagicOrWeapon</a></span></span><span class="ce">; Show the boss death effect.</span></span>
 <span class="l"></span>
 <a name=":822a:@_isSmallEnemy"></a><span class="l"><a class="anc" name="822a" href="#822a">[822a]</a><a href="#:822a:@_isSmallEnemy" class="lla">@_isSmallEnemy:</a><span class="ce">; [$822a]</span></span>
-<span class="l"><a class="anc" name="822a" href="#822a">[822a]</a><span class="cd"><span class="i">JMP</span> <span class="o"><a href="#Sprite_ShowNormalEnemyDeathByMagic">Sprite_ShowNormalEnemyDeathByMagic</a></span></span></span>
+<span class="l"><a class="anc" name="822a" href="#822a">[822a]</a><span class="cd"><span class="i">JMP</span> <span class="o"><a href="#Sprite_ShowNormalEnemyDeathByMagic">Sprite_ShowNormalEnemyDeathByMagic</a></span></span><span class="ce">; Show the standard enemy death effect.</span></span>
 <span class="l"></span>
 <a name="RETURN_822D"></a><div class="c">;
 ; XREFS:
@@ -1146,7 +1248,7 @@ pre {
 ;     <a href="#SpriteBehavior_Yuinaru">SpriteBehavior_Yuinaru</a>
 ;============================================================================
 </div><span class="l"><a class="anc" name="8427" href="#8427">[8427]</a><a href="#Sprite_Maybe_TurnAroundIfAtScreenEdgeHoriz" class="la">Sprite_Maybe_TurnAroundIfAtScreenEdgeHoriz:</a><span class="ce">; [$8427]</span></span>
-<span class="l"><a class="anc" name="8427" href="#8427">[8427]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#FUN_PRG14__849a">FUN_PRG14__849a</a></span></span></span>
+<span class="l"><a class="anc" name="8427" href="#8427">[8427]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#Sprite_MoveForwardX">Sprite_MoveForwardX</a></span></span></span>
 <span class="l"><a class="anc" name="842a" href="#842a">[842a]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="RAM.html#CurrentSprites_XPos_Full">CurrentSprites_XPos_Full</a>,X</span></span></span>
 <span class="l"><a class="anc" name="842c" href="#842c">[842c]</a><span class="cd"><span class="i">CMP</span> <span class="o">#$f0</span></span></span>
 <span class="l"><a class="anc" name="842e" href="#842e">[842e]</a><span class="cd"><span class="i">BCC</span> <span class="o"><a href="#@_returnFalse">@_returnFalse</a></span></span></span>
@@ -1271,74 +1373,123 @@ pre {
 ;     <a href="#Sprites_Maybe_UpdateHitByMagic">Sprites_Maybe_UpdateHitByMagic</a>
 ;============================================================================
 </div><span class="l"><a class="anc" name="8494" href="#8494">[8494]</a><a href="#Sprites_Something_SomethingAndMoveHoriz" class="la">Sprites_Something_SomethingAndMoveHoriz:</a><span class="ce">; [$8494]</span></span>
-<span class="l"><a class="anc" name="8494" href="#8494">[8494]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#FUN_PRG14__849a">FUN_PRG14__849a</a></span></span></span>
+<span class="l"><a class="anc" name="8494" href="#8494">[8494]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#Sprite_MoveForwardX">Sprite_MoveForwardX</a></span></span></span>
 <span class="l"><a class="anc" name="8497" href="#8497">[8497]</a><span class="cd"><span class="i">JMP</span> <span class="o"><a href="#MoveSpriteHorizIfPossible">MoveSpriteHorizIfPossible</a></span></span></span>
 <span class="l"></span>
-</pre><pre><a name="FUN_PRG14__849a"></a><div class="cp">;============================================================================
-; TODO: Document FUN_PRG14__849a
+<span class="l"></span>
+</pre><pre><a name="Sprite_MoveForwardX"></a><div class="cp">;============================================================================
+; Move the entity in the facing direction a given amount.
+;
+; If the entity is facing right, its X position will
+; increment by a given value.
+;
+; If facing left, its X position will decrement instead.
 ;
 ; INPUTS:
-;     X
+;     X:
+;         The index of the sprite entity.
+;
+;     <a href="RAM.html#Arg_DeltaX_Full">Arg_DeltaX_Full</a>:
+;     <a href="RAM.html#Arg_DeltaX_Frac">Arg_DeltaX_Frac</a>:
+;         The value to add to or subtract from the X
+;         position.
+;
+;     <a href="RAM.html#CurrentSprites_Flags">CurrentSprites_Flags</a>:
+;         The sprite's flags.
+;
+;     <a href="RAM.html#CurrentSprites_XPos_Full">CurrentSprites_XPos_Full</a>:
+;     <a href="RAM.html#CurrentSprites_XPos_Frac">CurrentSprites_XPos_Frac</a>:
+;         The current X position of the entity.
 ;
 ; OUTPUTS:
-;     TODO
+;     <a href="RAM.html#CurrentSprites_XPos_Full">CurrentSprites_XPos_Full</a>:
+;     <a href="RAM.html#CurrentSprites_XPos_Frac">CurrentSprites_XPos_Frac</a>:
+;         The updated X position.
+;
+; CALLS:
+;     <a href="#Sprite_AddPosX">Sprite_AddPosX</a>
+;     <a href="#Sprite_SubtractPosX">Sprite_SubtractPosX</a>
 ;
 ; XREFS:
 ;     <a href="#Sprite_Maybe_TurnAroundIfAtScreenEdgeHoriz">Sprite_Maybe_TurnAroundIfAtScreenEdgeHoriz</a>
 ;     <a href="#Sprites_Something_SomethingAndMoveHoriz">Sprites_Something_SomethingAndMoveHoriz</a>
 ;============================================================================
-</div><span class="l"><a class="anc" name="849a" href="#849a">[849a]</a><a href="#FUN_PRG14__849a" class="la">FUN_PRG14__849a:</a><span class="ce">; [$849a]</span></span>
-<span class="l"><a class="anc" name="849a" href="#849a">[849a]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="RAM.html#CurrentSprites_Flags">CurrentSprites_Flags</a>,X</span></span></span>
-<span class="l"><a class="anc" name="849d" href="#849d">[849d]</a><span class="cd"><span class="i">LSR</span> <span class="o">A</span></span></span>
-<span class="l"><a class="anc" name="849e" href="#849e">[849e]</a><span class="cd"><span class="i">BCS</span> <span class="o"><a href="#Sprite_AddPosX">Sprite_AddPosX</a></span></span></span>
+</div><span class="l"><a class="anc" name="849a" href="#849a">[849a]</a><a href="#Sprite_MoveForwardX" class="la">Sprite_MoveForwardX:</a><span class="ce">; [$849a]</span></span>
+<span class="l"><a class="anc" name="849a" href="#849a">[849a]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="RAM.html#CurrentSprites_Flags">CurrentSprites_Flags</a>,X</span></span><span class="ce">; Load the sprite's flags.</span></span>
+<span class="l"><a class="anc" name="849d" href="#849d">[849d]</a><span class="cd"><span class="i">LSR</span> <span class="o">A</span></span><span class="ce">; Shift the "Facing Right" bit into Carry.</span></span>
+<span class="l"><a class="anc" name="849e" href="#849e">[849e]</a><span class="cd"><span class="i">BCS</span> <span class="o"><a href="#Sprite_AddPosX">Sprite_AddPosX</a></span></span><span class="ce">; If Carry is set, add to X. Else, fall through to subtract.</span></span>
 <span class="l"></span>
 <div class="c">;
 ; v-- Fall through --v
 ;
 </div><span class="l"></span>
+<span class="l"></span>
 </pre><pre><a name="Sprite_SubtractPosX"></a><div class="cp">;============================================================================
-; TODO: Document Sprite_SubtractPosX
+; Move the entity to the left by a given amount.
 ;
 ; INPUTS:
-;     X
+;     X:
+;         The index of the sprite entity.
+;
+;     <a href="RAM.html#Arg_DeltaX_Full">Arg_DeltaX_Full</a>:
+;     <a href="RAM.html#Arg_DeltaX_Frac">Arg_DeltaX_Frac</a>:
+;         The value to subtract from the X position.
+;
+;     <a href="RAM.html#CurrentSprites_XPos_Full">CurrentSprites_XPos_Full</a>:
+;     <a href="RAM.html#CurrentSprites_XPos_Frac">CurrentSprites_XPos_Frac</a>:
+;         The current X position of the entity.
 ;
 ; OUTPUTS:
-;     TODO
+;     <a href="RAM.html#CurrentSprites_XPos_Full">CurrentSprites_XPos_Full</a>:
+;     <a href="RAM.html#CurrentSprites_XPos_Frac">CurrentSprites_XPos_Frac</a>:
+;         The updated X position.
 ;
 ; XREFS:
 ;     <a href="#Sprite_Maybe_AddFacingPosX">Sprite_Maybe_AddFacingPosX</a>
 ;============================================================================
 </div><span class="l"><a class="anc" name="84a0" href="#84a0">[84a0]</a><a href="#Sprite_SubtractPosX" class="la">Sprite_SubtractPosX:</a><span class="ce">; [$84a0]</span></span>
-<span class="l"><a class="anc" name="84a0" href="#84a0">[84a0]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="RAM.html#CurrentSprites_XPos_Frac">CurrentSprites_XPos_Frac</a>,X</span></span></span>
+<span class="l"><a class="anc" name="84a0" href="#84a0">[84a0]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="RAM.html#CurrentSprites_XPos_Frac">CurrentSprites_XPos_Frac</a>,X</span></span><span class="ce">; Load the fractional X position for the sprite entity.</span></span>
 <span class="l"><a class="anc" name="84a3" href="#84a3">[84a3]</a><span class="cd"><span class="i">SEC</span></span></span>
-<span class="l"><a class="anc" name="84a4" href="#84a4">[84a4]</a><span class="cd"><span class="i">SBC</span> <span class="o">a:<a href="RAM.html#Arg_DeltaX_Frac">Arg_DeltaX_Frac</a></span></span></span>
-<span class="l"><a class="anc" name="84a7" href="#84a7">[84a7]</a><span class="cd"><span class="i">STA</span> <span class="o"><a href="RAM.html#CurrentSprites_XPos_Frac">CurrentSprites_XPos_Frac</a>,X</span></span></span>
-<span class="l"><a class="anc" name="84aa" href="#84aa">[84aa]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="RAM.html#CurrentSprites_XPos_Full">CurrentSprites_XPos_Full</a>,X</span></span></span>
-<span class="l"><a class="anc" name="84ac" href="#84ac">[84ac]</a><span class="cd"><span class="i">SBC</span> <span class="o">a:<a href="RAM.html#Arg_DeltaX_Full">Arg_DeltaX_Full</a></span></span></span>
-<span class="l"><a class="anc" name="84af" href="#84af">[84af]</a><span class="cd"><span class="i">STA</span> <span class="o"><a href="RAM.html#CurrentSprites_XPos_Full">CurrentSprites_XPos_Full</a>,X</span></span></span>
+<span class="l"><a class="anc" name="84a4" href="#84a4">[84a4]</a><span class="cd"><span class="i">SBC</span> <span class="o">a:<a href="RAM.html#Arg_DeltaX_Frac">Arg_DeltaX_Frac</a></span></span><span class="ce">; Subtract the provided value.</span></span>
+<span class="l"><a class="anc" name="84a7" href="#84a7">[84a7]</a><span class="cd"><span class="i">STA</span> <span class="o"><a href="RAM.html#CurrentSprites_XPos_Frac">CurrentSprites_XPos_Frac</a>,X</span></span><span class="ce">; Store it.</span></span>
+<span class="l"><a class="anc" name="84aa" href="#84aa">[84aa]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="RAM.html#CurrentSprites_XPos_Full">CurrentSprites_XPos_Full</a>,X</span></span><span class="ce">; Load the block X position for the sprite entity.</span></span>
+<span class="l"><a class="anc" name="84ac" href="#84ac">[84ac]</a><span class="cd"><span class="i">SBC</span> <span class="o">a:<a href="RAM.html#Arg_DeltaX_Full">Arg_DeltaX_Full</a></span></span><span class="ce">; Subtract the provided value.</span></span>
+<span class="l"><a class="anc" name="84af" href="#84af">[84af]</a><span class="cd"><span class="i">STA</span> <span class="o"><a href="RAM.html#CurrentSprites_XPos_Full">CurrentSprites_XPos_Full</a>,X</span></span><span class="ce">; Store it.</span></span>
 <span class="l"><a class="anc" name="84b1" href="#84b1">[84b1]</a><span class="cd"><span class="i">RTS</span></span></span>
 <span class="l"></span>
+<span class="l"></span>
 </pre><pre><a name="Sprite_AddPosX"></a><div class="cp">;============================================================================
-; TODO: Document Sprite_AddPosX
+; Move the entity to the right by a given amount.
 ;
 ; INPUTS:
-;     X
+;     X:
+;         The index of the sprite entity.
+;
+;     <a href="RAM.html#Arg_DeltaX_Full">Arg_DeltaX_Full</a>:
+;     <a href="RAM.html#Arg_DeltaX_Frac">Arg_DeltaX_Frac</a>:
+;         The value to add to the X position.
+;
+;     <a href="RAM.html#CurrentSprites_XPos_Full">CurrentSprites_XPos_Full</a>:
+;     <a href="RAM.html#CurrentSprites_XPos_Frac">CurrentSprites_XPos_Frac</a>:
+;         The current X position of the entity.
 ;
 ; OUTPUTS:
-;     TODO
+;     <a href="RAM.html#CurrentSprites_XPos_Full">CurrentSprites_XPos_Full</a>:
+;     <a href="RAM.html#CurrentSprites_XPos_Frac">CurrentSprites_XPos_Frac</a>:
+;         The updated X position.
 ;
 ; XREFS:
-;     <a href="#FUN_PRG14__849a">FUN_PRG14__849a</a>
 ;     <a href="#Sprite_Maybe_AddFacingPosX">Sprite_Maybe_AddFacingPosX</a>
+;     <a href="#Sprite_MoveForwardX">Sprite_MoveForwardX</a>
 ;============================================================================
 </div><span class="l"><a class="anc" name="84b2" href="#84b2">[84b2]</a><a href="#Sprite_AddPosX" class="la">Sprite_AddPosX:</a><span class="ce">; [$84b2]</span></span>
-<span class="l"><a class="anc" name="84b2" href="#84b2">[84b2]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="RAM.html#CurrentSprites_XPos_Frac">CurrentSprites_XPos_Frac</a>,X</span></span></span>
+<span class="l"><a class="anc" name="84b2" href="#84b2">[84b2]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="RAM.html#CurrentSprites_XPos_Frac">CurrentSprites_XPos_Frac</a>,X</span></span><span class="ce">; Load the fractional X position for the sprite entity.</span></span>
 <span class="l"><a class="anc" name="84b5" href="#84b5">[84b5]</a><span class="cd"><span class="i">CLC</span></span></span>
-<span class="l"><a class="anc" name="84b6" href="#84b6">[84b6]</a><span class="cd"><span class="i">ADC</span> <span class="o">a:<a href="RAM.html#Arg_DeltaX_Frac">Arg_DeltaX_Frac</a></span></span></span>
-<span class="l"><a class="anc" name="84b9" href="#84b9">[84b9]</a><span class="cd"><span class="i">STA</span> <span class="o"><a href="RAM.html#CurrentSprites_XPos_Frac">CurrentSprites_XPos_Frac</a>,X</span></span></span>
-<span class="l"><a class="anc" name="84bc" href="#84bc">[84bc]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="RAM.html#CurrentSprites_XPos_Full">CurrentSprites_XPos_Full</a>,X</span></span></span>
-<span class="l"><a class="anc" name="84be" href="#84be">[84be]</a><span class="cd"><span class="i">ADC</span> <span class="o">a:<a href="RAM.html#Arg_DeltaX_Full">Arg_DeltaX_Full</a></span></span></span>
-<span class="l"><a class="anc" name="84c1" href="#84c1">[84c1]</a><span class="cd"><span class="i">STA</span> <span class="o"><a href="RAM.html#CurrentSprites_XPos_Full">CurrentSprites_XPos_Full</a>,X</span></span></span>
+<span class="l"><a class="anc" name="84b6" href="#84b6">[84b6]</a><span class="cd"><span class="i">ADC</span> <span class="o">a:<a href="RAM.html#Arg_DeltaX_Frac">Arg_DeltaX_Frac</a></span></span><span class="ce">; Add the provided value.</span></span>
+<span class="l"><a class="anc" name="84b9" href="#84b9">[84b9]</a><span class="cd"><span class="i">STA</span> <span class="o"><a href="RAM.html#CurrentSprites_XPos_Frac">CurrentSprites_XPos_Frac</a>,X</span></span><span class="ce">; Store it.</span></span>
+<span class="l"><a class="anc" name="84bc" href="#84bc">[84bc]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="RAM.html#CurrentSprites_XPos_Full">CurrentSprites_XPos_Full</a>,X</span></span><span class="ce">; Load the block X position for the sprite entity.</span></span>
+<span class="l"><a class="anc" name="84be" href="#84be">[84be]</a><span class="cd"><span class="i">ADC</span> <span class="o">a:<a href="RAM.html#Arg_DeltaX_Full">Arg_DeltaX_Full</a></span></span><span class="ce">; Add the provided value.</span></span>
+<span class="l"><a class="anc" name="84c1" href="#84c1">[84c1]</a><span class="cd"><span class="i">STA</span> <span class="o"><a href="RAM.html#CurrentSprites_XPos_Full">CurrentSprites_XPos_Full</a>,X</span></span><span class="ce">; Store it.</span></span>
 <span class="l"><a class="anc" name="84c3" href="#84c3">[84c3]</a><span class="cd"><span class="i">RTS</span></span></span>
 <span class="l"></span>
 <span class="l"></span>
@@ -1351,10 +1502,25 @@ pre {
 ;     X:
 ;         The index of the sprite.
 ;
+;     <a href="RAM.html#CurrentSpriteIndex">CurrentSpriteIndex</a>:
+;         The index of the current sprite.
+;
+;     <a href="RAM.html#CurrentSprites_Flags">CurrentSprites_Flags</a>:
+;         The sprite's flags.
+;
+;     <a href="RAM.html#CurrentSprites_XPos_Full">CurrentSprites_XPos_Full</a>:
+;         The full block X position of the sprites.
+;
 ; OUTPUTS:
 ;     C:
 ;         1 if the sprite could move.
 ;         0 if the sprite could not move.
+;
+;     <a href="RAM.html#Blocks_Result">Blocks_Result</a>:
+;         Clobbered.
+;
+; CALLS:
+;     <a href="#CurrentSprite_CanMoveInDirection">CurrentSprite_CanMoveInDirection</a>
 ;
 ; XREFS:
 ;     <a href="#Sprites_Something_SomethingAndMoveHoriz">Sprites_Something_SomethingAndMoveHoriz</a>
@@ -1394,15 +1560,15 @@ pre {
 <span class="l"><a class="anc" name="84f3" href="#84f3">[84f3]</a><span class="cd"><span class="i">RTS</span></span></span>
 <span class="l"></span>
 <span class="l"></span>
-</pre><pre><a name="FUN_PRG14__84f4"></a><div class="cp">;============================================================================
+</pre><pre><a name="DEADCODE_FUN_PRG14__84f4"></a><div class="cp">;============================================================================
 ; MAYBE DEADCODE
 ;============================================================================
-</div><span class="l"><a class="anc" name="84f4" href="#84f4">[84f4]</a><a href="#FUN_PRG14__84f4" class="la">FUN_PRG14__84f4:</a><span class="ce">; [$84f4]</span></span>
-<span class="l"><a class="anc" name="84f4" href="#84f4">[84f4]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#Sprites_CanSpriteWalk">Sprites_CanSpriteWalk</a></span></span></span>
+</div><span class="l"><a class="anc" name="84f4" href="#84f4">[84f4]</a><a href="#DEADCODE_FUN_PRG14__84f4" class="la">DEADCODE_FUN_PRG14__84f4:</a><span class="ce">; [$84f4]</span></span>
+<span class="l"><a class="anc" name="84f4" href="#84f4">[84f4]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#Sprites_CanMoveDownByHitbox">Sprites_CanMoveDownByHitbox</a></span></span></span>
 <span class="l"><a class="anc" name="84f7" href="#84f7">[84f7]</a><span class="cd"><span class="i">TAX</span></span></span>
 <span class="l"><a class="anc" name="84f8" href="#84f8">[84f8]</a><span class="cd"><span class="i">BNE</span> <span class="o"><a href="#SpriteBehavior_RestoreXRegister">SpriteBehavior_RestoreXRegister</a></span></span></span>
 <span class="l"><a class="anc" name="84fa" href="#84fa">[84fa]</a><span class="cd"><span class="i">LDX</span> <span class="o">a:<a href="RAM.html#CurrentSpriteIndex">CurrentSpriteIndex</a></span></span></span>
-<span class="l"><a class="anc" name="84fd" href="#84fd">[84fd]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#Sprite_CanClimb">Sprite_CanClimb</a></span></span></span>
+<span class="l"><a class="anc" name="84fd" href="#84fd">[84fd]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#DEADCODE_Sprites_CanMoveDownBelowHitbox">DEADCODE_Sprites_CanMoveDownBelowHitbox</a></span></span></span>
 <span class="l"><a class="anc" name="8500" href="#8500">[8500]</a><span class="cd"><span class="i">TAX</span></span></span>
 <span class="l"><a class="anc" name="8501" href="#8501">[8501]</a><span class="cd"><span class="i">BEQ</span> <span class="o"><a href="#SpriteBehavior_Something_850d">SpriteBehavior_Something_850d</a></span></span></span>
 <span class="l"><a class="anc" name="8503" href="#8503">[8503]</a><span class="cd"><span class="i">LDX</span> <span class="o">a:<a href="RAM.html#CurrentSpriteIndex">CurrentSpriteIndex</a></span></span></span>
@@ -1421,7 +1587,7 @@ pre {
 ;     <a href="#SpriteBehavior_Ishiisu">SpriteBehavior_Ishiisu</a>
 ;============================================================================
 </div><span class="l"><a class="anc" name="8507" href="#8507">[8507]</a><a href="#SpriteBehavior_Ishiisu_Something_915b" class="la">SpriteBehavior_Ishiisu_Something_915b:</a><span class="ce">; [$8507]</span></span>
-<span class="l"><a class="anc" name="8507" href="#8507">[8507]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#Sprites_CanSpriteWalk">Sprites_CanSpriteWalk</a></span></span></span>
+<span class="l"><a class="anc" name="8507" href="#8507">[8507]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#Sprites_CanMoveDownByHitbox">Sprites_CanMoveDownByHitbox</a></span></span></span>
 <span class="l"><a class="anc" name="850a" href="#850a">[850a]</a><span class="cd"><span class="i">TAX</span></span></span>
 <span class="l"><a class="anc" name="850b" href="#850b">[850b]</a><span class="cd"><span class="i">BNE</span> <span class="o"><a href="#SpriteBehavior_RestoreXRegister">SpriteBehavior_RestoreXRegister</a></span></span></span>
 <span class="l"></span>
@@ -1434,7 +1600,7 @@ pre {
 ; MAYBE DEADCODE
 ;
 ; XREFS:
-;     <a href="#FUN_PRG14__84f4">FUN_PRG14__84f4</a>
+;     <a href="#DEADCODE_FUN_PRG14__84f4">DEADCODE_FUN_PRG14__84f4</a>
 ;============================================================================
 </div><span class="l"><a class="anc" name="850d" href="#850d">[850d]</a><a href="#SpriteBehavior_Something_850d" class="la">SpriteBehavior_Something_850d:</a><span class="ce">; [$850d]</span></span>
 <span class="l"><a class="anc" name="850d" href="#850d">[850d]</a><span class="cd"><span class="i">LDX</span> <span class="o">a:<a href="RAM.html#CurrentSpriteIndex">CurrentSpriteIndex</a></span></span></span>
@@ -1470,7 +1636,7 @@ pre {
 ;     TODO
 ;
 ; XREFS:
-;     <a href="#FUN_PRG14__84f4">FUN_PRG14__84f4</a>
+;     <a href="#DEADCODE_FUN_PRG14__84f4">DEADCODE_FUN_PRG14__84f4</a>
 ;     <a href="#SpriteBehavior_Ishiisu_Something_915b">SpriteBehavior_Ishiisu_Something_915b</a>
 ;     <a href="#SpriteBehavior_Something_850d">SpriteBehavior_Something_850d</a>
 ;============================================================================
@@ -1478,16 +1644,16 @@ pre {
 <span class="l"><a class="anc" name="852e" href="#852e">[852e]</a><span class="cd"><span class="i">LDX</span> <span class="o">a:<a href="RAM.html#CurrentSpriteIndex">CurrentSpriteIndex</a></span></span></span>
 <span class="l"><a class="anc" name="8531" href="#8531">[8531]</a><span class="cd"><span class="i">RTS</span></span></span>
 <span class="l"></span>
-<a name="SPRITE_WALK_PIXEL_MOVEMENT_TABLE"></a><div class="c">;
+<a name="SPRITE_CHECK_PLACEMENT_X_OFFSETS_BY_FACING"></a><div class="c">;
 ; XREFS:
-;     <a href="#FUN_PRG14__854c">FUN_PRG14__854c</a>
+;     <a href="#Sprites_CheckPlacementInvalidAtY">Sprites_CheckPlacementInvalidAtY</a>
 ;
-</div><span class="l"><a class="anc" name="8532" href="#8532">[8532]</a><a href="#SPRITE_WALK_PIXEL_MOVEMENT_TABLE" class="la">SPRITE_WALK_PIXEL_MOVEMENT_TABLE:</a><span class="ce">; [$8532]</span></span>
+</div><span class="l"><a class="anc" name="8532" href="#8532">[8532]</a><a href="#SPRITE_CHECK_PLACEMENT_X_OFFSETS_BY_FACING" class="la">SPRITE_CHECK_PLACEMENT_X_OFFSETS_BY_FACING:</a><span class="ce">; [$8532]</span></span>
 <span class="l"><a class="anc" name="8532" href="#8532">[8532]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [0]: 0 pixel movement</span></span>
 <span class="l"><a class="anc" name="8533" href="#8533">[8533]</a><span class="cd"><span class="i">.byte</span> <span class="o">$0f</span></span><span class="ce">; [1]: 15 pixel movement</span></span>
 <span class="l"></span>
-</pre><pre><a name="Sprite_CanClimb"></a><div class="cp">;============================================================================
-; TODO: Document Sprite_CanClimb
+</pre><pre><a name="DEADCODE_Sprites_CanMoveDownBelowHitbox"></a><div class="cp">;============================================================================
+; TODO: Document DEADCODE_Sprites_CanMoveDownBelowHitbox
 ;
 ; INPUTS:
 ;     X
@@ -1496,19 +1662,19 @@ pre {
 ;     TODO
 ;
 ; XREFS:
-;     <a href="#FUN_PRG14__84f4">FUN_PRG14__84f4</a>
+;     <a href="#DEADCODE_FUN_PRG14__84f4">DEADCODE_FUN_PRG14__84f4</a>
 ;============================================================================
-</div><span class="l"><a class="anc" name="8534" href="#8534">[8534]</a><a href="#Sprite_CanClimb" class="la">Sprite_CanClimb:</a><span class="ce">; [$8534]</span></span>
-<span class="l"><a class="anc" name="8534" href="#8534">[8534]</a><span class="cd"><span class="i">LDY</span> <span class="o"><a href="RAM.html#CurrentSprites_HitBoxTypes">CurrentSprites_HitBoxTypes</a>,X</span></span></span>
-<span class="l"><a class="anc" name="8537" href="#8537">[8537]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="RAM.html#CurrentSprites_YPos">CurrentSprites_YPos</a>,X</span></span></span>
+</div><span class="l"><a class="anc" name="8534" href="#8534">[8534]</a><a href="#DEADCODE_Sprites_CanMoveDownBelowHitbox" class="la">DEADCODE_Sprites_CanMoveDownBelowHitbox:</a><span class="ce">; [$8534]</span></span>
+<span class="l"><a class="anc" name="8534" href="#8534">[8534]</a><span class="cd"><span class="i">LDY</span> <span class="o"><a href="RAM.html#CurrentSprites_HitBoxTypes">CurrentSprites_HitBoxTypes</a>,X</span></span><span class="ce">; Load the hitbox type for the current sprite.</span></span>
+<span class="l"><a class="anc" name="8537" href="#8537">[8537]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="RAM.html#CurrentSprites_YPos">CurrentSprites_YPos</a>,X</span></span><span class="ce">; Load the sprite's Y position.</span></span>
 <span class="l"><a class="anc" name="8539" href="#8539">[8539]</a><span class="cd"><span class="i">CLC</span></span></span>
-<span class="l"><a class="anc" name="853a" href="#853a">[853a]</a><span class="cd"><span class="i">ADC</span> <span class="o"><a href="#SPRITE_HITBOX_HEIGHTS">SPRITE_HITBOX_HEIGHTS</a>,Y</span></span></span>
+<span class="l"><a class="anc" name="853a" href="#853a">[853a]</a><span class="cd"><span class="i">ADC</span> <span class="o"><a href="#SPRITE_HITBOX_HEIGHTS">SPRITE_HITBOX_HEIGHTS</a>,Y</span></span><span class="ce">; Add the hitbox height.</span></span>
 <span class="l"><a class="anc" name="853d" href="#853d">[853d]</a><span class="cd"><span class="i">CLC</span></span></span>
-<span class="l"><a class="anc" name="853e" href="#853e">[853e]</a><span class="cd"><span class="i">ADC</span> <span class="o">#$10</span></span></span>
-<span class="l"><a class="anc" name="8540" href="#8540">[8540]</a><span class="cd"><span class="i">JMP</span> <span class="o"><a href="#FUN_PRG14__854c">FUN_PRG14__854c</a></span></span></span>
+<span class="l"><a class="anc" name="853e" href="#853e">[853e]</a><span class="cd"><span class="i">ADC</span> <span class="o">#$10</span></span><span class="ce">; Add 16 (block height).</span></span>
+<span class="l"><a class="anc" name="8540" href="#8540">[8540]</a><span class="cd"><span class="i">JMP</span> <span class="o"><a href="#Sprites_CheckPlacementInvalidAtY">Sprites_CheckPlacementInvalidAtY</a></span></span><span class="ce">; Check if the sprite can move to that position.</span></span>
 <span class="l"></span>
-</pre><pre><a name="Sprites_CanSpriteWalk"></a><div class="cp">;============================================================================
-; TODO: Document Sprites_CanSpriteWalk
+</pre><pre><a name="Sprites_CanMoveDownByHitbox"></a><div class="cp">;============================================================================
+; TODO: Document Sprites_CanMoveDownByHitbox
 ;
 ; INPUTS:
 ;     X
@@ -1517,45 +1683,101 @@ pre {
 ;     A
 ;
 ; XREFS:
-;     <a href="#FUN_PRG14__84f4">FUN_PRG14__84f4</a>
+;     <a href="#DEADCODE_FUN_PRG14__84f4">DEADCODE_FUN_PRG14__84f4</a>
 ;     <a href="#SpriteBehavior_Ishiisu_Something_915b">SpriteBehavior_Ishiisu_Something_915b</a>
 ;     <a href="#Sprites_SetCurrentSpriteCanMove">Sprites_SetCurrentSpriteCanMove</a>
 ;============================================================================
-</div><span class="l"><a class="anc" name="8543" href="#8543">[8543]</a><a href="#Sprites_CanSpriteWalk" class="la">Sprites_CanSpriteWalk:</a><span class="ce">; [$8543]</span></span>
-<span class="l"><a class="anc" name="8543" href="#8543">[8543]</a><span class="cd"><span class="i">LDY</span> <span class="o"><a href="RAM.html#CurrentSprites_HitBoxTypes">CurrentSprites_HitBoxTypes</a>,X</span></span></span>
-<span class="l"><a class="anc" name="8546" href="#8546">[8546]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="RAM.html#CurrentSprites_YPos">CurrentSprites_YPos</a>,X</span></span></span>
+</div><span class="l"><a class="anc" name="8543" href="#8543">[8543]</a><a href="#Sprites_CanMoveDownByHitbox" class="la">Sprites_CanMoveDownByHitbox:</a><span class="ce">; [$8543]</span></span>
+<span class="l"><a class="anc" name="8543" href="#8543">[8543]</a><span class="cd"><span class="i">LDY</span> <span class="o"><a href="RAM.html#CurrentSprites_HitBoxTypes">CurrentSprites_HitBoxTypes</a>,X</span></span><span class="ce">; Load the hitbox type for the current sprite.</span></span>
+<span class="l"><a class="anc" name="8546" href="#8546">[8546]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="RAM.html#CurrentSprites_YPos">CurrentSprites_YPos</a>,X</span></span><span class="ce">; Load the sprite's Y position.</span></span>
 <span class="l"><a class="anc" name="8548" href="#8548">[8548]</a><span class="cd"><span class="i">CLC</span></span></span>
-<span class="l"><a class="anc" name="8549" href="#8549">[8549]</a><span class="cd"><span class="i">ADC</span> <span class="o"><a href="#SPRITE_HITBOX_HEIGHTS">SPRITE_HITBOX_HEIGHTS</a>,Y</span></span></span>
+<span class="l"><a class="anc" name="8549" href="#8549">[8549]</a><span class="cd"><span class="i">ADC</span> <span class="o"><a href="#SPRITE_HITBOX_HEIGHTS">SPRITE_HITBOX_HEIGHTS</a>,Y</span></span><span class="ce">; Add the hitbox height.</span></span>
 <span class="l"></span>
 <div class="c">;
 ; v-- Fall through --v
 ;
 </div><span class="l"></span>
-</pre><pre><a name="FUN_PRG14__854c"></a><div class="cp">;============================================================================
-; TODO: Document FUN_PRG14__854c
+<span class="l"></span>
+</pre><pre><a name="Sprites_CheckPlacementInvalidAtY"></a><div class="cp">;============================================================================
+; Check whether the sprite can be placed at a given Y position.
+;
+; This will take the given Y position, round the X and Y to
+; the nearest block position, and check whether the entity is
+; capable of being placed there (avoiding impassable blocks and
+; ladders).
 ;
 ; INPUTS:
-;     A
-;     X
+;     A:
+;         The provided Y position to check.
+;
+;     X:
+;         The index of the sprite to check.
+;
+;     <a href="RAM.html#CurrentSprites_Flags">CurrentSprites_Flags</a>:
+;         The sprite's flags.
+;
+;     <a href="RAM.html#CurrentSprites_XPos_Full">CurrentSprites_XPos_Full</a>
+;         The block X position of the sprite.
+;
+;     <a href="#SPRITE_CHECK_PLACEMENT_X_OFFSETS_BY_FACING">SPRITE_CHECK_PLACEMENT_X_OFFSETS_BY_FACING</a>:
+;         Offset table to help round X positions of sprites.
 ;
 ; OUTPUTS:
-;     TODO
+;     A:
+;         0 if the sprite can be moved there.
+;         1 if it cannot.
+;
+;     <a href="RAM.html#Arg_PixelPosX">Arg_PixelPosX</a>:
+;     <a href="RAM.html#Arg_PixelPosY">Arg_PixelPosY</a>:
+;         Clobbered.
+;
+; CALLS:
+;     <a href="PRG15_MIRROR.html#Area_ConvertPixelsToBlockPos">Area_ConvertPixelsToBlockPos</a>
+;     <a href="PRG15_MIRROR.html#Area_IsBlockImpassableOrLadder">Area_IsBlockImpassableOrLadder</a>
 ;
 ; XREFS:
-;     <a href="#Sprite_CanClimb">Sprite_CanClimb</a>
+;     <a href="#DEADCODE_Sprites_CanMoveDownBelowHitbox">DEADCODE_Sprites_CanMoveDownBelowHitbox</a>
 ;============================================================================
-</div><span class="l"><a class="anc" name="854c" href="#854c">[854c]</a><a href="#FUN_PRG14__854c" class="la">FUN_PRG14__854c:</a><span class="ce">; [$854c]</span></span>
-<span class="l"><a class="anc" name="854c" href="#854c">[854c]</a><span class="cd"><span class="i">STA</span> <span class="o"><a href="RAM.html#Arg_PixelPosY">Arg_PixelPosY</a></span></span></span>
-<span class="l"><a class="anc" name="854e" href="#854e">[854e]</a><span class="cd"><span class="i">INC</span> <span class="o"><a href="RAM.html#Arg_PixelPosY">Arg_PixelPosY</a></span></span></span>
-<span class="l"><a class="anc" name="8550" href="#8550">[8550]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="RAM.html#CurrentSprites_Flags">CurrentSprites_Flags</a>,X</span></span></span>
-<span class="l"><a class="anc" name="8553" href="#8553">[8553]</a><span class="cd"><span class="i">AND</span> <span class="o">#$01</span></span></span>
-<span class="l"><a class="anc" name="8555" href="#8555">[8555]</a><span class="cd"><span class="i">TAY</span></span></span>
-<span class="l"><a class="anc" name="8556" href="#8556">[8556]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="RAM.html#CurrentSprites_XPos_Full">CurrentSprites_XPos_Full</a>,X</span></span></span>
+</div><span class="l"><a class="anc" name="854c" href="#854c">[854c]</a><a href="#Sprites_CheckPlacementInvalidAtY" class="la">Sprites_CheckPlacementInvalidAtY:</a><span class="ce">; [$854c]</span></span>
+<div class="c">;
+; Take the provided Y value (as the A register) and
+; increment it by 1 for the block position check. It's
+; dropped by 1 in order to check the next block down if
+; it's anywhere but at the very top of its current block.
+;
+</div><span class="l"><a class="anc" name="854c" href="#854c">[854c]</a><span class="cd"><span class="i">STA</span> <span class="o"><a href="RAM.html#Arg_PixelPosY">Arg_PixelPosY</a></span></span><span class="ce">; Store A as the Y argument for placement checks.</span></span>
+<span class="l"><a class="anc" name="854e" href="#854e">[854e]</a><span class="cd"><span class="i">INC</span> <span class="o"><a href="RAM.html#Arg_PixelPosY">Arg_PixelPosY</a></span></span><span class="ce">; Increment by 1.</span></span>
+<span class="l"></span>
+<span class="l"></span>
+<div class="c">;
+; Calculate the X position to check.
+;
+; If the sprite is facing right, we'll add 15, which is 1
+; less than the block width. This keeps it on the same block
+; if at the left-most edge, but checks the next block if
+; overlapping.
+;
+; If the sprite is facing left, nothing will be added. We
+; can safely assume it's on the right block for checking
+; purposes.
+;
+</div><span class="l"><a class="anc" name="8550" href="#8550">[8550]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="RAM.html#CurrentSprites_Flags">CurrentSprites_Flags</a>,X</span></span><span class="ce">; Load the sprite's flags.</span></span>
+<span class="l"><a class="anc" name="8553" href="#8553">[8553]</a><span class="cd"><span class="i">AND</span> <span class="o">#$01</span></span><span class="ce">; Keep the Facing bit.</span></span>
+<span class="l"><a class="anc" name="8555" href="#8555">[8555]</a><span class="cd"><span class="i">TAY</span></span><span class="ce">; Transfer to Y.</span></span>
+<span class="l"><a class="anc" name="8556" href="#8556">[8556]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="RAM.html#CurrentSprites_XPos_Full">CurrentSprites_XPos_Full</a>,X</span></span><span class="ce">; Load the sprite's X position.</span></span>
 <span class="l"><a class="anc" name="8558" href="#8558">[8558]</a><span class="cd"><span class="i">CLC</span></span></span>
-<span class="l"><a class="anc" name="8559" href="#8559">[8559]</a><span class="cd"><span class="i">ADC</span> <span class="o"><a href="#SPRITE_WALK_PIXEL_MOVEMENT_TABLE">SPRITE_WALK_PIXEL_MOVEMENT_TABLE</a>,Y</span></span></span>
-<span class="l"><a class="anc" name="855c" href="#855c">[855c]</a><span class="cd"><span class="i">STA</span> <span class="o"><a href="RAM.html#Arg_PixelPosX">Arg_PixelPosX</a></span></span></span>
-<span class="l"><a class="anc" name="855e" href="#855e">[855e]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="PRG15_MIRROR.html#Area_ConvertPixelsToBlockPos">Area_ConvertPixelsToBlockPos</a></span></span></span>
-<span class="l"><a class="anc" name="8561" href="#8561">[8561]</a><span class="cd"><span class="i">JMP</span> <span class="o"><a href="PRG15_MIRROR.html#Area_IsBlockImpassableOrLadder">Area_IsBlockImpassableOrLadder</a></span></span></span>
+<span class="l"><a class="anc" name="8559" href="#8559">[8559]</a><span class="cd"><span class="i">ADC</span> <span class="o"><a href="#SPRITE_CHECK_PLACEMENT_X_OFFSETS_BY_FACING">SPRITE_CHECK_PLACEMENT_X_OFFSETS_BY_FACING</a>,Y</span></span><span class="ce">; Add an offset based on the facing bit.</span></span>
+<span class="l"><a class="anc" name="855c" href="#855c">[855c]</a><span class="cd"><span class="i">STA</span> <span class="o"><a href="RAM.html#Arg_PixelPosX">Arg_PixelPosX</a></span></span><span class="ce">; Store as the X argument for checks.</span></span>
+<span class="l"></span>
+<span class="l"></span>
+<div class="c">;
+; Convert the pixel positions to a block position, and
+; then set a result based on whether the resulting block is
+; impassable/a ladder (in other words, the entity can't move
+; there).
+;
+</div><span class="l"><a class="anc" name="855e" href="#855e">[855e]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="PRG15_MIRROR.html#Area_ConvertPixelsToBlockPos">Area_ConvertPixelsToBlockPos</a></span></span><span class="ce">; Convert the pixels to a block position.</span></span>
+<span class="l"><a class="anc" name="8561" href="#8561">[8561]</a><span class="cd"><span class="i">JMP</span> <span class="o"><a href="PRG15_MIRROR.html#Area_IsBlockImpassableOrLadder">Area_IsBlockImpassableOrLadder</a></span></span><span class="ce">; Check if the result is either impassable or a ladder.</span></span>
 <span class="l"></span>
 </pre><pre><a name="Sprite_MoveVertAndFlipIfNeeded"></a><div class="cp">;============================================================================
 ; TODO: Document Sprite_MoveVertAndFlipIfNeeded
@@ -1830,7 +2052,7 @@ pre {
 <span class="l"><a class="anc" name="8622" href="#8622">[8622]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="RAM.html#CurrentSprites_Flags">CurrentSprites_Flags</a>,X</span></span><span class="ce">; A = Current sprite's flags.</span></span>
 <span class="l"><a class="anc" name="8625" href="#8625">[8625]</a><span class="cd"><span class="i">AND</span> <span class="o">#$02</span></span></span>
 <span class="l"><a class="anc" name="8627" href="#8627">[8627]</a><span class="cd"><span class="i">BNE</span> <span class="o"><a href="#@LAB_PRG14__863d">@LAB_PRG14__863d</a></span></span></span>
-<span class="l"><a class="anc" name="8629" href="#8629">[8629]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#Sprites_CanSpriteWalk">Sprites_CanSpriteWalk</a></span></span></span>
+<span class="l"><a class="anc" name="8629" href="#8629">[8629]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#Sprites_CanMoveDownByHitbox">Sprites_CanMoveDownByHitbox</a></span></span></span>
 <span class="l"><a class="anc" name="862c" href="#862c">[862c]</a><span class="cd"><span class="i">STA</span> <span class="o"><a href="RAM.html#Blocks_Result">Blocks_Result</a></span></span></span>
 <span class="l"><a class="anc" name="862e" href="#862e">[862e]</a><span class="cd"><span class="i">BNE</span> <span class="o"><a href="#@LAB_PRG14__863d">@LAB_PRG14__863d</a></span></span></span>
 <span class="l"><a class="anc" name="8630" href="#8630">[8630]</a><span class="cd"><span class="i">LDX</span> <span class="o">a:<a href="RAM.html#CurrentSpriteIndex">CurrentSpriteIndex</a></span></span></span>
@@ -10337,8 +10559,8 @@ Set Carry = overflow.</span></span>
 <span class="l"><a class="anc" name="a5ef" href="#a5ef">[a5ef]</a><span class="cd"><span class="i">pointer</span> <span class="o"><a href="#SpriteBehavior_WalkForward">SpriteBehavior_WalkForward</a>-1</span></span><span class="ce">; [4]: Common</span></span>
 <span class="l"><a class="anc" name="a5f1" href="#a5f1">[a5f1]</a><span class="cd"><span class="i">pointer</span> <span class="o"><a href="#SpriteBehavior_Return">SpriteBehavior_Return</a>-1</span></span><span class="ce">; [5]:</span></span>
 <span class="l"><a class="anc" name="a5f3" href="#a5f3">[a5f3]</a><span class="cd"><span class="i">pointer</span> <span class="o"><a href="#SpriteBehavior_EnemyUnused18">SpriteBehavior_EnemyUnused18</a>-1</span></span><span class="ce">; [6]:</span></span>
-<span class="l"><a class="anc" name="a5f5" href="#a5f5">[a5f5]</a><span class="cd"><span class="i">pointer</span> <span class="o"><a href="#SpriteBehavior_LightningBallOrCharron">SpriteBehavior_LightningBallOrCharron</a>-1</span></span><span class="ce">; [7]:</span></span>
-<span class="l"><a class="anc" name="a5f7" href="#a5f7">[a5f7]</a><span class="cd"><span class="i">pointer</span> <span class="o"><a href="#SpriteBehavior_LightningBallOrCharron">SpriteBehavior_LightningBallOrCharron</a>-1</span></span><span class="ce">; [8]:</span></span>
+<span class="l"><a class="anc" name="a5f5" href="#a5f5">[a5f5]</a><span class="cd"><span class="i">pointer</span> <span class="o"><a href="#SpriteBehavior_EnemyDeath">SpriteBehavior_EnemyDeath</a>-1</span></span><span class="ce">; [7]:</span></span>
+<span class="l"><a class="anc" name="a5f7" href="#a5f7">[a5f7]</a><span class="cd"><span class="i">pointer</span> <span class="o"><a href="#SpriteBehavior_EnemyDeath">SpriteBehavior_EnemyDeath</a>-1</span></span><span class="ce">; [8]:</span></span>
 <span class="l"><a class="anc" name="a5f9" href="#a5f9">[a5f9]</a><span class="cd"><span class="i">pointer</span> <span class="o"><a href="#SpriteBehavior_Hop">SpriteBehavior_Hop</a>-1</span></span><span class="ce">; [9]: Enemy: Monodron</span></span>
 <span class="l"><a class="anc" name="a5fb" href="#a5fb">[a5fb]</a><span class="cd"><span class="i">pointer</span> <span class="o"><a href="#SpriteBehavior_Ripasheiku">SpriteBehavior_Ripasheiku</a>-1</span></span><span class="ce">; [10]: Boss: Dragon boss guy</span></span>
 <span class="l"><a class="anc" name="a5fd" href="#a5fd">[a5fd]</a><span class="cd"><span class="i">pointer</span> <span class="o"><a href="#SpriteBehavior_Return">SpriteBehavior_Return</a>-1</span></span><span class="ce">; [11]:</span></span>
@@ -11210,6 +11432,7 @@ If overflow, C = 1</span></span>
 ;     <a href="#SpriteBehavior_BounceAndExpire">SpriteBehavior_BounceAndExpire</a>
 ;     <a href="#SpriteBehavior_BuzzAround">SpriteBehavior_BuzzAround</a>
 ;     <a href="#SpriteBehavior_DragonSlayerDroppedByKingGrieve">SpriteBehavior_DragonSlayerDroppedByKingGrieve</a>
+;     <a href="#SpriteBehavior_EnemyDeath">SpriteBehavior_EnemyDeath</a>
 ;     <a href="#SpriteBehavior_EnemyMagic">SpriteBehavior_EnemyMagic</a>
 ;     <a href="#SpriteBehavior_EnemyUnused36">SpriteBehavior_EnemyUnused36</a>
 ;     <a href="#SpriteBehavior_EnemyUnused39">SpriteBehavior_EnemyUnused39</a>
@@ -11224,7 +11447,6 @@ If overflow, C = 1</span></span>
 ;     <a href="#SpriteBehavior_Hop">SpriteBehavior_Hop</a>
 ;     <a href="#SpriteBehavior_Ishiisu">SpriteBehavior_Ishiisu</a>
 ;     <a href="#SpriteBehavior_KingGrieve">SpriteBehavior_KingGrieve</a>
-;     <a href="#SpriteBehavior_LightningBallOrCharron">SpriteBehavior_LightningBallOrCharron</a>
 ;     <a href="#SpriteBehavior_Lilith">SpriteBehavior_Lilith</a>
 ;     <a href="#SpriteBehavior_Magman">SpriteBehavior_Magman</a>
 ;     <a href="#SpriteBehavior_MattockDroppedFromRipasheiku">SpriteBehavior_MattockDroppedFromRipasheiku</a>
@@ -11324,6 +11546,7 @@ If overflow, C = 1</span></span>
 ;     <a href="#SpriteBehavior_BounceAndExpire">SpriteBehavior_BounceAndExpire</a>
 ;     <a href="#SpriteBehavior_BuzzAround">SpriteBehavior_BuzzAround</a>
 ;     <a href="#SpriteBehavior_DragonSlayerDroppedByKingGrieve">SpriteBehavior_DragonSlayerDroppedByKingGrieve</a>
+;     <a href="#SpriteBehavior_EnemyDeath">SpriteBehavior_EnemyDeath</a>
 ;     <a href="#SpriteBehavior_EnemyMagic">SpriteBehavior_EnemyMagic</a>
 ;     <a href="#SpriteBehavior_EnemyUnused36">SpriteBehavior_EnemyUnused36</a>
 ;     <a href="#SpriteBehavior_EnemyUnused39">SpriteBehavior_EnemyUnused39</a>
@@ -11336,7 +11559,6 @@ If overflow, C = 1</span></span>
 ;     <a href="#SpriteBehavior_Hop">SpriteBehavior_Hop</a>
 ;     <a href="#SpriteBehavior_Ishiisu">SpriteBehavior_Ishiisu</a>
 ;     <a href="#SpriteBehavior_KingGrieve">SpriteBehavior_KingGrieve</a>
-;     <a href="#SpriteBehavior_LightningBallOrCharron">SpriteBehavior_LightningBallOrCharron</a>
 ;     <a href="#SpriteBehavior_Lilith">SpriteBehavior_Lilith</a>
 ;     <a href="#SpriteBehavior_Magman">SpriteBehavior_Magman</a>
 ;     <a href="#SpriteBehavior_MattockDroppedFromRipasheiku">SpriteBehavior_MattockDroppedFromRipasheiku</a>
@@ -12140,8 +12362,8 @@ If overflow, C = 1</span></span>
 <span class="l"><a class="anc" name="abca" href="#abca">[abca]</a><span class="cd"><span class="i">.byte</span> <span class="o">$e0</span></span><span class="ce">; [9]:</span></span>
 <span class="l"><a class="anc" name="abcb" href="#abcb">[abcb]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [10]:</span></span>
 <span class="l"></span>
-</pre><pre><a name="SpriteBehavior_LightningBallOrCharron"></a><div class="cp">;============================================================================
-; TODO: Document SpriteBehavior_LightningBallOrCharron
+</pre><pre><a name="SpriteBehavior_EnemyDeath"></a><div class="cp">;============================================================================
+; TODO: Document SpriteBehavior_EnemyDeath
 ;
 ; INPUTS:
 ;     X
@@ -12153,7 +12375,7 @@ If overflow, C = 1</span></span>
 ;     <a href="#SPRITE_BEHAVIORS">SPRITE_BEHAVIORS</a> [$PRG14::a5f5]
 ;     <a href="#SPRITE_BEHAVIORS">SPRITE_BEHAVIORS</a> [$PRG14::a5f7]
 ;============================================================================
-</div><span class="l"><a class="anc" name="abcc" href="#abcc">[abcc]</a><a href="#SpriteBehavior_LightningBallOrCharron" class="la">SpriteBehavior_LightningBallOrCharron:</a><span class="ce">; [$abcc]</span></span>
+</div><span class="l"><a class="anc" name="abcc" href="#abcc">[abcc]</a><a href="#SpriteBehavior_EnemyDeath" class="la">SpriteBehavior_EnemyDeath:</a><span class="ce">; [$abcc]</span></span>
 <span class="l"><a class="anc" name="abcc" href="#abcc">[abcc]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#Sprite_IsBehaviorNotReady">Sprite_IsBehaviorNotReady</a></span></span></span>
 <span class="l"><a class="anc" name="abcf" href="#abcf">[abcf]</a><span class="cd"><span class="i">BNE</span> <span class="o"><a href="#@LAB_PRG14__abd9">@LAB_PRG14__abd9</a></span></span></span>
 <span class="l"><a class="anc" name="abd1" href="#abd1">[abd1]</a><span class="cd"><span class="i">LDA</span> <span class="o">#$00</span></span></span>
@@ -12190,8 +12412,8 @@ If overflow, C = 1</span></span>
 ;     <a href="#Player_HitSpriteWithWeapon">Player_HitSpriteWithWeapon</a>
 ;============================================================================
 </div><span class="l"><a class="anc" name="abec" href="#abec">[abec]</a><a href="#Sprite_ShowBigEnemyDeathByMagicOrWeapon" class="la">Sprite_ShowBigEnemyDeathByMagicOrWeapon:</a><span class="ce">; [$abec]</span></span>
-<span class="l"><a class="anc" name="abec" href="#abec">[abec]</a><span class="cd"><span class="i">LDA</span> <span class="o">#$64</span></span></span>
-<span class="l"><a class="anc" name="abee" href="#abee">[abee]</a><span class="cd"><span class="i">JMP</span> <span class="o"><a href="#Sprite_SetDeathEntity">Sprite_SetDeathEntity</a></span></span></span>
+<span class="l"><a class="anc" name="abec" href="#abec">[abec]</a><span class="cd"><span class="i">LDA</span> <span class="o">#$64</span></span><span class="ce">; 0x64 == Boss death effect.</span></span>
+<span class="l"><a class="anc" name="abee" href="#abee">[abee]</a><span class="cd"><span class="i">JMP</span> <span class="o"><a href="#Sprite_SetDeathEntity">Sprite_SetDeathEntity</a></span></span><span class="ce">; Replace the enemy with it.</span></span>
 <span class="l"></span>
 <span class="l"></span>
 </pre><pre><a name="Sprite_ShowNormalEnemyDeathByWeapon"></a><div class="cp">;============================================================================
@@ -12210,8 +12432,8 @@ If overflow, C = 1</span></span>
 ;     <a href="#Player_HitSpriteWithWeapon">Player_HitSpriteWithWeapon</a>
 ;============================================================================
 </div><span class="l"><a class="anc" name="abf1" href="#abf1">[abf1]</a><a href="#Sprite_ShowNormalEnemyDeathByWeapon" class="la">Sprite_ShowNormalEnemyDeathByWeapon:</a><span class="ce">; [$abf1]</span></span>
-<span class="l"><a class="anc" name="abf1" href="#abf1">[abf1]</a><span class="cd"><span class="i">LDA</span> <span class="o">#$13</span></span></span>
-<span class="l"><a class="anc" name="abf3" href="#abf3">[abf3]</a><span class="cd"><span class="i">JMP</span> <span class="o"><a href="#Sprite_SetDeathEntity">Sprite_SetDeathEntity</a></span></span></span>
+<span class="l"><a class="anc" name="abf1" href="#abf1">[abf1]</a><span class="cd"><span class="i">LDA</span> <span class="o">#$13</span></span><span class="ce">; 0x13 == Enemy death effect.</span></span>
+<span class="l"><a class="anc" name="abf3" href="#abf3">[abf3]</a><span class="cd"><span class="i">JMP</span> <span class="o"><a href="#Sprite_SetDeathEntity">Sprite_SetDeathEntity</a></span></span><span class="ce">; Replace the enemy with it.</span></span>
 <span class="l"></span>
 <span class="l"></span>
 </pre><pre><a name="Sprite_ShowNormalEnemyDeathByMagic"></a><div class="cp">;============================================================================
@@ -12270,31 +12492,42 @@ If overflow, C = 1</span></span>
 <span class="l"><a class="anc" name="ac1b" href="#ac1b">[ac1b]</a><span class="cd"><span class="i">STA</span> <span class="o"><a href="RAM.html#CurrentSprites_BehaviorData2">CurrentSprites_BehaviorData2</a>,X</span></span></span>
 <span class="l"><a class="anc" name="ac1e" href="#ac1e">[ac1e]</a><span class="cd"><span class="i">JMP</span> <span class="o"><a href="#Sprite_SetBehaviorNotReady">Sprite_SetBehaviorNotReady</a></span></span></span>
 <span class="l"></span>
+<span class="l"></span>
 </pre><pre><a name="Sprite_HandleDeathDropIfPossible"></a><div class="cp">;============================================================================
-; TODO: Document Sprite_HandleDeathDropIfPossible
+; Check and handle dropping an item on an enemy's death.
+;
+; This will check if there's room on the screen for a
+; drop and, if so, run the drop handler. That will then
+; check if a drop should be spawned by the enemy and, if
+; so, spawn one.
 ;
 ; INPUTS:
-;     X
-;     Y
+;     ...
 ;
 ; OUTPUTS:
-;     TODO
+;     <a href="RAM.html#CurrentSpriteIndex">CurrentSpriteIndex</a>:
+;         The new current sprite index, reflecting the
+;         dropped item or dead sprite.
+;
+; CALLS:
+;     <a href="#Sprites_HasMaxOnScreen">Sprites_HasMaxOnScreen</a>
+;     <a href="#Sprite_RunDeathDropHandler">Sprite_RunDeathDropHandler</a>
 ;
 ; XREFS:
 ;     <a href="#SpriteBehavior_BossDeath">SpriteBehavior_BossDeath</a>
-;     <a href="#SpriteBehavior_LightningBallOrCharron">SpriteBehavior_LightningBallOrCharron</a>
+;     <a href="#SpriteBehavior_EnemyDeath">SpriteBehavior_EnemyDeath</a>
 ;============================================================================
 </div><span class="l"><a class="anc" name="ac21" href="#ac21">[ac21]</a><a href="#Sprite_HandleDeathDropIfPossible" class="la">Sprite_HandleDeathDropIfPossible:</a><span class="ce">; [$ac21]</span></span>
-<span class="l"><a class="anc" name="ac21" href="#ac21">[ac21]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#Sprites_HasMaxOnScreen">Sprites_HasMaxOnScreen</a></span></span></span>
-<span class="l"><a class="anc" name="ac24" href="#ac24">[ac24]</a><span class="cd"><span class="i">BCS</span> <span class="o"><a href="#@_return">@_return</a></span></span></span>
-<span class="l"><a class="anc" name="ac26" href="#ac26">[ac26]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#Maybe_Sprite_HandleDeathDrop">Maybe_Sprite_HandleDeathDrop</a></span></span></span>
-<span class="l"><a class="anc" name="ac29" href="#ac29">[ac29]</a><span class="cd"><span class="i">LDX</span> <span class="o">a:<a href="RAM.html#CurrentSpriteIndex">CurrentSpriteIndex</a></span></span></span>
+<span class="l"><a class="anc" name="ac21" href="#ac21">[ac21]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#Sprites_HasMaxOnScreen">Sprites_HasMaxOnScreen</a></span></span><span class="ce">; Check if there's room for sprites on the screen.</span></span>
+<span class="l"><a class="anc" name="ac24" href="#ac24">[ac24]</a><span class="cd"><span class="i">BCS</span> <span class="o"><a href="#@_return">@_return</a></span></span><span class="ce">; If not, return.</span></span>
+<span class="l"><a class="anc" name="ac26" href="#ac26">[ac26]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#Sprite_RunDeathDropHandler">Sprite_RunDeathDropHandler</a></span></span><span class="ce">; There's room, so run the drop handler to possibly spawn a drop.</span></span>
+<span class="l"><a class="anc" name="ac29" href="#ac29">[ac29]</a><span class="cd"><span class="i">LDX</span> <span class="o">a:<a href="RAM.html#CurrentSpriteIndex">CurrentSpriteIndex</a></span></span><span class="ce">; Restore the current sprite index to X.</span></span>
 <span class="l"></span>
 <a name=":ac2c:@_return"></a><span class="l"><a class="anc" name="ac2c" href="#ac2c">[ac2c]</a><a href="#:ac2c:@_return" class="lla">@_return:</a><span class="ce">; [$ac2c]</span></span>
 <span class="l"><a class="anc" name="ac2c" href="#ac2c">[ac2c]</a><span class="cd"><span class="i">RTS</span></span></span>
 <span class="l"></span>
-</pre><pre><a name="Maybe_Sprite_HandleDeathDrop"></a><div class="cp">;============================================================================
-; TODO: Document Maybe_Sprite_HandleDeathDrop
+</pre><pre><a name="Sprite_RunDeathDropHandler"></a><div class="cp">;============================================================================
+; TODO: Document Sprite_RunDeathDropHandler
 ;
 ; INPUTS:
 ;     X
@@ -12306,17 +12539,17 @@ If overflow, C = 1</span></span>
 ; XREFS:
 ;     <a href="#Sprite_HandleDeathDropIfPossible">Sprite_HandleDeathDropIfPossible</a>
 ;============================================================================
-</div><span class="l"><a class="anc" name="ac2d" href="#ac2d">[ac2d]</a><a href="#Maybe_Sprite_HandleDeathDrop" class="la">Maybe_Sprite_HandleDeathDrop:</a><span class="ce">; [$ac2d]</span></span>
-<span class="l"><a class="anc" name="ac2d" href="#ac2d">[ac2d]</a><span class="cd"><span class="i">STY</span> <span class="o"><a href="RAM.html#Temp_00">Temp_00</a></span></span></span>
-<span class="l"><a class="anc" name="ac2f" href="#ac2f">[ac2f]</a><span class="cd"><span class="i">LDY</span> <span class="o"><a href="RAM.html#CurrentSprites_InternalBehaviorStates">CurrentSprites_InternalBehaviorStates</a>,X</span></span></span>
-<span class="l"><a class="anc" name="ac32" href="#ac32">[ac32]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="#BYTE_ARRAY_PRG14__b672">BYTE_ARRAY_PRG14__b672</a>,Y</span></span></span>
+</div><span class="l"><a class="anc" name="ac2d" href="#ac2d">[ac2d]</a><a href="#Sprite_RunDeathDropHandler" class="la">Sprite_RunDeathDropHandler:</a><span class="ce">; [$ac2d]</span></span>
+<span class="l"><a class="anc" name="ac2d" href="#ac2d">[ac2d]</a><span class="cd"><span class="i">STY</span> <span class="o"><a href="RAM.html#Temp_00">Temp_00</a></span></span><span class="ce">; Store the new sprite entity temporarily.</span></span>
+<span class="l"><a class="anc" name="ac2f" href="#ac2f">[ac2f]</a><span class="cd"><span class="i">LDY</span> <span class="o"><a href="RAM.html#CurrentSprites_InternalBehaviorStates">CurrentSprites_InternalBehaviorStates</a>,X</span></span><span class="ce">; Load the internal behavior state of the dead sprite.</span></span>
+<span class="l"><a class="anc" name="ac32" href="#ac32">[ac32]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="#SPRITE_ENTITY_DROP_VALUES_INDEX">SPRITE_ENTITY_DROP_VALUES_INDEX</a>,Y</span></span><span class="ce">; Load the index of the drop value for this new sprite.</span></span>
 <span class="l"><a class="anc" name="ac35" href="#ac35">[ac35]</a><span class="cd"><span class="i">CMP</span> <span class="o">#$ff</span></span></span>
 <span class="l"><a class="anc" name="ac37" href="#ac37">[ac37]</a><span class="cd"><span class="i">BEQ</span> <span class="o"><a href="#@_return">@_return</a></span></span></span>
 <span class="l"><a class="anc" name="ac39" href="#ac39">[ac39]</a><span class="cd"><span class="i">CMP</span> <span class="o">#$40</span></span></span>
 <span class="l"><a class="anc" name="ac3b" href="#ac3b">[ac3b]</a><span class="cd"><span class="i">BCS</span> <span class="o"><a href="#@_return">@_return</a></span></span></span>
 <span class="l"><a class="anc" name="ac3d" href="#ac3d">[ac3d]</a><span class="cd"><span class="i">STA</span> <span class="o"><a href="RAM.html#Temp_01">Temp_01</a></span></span></span>
 <span class="l"><a class="anc" name="ac3f" href="#ac3f">[ac3f]</a><span class="cd"><span class="i">TAY</span></span></span>
-<span class="l"><a class="anc" name="ac40" href="#ac40">[ac40]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="#SPRITE_MAYBE_DROP_RANDOM_DATA">SPRITE_MAYBE_DROP_RANDOM_DATA</a>,Y</span></span></span>
+<span class="l"><a class="anc" name="ac40" href="#ac40">[ac40]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="#SPRITE_DROP_VALUES">SPRITE_DROP_VALUES</a>,Y</span></span></span>
 <span class="l"><a class="anc" name="ac43" href="#ac43">[ac43]</a><span class="cd"><span class="i">LDY</span> <span class="o"><a href="RAM.html#Temp_00">Temp_00</a></span></span></span>
 <span class="l"><a class="anc" name="ac45" href="#ac45">[ac45]</a><span class="cd"><span class="i">STA</span> <span class="o"><a href="RAM.html#CurrentSprites_Values">CurrentSprites_Values</a>,Y</span></span></span>
 <span class="l"><a class="anc" name="ac48" href="#ac48">[ac48]</a><span class="cd"><span class="i">LDA</span> <span class="o"><a href="RAM.html#CurrentSprites_XPos_Full">CurrentSprites_XPos_Full</a>,X</span></span></span>
@@ -12350,19 +12583,19 @@ If overflow, C = 1</span></span>
 ;
 ;
 ; XREFS:
-;     <a href="#Maybe_Sprite_HandleDeathDrop">Maybe_Sprite_HandleDeathDrop</a>
+;     <a href="#Sprite_RunDeathDropHandler">Sprite_RunDeathDropHandler</a>
 ;============================================================================
 </div><span class="l"></span>
 <div class="c">;
 ; XREFS:
-;     <a href="#Maybe_Sprite_HandleDeathDrop">Maybe_Sprite_HandleDeathDrop</a>
+;     <a href="#Sprite_RunDeathDropHandler">Sprite_RunDeathDropHandler</a>
 ;
 </div><span class="l"><a class="anc" name="ac71" href="#ac71">[ac71]</a><a href="#SPRITE_DROP_HANDLERS" class="la">SPRITE_DROP_HANDLERS:</a><span class="ce">; [$ac71]</span></span>
 <span class="l"><a class="anc" name="ac71" href="#ac71">[ac71]</a><span class="cd"><span class="i">pointer</span> <span class="o"><a href="#Sprites_ReplaceWithCoinDrop">Sprites_ReplaceWithCoinDrop</a>-1</span></span><span class="ce">; <a href="#Sprites_ReplaceWithCoinDrop">Sprites_ReplaceWithCoinDrop</a> [$PRG14::ac71]</span></span>
 <span class="l"></span>
 <a name="SPRITE_DROP_HANDLERS_LAST"></a><div class="c">;
 ; XREFS:
-;     <a href="#Maybe_Sprite_HandleDeathDrop">Maybe_Sprite_HandleDeathDrop</a>
+;     <a href="#Sprite_RunDeathDropHandler">Sprite_RunDeathDropHandler</a>
 ;
 </div><span class="l"><a class="anc" name="ac73" href="#ac73">[ac73]</a><a href="#SPRITE_DROP_HANDLERS_LAST" class="la">SPRITE_DROP_HANDLERS_LAST:</a><span class="ce">; [$ac73]</span></span>
 <span class="l"><a class="anc" name="ac73" href="#ac73">[ac73]</a><span class="cd"><span class="i">pointer</span> <span class="o"><a href="#Sprite_ReplaceWithBreadDrop">Sprite_ReplaceWithBreadDrop</a>-1</span></span><span class="ce">; <a href="#Sprite_ReplaceWithBreadDrop">Sprite_ReplaceWithBreadDrop</a> [$PRG14::ac73]</span></span>
@@ -12616,11 +12849,21 @@ If overflow, C = 1</span></span>
 </div><span class="l"><a class="anc" name="aceb" href="#aceb">[aceb]</a><span class="cd"><span class="i">SEC</span></span><span class="ce">; Set C = 1</span></span>
 <span class="l"><a class="anc" name="acec" href="#acec">[acec]</a><span class="cd"><span class="i">RTS</span></span><span class="ce">; And return it.</span></span>
 <span class="l"></span>
-<a name="SPRITE_MAYBE_DROP_RANDOM_DATA"></a><div class="c">;
-; XREFS:
-;     <a href="#Maybe_Sprite_HandleDeathDrop">Maybe_Sprite_HandleDeathDrop</a>
+<span class="l"></span>
+<a name="SPRITE_DROP_VALUES"></a><div class="cp">;============================================================================
+; XXX Seems related to <a href="#SPRITE_ENTITY_DROP_VALUES_INDEX">SPRITE_ENTITY_DROP_VALUES_INDEX</a>.
 ;
-</div><span class="l"><a class="anc" name="aced" href="#aced">[aced]</a><a href="#SPRITE_MAYBE_DROP_RANDOM_DATA" class="la">SPRITE_MAYBE_DROP_RANDOM_DATA:</a><span class="ce">; [$aced]</span></span>
+; That table's values are indexes into here.
+;
+; XREFS:
+;     <a href="#Sprite_RunDeathDropHandler">Sprite_RunDeathDropHandler</a>
+;============================================================================
+</div><span class="l"></span>
+<div class="c">;
+; XREFS:
+;     <a href="#Sprite_RunDeathDropHandler">Sprite_RunDeathDropHandler</a>
+;
+</div><span class="l"><a class="anc" name="aced" href="#aced">[aced]</a><a href="#SPRITE_DROP_VALUES" class="la">SPRITE_DROP_VALUES:</a><span class="ce">; [$aced]</span></span>
 <span class="l"><a class="anc" name="aced" href="#aced">[aced]</a><span class="cd"><span class="i">.byte</span> <span class="o">$0a</span></span><span class="ce">; [0]:</span></span>
 <span class="l"><a class="anc" name="acee" href="#acee">[acee]</a><span class="cd"><span class="i">.byte</span> <span class="o">$0f</span></span><span class="ce">; [1]:</span></span>
 <span class="l"><a class="anc" name="acef" href="#acef">[acef]</a><span class="cd"><span class="i">.byte</span> <span class="o">$12</span></span><span class="ce">; [2]:</span></span>
@@ -15656,9 +15899,9 @@ If overflow, C = 1</span></span>
 <a name="SPRITE_HITBOX_HEIGHTS"></a><div class="c">;
 ; XREFS:
 ;     <a href="#CurrentSprite_CanMoveInDirection">CurrentSprite_CanMoveInDirection</a>
-;     <a href="#Sprite_CanClimb">Sprite_CanClimb</a>
+;     <a href="#DEADCODE_Sprites_CanMoveDownBelowHitbox">DEADCODE_Sprites_CanMoveDownBelowHitbox</a>
 ;     <a href="#Sprite_CheckHitByCastMagic">Sprite_CheckHitByCastMagic</a>
-;     <a href="#Sprites_CanSpriteWalk">Sprites_CanSpriteWalk</a>
+;     <a href="#Sprites_CanMoveDownByHitbox">Sprites_CanMoveDownByHitbox</a>
 ;     <a href="#Sprites_MoveRight__86c6">Sprites_MoveRight__86c6</a>
 ;
 </div><span class="l"><a class="anc" name="b4d8" href="#b4d8">[b4d8]</a><a href="#SPRITE_HITBOX_HEIGHTS" class="la">SPRITE_HITBOX_HEIGHTS:</a><span class="ce">; [$b4d8]</span></span>
@@ -16178,11 +16421,25 @@ If overflow, C = 1</span></span>
 <span class="l"><a class="anc" name="b670" href="#b670">[b670]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [98]: Effect: Spring of Tower</span></span>
 <span class="l"><a class="anc" name="b671" href="#b671">[b671]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [99]: Effect: Boss Death</span></span>
 <span class="l"></span>
-<a name="BYTE_ARRAY_PRG14__b672"></a><div class="c">;
-; XREFS:
-;     <a href="#Maybe_Sprite_HandleDeathDrop">Maybe_Sprite_HandleDeathDrop</a>
+<span class="l"></span>
+<a name="SPRITE_ENTITY_DROP_VALUES_INDEX"></a><div class="cp">;============================================================================
+; Per-entity indexes into the <a href="#SPRITE_DROP_VALUES">SPRITE_DROP_VALUES</a> table.
 ;
-</div><span class="l"><a class="anc" name="b672" href="#b672">[b672]</a><a href="#BYTE_ARRAY_PRG14__b672" class="la">BYTE_ARRAY_PRG14__b672:</a><span class="ce">; [$b672]</span></span>
+; This maps entities that may drop gold or bread to an index
+; into a drop values table, which determines how much gold
+; or how much HP the drop will be worth.
+;
+; If the value is 0xFF, the entity will not drop anything.
+;
+; XREFS:
+;     <a href="#Sprite_RunDeathDropHandler">Sprite_RunDeathDropHandler</a>
+;============================================================================
+</div><span class="l"></span>
+<div class="c">;
+; XREFS:
+;     <a href="#Sprite_RunDeathDropHandler">Sprite_RunDeathDropHandler</a>
+;
+</div><span class="l"><a class="anc" name="b672" href="#b672">[b672]</a><a href="#SPRITE_ENTITY_DROP_VALUES_INDEX" class="la">SPRITE_ENTITY_DROP_VALUES_INDEX:</a><span class="ce">; [$b672]</span></span>
 <span class="l"><a class="anc" name="b672" href="#b672">[b672]</a><span class="cd"><span class="i">.byte</span> <span class="o">$ff</span></span><span class="ce">; [0]:</span></span>
 <span class="l"><a class="anc" name="b673" href="#b673">[b673]</a><span class="cd"><span class="i">.byte</span> <span class="o">$ff</span></span><span class="ce">; [1]: Dropped: Bread</span></span>
 <span class="l"><a class="anc" name="b674" href="#b674">[b674]</a><span class="cd"><span class="i">.byte</span> <span class="o">$ff</span></span><span class="ce">; [2]: Dropped: Coin</span></span>
@@ -16401,12 +16658,38 @@ If overflow, C = 1</span></span>
 <span class="l"><a class="anc" name="b739" href="#b739">[b739]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [98]: Effect: Spring of Tower</span></span>
 <span class="l"><a class="anc" name="b73a" href="#b73a">[b73a]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [99]: Effect: Boss Death</span></span>
 <span class="l"></span>
-<a name="SPRITE_ENTITY_MAYBE_MAGIC_DEFENSE"></a><div class="c">;
+<span class="l"></span>
+<a name="SPRITE_ENTITY_MAGIC_DEFENSE"></a><div class="cp">;============================================================================
+; A mapping of entity types to magic defense values.
+;
+; Each value defines the magic reduction for each spell as pairs
+; of 2 bits in the following order:
+;
+; 00 00 00 00
+; |  |  |  '- Tilte
+; |  |  '- Death
+; |  '- Fire
+; '- Thunder
+;
+; Each pair can have the following values:
+;
+; 00 = 0% reduction
+; 01 = 50% reduction
+; 10 = 100% reduction
+; 11 = 100% reduction
+;
+; Note that the Deluge spell is always set at 0% reduction.
+;
+; XREFS:
+;     <a href="#Player_HitEnemyWithMagic">Player_HitEnemyWithMagic</a>
+;============================================================================
+</div><span class="l"></span>
+<div class="c">;
 ; XREFS:
 ;     <a href="#Player_HitEnemyWithMagic">Player_HitEnemyWithMagic</a>
 ;
-</div><span class="l"><a class="anc" name="b73b" href="#b73b">[b73b]</a><a href="#SPRITE_ENTITY_MAYBE_MAGIC_DEFENSE" class="la">SPRITE_ENTITY_MAYBE_MAGIC_DEFENSE:</a><span class="ce">; [$b73b]</span></span>
-<span class="l"><a class="anc" name="b73b" href="#b73b">[b73b]</a><span class="cd"><span class="i">.byte</span> <span class="o">$fc</span></span><span class="ce">; [0]:</span></span>
+</div><span class="l"><a class="anc" name="b73b" href="#b73b">[b73b]</a><a href="#SPRITE_ENTITY_MAGIC_DEFENSE" class="la">SPRITE_ENTITY_MAGIC_DEFENSE:</a><span class="ce">; [$b73b]</span></span>
+<span class="l"><a class="anc" name="b73b" href="#b73b">[b73b]</a><span class="cd"><span class="i">.byte</span> <span class="o">$fc</span></span><span class="ce">; [0]: &lt;unused&gt;</span></span>
 <span class="l"><a class="anc" name="b73c" href="#b73c">[b73c]</a><span class="cd"><span class="i">.byte</span> <span class="o">$fc</span></span><span class="ce">; [1]: Dropped: Bread</span></span>
 <span class="l"><a class="anc" name="b73d" href="#b73d">[b73d]</a><span class="cd"><span class="i">.byte</span> <span class="o">$fc</span></span><span class="ce">; [2]: Dropped: Coin</span></span>
 <span class="l"><a class="anc" name="b73e" href="#b73e">[b73e]</a><span class="cd"><span class="i">.byte</span> <span class="o">$fc</span></span><span class="ce">; [3]: Enemy: ?</span></span>
@@ -16506,7 +16789,7 @@ If overflow, C = 1</span></span>
 <span class="l"><a class="anc" name="b79c" href="#b79c">[b79c]</a><span class="cd"><span class="i">.byte</span> <span class="o">$fc</span></span><span class="ce">; [97]: Effect: Spring of Sky</span></span>
 <span class="l"><a class="anc" name="b79d" href="#b79d">[b79d]</a><span class="cd"><span class="i">.byte</span> <span class="o">$fc</span></span><span class="ce">; [98]: Effect: Spring of Tower</span></span>
 <span class="l"><a class="anc" name="b79e" href="#b79e">[b79e]</a><span class="cd"><span class="i">.byte</span> <span class="o">$fc</span></span><span class="ce">; [99]: Effect: Boss Death</span></span>
-<span class="l"><a class="anc" name="b79f" href="#b79f">[b79f]</a><span class="cd"><span class="i">.byte</span> <span class="o">$fc</span></span><span class="ce">; [$b79f] undefined</span></span>
+<span class="l"><a class="anc" name="b79f" href="#b79f">[b79f]</a><span class="cd"><span class="i">.byte</span> <span class="o">$fc</span></span><span class="ce">; [100]: &lt;unused&gt;</span></span>
 <span class="l"></span>
 <span class="l"></span>
 <a name="MAGIC_DAMAGE"></a><div class="cp">;============================================================================

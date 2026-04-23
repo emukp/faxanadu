@@ -121,6 +121,22 @@ pre {
   min-width: 3em;
 }
 
+.idx {
+  display: grid;
+  grid-column: 2 / 3;
+  grid-template-columns: minmax(50ch, max-content) auto;
+  gap: 0 1em;
+}
+
+.idx-name {
+  font-weight: bold;
+}
+
+.idx-targets {
+  display: flex;
+  flex-direction: row;
+}
+
 .o {
   color: #e3e3e3;
   margin-left: 1ch;
@@ -159,14 +175,14 @@ pre {
 ;     <a href="#AREAS_TABLE_PTR">AREAS_TABLE_PTR</a> [$PRG3::8000]
 ;
 </div><span class="l"><a class="anc" name="8002" href="#8002">[8002]</a><a href="#AREA_TABLES" class="la">AREA_TABLES:</a><span class="ce">; [$8002]</span></span>
-<span class="l"><a class="anc" name="8002" href="#8002">[8002]</a><span class="cd"><span class="i">bank_offset_16</span> <span class="o"><a href="#EOLIS_AREA_DATA">EOLIS_AREA_DATA</a></span></span><span class="ce">; <a href="#EOLIS_AREA_DATA">EOLIS_AREA_DATA</a> [$PRG3::8002]</span></span>
-<span class="l"><a class="anc" name="8004" href="#8004">[8004]</a><span class="cd"><span class="i">bank_offset_16</span> <span class="o"><a href="#TRUNK_AREA_DATA">TRUNK_AREA_DATA</a></span></span><span class="ce">; <a href="#TRUNK_AREA_DATA">TRUNK_AREA_DATA</a> [$PRG3::8004]</span></span>
-<span class="l"><a class="anc" name="8006" href="#8006">[8006]</a><span class="cd"><span class="i">bank_offset_16</span> <span class="o"><a href="#MIST_AREA_DATA">MIST_AREA_DATA</a></span></span><span class="ce">; <a href="#MIST_AREA_DATA">MIST_AREA_DATA</a> [$PRG3::8006]</span></span>
-<span class="l"><a class="anc" name="8008" href="#8008">[8008]</a><span class="cd"><span class="i">bank_offset_16</span> <span class="o"><a href="#TOWNS_AREA_DATA">TOWNS_AREA_DATA</a></span></span><span class="ce">; <a href="#TOWNS_AREA_DATA">TOWNS_AREA_DATA</a> [$PRG3::8008]</span></span>
-<span class="l"><a class="anc" name="800a" href="#800a">[800a]</a><span class="cd"><span class="i">bank_offset_16</span> <span class="o"><a href="#BUILDINGS_AREA_DATA">BUILDINGS_AREA_DATA</a></span></span><span class="ce">; <a href="#BUILDINGS_AREA_DATA">BUILDINGS_AREA_DATA</a> [$PRG3::800a]</span></span>
-<span class="l"><a class="anc" name="800c" href="#800c">[800c]</a><span class="cd"><span class="i">bank_offset_16</span> <span class="o"><a href="#BRANCH_AREA_DATA">BRANCH_AREA_DATA</a></span></span><span class="ce">; <a href="#BRANCH_AREA_DATA">BRANCH_AREA_DATA</a> [$PRG3::800c]</span></span>
-<span class="l"><a class="anc" name="800e" href="#800e">[800e]</a><span class="cd"><span class="i">bank_offset_16</span> <span class="o"><a href="#DARTMOOR_AREA_DATA">DARTMOOR_AREA_DATA</a></span></span><span class="ce">; <a href="#DARTMOOR_AREA_DATA">DARTMOOR_AREA_DATA</a> [$PRG3::800e]</span></span>
-<span class="l"><a class="anc" name="8010" href="#8010">[8010]</a><span class="cd"><span class="i">bank_offset_16</span> <span class="o"><a href="#ZENITH_AREA_DATA">ZENITH_AREA_DATA</a></span></span><span class="ce">; <a href="#ZENITH_AREA_DATA">ZENITH_AREA_DATA</a> [$PRG3::8010]</span></span>
+<span class="l"><a class="anc" name="8002" href="#8002">[8002]</a><span class="cd"><span class="i">bank_offset_16</span> <span class="o"><a href="#EOLIS_AREA_DATA">EOLIS_AREA_DATA</a></span></span><span class="ce">; Dropped: Bread</span></span>
+<span class="l"><a class="anc" name="8004" href="#8004">[8004]</a><span class="cd"><span class="i">bank_offset_16</span> <span class="o"><a href="#TRUNK_AREA_DATA">TRUNK_AREA_DATA</a></span></span><span class="ce">; Dropped: Coin</span></span>
+<span class="l"><a class="anc" name="8006" href="#8006">[8006]</a><span class="cd"><span class="i">bank_offset_16</span> <span class="o"><a href="#MIST_AREA_DATA">MIST_AREA_DATA</a></span></span><span class="ce">; Enemy: ?</span></span>
+<span class="l"><a class="anc" name="8008" href="#8008">[8008]</a><span class="cd"><span class="i">bank_offset_16</span> <span class="o"><a href="#TOWNS_AREA_DATA">TOWNS_AREA_DATA</a></span></span><span class="ce">; Enemy: Raiden</span></span>
+<span class="l"><a class="anc" name="800a" href="#800a">[800a]</a><span class="cd"><span class="i">bank_offset_16</span> <span class="o"><a href="#BUILDINGS_AREA_DATA">BUILDINGS_AREA_DATA</a></span></span><span class="ce">; Enemy: Necron Aides</span></span>
+<span class="l"><a class="anc" name="800c" href="#800c">[800c]</a><span class="cd"><span class="i">bank_offset_16</span> <span class="o"><a href="#BRANCH_AREA_DATA">BRANCH_AREA_DATA</a></span></span><span class="ce">; Enemy: Zombie</span></span>
+<span class="l"><a class="anc" name="800e" href="#800e">[800e]</a><span class="cd"><span class="i">bank_offset_16</span> <span class="o"><a href="#DARTMOOR_AREA_DATA">DARTMOOR_AREA_DATA</a></span></span><span class="ce">; Enemy: Hornet</span></span>
+<span class="l"><a class="anc" name="8010" href="#8010">[8010]</a><span class="cd"><span class="i">bank_offset_16</span> <span class="o"><a href="#ZENITH_AREA_DATA">ZENITH_AREA_DATA</a></span></span><span class="ce">; Enemy: Bihoruda</span></span>
 <span class="l"></span>
 <span class="l"></span>
 <a name="EOLIS_AREA_DATA"></a><div class="cp">;============================================================================
@@ -181,7 +197,7 @@ pre {
 ;     <a href="#AREA_TABLES">AREA_TABLES</a> [$PRG3::8002]
 ;
 </div><span class="l"><a class="anc" name="8012" href="#8012">[8012]</a><a href="#EOLIS_AREA_DATA" class="la">EOLIS_AREA_DATA:</a><span class="ce">; [$8012]</span></span>
-<span class="l"><a class="anc" name="8012" href="#8012">[8012]</a><span class="cd"><span class="i">bank_offset_16</span> <span class="o"><a href="#EOLIS_AREA_DATA_blockAttrsRelPtr">EOLIS_AREA_DATA_blockAttrsRelPtr</a></span></span><span class="ce">; <a href="#EOLIS_AREA_DATA.blockAttrsRelPtr">EOLIS_AREA_DATA.blockAttrsRelPtr</a> [$PRG3::8012]</span></span>
+<span class="l"><a class="anc" name="8012" href="#8012">[8012]</a><span class="cd"><span class="i">bank_offset_16</span> <span class="o"><a href="#EOLIS_AREA_DATA_blockAttrsRelPtr">EOLIS_AREA_DATA_blockAttrsRelPtr</a></span></span><span class="ce">; Enemy: Lilith</span></span>
 <span class="l"><a class="anc" name="8014" href="#8014">[8014]</a><span class="cd"><span class="i">bank_offset_16</span> <span class="o"><a href="#EOLIS_BLOCK_PROPERTIES">EOLIS_BLOCK_PROPERTIES</a></span></span><span class="ce">; <a href="#EOLIS_BLOCK_PROPERTIES">EOLIS_BLOCK_PROPERTIES</a> [$PRG3::8014]</span></span>
 <span class="l"><a class="anc" name="8016" href="#8016">[8016]</a><span class="cd"><span class="i">bank_offset_16</span> <span class="o"><a href="#EOLIS_SCROLL_DATA">EOLIS_SCROLL_DATA</a></span></span><span class="ce">; <a href="#EOLIS_SCROLL_DATA">EOLIS_SCROLL_DATA</a> [$PRG3::8016]</span></span>
 <span class="l"><a class="anc" name="8018" href="#8018">[8018]</a><span class="cd"><span class="i">bank_offset_16</span> <span class="o"><a href="#EOLIS_DOOR_LOCATIONS">EOLIS_DOOR_LOCATIONS</a></span></span><span class="ce">; <a href="#EOLIS_DOOR_LOCATIONS">EOLIS_DOOR_LOCATIONS</a> [$PRG3::8018]</span></span>
@@ -211,7 +227,7 @@ pre {
 ;     <a href="#EOLIS_AREA_DATA">EOLIS_AREA_DATA</a> [$PRG3::801c]
 ;
 </div><span class="l"><a class="anc" name="8026" href="#8026">[8026]</a><a href="#EOLIS_BLOCK_ATTRIBUTES" class="la">EOLIS_BLOCK_ATTRIBUTES:</a><span class="ce">; [$8026]</span></span>
-<span class="l"><a class="anc" name="8026" href="#8026">[8026]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [0]:</span></span>
+<span class="l"><a class="anc" name="8026" href="#8026">[8026]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [0]: Magic: ?</span></span>
 <span class="l"><a class="anc" name="8027" href="#8027">[8027]</a><span class="cd"><span class="i">.byte</span> <span class="o">$aa</span></span><span class="ce">; [1]:</span></span>
 <span class="l"><a class="anc" name="8028" href="#8028">[8028]</a><span class="cd"><span class="i">.byte</span> <span class="o">$55</span></span><span class="ce">; [2]:</span></span>
 <span class="l"><a class="anc" name="8029" href="#8029">[8029]</a><span class="cd"><span class="i">.byte</span> <span class="o">$55</span></span><span class="ce">; [3]:</span></span>
@@ -353,7 +369,7 @@ pre {
 ;     <a href="#EOLIS_AREA_DATA">EOLIS_AREA_DATA</a> [$PRG3::801e]
 ;
 </div><span class="l"><a class="anc" name="80a6" href="#80a6">[80a6]</a><a href="#EOLIS_BLOCK_DATA_01" class="la">EOLIS_BLOCK_DATA_01:</a><span class="ce">; [$80a6]</span></span>
-<span class="l"><a class="anc" name="80a6" href="#80a6">[80a6]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [0]:</span></span>
+<span class="l"><a class="anc" name="80a6" href="#80a6">[80a6]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [0]: Enemy: Yuinaru</span></span>
 <span class="l"><a class="anc" name="80a7" href="#80a7">[80a7]</a><span class="cd"><span class="i">.byte</span> <span class="o">$83</span></span><span class="ce">; [1]:</span></span>
 <span class="l"><a class="anc" name="80a8" href="#80a8">[80a8]</a><span class="cd"><span class="i">.byte</span> <span class="o">$95</span></span><span class="ce">; [2]:</span></span>
 <span class="l"><a class="anc" name="80a9" href="#80a9">[80a9]</a><span class="cd"><span class="i">.byte</span> <span class="o">$96</span></span><span class="ce">; [3]:</span></span>
@@ -495,7 +511,7 @@ pre {
 ;     <a href="#EOLIS_AREA_DATA">EOLIS_AREA_DATA</a> [$PRG3::8020]
 ;
 </div><span class="l"><a class="anc" name="8126" href="#8126">[8126]</a><a href="#EOLIS_BLOCK_DATA_02" class="la">EOLIS_BLOCK_DATA_02:</a><span class="ce">; [$8126]</span></span>
-<span class="l"><a class="anc" name="8126" href="#8126">[8126]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [0]:</span></span>
+<span class="l"><a class="anc" name="8126" href="#8126">[8126]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [0]: Enemy: Snowman</span></span>
 <span class="l"><a class="anc" name="8127" href="#8127">[8127]</a><span class="cd"><span class="i">.byte</span> <span class="o">$83</span></span><span class="ce">; [1]:</span></span>
 <span class="l"><a class="anc" name="8128" href="#8128">[8128]</a><span class="cd"><span class="i">.byte</span> <span class="o">$8e</span></span><span class="ce">; [2]:</span></span>
 <span class="l"><a class="anc" name="8129" href="#8129">[8129]</a><span class="cd"><span class="i">.byte</span> <span class="o">$96</span></span><span class="ce">; [3]:</span></span>
@@ -637,7 +653,7 @@ pre {
 ;     <a href="#EOLIS_AREA_DATA">EOLIS_AREA_DATA</a> [$PRG3::8022]
 ;
 </div><span class="l"><a class="anc" name="81a6" href="#81a6">[81a6]</a><a href="#EOLIS_BLOCK_DATA_03" class="la">EOLIS_BLOCK_DATA_03:</a><span class="ce">; [$81a6]</span></span>
-<span class="l"><a class="anc" name="81a6" href="#81a6">[81a6]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [0]:</span></span>
+<span class="l"><a class="anc" name="81a6" href="#81a6">[81a6]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [0]: Enemy: Nash</span></span>
 <span class="l"><a class="anc" name="81a7" href="#81a7">[81a7]</a><span class="cd"><span class="i">.byte</span> <span class="o">$83</span></span><span class="ce">; [1]:</span></span>
 <span class="l"><a class="anc" name="81a8" href="#81a8">[81a8]</a><span class="cd"><span class="i">.byte</span> <span class="o">$ab</span></span><span class="ce">; [2]:</span></span>
 <span class="l"><a class="anc" name="81a9" href="#81a9">[81a9]</a><span class="cd"><span class="i">.byte</span> <span class="o">$94</span></span><span class="ce">; [3]:</span></span>
@@ -779,7 +795,7 @@ pre {
 ;     <a href="#EOLIS_AREA_DATA">EOLIS_AREA_DATA</a> [$PRG3::8024]
 ;
 </div><span class="l"><a class="anc" name="8226" href="#8226">[8226]</a><a href="#EOLIS_BLOCK_DATA_04" class="la">EOLIS_BLOCK_DATA_04:</a><span class="ce">; [$8226]</span></span>
-<span class="l"><a class="anc" name="8226" href="#8226">[8226]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [0]:</span></span>
+<span class="l"><a class="anc" name="8226" href="#8226">[8226]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [0]: Enemy: Fire Giant</span></span>
 <span class="l"><a class="anc" name="8227" href="#8227">[8227]</a><span class="cd"><span class="i">.byte</span> <span class="o">$83</span></span><span class="ce">; [1]:</span></span>
 <span class="l"><a class="anc" name="8228" href="#8228">[8228]</a><span class="cd"><span class="i">.byte</span> <span class="o">$ab</span></span><span class="ce">; [2]:</span></span>
 <span class="l"><a class="anc" name="8229" href="#8229">[8229]</a><span class="cd"><span class="i">.byte</span> <span class="o">$94</span></span><span class="ce">; [3]:</span></span>
@@ -921,7 +937,7 @@ pre {
 ;     <a href="#EOLIS_AREA_DATA">EOLIS_AREA_DATA</a> [$PRG3::8014]
 ;
 </div><span class="l"><a class="anc" name="82a6" href="#82a6">[82a6]</a><a href="#EOLIS_BLOCK_PROPERTIES" class="la">EOLIS_BLOCK_PROPERTIES:</a><span class="ce">; [$82a6]</span></span>
-<span class="l"><a class="anc" name="82a6" href="#82a6">[82a6]</a><span class="cd"><span class="i">.byte</span> <span class="o">BLOCK_IS_AIR</span></span><span class="ce">; [0]:</span></span>
+<span class="l"><a class="anc" name="82a6" href="#82a6">[82a6]</a><span class="cd"><span class="i">.byte</span> <span class="o">BLOCK_IS_AIR</span></span><span class="ce">; [0]: Enemy: Ishiisu</span></span>
 <span class="l"><a class="anc" name="82a7" href="#82a7">[82a7]</a><span class="cd"><span class="i">.byte</span> <span class="o">BLOCK_IS_AIR</span></span><span class="ce">; [1]:</span></span>
 <span class="l"><a class="anc" name="82a8" href="#82a8">[82a8]</a><span class="cd"><span class="i">.byte</span> <span class="o">BLOCK_IS_AIR</span></span><span class="ce">; [2]:</span></span>
 <span class="l"><a class="anc" name="82a9" href="#82a9">[82a9]</a><span class="cd"><span class="i">.byte</span> <span class="o">BLOCK_IS_SOLID</span></span><span class="ce">; [3]:</span></span>
@@ -1063,7 +1079,7 @@ pre {
 ;     <a href="#EOLIS_AREA_DATA">EOLIS_AREA_DATA</a> [$PRG3::8016]
 ;
 </div><span class="l"><a class="anc" name="8326" href="#8326">[8326]</a><a href="#EOLIS_SCROLL_DATA" class="la">EOLIS_SCROLL_DATA:</a><span class="ce">; [$8326]</span></span>
-<span class="l"><a class="anc" name="8326" href="#8326">[8326]</a><span class="cd"><span class="i">.byte</span> <span class="o">$ff</span></span><span class="ce">; [0]:</span></span>
+<span class="l"><a class="anc" name="8326" href="#8326">[8326]</a><span class="cd"><span class="i">.byte</span> <span class="o">$ff</span></span><span class="ce">; [0]: Enemy: Execution Hood</span></span>
 <span class="l"><a class="anc" name="8327" href="#8327">[8327]</a><span class="cd"><span class="i">.byte</span> <span class="o">$ff</span></span><span class="ce">; [1]:</span></span>
 <span class="l"><a class="anc" name="8328" href="#8328">[8328]</a><span class="cd"><span class="i">.byte</span> <span class="o">$ff</span></span><span class="ce">; [2]:</span></span>
 <span class="l"><a class="anc" name="8329" href="#8329">[8329]</a><span class="cd"><span class="i">.byte</span> <span class="o">$ff</span></span><span class="ce">; [3]:</span></span>

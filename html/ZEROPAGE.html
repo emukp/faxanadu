@@ -121,6 +121,22 @@ pre {
   min-width: 3em;
 }
 
+.idx {
+  display: grid;
+  grid-column: 2 / 3;
+  grid-template-columns: minmax(50ch, max-content) auto;
+  gap: 0 1em;
+}
+
+.idx-name {
+  font-weight: bold;
+}
+
+.idx-targets {
+  display: flex;
+  flex-direction: row;
+}
+
 .o {
   color: #e3e3e3;
   margin-left: 1ch;
@@ -154,7 +170,6 @@ pre {
 ;     <a href="PRG14.html#BScript_Action_FacePlayerX">BScript_Action_FacePlayerX</a>
 ;     <a href="PRG14.html#BScript_Action_FacePlayerY">BScript_Action_FacePlayerY</a>
 ;     <a href="PRG14.html#CurrentSprite_CheckHitPlayer">CurrentSprite_CheckHitPlayer</a>
-;     <a href="PRG14.html#Maybe_Sprite_HandleDeathDrop">Maybe_Sprite_HandleDeathDrop</a>
 ;     <a href="PRG14.html#Player_CheckShieldHitByMagic">Player_CheckShieldHitByMagic</a>
 ;     <a href="PRG14.html#Player_DrawShield">Player_DrawShield</a>
 ;     <a href="PRG14.html#Player_DrawWeapon">Player_DrawWeapon</a>
@@ -169,6 +184,7 @@ pre {
 ;     <a href="PRG14.html#SpriteUpdateHandler_Effect_EnemyDeath">SpriteUpdateHandler_Effect_EnemyDeath</a>
 ;     <a href="PRG14.html#SpriteUpdateHandler_Effect_LightningBall20">SpriteUpdateHandler_Effect_LightningBall20</a>
 ;     <a href="PRG14.html#Sprite_CheckHitByCastMagic">Sprite_CheckHitByCastMagic</a>
+;     <a href="PRG14.html#Sprite_RunDeathDropHandler">Sprite_RunDeathDropHandler</a>
 ;     <a href="PRG14.html#Sprites_CalcYFromGravity">Sprites_CalcYFromGravity</a>
 ;     <a href="PRG14.html#Sprites_IsSpriteOutOfWeaponRange">Sprites_IsSpriteOutOfWeaponRange</a>
 ;     <a href="PRG15_MIRROR.html#Area_ConvertPixelsToBlockPos">Area_ConvertPixelsToBlockPos</a>
@@ -205,7 +221,6 @@ pre {
 ;     <a href="PRG14.html#BScript_Action_FacePlayerX">BScript_Action_FacePlayerX</a>
 ;     <a href="PRG14.html#BScript_Action_FacePlayerY">BScript_Action_FacePlayerY</a>
 ;     <a href="PRG14.html#CurrentSprite_CheckHitPlayer">CurrentSprite_CheckHitPlayer</a>
-;     <a href="PRG14.html#Maybe_Sprite_HandleDeathDrop">Maybe_Sprite_HandleDeathDrop</a>
 ;     <a href="PRG14.html#Player_CheckShieldHitByMagic">Player_CheckShieldHitByMagic</a>
 ;     <a href="PRG14.html#Player_DrawShield">Player_DrawShield</a>
 ;     <a href="PRG14.html#Player_DrawWeapon">Player_DrawWeapon</a>
@@ -220,6 +235,7 @@ pre {
 ;     <a href="PRG14.html#SpriteUpdateHandler_Effect_EnemyDeath">SpriteUpdateHandler_Effect_EnemyDeath</a>
 ;     <a href="PRG14.html#SpriteUpdateHandler_Effect_LightningBall20">SpriteUpdateHandler_Effect_LightningBall20</a>
 ;     <a href="PRG14.html#Sprite_CheckHitByCastMagic">Sprite_CheckHitByCastMagic</a>
+;     <a href="PRG14.html#Sprite_RunDeathDropHandler">Sprite_RunDeathDropHandler</a>
 ;     <a href="PRG14.html#Sprites_CalcYFromGravity">Sprites_CalcYFromGravity</a>
 ;     <a href="PRG14.html#Sprites_IsSpriteOutOfWeaponRange">Sprites_IsSpriteOutOfWeaponRange</a>
 ;     <a href="PRG15_MIRROR.html#Area_ConvertPixelsToBlockPos">Area_ConvertPixelsToBlockPos</a>
@@ -256,9 +272,9 @@ pre {
 ;
 ;
 ; XREFS:
-;     <a href="PRG14.html#Maybe_Sprite_HandleDeathDrop">Maybe_Sprite_HandleDeathDrop</a>
 ;     <a href="PRG14.html#Player_HitEnemyWithMagic">Player_HitEnemyWithMagic</a>
 ;     <a href="PRG14.html#Sprite_CheckHitByCastMagic">Sprite_CheckHitByCastMagic</a>
+;     <a href="PRG14.html#Sprite_RunDeathDropHandler">Sprite_RunDeathDropHandler</a>
 ;     <a href="PRG15_MIRROR.html#Screen_LoadBlockDataVert">Screen_LoadBlockDataVert</a>
 ;     <a href="PRG15_MIRROR.html#Screen_LoadBlocksHoriz">Screen_LoadBlocksHoriz</a>
 ;     <a href="PRG15_MIRROR.html#Sprite_Draw_FlippedHoriz">Sprite_Draw_FlippedHoriz</a>
@@ -854,7 +870,7 @@ pre {
 ;     <a href="PRG12.html#TextBox_CheckShouldContinue">TextBox_CheckShouldContinue</a>
 ;     <a href="PRG12.html#TextBox_CheckShouldContinueOrDismissMessage">TextBox_CheckShouldContinueOrDismissMessage</a>
 ;     <a href="PRG12.html#TextBox_CheckShouldContinueOrDismissQuestion">TextBox_CheckShouldContinueOrDismissQuestion</a>
-;     <a href="PRG12.html#TextBox_IsBPressed">TextBox_IsBPressed</a>
+;     <a href="PRG12.html#TextBox_DismissIfBElseContinue">TextBox_DismissIfBElseContinue</a>
 ;     <a href="PRG14.html#Player_CastMagic">Player_CastMagic</a>
 ;     <a href="PRG14.html#Player_CheckHandlePressUpOnNPC">Player_CheckHandlePressUpOnNPC</a>
 ;     <a href="PRG15_MIRROR.html#Area_CheckCanClimbAdjacent">Area_CheckCanClimbAdjacent</a>
@@ -3117,10 +3133,10 @@ pre {
 ;     <a href="PRG14.html#CastMagic_CheckDirection_Right">CastMagic_CheckDirection_Right</a>
 ;     <a href="PRG14.html#CurrentSprite_CalculateVisibility">CurrentSprite_CalculateVisibility</a>
 ;     <a href="PRG14.html#CurrentSprite_CanMoveInDirection">CurrentSprite_CanMoveInDirection</a>
-;     <a href="PRG14.html#FUN_PRG14__854c">FUN_PRG14__854c</a>
 ;     <a href="PRG14.html#FUN_PRG14__86bd">FUN_PRG14__86bd</a>
 ;     <a href="PRG14.html#Player_CalculateVisibility">Player_CalculateVisibility</a>
 ;     <a href="PRG14.html#SpriteBehavior_NecronAides">SpriteBehavior_NecronAides</a>
+;     <a href="PRG14.html#Sprites_CheckPlacementInvalidAtY">Sprites_CheckPlacementInvalidAtY</a>
 ;     <a href="PRG14.html#Sprites_MoveRight">Sprites_MoveRight</a>
 ;     <a href="PRG15_MIRROR.html#Area_CanMoveImmediatelyRight">Area_CanMoveImmediatelyRight</a>
 ;     <a href="PRG15_MIRROR.html#Area_CanPlayerMoveLeft">Area_CanPlayerMoveLeft</a>
@@ -3146,10 +3162,10 @@ pre {
 ;     <a href="PRG14.html#CastMagic_CheckDirection_Right">CastMagic_CheckDirection_Right</a>
 ;     <a href="PRG14.html#CurrentSprite_CalculateVisibility">CurrentSprite_CalculateVisibility</a>
 ;     <a href="PRG14.html#CurrentSprite_CanMoveInDirection">CurrentSprite_CanMoveInDirection</a>
-;     <a href="PRG14.html#FUN_PRG14__854c">FUN_PRG14__854c</a>
 ;     <a href="PRG14.html#FUN_PRG14__86bd">FUN_PRG14__86bd</a>
 ;     <a href="PRG14.html#Player_CalculateVisibility">Player_CalculateVisibility</a>
 ;     <a href="PRG14.html#SpriteBehavior_NecronAides">SpriteBehavior_NecronAides</a>
+;     <a href="PRG14.html#Sprites_CheckPlacementInvalidAtY">Sprites_CheckPlacementInvalidAtY</a>
 ;     <a href="PRG14.html#Sprites_MoveRight">Sprites_MoveRight</a>
 ;     <a href="PRG15_MIRROR.html#Area_CanMoveImmediatelyRight">Area_CanMoveImmediatelyRight</a>
 ;     <a href="PRG15_MIRROR.html#Area_CanPlayerMoveLeft">Area_CanPlayerMoveLeft</a>
@@ -3177,9 +3193,9 @@ pre {
 ;     <a href="PRG14.html#CastMagic_CheckDirection_CheckImpassable">CastMagic_CheckDirection_CheckImpassable</a>
 ;     <a href="PRG14.html#CurrentSprite_CalculateVisibility">CurrentSprite_CalculateVisibility</a>
 ;     <a href="PRG14.html#CurrentSprite_CanMoveInDirection">CurrentSprite_CanMoveInDirection</a>
-;     <a href="PRG14.html#FUN_PRG14__854c">FUN_PRG14__854c</a>
 ;     <a href="PRG14.html#Player_CalculateVisibility">Player_CalculateVisibility</a>
 ;     <a href="PRG14.html#SpriteBehavior_NecronAides">SpriteBehavior_NecronAides</a>
+;     <a href="PRG14.html#Sprites_CheckPlacementInvalidAtY">Sprites_CheckPlacementInvalidAtY</a>
 ;     <a href="PRG14.html#Sprites_MoveRight__86c6">Sprites_MoveRight__86c6</a>
 ;     <a href="PRG15_MIRROR.html#Area_CanPlayerMoveAtY">Area_CanPlayerMoveAtY</a>
 ;     <a href="PRG15_MIRROR.html#Area_CanPlayerMoveUp">Area_CanPlayerMoveUp</a>
@@ -3283,12 +3299,10 @@ pre {
 ;     <a href="PRG14.html#CurrentSprite_CalculateVisibility">CurrentSprite_CalculateVisibility</a>
 ;     <a href="PRG14.html#CurrentSprite_UpdateState">CurrentSprite_UpdateState</a>
 ;     <a href="PRG14.html#FUN_PRG14__844b">FUN_PRG14__844b</a>
-;     <a href="PRG14.html#FUN_PRG14__854c">FUN_PRG14__854c</a>
 ;     <a href="PRG14.html#FUN_PRG14__9917">FUN_PRG14__9917</a>
 ;     <a href="PRG14.html#FUN_PRG14__9aa1">FUN_PRG14__9aa1</a>
 ;     <a href="PRG14.html#FUN_PRG14__a1cc">FUN_PRG14__a1cc</a>
 ;     <a href="PRG14.html#Maybe_SpriteBody__99f3">Maybe_SpriteBody__99f3</a>
-;     <a href="PRG14.html#Maybe_Sprite_HandleDeathDrop">Maybe_Sprite_HandleDeathDrop</a>
 ;     <a href="PRG14.html#MoveSpriteHorizIfPossible">MoveSpriteHorizIfPossible</a>
 ;     <a href="PRG14.html#SpriteBehavior_BossDeath">SpriteBehavior_BossDeath</a>
 ;     <a href="PRG14.html#SpriteBehavior_EnemyUnused18__9991">SpriteBehavior_EnemyUnused18__9991</a>
@@ -3311,7 +3325,9 @@ pre {
 ;     <a href="PRG14.html#Sprite_CheckHitByCastMagic">Sprite_CheckHitByCastMagic</a>
 ;     <a href="PRG14.html#Sprite_Maybe_AddFacingPosX">Sprite_Maybe_AddFacingPosX</a>
 ;     <a href="PRG14.html#Sprite_Maybe_TurnAroundIfAtScreenEdgeHoriz">Sprite_Maybe_TurnAroundIfAtScreenEdgeHoriz</a>
+;     <a href="PRG14.html#Sprite_RunDeathDropHandler">Sprite_RunDeathDropHandler</a>
 ;     <a href="PRG14.html#Sprite_SubtractPosX">Sprite_SubtractPosX</a>
+;     <a href="PRG14.html#Sprites_CheckPlacementInvalidAtY">Sprites_CheckPlacementInvalidAtY</a>
 ;
 </div><span class="l"><a class="anc" name="00ba" href="#00ba">[00ba]</a><a href="#CurrentSprites_XPos_Full" class="la">CurrentSprites_XPos_Full:</a><span class="ce">; [$00ba]</span></span>
 <span class="l"><a class="anc" name="00ba" href="#00ba">[00ba]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [0]:</span></span>
@@ -3340,11 +3356,11 @@ pre {
 ;     <a href="PRG14.html#CurrentSprite_CalculateVisibility">CurrentSprite_CalculateVisibility</a>
 ;     <a href="PRG14.html#CurrentSprite_HandleFall">CurrentSprite_HandleFall</a>
 ;     <a href="PRG14.html#CurrentSprite_UpdateState">CurrentSprite_UpdateState</a>
+;     <a href="PRG14.html#DEADCODE_Sprites_CanMoveDownBelowHitbox">DEADCODE_Sprites_CanMoveDownBelowHitbox</a>
 ;     <a href="PRG14.html#FUN_PRG14__9917">FUN_PRG14__9917</a>
 ;     <a href="PRG14.html#FUN_PRG14__9ac6">FUN_PRG14__9ac6</a>
 ;     <a href="PRG14.html#FUN_PRG14__a0a0">FUN_PRG14__a0a0</a>
 ;     <a href="PRG14.html#FUN_PRG14__a1cc">FUN_PRG14__a1cc</a>
-;     <a href="PRG14.html#Maybe_Sprite_HandleDeathDrop">Maybe_Sprite_HandleDeathDrop</a>
 ;     <a href="PRG14.html#MoveSpriteVerticalIfPossible">MoveSpriteVerticalIfPossible</a>
 ;     <a href="PRG14.html#SpriteBehavior_BossDeath">SpriteBehavior_BossDeath</a>
 ;     <a href="PRG14.html#SpriteBehavior_EnemyUnused18__9991">SpriteBehavior_EnemyUnused18__9991</a>
@@ -3365,11 +3381,11 @@ pre {
 ;     <a href="PRG14.html#SpriteUpdateHandler_Effect_LightningBall20">SpriteUpdateHandler_Effect_LightningBall20</a>
 ;     <a href="PRG14.html#Sprite_CalcDistanceYToPlayer">Sprite_CalcDistanceYToPlayer</a>
 ;     <a href="PRG14.html#Sprite_CalculateNewVertPos">Sprite_CalculateNewVertPos</a>
-;     <a href="PRG14.html#Sprite_CanClimb">Sprite_CanClimb</a>
 ;     <a href="PRG14.html#Sprite_CapToBlockOppositeFalling">Sprite_CapToBlockOppositeFalling</a>
 ;     <a href="PRG14.html#Sprite_CastMagic">Sprite_CastMagic</a>
 ;     <a href="PRG14.html#Sprite_CheckHitByCastMagic">Sprite_CheckHitByCastMagic</a>
-;     <a href="PRG14.html#Sprites_CanSpriteWalk">Sprites_CanSpriteWalk</a>
+;     <a href="PRG14.html#Sprite_RunDeathDropHandler">Sprite_RunDeathDropHandler</a>
+;     <a href="PRG14.html#Sprites_CanMoveDownByHitbox">Sprites_CanMoveDownByHitbox</a>
 ;
 </div><span class="l"><a class="anc" name="00c2" href="#00c2">[00c2]</a><a href="#CurrentSprites_YPos" class="la">CurrentSprites_YPos:</a><span class="ce">; [$00c2]</span></span>
 <span class="l"><a class="anc" name="00c2" href="#00c2">[00c2]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [0]:</span></span>
@@ -3945,9 +3961,9 @@ pre {
 ;     <a href="PRG15_MIRROR.html#Player_UpdateExperience">Player_UpdateExperience</a>
 ;     <a href="PRG15_MIRROR.html#TextBox_DisplayMessage">TextBox_DisplayMessage</a>
 ;     <a href="PRG15_MIRROR.html#TextBox_GetBackingAttributeData">TextBox_GetBackingAttributeData</a>
+;     <a href="PRG15_MIRROR.html#TextBox_ShowMessage_HandleSpaceOrEndOfLine">TextBox_ShowMessage_HandleSpaceOrEndOfLine</a>
 ;     <a href="PRG15_MIRROR.html#TextBox_ShowMessage_LoadMessage">TextBox_ShowMessage_LoadMessage</a>
 ;     <a href="PRG15_MIRROR.html#TextBox_ShowMessage_Pause">TextBox_ShowMessage_Pause</a>
-;     <a href="PRG15_MIRROR.html#TextBox_ShowMessage_Space">TextBox_ShowMessage_Space</a>
 ;     <a href="PRG15_MIRROR.html#TextBox_WriteChar">TextBox_WriteChar</a>
 ;     <a href="PRG15_MIRROR.html#Textbox_Maybe_GetAreaBehindTextbox">Textbox_Maybe_GetAreaBehindTextbox</a>
 ;     <a href="PRG15_MIRROR.html#UI_DrawDigitsZeroPadded">UI_DrawDigitsZeroPadded</a>
@@ -4017,9 +4033,9 @@ pre {
 ;     <a href="PRG15_MIRROR.html#Player_UpdateExperience">Player_UpdateExperience</a>
 ;     <a href="PRG15_MIRROR.html#TextBox_DisplayMessage">TextBox_DisplayMessage</a>
 ;     <a href="PRG15_MIRROR.html#TextBox_GetBackingAttributeData">TextBox_GetBackingAttributeData</a>
+;     <a href="PRG15_MIRROR.html#TextBox_ShowMessage_HandleSpaceOrEndOfLine">TextBox_ShowMessage_HandleSpaceOrEndOfLine</a>
 ;     <a href="PRG15_MIRROR.html#TextBox_ShowMessage_LoadMessage">TextBox_ShowMessage_LoadMessage</a>
 ;     <a href="PRG15_MIRROR.html#TextBox_ShowMessage_Pause">TextBox_ShowMessage_Pause</a>
-;     <a href="PRG15_MIRROR.html#TextBox_ShowMessage_Space">TextBox_ShowMessage_Space</a>
 ;     <a href="PRG15_MIRROR.html#TextBox_WriteChar">TextBox_WriteChar</a>
 ;     <a href="PRG15_MIRROR.html#Textbox_Maybe_GetAreaBehindTextbox">Textbox_Maybe_GetAreaBehindTextbox</a>
 ;     <a href="PRG15_MIRROR.html#UI_DrawDigitsZeroPadded">UI_DrawDigitsZeroPadded</a>
@@ -4072,9 +4088,9 @@ pre {
 ;     <a href="PRG15_MIRROR.html#Player_AddGold">Player_AddGold</a>
 ;     <a href="PRG15_MIRROR.html#Player_SubtractGold">Player_SubtractGold</a>
 ;     <a href="PRG15_MIRROR.html#Player_UpdateExperience">Player_UpdateExperience</a>
+;     <a href="PRG15_MIRROR.html#TextBox_ShowMessage_HandleSpaceOrEndOfLine">TextBox_ShowMessage_HandleSpaceOrEndOfLine</a>
 ;     <a href="PRG15_MIRROR.html#TextBox_ShowMessage_LoadMessage">TextBox_ShowMessage_LoadMessage</a>
 ;     <a href="PRG15_MIRROR.html#TextBox_ShowMessage_Pause">TextBox_ShowMessage_Pause</a>
-;     <a href="PRG15_MIRROR.html#TextBox_ShowMessage_Space">TextBox_ShowMessage_Space</a>
 ;     <a href="PRG15_MIRROR.html#TextBox_WriteChar">TextBox_WriteChar</a>
 ;     <a href="PRG15_MIRROR.html#Textbox_Maybe_GetAreaBehindTextbox">Textbox_Maybe_GetAreaBehindTextbox</a>
 ;     <a href="PRG15_MIRROR.html#UI_DrawGoldValue">UI_DrawGoldValue</a>

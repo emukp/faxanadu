@@ -22,7 +22,6 @@
 ;     BScript_Action_FacePlayerX
 ;     BScript_Action_FacePlayerY
 ;     CurrentSprite_CheckHitPlayer
-;     Maybe_Sprite_HandleDeathDrop
 ;     Player_CheckShieldHitByMagic
 ;     Player_DrawShield
 ;     Player_DrawWeapon
@@ -37,6 +36,7 @@
 ;     SpriteUpdateHandler_Effect_EnemyDeath
 ;     SpriteUpdateHandler_Effect_LightningBall20
 ;     Sprite_CheckHitByCastMagic
+;     Sprite_RunDeathDropHandler
 ;     Sprites_CalcYFromGravity
 ;     Sprites_IsSpriteOutOfWeaponRange
 ;     Area_ConvertPixelsToBlockPos
@@ -73,7 +73,6 @@
 ;     BScript_Action_FacePlayerX
 ;     BScript_Action_FacePlayerY
 ;     CurrentSprite_CheckHitPlayer
-;     Maybe_Sprite_HandleDeathDrop
 ;     Player_CheckShieldHitByMagic
 ;     Player_DrawShield
 ;     Player_DrawWeapon
@@ -88,6 +87,7 @@
 ;     SpriteUpdateHandler_Effect_EnemyDeath
 ;     SpriteUpdateHandler_Effect_LightningBall20
 ;     Sprite_CheckHitByCastMagic
+;     Sprite_RunDeathDropHandler
 ;     Sprites_CalcYFromGravity
 ;     Sprites_IsSpriteOutOfWeaponRange
 ;     Area_ConvertPixelsToBlockPos
@@ -124,9 +124,9 @@ Temp_00:                                    ; [$0000]
 ;
 ;
 ; XREFS:
-;     Maybe_Sprite_HandleDeathDrop
 ;     Player_HitEnemyWithMagic
 ;     Sprite_CheckHitByCastMagic
+;     Sprite_RunDeathDropHandler
 ;     Screen_LoadBlockDataVert
 ;     Screen_LoadBlocksHoriz
 ;     Sprite_Draw_FlippedHoriz
@@ -722,7 +722,7 @@ Joy1_PrevButtonMask:                        ; [$0018]
 ;     TextBox_CheckShouldContinue
 ;     TextBox_CheckShouldContinueOrDismissMessage
 ;     TextBox_CheckShouldContinueOrDismissQuestion
-;     TextBox_IsBPressed
+;     TextBox_DismissIfBElseContinue
 ;     Player_CastMagic
 ;     Player_CheckHandlePressUpOnNPC
 ;     Area_CheckCanClimbAdjacent
@@ -2985,10 +2985,10 @@ Screen_ScrollPlayerTransitionCounter:       ; [$00b4]
 ;     CastMagic_CheckDirection_Right
 ;     CurrentSprite_CalculateVisibility
 ;     CurrentSprite_CanMoveInDirection
-;     FUN_PRG14__854c
 ;     FUN_PRG14__86bd
 ;     Player_CalculateVisibility
 ;     SpriteBehavior_NecronAides
+;     Sprites_CheckPlacementInvalidAtY
 ;     Sprites_MoveRight
 ;     Area_CanMoveImmediatelyRight
 ;     Area_CanPlayerMoveLeft
@@ -3014,10 +3014,10 @@ Screen_ScrollPlayerTransitionCounter:       ; [$00b4]
 ;     CastMagic_CheckDirection_Right
 ;     CurrentSprite_CalculateVisibility
 ;     CurrentSprite_CanMoveInDirection
-;     FUN_PRG14__854c
 ;     FUN_PRG14__86bd
 ;     Player_CalculateVisibility
 ;     SpriteBehavior_NecronAides
+;     Sprites_CheckPlacementInvalidAtY
 ;     Sprites_MoveRight
 ;     Area_CanMoveImmediatelyRight
 ;     Area_CanPlayerMoveLeft
@@ -3045,9 +3045,9 @@ Arg_PixelPosX:                              ; [$00b5]
 ;     CastMagic_CheckDirection_CheckImpassable
 ;     CurrentSprite_CalculateVisibility
 ;     CurrentSprite_CanMoveInDirection
-;     FUN_PRG14__854c
 ;     Player_CalculateVisibility
 ;     SpriteBehavior_NecronAides
+;     Sprites_CheckPlacementInvalidAtY
 ;     Sprites_MoveRight__86c6
 ;     Area_CanPlayerMoveAtY
 ;     Area_CanPlayerMoveUp
@@ -3151,12 +3151,10 @@ Temp_HitBoxValue:                           ; [$00b9]
 ;     CurrentSprite_CalculateVisibility
 ;     CurrentSprite_UpdateState
 ;     FUN_PRG14__844b
-;     FUN_PRG14__854c
 ;     FUN_PRG14__9917
 ;     FUN_PRG14__9aa1
 ;     FUN_PRG14__a1cc
 ;     Maybe_SpriteBody__99f3
-;     Maybe_Sprite_HandleDeathDrop
 ;     MoveSpriteHorizIfPossible
 ;     SpriteBehavior_BossDeath
 ;     SpriteBehavior_EnemyUnused18__9991
@@ -3179,7 +3177,9 @@ Temp_HitBoxValue:                           ; [$00b9]
 ;     Sprite_CheckHitByCastMagic
 ;     Sprite_Maybe_AddFacingPosX
 ;     Sprite_Maybe_TurnAroundIfAtScreenEdgeHoriz
+;     Sprite_RunDeathDropHandler
 ;     Sprite_SubtractPosX
+;     Sprites_CheckPlacementInvalidAtY
 ;
 CurrentSprites_XPos_Full:                   ; [$00ba]
     .byte $00                               ; [0]:
@@ -3208,11 +3208,11 @@ CurrentSprites_XPos_Full_7_:                ; [$00c1]
 ;     CurrentSprite_CalculateVisibility
 ;     CurrentSprite_HandleFall
 ;     CurrentSprite_UpdateState
+;     DEADCODE_Sprites_CanMoveDownBelowHitbox
 ;     FUN_PRG14__9917
 ;     FUN_PRG14__9ac6
 ;     FUN_PRG14__a0a0
 ;     FUN_PRG14__a1cc
-;     Maybe_Sprite_HandleDeathDrop
 ;     MoveSpriteVerticalIfPossible
 ;     SpriteBehavior_BossDeath
 ;     SpriteBehavior_EnemyUnused18__9991
@@ -3233,11 +3233,11 @@ CurrentSprites_XPos_Full_7_:                ; [$00c1]
 ;     SpriteUpdateHandler_Effect_LightningBall20
 ;     Sprite_CalcDistanceYToPlayer
 ;     Sprite_CalculateNewVertPos
-;     Sprite_CanClimb
 ;     Sprite_CapToBlockOppositeFalling
 ;     Sprite_CastMagic
 ;     Sprite_CheckHitByCastMagic
-;     Sprites_CanSpriteWalk
+;     Sprite_RunDeathDropHandler
+;     Sprites_CanMoveDownByHitbox
 ;
 CurrentSprites_YPos:                        ; [$00c2]
     .byte $00                               ; [0]:
@@ -3813,9 +3813,9 @@ TextBox_ContentsY:                          ; [$00eb]
 ;     Player_UpdateExperience
 ;     TextBox_DisplayMessage
 ;     TextBox_GetBackingAttributeData
+;     TextBox_ShowMessage_HandleSpaceOrEndOfLine
 ;     TextBox_ShowMessage_LoadMessage
 ;     TextBox_ShowMessage_Pause
-;     TextBox_ShowMessage_Space
 ;     TextBox_WriteChar
 ;     Textbox_Maybe_GetAreaBehindTextbox
 ;     UI_DrawDigitsZeroPadded
@@ -3885,9 +3885,9 @@ TextBox_ContentsY:                          ; [$00eb]
 ;     Player_UpdateExperience
 ;     TextBox_DisplayMessage
 ;     TextBox_GetBackingAttributeData
+;     TextBox_ShowMessage_HandleSpaceOrEndOfLine
 ;     TextBox_ShowMessage_LoadMessage
 ;     TextBox_ShowMessage_Pause
-;     TextBox_ShowMessage_Space
 ;     TextBox_WriteChar
 ;     Textbox_Maybe_GetAreaBehindTextbox
 ;     UI_DrawDigitsZeroPadded
@@ -3940,9 +3940,9 @@ Temp_Int24:                                 ; [$00ec]
 ;     Player_AddGold
 ;     Player_SubtractGold
 ;     Player_UpdateExperience
+;     TextBox_ShowMessage_HandleSpaceOrEndOfLine
 ;     TextBox_ShowMessage_LoadMessage
 ;     TextBox_ShowMessage_Pause
-;     TextBox_ShowMessage_Space
 ;     TextBox_WriteChar
 ;     Textbox_Maybe_GetAreaBehindTextbox
 ;     UI_DrawGoldValue

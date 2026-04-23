@@ -28,22 +28,14 @@ AREAS_TABLE_PTR:                            ; [$8000]
 ;     AREAS_TABLE_PTR [$PRG3::8000]
 ;
 AREA_TABLES:                                ; [$8002]
-    bank_offset_16 EOLIS_AREA_DATA          ; EOLIS_AREA_DATA
-                                            ; [$PRG3::8002]
-    bank_offset_16 TRUNK_AREA_DATA          ; TRUNK_AREA_DATA
-                                            ; [$PRG3::8004]
-    bank_offset_16 MIST_AREA_DATA           ; MIST_AREA_DATA
-                                            ; [$PRG3::8006]
-    bank_offset_16 TOWNS_AREA_DATA          ; TOWNS_AREA_DATA
-                                            ; [$PRG3::8008]
-    bank_offset_16 BUILDINGS_AREA_DATA      ; BUILDINGS_AREA_DATA
-                                            ; [$PRG3::800a]
-    bank_offset_16 BRANCH_AREA_DATA         ; BRANCH_AREA_DATA
-                                            ; [$PRG3::800c]
-    bank_offset_16 DARTMOOR_AREA_DATA       ; DARTMOOR_AREA_DATA
-                                            ; [$PRG3::800e]
-    bank_offset_16 ZENITH_AREA_DATA         ; ZENITH_AREA_DATA
-                                            ; [$PRG3::8010]
+    bank_offset_16 EOLIS_AREA_DATA          ; Dropped: Bread
+    bank_offset_16 TRUNK_AREA_DATA          ; Dropped: Coin
+    bank_offset_16 MIST_AREA_DATA           ; Enemy: ?
+    bank_offset_16 TOWNS_AREA_DATA          ; Enemy: Raiden
+    bank_offset_16 BUILDINGS_AREA_DATA      ; Enemy: Necron Aides
+    bank_offset_16 BRANCH_AREA_DATA         ; Enemy: Zombie
+    bank_offset_16 DARTMOOR_AREA_DATA       ; Enemy: Hornet
+    bank_offset_16 ZENITH_AREA_DATA         ; Enemy: Bihoruda
 
 
 ;============================================================================
@@ -58,8 +50,7 @@ AREA_TABLES:                                ; [$8002]
 ;     AREA_TABLES [$PRG3::8002]
 ;
 EOLIS_AREA_DATA:                            ; [$8012]
-    bank_offset_16 EOLIS_AREA_DATA_blockAttrsRelPtr ; EOLIS_AREA_DATA.blockAttrsRelPtr
-                                                    ; [$PRG3::8012]
+    bank_offset_16 EOLIS_AREA_DATA_blockAttrsRelPtr ; Enemy: Lilith
     bank_offset_16 EOLIS_BLOCK_PROPERTIES   ; EOLIS_BLOCK_PROPERTIES
                                             ; [$PRG3::8014]
     bank_offset_16 EOLIS_SCROLL_DATA        ; EOLIS_SCROLL_DATA
@@ -98,7 +89,7 @@ EOLIS_AREA_DATA_blockAttrsRelPtr:           ; [$801c]
 ;     EOLIS_AREA_DATA [$PRG3::801c]
 ;
 EOLIS_BLOCK_ATTRIBUTES:                     ; [$8026]
-    .byte $00                               ; [0]:
+    .byte $00                               ; [0]: Magic: ?
     .byte $aa                               ; [1]:
     .byte $55                               ; [2]:
     .byte $55                               ; [3]:
@@ -240,7 +231,7 @@ EOLIS_BLOCK_ATTRIBUTES:                     ; [$8026]
 ;     EOLIS_AREA_DATA [$PRG3::801e]
 ;
 EOLIS_BLOCK_DATA_01:                        ; [$80a6]
-    .byte $00                               ; [0]:
+    .byte $00                               ; [0]: Enemy: Yuinaru
     .byte $83                               ; [1]:
     .byte $95                               ; [2]:
     .byte $96                               ; [3]:
@@ -382,7 +373,7 @@ EOLIS_BLOCK_DATA_01:                        ; [$80a6]
 ;     EOLIS_AREA_DATA [$PRG3::8020]
 ;
 EOLIS_BLOCK_DATA_02:                        ; [$8126]
-    .byte $00                               ; [0]:
+    .byte $00                               ; [0]: Enemy: Snowman
     .byte $83                               ; [1]:
     .byte $8e                               ; [2]:
     .byte $96                               ; [3]:
@@ -524,7 +515,7 @@ EOLIS_BLOCK_DATA_02:                        ; [$8126]
 ;     EOLIS_AREA_DATA [$PRG3::8022]
 ;
 EOLIS_BLOCK_DATA_03:                        ; [$81a6]
-    .byte $00                               ; [0]:
+    .byte $00                               ; [0]: Enemy: Nash
     .byte $83                               ; [1]:
     .byte $ab                               ; [2]:
     .byte $94                               ; [3]:
@@ -666,7 +657,7 @@ EOLIS_BLOCK_DATA_03:                        ; [$81a6]
 ;     EOLIS_AREA_DATA [$PRG3::8024]
 ;
 EOLIS_BLOCK_DATA_04:                        ; [$8226]
-    .byte $00                               ; [0]:
+    .byte $00                               ; [0]: Enemy: Fire Giant
     .byte $83                               ; [1]:
     .byte $ab                               ; [2]:
     .byte $94                               ; [3]:
@@ -808,7 +799,7 @@ EOLIS_BLOCK_DATA_04:                        ; [$8226]
 ;     EOLIS_AREA_DATA [$PRG3::8014]
 ;
 EOLIS_BLOCK_PROPERTIES:                     ; [$82a6]
-    .byte BLOCK_IS_AIR                      ; [0]:
+    .byte BLOCK_IS_AIR                      ; [0]: Enemy: Ishiisu
     .byte BLOCK_IS_AIR                      ; [1]:
     .byte BLOCK_IS_AIR                      ; [2]:
     .byte BLOCK_IS_SOLID                    ; [3]:
@@ -950,7 +941,7 @@ EOLIS_BLOCK_PROPERTIES:                     ; [$82a6]
 ;     EOLIS_AREA_DATA [$PRG3::8016]
 ;
 EOLIS_SCROLL_DATA:                          ; [$8326]
-    .byte $ff                               ; [0]:
+    .byte $ff                               ; [0]: Enemy: Execution Hood
     .byte $ff                               ; [1]:
     .byte $ff                               ; [2]:
     .byte $ff                               ; [3]:

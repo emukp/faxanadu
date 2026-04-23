@@ -3,7 +3,6 @@ LD65 = ld65
 
 NES_ROM = faxanadu.nes
 BUILD_NES_ROM = build/faxanadu.nes
-BUILD_MESEN_FILE = build/faxanadu.mlb
 
 MAIN_SOURCE = src/faxanadu.asm
 INCLUDED_SOURCES = \
@@ -106,16 +105,11 @@ $(MAIN_SOURCE): $(INCLUDED_SOURCES)
 
 $(BUILD_NES_ROM): ./build/faxanadu.o ./src/ld65.cfg
 	@$(LD65) -o "$(BUILD_NES_ROM)" -C src/ld65.cfg ./build/faxanadu.o
-	@cp "$(BUILD_MESEN_FILE)" mesen/
 	@sha256sum "$(BUILD_NES_ROM)"
 
 
 cleanup_generated:
 	@rm -f ${DELETE_SOURCES}
-
-
-clean:
-	@rm -f $(BUILD_NES_ROM) $(BUILD_MESEN_FILE)
 
 
 .PHONY: all clean cleanup_generated

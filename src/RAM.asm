@@ -1383,9 +1383,9 @@ TextBox_PlayTextSound:                      ; [$0212]
 ;     TextBox_CheckShouldContinueOrDismissMessage
 ;     TextBox_CheckShouldContinueOrDismissQuestion
 ;     IScripts_LoadAndShowMessage
-;     Maybe_TextBox_ShowCurrentMessageID
 ;     Messages_Load
 ;     TextBox_ShowMessage_Pause
+;     TextBox_ShowNextChar_IfReady
 ;============================================================================
 
 ;
@@ -1395,9 +1395,9 @@ TextBox_PlayTextSound:                      ; [$0212]
 ;     TextBox_CheckShouldContinueOrDismissMessage
 ;     TextBox_CheckShouldContinueOrDismissQuestion
 ;     IScripts_LoadAndShowMessage
-;     Maybe_TextBox_ShowCurrentMessageID
 ;     Messages_Load
 ;     TextBox_ShowMessage_Pause
+;     TextBox_ShowNextChar_IfReady
 ;
 MessageID:                                  ; [$0213]
     .byte $00                               ; [$0213] Message
@@ -1408,17 +1408,17 @@ MessageID:                                  ; [$0213]
 ;
 ; XREFS:
 ;     Messages_Load
+;     TextBox_ShowMessage_HandleSpaceOrEndOfLine
 ;     TextBox_ShowMessage_LoadMessage
 ;     TextBox_ShowMessage_Pause
-;     TextBox_ShowMessage_Space
 ;============================================================================
 
 ;
 ; XREFS:
 ;     Messages_Load
+;     TextBox_ShowMessage_HandleSpaceOrEndOfLine
 ;     TextBox_ShowMessage_LoadMessage
 ;     TextBox_ShowMessage_Pause
-;     TextBox_ShowMessage_Space
 ;
 Message_ProcessedLength:                    ; [$0214]
     .byte $00                               ; [$0214] byte
@@ -1437,9 +1437,9 @@ Message_ProcessedLength:                    ; [$0214]
 ;     TextBox_CheckShouldContinue
 ;     TextBox_CheckShouldContinueOrDismissQuestion
 ;     TextBox_PrepareContinueMessage
-;     Maybe_TextBox_ShowCurrentMessageID
 ;     TextBox_ClearPasswordSize
 ;     TextBox_ShowMessage_Pause
+;     TextBox_ShowNextChar_IfReady
 ;
 TextBox_MessagePaused:                      ; [$0215]
     .byte $00                               ; [$0215] byte
@@ -1447,10 +1447,10 @@ TextBox_MessagePaused:                      ; [$0215]
 ;
 ; XREFS:
 ;     TextBox_ClearPasswordSize
+;     TextBox_ShowMessage_HandleSpaceOrEndOfLine
 ;     TextBox_ShowMessage_IncLineAndReset
 ;     TextBox_ShowMessage_Newline
 ;     TextBox_ShowMessage_Prepare4Lines
-;     TextBox_ShowMessage_Space
 ;     TextBox_WriteChar
 ;
 TextBox_CharPosForLine:                     ; [$0216]
@@ -1478,9 +1478,9 @@ TextBox_DrawnLineNum:                       ; [$0217]
 ;
 ; XREFS:
 ;     Messages_Load
+;     TextBox_ShowMessage_HandleSpaceOrEndOfLine
 ;     TextBox_ShowMessage_LoadMessage
 ;     TextBox_ShowMessage_Pause
-;     TextBox_ShowMessage_Space
 ;
 Message_StartAddr:                          ; [$0218]
     .byte $00                               ; [$0218] byte
@@ -1488,9 +1488,9 @@ Message_StartAddr:                          ; [$0218]
 ;
 ; XREFS:
 ;     Messages_Load
+;     TextBox_ShowMessage_HandleSpaceOrEndOfLine
 ;     TextBox_ShowMessage_LoadMessage
 ;     TextBox_ShowMessage_Pause
-;     TextBox_ShowMessage_Space
 ;
 Message_StartAddr_U:                        ; [$0219]
     .byte $00                               ; [$0219] byte
@@ -1540,22 +1540,21 @@ Textbox_TitleCharOffset:                    ; [$021c]
 ; characters are shown in textboxes.
 ;
 ; This will increment up by 1 every tick of the message box.
-; Maybe_TextBox_ShowCurrentMessageID will AND this
-; with
+; TextBox_ShowNextChar_IfReady will AND this with
 ; 3 and only process/display the next character if the
 ; result is 0.
 ;
 ; XREFS:
-;     Maybe_TextBox_ShowCurrentMessageID
 ;     Messages_Load
 ;     TextBox_ShowNextChar
+;     TextBox_ShowNextChar_IfReady
 ;============================================================================
 
 ;
 ; XREFS:
-;     Maybe_TextBox_ShowCurrentMessageID
 ;     Messages_Load
 ;     TextBox_ShowNextChar
+;     TextBox_ShowNextChar_IfReady
 ;
 TextBox_Timer:                              ; [$021d]
     .byte $00                               ; [$021d] byte
@@ -2175,11 +2174,11 @@ CurrentSprites_YPos_Frac:                   ; [$02c4]
 ;     Player_HitEnemyWithMagic
 ;     Player_HitSpriteWithWeapon
 ;     SpriteBehavior_BossDeath
+;     SpriteBehavior_EnemyDeath
 ;     SpriteBehavior_EnemyMagic
 ;     SpriteBehavior_EnemyUnused18__9991
 ;     SpriteBehavior_ExecutionHood__a0ad
 ;     SpriteBehavior_Garbled3
-;     SpriteBehavior_LightningBallOrCharron
 ;     SpriteBehavior_MaybeFallingRocks__ClearEntity
 ;     SpriteBehavior_Pakukame
 ;     SpriteBehavior_ShadowEura__a12d
@@ -2219,11 +2218,11 @@ CurrentSprites_YPos_Frac:                   ; [$02c4]
 ;     Player_HitEnemyWithMagic
 ;     Player_HitSpriteWithWeapon
 ;     SpriteBehavior_BossDeath
+;     SpriteBehavior_EnemyDeath
 ;     SpriteBehavior_EnemyMagic
 ;     SpriteBehavior_EnemyUnused18__9991
 ;     SpriteBehavior_ExecutionHood__a0ad
 ;     SpriteBehavior_Garbled3
-;     SpriteBehavior_LightningBallOrCharron
 ;     SpriteBehavior_MaybeFallingRocks__ClearEntity
 ;     SpriteBehavior_Pakukame
 ;     SpriteBehavior_ShadowEura__a12d
@@ -2365,8 +2364,6 @@ CurrentSprites_Behaviors_7_:                ; [$02db]
 ;     CurrentSprite_HandleFall
 ;     CurrentSprite_UpdateFlipMask
 ;     FUN_PRG14__844b
-;     FUN_PRG14__849a
-;     FUN_PRG14__854c
 ;     FUN_PRG14__a1cc
 ;     MoveSpriteHorizIfPossible
 ;     MoveSpriteVerticalIfPossible
@@ -2407,11 +2404,13 @@ CurrentSprites_Behaviors_7_:                ; [$02db]
 ;     Sprite_Maybe_ResetState
 ;     Sprite_Maybe_TurnAroundIfAtScreenEdgeHoriz
 ;     Sprite_Maybe_TurnAroundIfAtScreenEdgeVert
+;     Sprite_MoveForwardX
 ;     Sprite_MoveHorizAndTurnAroundIfNeeded
 ;     Sprite_MoveVertAndFlipIfNeeded
 ;     Sprite_SetBehaviorNotReady
 ;     Sprite_SetBehaviorReady
 ;     Sprite_SetVisible
+;     Sprites_CheckPlacementInvalidAtY
 ;     Sprites_HideSprite
 ;     Sprites_IsSpriteHidden
 ;     Sprites_SetCurrentSpriteCanMove
@@ -2552,6 +2551,7 @@ CurrentSprites_Phases_7_:                   ; [$02eb]
 ;     SpriteBehavior_Borabohra
 ;     SpriteBehavior_BossDeath
 ;     SpriteBehavior_BuzzAround
+;     SpriteBehavior_EnemyDeath
 ;     SpriteBehavior_EnemyUnused18__994a
 ;     SpriteBehavior_EnemyUnused18__9991
 ;     SpriteBehavior_EnemyUnused36
@@ -2564,7 +2564,6 @@ CurrentSprites_Phases_7_:                   ; [$02eb]
 ;     SpriteBehavior_KingGrieve
 ;     SpriteBehavior_KingGrieve_9f86
 ;     SpriteBehavior_KingGrieve_MoveDown
-;     SpriteBehavior_LightningBallOrCharron
 ;     SpriteBehavior_Lilith
 ;     SpriteBehavior_Magman
 ;     SpriteBehavior_MoveTowardPlayer
@@ -2690,7 +2689,6 @@ CurrentSprites_BehaviorData3:               ; [$02f4]
 ; XREFS:
 ;     FUN_PRG14__9aa1
 ;     Maybe_SpriteBody__99f3
-;     Maybe_Sprite_HandleDeathDrop
 ;     SpriteBehavior_BounceAndExpire
 ;     SpriteBehavior_EnemyUnused18__994a
 ;     SpriteBehavior_EnemyUnused18__9991
@@ -2703,6 +2701,7 @@ CurrentSprites_BehaviorData3:               ; [$02f4]
 ;     SpriteUpdateHandler_Boss_ShadowEura
 ;     SpriteUpdateHandler_Coin
 ;     SpriteUpdateHandler_Magic_83
+;     Sprite_RunDeathDropHandler
 ;     Sprite_SetDeathEntity
 ;============================================================================
 
@@ -2710,7 +2709,6 @@ CurrentSprites_BehaviorData3:               ; [$02f4]
 ; XREFS:
 ;     FUN_PRG14__9aa1
 ;     Maybe_SpriteBody__99f3
-;     Maybe_Sprite_HandleDeathDrop
 ;     SpriteBehavior_BounceAndExpire
 ;     SpriteBehavior_EnemyUnused18__994a
 ;     SpriteBehavior_EnemyUnused18__9991
@@ -2723,6 +2721,7 @@ CurrentSprites_BehaviorData3:               ; [$02f4]
 ;     SpriteUpdateHandler_Boss_ShadowEura
 ;     SpriteUpdateHandler_Coin
 ;     SpriteUpdateHandler_Magic_83
+;     Sprite_RunDeathDropHandler
 ;     Sprite_SetDeathEntity
 ;
 CurrentSprites_InternalBehaviorStates:      ; [$02fc]
@@ -2744,6 +2743,7 @@ CurrentSprites_InternalBehaviorStates_4_:   ; [$0300]
 ;
 ; XREFS:
 ;     CurrentSprite_CanMoveInDirection
+;     DEADCODE_Sprites_CanMoveDownBelowHitbox
 ;     FUN_PRG14__9917
 ;     SpriteBehavior_Borabohra
 ;     SpriteBehavior_Garbled3
@@ -2753,12 +2753,11 @@ CurrentSprites_InternalBehaviorStates_4_:   ; [$0300]
 ;     SpriteBehavior_ShadowEura
 ;     SpriteBehavior_Zorugeriru
 ;     Sprite_CalcDistanceXToPlayer
-;     Sprite_CanClimb
 ;     Sprite_CheckHitByCastMagic
 ;     Sprite_Maybe_ResetState
 ;     Sprite_ReplaceWithDroppedItem
 ;     Sprite_ReplaceWithMattock
-;     Sprites_CanSpriteWalk
+;     Sprites_CanMoveDownByHitbox
 ;     Sprites_MoveRight
 ;     Sprites_MoveRight__86c6
 ;
@@ -2977,20 +2976,20 @@ CurrentSprites_PPUOffsets_7_:               ; [$0333]
 ; $FF = Not hit by magic
 ;
 ; XREFS:
-;     Maybe_Sprite_HandleDeathDrop
 ;     SpriteBehavior_Zorugeriru__9e13
 ;     Sprite_CheckHitByCastMagic
 ;     Sprite_Maybe_ResetState
+;     Sprite_RunDeathDropHandler
 ;     Sprite_SetDeathEntity
 ;     Sprites_Maybe_UpdateHitByMagic
 ;============================================================================
 
 ;
 ; XREFS:
-;     Maybe_Sprite_HandleDeathDrop
 ;     SpriteBehavior_Zorugeriru__9e13
 ;     Sprite_CheckHitByCastMagic
 ;     Sprite_Maybe_ResetState
+;     Sprite_RunDeathDropHandler
 ;     Sprite_SetDeathEntity
 ;     Sprites_Maybe_UpdateHitByMagic
 ;
@@ -3060,16 +3059,16 @@ CurrentSprites_HP_7_:                       ; [$034b]
 ;
 ; XREFS:
 ;     CurrentSprite_UpdateState
-;     Maybe_Sprite_HandleDeathDrop
 ;     Player_HitSpriteWithWeapon
+;     Sprite_RunDeathDropHandler
 ;     _handleHit [$PRG14::804e]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     CurrentSprite_UpdateState
-;     Maybe_Sprite_HandleDeathDrop
 ;     Player_HitSpriteWithWeapon
+;     Sprite_RunDeathDropHandler
 ;     _handleHit [$PRG14::804e]
 ;
 CurrentSprites_HitCounter:                  ; [$034c]
@@ -3164,21 +3163,21 @@ CurrentSprites_BehaviorArg1:                ; [$0364]
 ; Message IDs of the NPC messages
 ;
 ; XREFS:
-;     Maybe_Sprite_HandleDeathDrop
 ;     Player_CheckHandlePressUpOnNPC
 ;     Player_HandleTouchBread
 ;     Player_HandleTouchCoin
 ;     Player_HandleTouchNPC
+;     Sprite_RunDeathDropHandler
 ;     Sprites_LoadSpriteValue
 ;============================================================================
 
 ;
 ; XREFS:
-;     Maybe_Sprite_HandleDeathDrop
 ;     Player_CheckHandlePressUpOnNPC
 ;     Player_HandleTouchBread
 ;     Player_HandleTouchCoin
 ;     Player_HandleTouchNPC
+;     Sprite_RunDeathDropHandler
 ;     Sprites_LoadSpriteValue
 ;
 CurrentSprites_Values:                      ; [$036c]
@@ -3336,7 +3335,7 @@ Arg_DeltaY_Full:                            ; [$0377]
 ;     CurrentSprite_CheckHitPlayer
 ;     CurrentSprite_HandleFall
 ;     CurrentSprite_UpdateState
-;     FUN_PRG14__84f4
+;     DEADCODE_FUN_PRG14__84f4
 ;     FUN_PRG14__9a61
 ;     LAB_PRG14__8043 [$PRG14::8043]
 ;     MoveSpriteHorizIfPossible
@@ -3387,7 +3386,7 @@ Arg_DeltaY_Full:                            ; [$0377]
 ;     CurrentSprite_CheckHitPlayer
 ;     CurrentSprite_HandleFall
 ;     CurrentSprite_UpdateState
-;     FUN_PRG14__84f4
+;     DEADCODE_FUN_PRG14__84f4
 ;     FUN_PRG14__9a61
 ;     LAB_PRG14__8043 [$PRG14::8043]
 ;     MoveSpriteHorizIfPossible

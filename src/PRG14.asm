@@ -369,68 +369,184 @@ Sprites_Maybe_UpdateHitByMagic:             ; [$8151]
 ;     Sprite_CheckHitByCastMagic
 ;============================================================================
 Player_HitEnemyWithMagic:                   ; [$81a7]
-    LDA CurrentSprites_Entities,X
-    CMP #$05
-    BNE @LAB_PRG14__81b6
-    LDA CurrentSprites_Phases,X
-    ORA #$80
-    STA CurrentSprites_Phases,X
-
-  @LAB_PRG14__81b6:                         ; [$81b6]
-    LDA #$02
-    JSR Sound_PlayEffect
-    LDA MAGIC_DAMAGE,Y
-    STA Temp_00
-    LDA a:SpecialItems
-    AND #$04
-    BEQ @LAB_PRG14__81cf
-    LDA Temp_00
-    LSR A
-    CLC
-    ADC Temp_00
-    STA Temp_00
-
-  @LAB_PRG14__81cf:                         ; [$81cf]
-    LDA #$00
-    STA Temp_Addr_L
-    STY Temp_01
-    CPY #$00
-    BEQ @LAB_PRG14__81fd
-    LDY CurrentSprites_Entities,X
-    LDA SPRITE_ENTITY_MAYBE_MAGIC_DEFENSE,Y
-
-  @LAB_PRG14__81df:                         ; [$81df]
-    ASL A
-    ROL Temp_Addr_L
-    ASL A
-    ROL Temp_Addr_L
-    DEC Temp_01
-    BNE @LAB_PRG14__81df
-    LDA Temp_Addr_L
-    AND #$03
-    TAY
-    BEQ @LAB_PRG14__81fd
-    LSR Temp_00
-    DEY
-    BEQ @LAB_PRG14__81fd
-    LSR Temp_00
-    BEQ @LAB_PRG14__81fd
-    LDA #$00
-    STA Temp_00
-
-  @LAB_PRG14__81fd:                         ; [$81fd]
-    LDA CurrentSprites_HP,X
-    SEC
-    SBC Temp_00
-    STA CurrentSprites_HP,X
-    BCS RETURN_822D
-    LDA CurrentSprites_Entities,X
-    CMP #$18
-    BNE @LAB_PRG14__8215
+    LDA CurrentSprites_Entities,X           ; Load the sprite entity at the
+                                            ; given index.
+    CMP #$05                                ; Is this Necron Aides?
+    BNE @_handleHitWithMagic                ; If not, jump.
 
 
     ;
-    ; If the enemy is Sugata, clear the greyscale set when it
+    ; This is Necron Aides. Set bit 7 on its phase.
+    ;
+    LDA CurrentSprites_Phases,X             ; Load the phase for Necron
+                                            ; Aides.
+    ORA #$80                                ; Set bit 7.
+    STA CurrentSprites_Phases,X             ; Save it.
+
+
+    ;
+    ; Handle hitting the enemy with magic.
+    ;
+    ; This will first play the sound effect, and then begin
+    ; calculating damage to the enemy, factoring in the spell
+    ; and the enemy's magic defense.
+    ;
+  @_handleHitWithMagic:                     ; [$81b6]
+    LDA #$02                                ; 2 == Enemy Hit With Magic sound
+                                            ; effect
+    JSR Sound_PlayEffect                    ; Play it.
+
+
+    ;
+    ; Load the standard damage amount for the current spell.
+    ;
+    LDA MAGIC_DAMAGE,Y                      ; Load the magic damage for the
+                                            ; current spell.
+    STA Temp_00                             ; Store it temporarily.
+
+
+    ;
+    ; Check if the player has the Magical Rod.
+    ;
+    LDA a:SpecialItems                      ; Load the player's special
+                                            ; items.
+    AND #$04                                ; Is the Magical Rod equipped?
+    BEQ @_prepareCalcDefense
+
+
+    ;
+    ; The player has the Magical Rod.
+    ;
+    ; If they do, increase damage by 50%.
+    ;
+    LDA Temp_00                             ; Load the magic damage for the
+                                            ; spell.
+    LSR A                                   ; Reduce that amount by half
+                                            ; (we'll add it back).
+    CLC
+    ADC Temp_00                             ; Now add it back to the magic
+                                            ; damage (yielding a 50%
+                                            ; increase).
+    STA Temp_00                             ; Store it.
+
+  @_prepareCalcDefense:                     ; [$81cf]
+    LDA #$00
+    STA Temp_Addr_L                         ; Set the default magic defense
+                                            ; flags to 0 (0%).
+    STY Temp_01                             ; Store the current magic spell
+                                            ; ID as a loop counter.
+
+
+    ;
+    ; Check if we're hitting the enemy with Deluge or another
+    ; spell.
+    ;
+    CPY #$00                                ; Is the spell Deluge?
+    BEQ @_reduceEnemyHP
+
+
+    ;
+    ; This is not the Deluge spell.
+    ;
+    LDY CurrentSprites_Entities,X           ; Load the entity that's been
+                                            ; hit.
+    LDA SPRITE_ENTITY_MAGIC_DEFENSE,Y       ; Load the enemy's magic
+                                            ; defenses.
+
+
+    ;
+    ; Begin calculating the magic defense.
+    ;
+    ; This is only called for Thunder, Fire, Death, and Tilte.
+    ;
+    ; Starting with the current magic spell ID, we'll rotate the
+    ; most-significant bits into bits 0 and 1 until the current
+    ; spell's magic defense stats are placed there.
+    ;
+    ; Effectively, this makes sure we can operate on the right
+    ; defense flags for the given magic spell as bits 0-1.
+    ;
+  @_calcDefenseLoop:                        ; [$81df]
+    ASL A                                   ; Shift left, placing the
+                                            ; most-significant bit into
+                                            ; carry.
+    ROL Temp_Addr_L                         ; Rotate left, placing that into
+                                            ; bit 0.
+    ASL A                                   ; Shift left, placing the
+                                            ; most-significant bit into
+                                            ; carry.
+    ROL Temp_Addr_L                         ; Rotate left, placing that into
+                                            ; bit 0.
+    DEC Temp_01                             ; Decrement the magic spell
+                                            ; counter.
+    BNE @_calcDefenseLoop                   ; If the current spell's defense
+                                            ; flags aren't in bits 0 and 1,
+                                            ; loop.
+
+
+    ;
+    ; Process those defense stats.
+    ;
+    ; This applies the following logic:
+    ;
+    ;     If flags are not empty:
+    ;         Reduce damage by 50%.
+    ;
+    ;     Flags--;  // 11 => 10, 10 => 01, 01 => 0
+    ;
+    ;     If flags are not empty:
+    ;         Reduce damage by another 50% (75% total).
+    ;
+    ;     If damage hasn't been reduced to 0:
+    ;         Change that to 100%.
+    ;
+    ; NOTE: This is kind of weird. It seems to specially handle 75%
+    ;       reduction, and then just throws that out and turns it
+    ;       into 100%. Maybe they just patched that in to simplify
+    ;       later.
+    ;
+    LDA Temp_Addr_L                         ; Load the magic defense flags.
+    AND #$03                                ; Keep only bits 0 and 1.
+    TAY                                     ; Transfer to Y.
+    BEQ @_reduceEnemyHP                     ; If flags are 0, there's no
+                                            ; defense. Jump.
+    LSR Temp_00                             ; There's magic defense. Half the
+                                            ; damage.
+    DEY                                     ; Y-- (defense flags).
+    BEQ @_reduceEnemyHP                     ; If flags are 0, we're done.
+                                            ; Jump.
+    LSR Temp_00                             ; Half the damage again (75%
+                                            ; now).
+    BEQ @_reduceEnemyHP                     ; If 0 magic damage remains,
+                                            ; we're done. Jump.
+    LDA #$00                                ; Ignore that 75%. Make it 100%.
+                                            ; Why not.
+    STA Temp_00                             ; Save it.
+
+
+    ;
+    ; Subtract the magic damage from entity's HP.
+    ;
+  @_reduceEnemyHP:                          ; [$81fd]
+    LDA CurrentSprites_HP,X                 ; Load the current HP for the
+                                            ; entity being hit.
+    SEC
+    SBC Temp_00                             ; Subtract the normalized magic
+                                            ; damage.
+    STA CurrentSprites_HP,X                 ; Store it back.
+    BCS RETURN_822D                         ; If HP > 0, return.
+
+
+    ;
+    ; The entity is dead.
+    ;
+    LDA CurrentSprites_Entities,X           ; Load the ID of this entity.
+    CMP #$18                                ; Is this Sugata?
+    BNE @_addExperience                     ; If not, jump.
+
+
+    ;
+    ; The enemy is Sugata. Clear the greyscale set when it
     ; attacked so we don't get stuck in greyscale forever.
     ;
     LDA PPU_Mask                            ; Load the screen color mode.
@@ -441,34 +557,36 @@ Player_HitEnemyWithMagic:                   ; [$81a7]
     ;
     ; Add experience from the sprite.
     ;
-  @LAB_PRG14__8215:                         ; [$8215]
-    JSR Player_AddExperienceFromSprite
+  @_addExperience:                          ; [$8215]
+    JSR Player_AddExperienceFromSprite      ; Add experience to the player.
 
 
     ;
     ; Play the killed enemy sound effect.
     ;
-    LDA #$03
-    JSR Sound_PlayEffect
+    LDA #$03                                ; 3 == Enemy Death sound effect
+    JSR Sound_PlayEffect                    ; Play it.
 
 
     ;
     ; Check if this is a normal and big enemy. They need to be
     ; handled differently.
     ;
-    LDY CurrentSprites_Entities,X
-    LDA SPRITE_CATEGORIES_BY_ENTITY,Y
-    CMP #$07
-    BNE @_isSmallEnemy
+    LDY CurrentSprites_Entities,X           ; Load the ID of this entity.
+    LDA SPRITE_CATEGORIES_BY_ENTITY,Y       ; Load the entity's category.
+    CMP #$07                                ; Is it a boss?
+    BNE @_isSmallEnemy                      ; If not, jump. It should be a
+                                            ; small enemy.
 
 
     ;
     ; This is a big enemy. Handle cleanup specially.
     ;
-    JMP Sprite_ShowBigEnemyDeathByMagicOrWeapon
+    JMP Sprite_ShowBigEnemyDeathByMagicOrWeapon ; Show the boss death effect.
 
   @_isSmallEnemy:                           ; [$822a]
-    JMP Sprite_ShowNormalEnemyDeathByMagic
+    JMP Sprite_ShowNormalEnemyDeathByMagic  ; Show the standard enemy death
+                                            ; effect.
 
     ;
     ; XREFS:
@@ -1053,7 +1171,7 @@ Sprite_MoveHorizAndTurnAroundIfNeeded:      ; [$8419]
 ;     SpriteBehavior_Yuinaru
 ;============================================================================
 Sprite_Maybe_TurnAroundIfAtScreenEdgeHoriz: ; [$8427]
-    JSR FUN_PRG14__849a
+    JSR Sprite_MoveForwardX
     LDA CurrentSprites_XPos_Full,X
     CMP #$f0
     BCC @_returnFalse
@@ -1178,74 +1296,129 @@ FUN_PRG14__848a:                            ; [$848a]
 ;     Sprites_Maybe_UpdateHitByMagic
 ;============================================================================
 Sprites_Something_SomethingAndMoveHoriz:    ; [$8494]
-    JSR FUN_PRG14__849a
+    JSR Sprite_MoveForwardX
     JMP MoveSpriteHorizIfPossible
 
+
 ;============================================================================
-; TODO: Document FUN_PRG14__849a
+; Move the entity in the facing direction a given amount.
+;
+; If the entity is facing right, its X position will
+; increment by a given value.
+;
+; If facing left, its X position will decrement instead.
 ;
 ; INPUTS:
-;     X
+;     X:
+;         The index of the sprite entity.
+;
+;     Arg_DeltaX_Full:
+;     Arg_DeltaX_Frac:
+;         The value to add to or subtract from the X
+;         position.
+;
+;     CurrentSprites_Flags:
+;         The sprite's flags.
+;
+;     CurrentSprites_XPos_Full:
+;     CurrentSprites_XPos_Frac:
+;         The current X position of the entity.
 ;
 ; OUTPUTS:
-;     TODO
+;     CurrentSprites_XPos_Full:
+;     CurrentSprites_XPos_Frac:
+;         The updated X position.
+;
+; CALLS:
+;     Sprite_AddPosX
+;     Sprite_SubtractPosX
 ;
 ; XREFS:
 ;     Sprite_Maybe_TurnAroundIfAtScreenEdgeHoriz
 ;     Sprites_Something_SomethingAndMoveHoriz
 ;============================================================================
-FUN_PRG14__849a:                            ; [$849a]
-    LDA CurrentSprites_Flags,X
-    LSR A
-    BCS Sprite_AddPosX
+Sprite_MoveForwardX:                        ; [$849a]
+    LDA CurrentSprites_Flags,X              ; Load the sprite's flags.
+    LSR A                                   ; Shift the "Facing Right" bit
+                                            ; into Carry.
+    BCS Sprite_AddPosX                      ; If Carry is set, add to X.
+                                            ; Else, fall through to subtract.
 
     ;
     ; v-- Fall through --v
     ;
 
+
 ;============================================================================
-; TODO: Document Sprite_SubtractPosX
+; Move the entity to the left by a given amount.
 ;
 ; INPUTS:
-;     X
+;     X:
+;         The index of the sprite entity.
+;
+;     Arg_DeltaX_Full:
+;     Arg_DeltaX_Frac:
+;         The value to subtract from the X position.
+;
+;     CurrentSprites_XPos_Full:
+;     CurrentSprites_XPos_Frac:
+;         The current X position of the entity.
 ;
 ; OUTPUTS:
-;     TODO
+;     CurrentSprites_XPos_Full:
+;     CurrentSprites_XPos_Frac:
+;         The updated X position.
 ;
 ; XREFS:
 ;     Sprite_Maybe_AddFacingPosX
 ;============================================================================
 Sprite_SubtractPosX:                        ; [$84a0]
-    LDA CurrentSprites_XPos_Frac,X
+    LDA CurrentSprites_XPos_Frac,X          ; Load the fractional X position
+                                            ; for the sprite entity.
     SEC
-    SBC a:Arg_DeltaX_Frac
-    STA CurrentSprites_XPos_Frac,X
-    LDA CurrentSprites_XPos_Full,X
-    SBC a:Arg_DeltaX_Full
-    STA CurrentSprites_XPos_Full,X
+    SBC a:Arg_DeltaX_Frac                   ; Subtract the provided value.
+    STA CurrentSprites_XPos_Frac,X          ; Store it.
+    LDA CurrentSprites_XPos_Full,X          ; Load the block X position for
+                                            ; the sprite entity.
+    SBC a:Arg_DeltaX_Full                   ; Subtract the provided value.
+    STA CurrentSprites_XPos_Full,X          ; Store it.
     RTS
 
+
 ;============================================================================
-; TODO: Document Sprite_AddPosX
+; Move the entity to the right by a given amount.
 ;
 ; INPUTS:
-;     X
+;     X:
+;         The index of the sprite entity.
+;
+;     Arg_DeltaX_Full:
+;     Arg_DeltaX_Frac:
+;         The value to add to the X position.
+;
+;     CurrentSprites_XPos_Full:
+;     CurrentSprites_XPos_Frac:
+;         The current X position of the entity.
 ;
 ; OUTPUTS:
-;     TODO
+;     CurrentSprites_XPos_Full:
+;     CurrentSprites_XPos_Frac:
+;         The updated X position.
 ;
 ; XREFS:
-;     FUN_PRG14__849a
 ;     Sprite_Maybe_AddFacingPosX
+;     Sprite_MoveForwardX
 ;============================================================================
 Sprite_AddPosX:                             ; [$84b2]
-    LDA CurrentSprites_XPos_Frac,X
+    LDA CurrentSprites_XPos_Frac,X          ; Load the fractional X position
+                                            ; for the sprite entity.
     CLC
-    ADC a:Arg_DeltaX_Frac
-    STA CurrentSprites_XPos_Frac,X
-    LDA CurrentSprites_XPos_Full,X
-    ADC a:Arg_DeltaX_Full
-    STA CurrentSprites_XPos_Full,X
+    ADC a:Arg_DeltaX_Frac                   ; Add the provided value.
+    STA CurrentSprites_XPos_Frac,X          ; Store it.
+    LDA CurrentSprites_XPos_Full,X          ; Load the block X position for
+                                            ; the sprite entity.
+    ADC a:Arg_DeltaX_Full                   ; Add the provided value.
+    STA CurrentSprites_XPos_Full,X          ; Store it.
     RTS
 
 
@@ -1258,10 +1431,25 @@ Sprite_AddPosX:                             ; [$84b2]
 ;     X:
 ;         The index of the sprite.
 ;
+;     CurrentSpriteIndex:
+;         The index of the current sprite.
+;
+;     CurrentSprites_Flags:
+;         The sprite's flags.
+;
+;     CurrentSprites_XPos_Full:
+;         The full block X position of the sprites.
+;
 ; OUTPUTS:
 ;     C:
 ;         1 if the sprite could move.
 ;         0 if the sprite could not move.
+;
+;     Blocks_Result:
+;         Clobbered.
+;
+; CALLS:
+;     CurrentSprite_CanMoveInDirection
 ;
 ; XREFS:
 ;     Sprites_Something_SomethingAndMoveHoriz
@@ -1310,12 +1498,12 @@ MoveSpriteHorizIfPossible:                  ; [$84c4]
 ;============================================================================
 ; MAYBE DEADCODE
 ;============================================================================
-FUN_PRG14__84f4:                            ; [$84f4]
-    JSR Sprites_CanSpriteWalk
+DEADCODE_FUN_PRG14__84f4:                   ; [$84f4]
+    JSR Sprites_CanMoveDownByHitbox
     TAX
     BNE SpriteBehavior_RestoreXRegister
     LDX a:CurrentSpriteIndex
-    JSR Sprite_CanClimb
+    JSR DEADCODE_Sprites_CanMoveDownBelowHitbox
     TAX
     BEQ SpriteBehavior_Something_850d
     LDX a:CurrentSpriteIndex
@@ -1334,7 +1522,7 @@ FUN_PRG14__84f4:                            ; [$84f4]
 ;     SpriteBehavior_Ishiisu
 ;============================================================================
 SpriteBehavior_Ishiisu_Something_915b:      ; [$8507]
-    JSR Sprites_CanSpriteWalk
+    JSR Sprites_CanMoveDownByHitbox
     TAX
     BNE SpriteBehavior_RestoreXRegister
 
@@ -1347,7 +1535,7 @@ SpriteBehavior_Ishiisu_Something_915b:      ; [$8507]
 ; MAYBE DEADCODE
 ;
 ; XREFS:
-;     FUN_PRG14__84f4
+;     DEADCODE_FUN_PRG14__84f4
 ;============================================================================
 SpriteBehavior_Something_850d:              ; [$850d]
     LDX a:CurrentSpriteIndex
@@ -1383,7 +1571,7 @@ SpriteBehavior_Something_850d:              ; [$850d]
 ;     TODO
 ;
 ; XREFS:
-;     FUN_PRG14__84f4
+;     DEADCODE_FUN_PRG14__84f4
 ;     SpriteBehavior_Ishiisu_Something_915b
 ;     SpriteBehavior_Something_850d
 ;============================================================================
@@ -1393,14 +1581,14 @@ SpriteBehavior_RestoreXRegister:            ; [$852e]
 
 ;
 ; XREFS:
-;     FUN_PRG14__854c
+;     Sprites_CheckPlacementInvalidAtY
 ;
-SPRITE_WALK_PIXEL_MOVEMENT_TABLE:           ; [$8532]
+SPRITE_CHECK_PLACEMENT_X_OFFSETS_BY_FACING: ; [$8532]
     .byte $00                               ; [0]: 0 pixel movement
     .byte $0f                               ; [1]: 15 pixel movement
 
 ;============================================================================
-; TODO: Document Sprite_CanClimb
+; TODO: Document DEADCODE_Sprites_CanMoveDownBelowHitbox
 ;
 ; INPUTS:
 ;     X
@@ -1409,19 +1597,21 @@ SPRITE_WALK_PIXEL_MOVEMENT_TABLE:           ; [$8532]
 ;     TODO
 ;
 ; XREFS:
-;     FUN_PRG14__84f4
+;     DEADCODE_FUN_PRG14__84f4
 ;============================================================================
-Sprite_CanClimb:                            ; [$8534]
-    LDY CurrentSprites_HitBoxTypes,X
-    LDA CurrentSprites_YPos,X
+DEADCODE_Sprites_CanMoveDownBelowHitbox:    ; [$8534]
+    LDY CurrentSprites_HitBoxTypes,X        ; Load the hitbox type for the
+                                            ; current sprite.
+    LDA CurrentSprites_YPos,X               ; Load the sprite's Y position.
     CLC
-    ADC SPRITE_HITBOX_HEIGHTS,Y
+    ADC SPRITE_HITBOX_HEIGHTS,Y             ; Add the hitbox height.
     CLC
-    ADC #$10
-    JMP FUN_PRG14__854c
+    ADC #$10                                ; Add 16 (block height).
+    JMP Sprites_CheckPlacementInvalidAtY    ; Check if the sprite can move to
+                                            ; that position.
 
 ;============================================================================
-; TODO: Document Sprites_CanSpriteWalk
+; TODO: Document Sprites_CanMoveDownByHitbox
 ;
 ; INPUTS:
 ;     X
@@ -1430,45 +1620,107 @@ Sprite_CanClimb:                            ; [$8534]
 ;     A
 ;
 ; XREFS:
-;     FUN_PRG14__84f4
+;     DEADCODE_FUN_PRG14__84f4
 ;     SpriteBehavior_Ishiisu_Something_915b
 ;     Sprites_SetCurrentSpriteCanMove
 ;============================================================================
-Sprites_CanSpriteWalk:                      ; [$8543]
-    LDY CurrentSprites_HitBoxTypes,X
-    LDA CurrentSprites_YPos,X
+Sprites_CanMoveDownByHitbox:                ; [$8543]
+    LDY CurrentSprites_HitBoxTypes,X        ; Load the hitbox type for the
+                                            ; current sprite.
+    LDA CurrentSprites_YPos,X               ; Load the sprite's Y position.
     CLC
-    ADC SPRITE_HITBOX_HEIGHTS,Y
+    ADC SPRITE_HITBOX_HEIGHTS,Y             ; Add the hitbox height.
 
     ;
     ; v-- Fall through --v
     ;
 
+
 ;============================================================================
-; TODO: Document FUN_PRG14__854c
+; Check whether the sprite can be placed at a given Y position.
+;
+; This will take the given Y position, round the X and Y to
+; the nearest block position, and check whether the entity is
+; capable of being placed there (avoiding impassable blocks and
+; ladders).
 ;
 ; INPUTS:
-;     A
-;     X
+;     A:
+;         The provided Y position to check.
+;
+;     X:
+;         The index of the sprite to check.
+;
+;     CurrentSprites_Flags:
+;         The sprite's flags.
+;
+;     CurrentSprites_XPos_Full
+;         The block X position of the sprite.
+;
+;     SPRITE_CHECK_PLACEMENT_X_OFFSETS_BY_FACING:
+;         Offset table to help round X positions of sprites.
 ;
 ; OUTPUTS:
-;     TODO
+;     A:
+;         0 if the sprite can be moved there.
+;         1 if it cannot.
+;
+;     Arg_PixelPosX:
+;     Arg_PixelPosY:
+;         Clobbered.
+;
+; CALLS:
+;     Area_ConvertPixelsToBlockPos
+;     Area_IsBlockImpassableOrLadder
 ;
 ; XREFS:
-;     Sprite_CanClimb
+;     DEADCODE_Sprites_CanMoveDownBelowHitbox
 ;============================================================================
-FUN_PRG14__854c:                            ; [$854c]
-    STA Arg_PixelPosY
-    INC Arg_PixelPosY
-    LDA CurrentSprites_Flags,X
-    AND #$01
-    TAY
-    LDA CurrentSprites_XPos_Full,X
+Sprites_CheckPlacementInvalidAtY:           ; [$854c]
+    ;
+    ; Take the provided Y value (as the A register) and
+    ; increment it by 1 for the block position check. It's
+    ; dropped by 1 in order to check the next block down if
+    ; it's anywhere but at the very top of its current block.
+    ;
+    STA Arg_PixelPosY                       ; Store A as the Y argument for
+                                            ; placement checks.
+    INC Arg_PixelPosY                       ; Increment by 1.
+
+
+    ;
+    ; Calculate the X position to check.
+    ;
+    ; If the sprite is facing right, we'll add 15, which is 1
+    ; less than the block width. This keeps it on the same block
+    ; if at the left-most edge, but checks the next block if
+    ; overlapping.
+    ;
+    ; If the sprite is facing left, nothing will be added. We
+    ; can safely assume it's on the right block for checking
+    ; purposes.
+    ;
+    LDA CurrentSprites_Flags,X              ; Load the sprite's flags.
+    AND #$01                                ; Keep the Facing bit.
+    TAY                                     ; Transfer to Y.
+    LDA CurrentSprites_XPos_Full,X          ; Load the sprite's X position.
     CLC
-    ADC SPRITE_WALK_PIXEL_MOVEMENT_TABLE,Y
-    STA Arg_PixelPosX
-    JSR Area_ConvertPixelsToBlockPos
-    JMP Area_IsBlockImpassableOrLadder
+    ADC SPRITE_CHECK_PLACEMENT_X_OFFSETS_BY_FACING,Y ; Add an offset based on
+                                                     ; the facing bit.
+    STA Arg_PixelPosX                       ; Store as the X argument for
+                                            ; checks.
+
+
+    ;
+    ; Convert the pixel positions to a block position, and
+    ; then set a result based on whether the resulting block is
+    ; impassable/a ladder (in other words, the entity can't move
+    ; there).
+    ;
+    JSR Area_ConvertPixelsToBlockPos        ; Convert the pixels to a block
+                                            ; position.
+    JMP Area_IsBlockImpassableOrLadder      ; Check if the result is either
+                                            ; impassable or a ladder.
 
 ;============================================================================
 ; TODO: Document Sprite_MoveVertAndFlipIfNeeded
@@ -1745,7 +1997,7 @@ Sprites_SetCurrentSpriteCanMove:            ; [$861f]
     LDA CurrentSprites_Flags,X              ; A = Current sprite's flags.
     AND #$02
     BNE @LAB_PRG14__863d
-    JSR Sprites_CanSpriteWalk
+    JSR Sprites_CanMoveDownByHitbox
     STA Blocks_Result
     BNE @LAB_PRG14__863d
     LDX a:CurrentSpriteIndex
@@ -10345,8 +10597,8 @@ SPRITE_BEHAVIORS:                           ; [$a5e7]
     pointer SpriteBehavior_WalkForward-1    ; [4]: Common
     pointer SpriteBehavior_Return-1         ; [5]:
     pointer SpriteBehavior_EnemyUnused18-1  ; [6]:
-    pointer SpriteBehavior_LightningBallOrCharron-1 ; [7]:
-    pointer SpriteBehavior_LightningBallOrCharron-1 ; [8]:
+    pointer SpriteBehavior_EnemyDeath-1     ; [7]:
+    pointer SpriteBehavior_EnemyDeath-1     ; [8]:
     pointer SpriteBehavior_Hop-1            ; [9]: Enemy: Monodron
     pointer SpriteBehavior_Ripasheiku-1     ; [10]: Boss: Dragon boss guy
     pointer SpriteBehavior_Return-1         ; [11]:
@@ -11251,6 +11503,7 @@ Sprites_IncrementScriptAddr:                ; [$a879]
 ;     SpriteBehavior_BounceAndExpire
 ;     SpriteBehavior_BuzzAround
 ;     SpriteBehavior_DragonSlayerDroppedByKingGrieve
+;     SpriteBehavior_EnemyDeath
 ;     SpriteBehavior_EnemyMagic
 ;     SpriteBehavior_EnemyUnused36
 ;     SpriteBehavior_EnemyUnused39
@@ -11265,7 +11518,6 @@ Sprites_IncrementScriptAddr:                ; [$a879]
 ;     SpriteBehavior_Hop
 ;     SpriteBehavior_Ishiisu
 ;     SpriteBehavior_KingGrieve
-;     SpriteBehavior_LightningBallOrCharron
 ;     SpriteBehavior_Lilith
 ;     SpriteBehavior_Magman
 ;     SpriteBehavior_MattockDroppedFromRipasheiku
@@ -11365,6 +11617,7 @@ Sprite_SetBehaviorNotReady:                 ; [$a88b]
 ;     SpriteBehavior_BounceAndExpire
 ;     SpriteBehavior_BuzzAround
 ;     SpriteBehavior_DragonSlayerDroppedByKingGrieve
+;     SpriteBehavior_EnemyDeath
 ;     SpriteBehavior_EnemyMagic
 ;     SpriteBehavior_EnemyUnused36
 ;     SpriteBehavior_EnemyUnused39
@@ -11377,7 +11630,6 @@ Sprite_SetBehaviorNotReady:                 ; [$a88b]
 ;     SpriteBehavior_Hop
 ;     SpriteBehavior_Ishiisu
 ;     SpriteBehavior_KingGrieve
-;     SpriteBehavior_LightningBallOrCharron
 ;     SpriteBehavior_Lilith
 ;     SpriteBehavior_Magman
 ;     SpriteBehavior_MattockDroppedFromRipasheiku
@@ -12183,7 +12435,7 @@ BYTE_ARRAY_PRG14__abc1:                     ; [$abc1]
     .byte $00                               ; [10]:
 
 ;============================================================================
-; TODO: Document SpriteBehavior_LightningBallOrCharron
+; TODO: Document SpriteBehavior_EnemyDeath
 ;
 ; INPUTS:
 ;     X
@@ -12195,7 +12447,7 @@ BYTE_ARRAY_PRG14__abc1:                     ; [$abc1]
 ;     SPRITE_BEHAVIORS [$PRG14::a5f5]
 ;     SPRITE_BEHAVIORS [$PRG14::a5f7]
 ;============================================================================
-SpriteBehavior_LightningBallOrCharron:      ; [$abcc]
+SpriteBehavior_EnemyDeath:                  ; [$abcc]
     JSR Sprite_IsBehaviorNotReady
     BNE @LAB_PRG14__abd9
     LDA #$00
@@ -12232,8 +12484,8 @@ SpriteBehavior_LightningBallOrCharron:      ; [$abcc]
 ;     Player_HitSpriteWithWeapon
 ;============================================================================
 Sprite_ShowBigEnemyDeathByMagicOrWeapon:    ; [$abec]
-    LDA #$64
-    JMP Sprite_SetDeathEntity
+    LDA #$64                                ; 0x64 == Boss death effect.
+    JMP Sprite_SetDeathEntity               ; Replace the enemy with it.
 
 
 ;============================================================================
@@ -12252,8 +12504,8 @@ Sprite_ShowBigEnemyDeathByMagicOrWeapon:    ; [$abec]
 ;     Player_HitSpriteWithWeapon
 ;============================================================================
 Sprite_ShowNormalEnemyDeathByWeapon:        ; [$abf1]
-    LDA #$13
-    JMP Sprite_SetDeathEntity
+    LDA #$13                                ; 0x13 == Enemy death effect.
+    JMP Sprite_SetDeathEntity               ; Replace the enemy with it.
 
 
 ;============================================================================
@@ -12312,31 +12564,46 @@ Sprite_SetDeathEntity:                      ; [$abf8]
     STA CurrentSprites_BehaviorData2,X
     JMP Sprite_SetBehaviorNotReady
 
+
 ;============================================================================
-; TODO: Document Sprite_HandleDeathDropIfPossible
+; Check and handle dropping an item on an enemy's death.
+;
+; This will check if there's room on the screen for a
+; drop and, if so, run the drop handler. That will then
+; check if a drop should be spawned by the enemy and, if
+; so, spawn one.
 ;
 ; INPUTS:
-;     X
-;     Y
+;     ...
 ;
 ; OUTPUTS:
-;     TODO
+;     CurrentSpriteIndex:
+;         The new current sprite index, reflecting the
+;         dropped item or dead sprite.
+;
+; CALLS:
+;     Sprites_HasMaxOnScreen
+;     Sprite_RunDeathDropHandler
 ;
 ; XREFS:
 ;     SpriteBehavior_BossDeath
-;     SpriteBehavior_LightningBallOrCharron
+;     SpriteBehavior_EnemyDeath
 ;============================================================================
 Sprite_HandleDeathDropIfPossible:           ; [$ac21]
-    JSR Sprites_HasMaxOnScreen
-    BCS @_return
-    JSR Maybe_Sprite_HandleDeathDrop
-    LDX a:CurrentSpriteIndex
+    JSR Sprites_HasMaxOnScreen              ; Check if there's room for
+                                            ; sprites on the screen.
+    BCS @_return                            ; If not, return.
+    JSR Sprite_RunDeathDropHandler          ; There's room, so run the drop
+                                            ; handler to possibly spawn a
+                                            ; drop.
+    LDX a:CurrentSpriteIndex                ; Restore the current sprite
+                                            ; index to X.
 
   @_return:                                 ; [$ac2c]
     RTS
 
 ;============================================================================
-; TODO: Document Maybe_Sprite_HandleDeathDrop
+; TODO: Document Sprite_RunDeathDropHandler
 ;
 ; INPUTS:
 ;     X
@@ -12348,17 +12615,20 @@ Sprite_HandleDeathDropIfPossible:           ; [$ac21]
 ; XREFS:
 ;     Sprite_HandleDeathDropIfPossible
 ;============================================================================
-Maybe_Sprite_HandleDeathDrop:               ; [$ac2d]
-    STY Temp_00
-    LDY CurrentSprites_InternalBehaviorStates,X
-    LDA BYTE_ARRAY_PRG14__b672,Y
+Sprite_RunDeathDropHandler:                 ; [$ac2d]
+    STY Temp_00                             ; Store the new sprite entity
+                                            ; temporarily.
+    LDY CurrentSprites_InternalBehaviorStates,X ; Load the internal behavior
+                                                ; state of the dead sprite.
+    LDA SPRITE_ENTITY_DROP_VALUES_INDEX,Y   ; Load the index of the drop
+                                            ; value for this new sprite.
     CMP #$ff
     BEQ @_return
     CMP #$40
     BCS @_return
     STA Temp_01
     TAY
-    LDA SPRITE_MAYBE_DROP_RANDOM_DATA,Y
+    LDA SPRITE_DROP_VALUES,Y
     LDY Temp_00
     STA CurrentSprites_Values,Y
     LDA CurrentSprites_XPos_Full,X
@@ -12392,12 +12662,12 @@ Maybe_Sprite_HandleDeathDrop:               ; [$ac2d]
 ;
 ;
 ; XREFS:
-;     Maybe_Sprite_HandleDeathDrop
+;     Sprite_RunDeathDropHandler
 ;============================================================================
 
 ;
 ; XREFS:
-;     Maybe_Sprite_HandleDeathDrop
+;     Sprite_RunDeathDropHandler
 ;
 SPRITE_DROP_HANDLERS:                       ; [$ac71]
     pointer Sprites_ReplaceWithCoinDrop-1   ; Sprites_ReplaceWithCoinDrop
@@ -12405,7 +12675,7 @@ SPRITE_DROP_HANDLERS:                       ; [$ac71]
 
 ;
 ; XREFS:
-;     Maybe_Sprite_HandleDeathDrop
+;     Sprite_RunDeathDropHandler
 ;
 SPRITE_DROP_HANDLERS_LAST:                  ; [$ac73]
     pointer Sprite_ReplaceWithBreadDrop-1   ; Sprite_ReplaceWithBreadDrop
@@ -12671,11 +12941,21 @@ Sprite_ReplaceWithMattock:                  ; [$aca6]
     SEC                                     ; Set C = 1
     RTS                                     ; And return it.
 
+
+;============================================================================
+; XXX Seems related to SPRITE_ENTITY_DROP_VALUES_INDEX.
+;
+; That table's values are indexes into here.
 ;
 ; XREFS:
-;     Maybe_Sprite_HandleDeathDrop
+;     Sprite_RunDeathDropHandler
+;============================================================================
+
 ;
-SPRITE_MAYBE_DROP_RANDOM_DATA:              ; [$aced]
+; XREFS:
+;     Sprite_RunDeathDropHandler
+;
+SPRITE_DROP_VALUES:                         ; [$aced]
     .byte $0a                               ; [0]:
     .byte $0f                               ; [1]:
     .byte $12                               ; [2]:
@@ -15792,9 +16072,9 @@ SPRITE_HITBOX_WIDTHS:                       ; [$b4d1]
 ;
 ; XREFS:
 ;     CurrentSprite_CanMoveInDirection
-;     Sprite_CanClimb
+;     DEADCODE_Sprites_CanMoveDownBelowHitbox
 ;     Sprite_CheckHitByCastMagic
-;     Sprites_CanSpriteWalk
+;     Sprites_CanMoveDownByHitbox
 ;     Sprites_MoveRight__86c6
 ;
 SPRITE_HITBOX_HEIGHTS:                      ; [$b4d8]
@@ -16342,11 +16622,25 @@ ENEMY_EXPERIENCE:                           ; [$b60e]
     .byte $00                               ; [98]: Effect: Spring of Tower
     .byte $00                               ; [99]: Effect: Boss Death
 
+
+;============================================================================
+; Per-entity indexes into the SPRITE_DROP_VALUES table.
+;
+; This maps entities that may drop gold or bread to an index
+; into a drop values table, which determines how much gold
+; or how much HP the drop will be worth.
+;
+; If the value is 0xFF, the entity will not drop anything.
 ;
 ; XREFS:
-;     Maybe_Sprite_HandleDeathDrop
+;     Sprite_RunDeathDropHandler
+;============================================================================
+
 ;
-BYTE_ARRAY_PRG14__b672:                     ; [$b672]
+; XREFS:
+;     Sprite_RunDeathDropHandler
+;
+SPRITE_ENTITY_DROP_VALUES_INDEX:            ; [$b672]
     .byte $ff                               ; [0]:
     .byte $ff                               ; [1]: Dropped: Bread
     .byte $ff                               ; [2]: Dropped: Coin
@@ -16579,12 +16873,38 @@ SPRITE_ENTITY_DAMAGES:                      ; [$b6d7]
     .byte $00                               ; [98]: Effect: Spring of Tower
     .byte $00                               ; [99]: Effect: Boss Death
 
+
+;============================================================================
+; A mapping of entity types to magic defense values.
+;
+; Each value defines the magic reduction for each spell as pairs
+; of 2 bits in the following order:
+;
+; 00 00 00 00
+; |  |  |  '- Tilte
+; |  |  '- Death
+; |  '- Fire
+; '- Thunder
+;
+; Each pair can have the following values:
+;
+; 00 = 0% reduction
+; 01 = 50% reduction
+; 10 = 100% reduction
+; 11 = 100% reduction
+;
+; Note that the Deluge spell is always set at 0% reduction.
+;
+; XREFS:
+;     Player_HitEnemyWithMagic
+;============================================================================
+
 ;
 ; XREFS:
 ;     Player_HitEnemyWithMagic
 ;
-SPRITE_ENTITY_MAYBE_MAGIC_DEFENSE:          ; [$b73b]
-    .byte $fc                               ; [0]:
+SPRITE_ENTITY_MAGIC_DEFENSE:                ; [$b73b]
+    .byte $fc                               ; [0]: <unused>
     .byte $fc                               ; [1]: Dropped: Bread
     .byte $fc                               ; [2]: Dropped: Coin
     .byte $fc                               ; [3]: Enemy: ?
@@ -16691,7 +17011,7 @@ SPRITE_ENTITY_MAYBE_MAGIC_DEFENSE:          ; [$b73b]
     .byte $fc                               ; [97]: Effect: Spring of Sky
     .byte $fc                               ; [98]: Effect: Spring of Tower
     .byte $fc                               ; [99]: Effect: Boss Death
-    .byte $fc                               ; [$b79f] undefined
+    .byte $fc                               ; [100]: <unused>
 
 
 ;============================================================================

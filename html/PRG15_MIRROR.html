@@ -121,6 +121,22 @@ pre {
   min-width: 3em;
 }
 
+.idx {
+  display: grid;
+  grid-column: 2 / 3;
+  grid-template-columns: minmax(50ch, max-content) auto;
+  gap: 0 1em;
+}
+
+.idx-name {
+  font-weight: bold;
+}
+
+.idx-targets {
+  display: flex;
+  flex-direction: row;
+}
+
 .o {
   color: #e3e3e3;
   margin-left: 1ch;
@@ -17086,9 +17102,9 @@ Realistically, $23C0 (we guarantee 0x20 or 0x24 above for the screen).</span></s
 ;     <a href="PRG14.html#CastMagic_CheckDirection_CheckImpassable">CastMagic_CheckDirection_CheckImpassable</a>
 ;     <a href="PRG14.html#CurrentSprite_CalculateVisibility">CurrentSprite_CalculateVisibility</a>
 ;     <a href="PRG14.html#CurrentSprite_CanMoveInDirection">CurrentSprite_CanMoveInDirection</a>
-;     <a href="PRG14.html#FUN_PRG14__854c">FUN_PRG14__854c</a>
 ;     <a href="PRG14.html#Player_CalculateVisibility">Player_CalculateVisibility</a>
 ;     <a href="PRG14.html#SpriteBehavior_NecronAides">SpriteBehavior_NecronAides</a>
+;     <a href="PRG14.html#Sprites_CheckPlacementInvalidAtY">Sprites_CheckPlacementInvalidAtY</a>
 ;     <a href="PRG14.html#Sprites_MoveRight__86c6">Sprites_MoveRight__86c6</a>
 ;     <a href="#Area_CanMoveImmediatelyRight">Area_CanMoveImmediatelyRight</a>
 ;     <a href="#Area_CanPlayerMoveAtY">Area_CanPlayerMoveAtY</a>
@@ -17226,7 +17242,7 @@ Realistically, $23C0 (we guarantee 0x20 or 0x24 above for the screen).</span></s
 ;     <a href="#Area_GetBlockProperty">Area_GetBlockProperty</a>
 ;
 ; XREFS:
-;     <a href="PRG14.html#FUN_PRG14__854c">FUN_PRG14__854c</a>
+;     <a href="PRG14.html#Sprites_CheckPlacementInvalidAtY">Sprites_CheckPlacementInvalidAtY</a>
 ;============================================================================
 </div><span class="l"><a class="anc" name="e887" href="#e887">[e887]</a><a href="#Area_IsBlockImpassableOrLadder" class="la">Area_IsBlockImpassableOrLadder:</a><span class="ce">; [$e887]</span></span>
 <span class="l"><a class="anc" name="e887" href="#e887">[e887]</a><span class="cd"><span class="i">LDY</span> <span class="o"><a href="RAM.html#ScreenBuffer">ScreenBuffer</a>,X</span></span><span class="ce">; Load the block property offset from the screen buffer at X.</span></span>
@@ -22380,11 +22396,10 @@ Address = <a href="#GameLoop_LoadSpriteImages">GameLoop_LoadSpriteImages</a></sp
 <span class="l"></span>
 <span class="l"></span>
 <div class="c">;
-; Set the start of our message length for the
-; string scan.
+; Reset the display timer.
 ;
 </div><span class="l"><a class="anc" name="f409" href="#f409">[f409]</a><span class="cd"><span class="i">LDY</span> <span class="o">#$00</span></span><span class="ce">; Y = 0 (start of our lookup offset)</span></span>
-<span class="l"><a class="anc" name="f40b" href="#f40b">[f40b]</a><span class="cd"><span class="i">STY</span> <span class="o">a:<a href="RAM.html#TextBox_Timer">TextBox_Timer</a></span></span><span class="ce">; Set start character pos to 0</span></span>
+<span class="l"><a class="anc" name="f40b" href="#f40b">[f40b]</a><span class="cd"><span class="i">STY</span> <span class="o">a:<a href="RAM.html#TextBox_Timer">TextBox_Timer</a></span></span><span class="ce">; Set the timer counter to 0.</span></span>
 <span class="l"></span>
 <span class="l"></span>
 <div class="c">;
@@ -22545,7 +22560,7 @@ Address = <a href="#GameLoop_LoadSpriteImages">GameLoop_LoadSpriteImages</a></sp
 <span class="l"></span>
 <a name="TextBox_ClearShopSizeAtOffset_return"></a><div class="c">;
 ; XREFS:
-;     <a href="#Maybe_TextBox_ShowCurrentMessageID">Maybe_TextBox_ShowCurrentMessageID</a>
+;     <a href="#TextBox_ShowNextChar_IfReady">TextBox_ShowNextChar_IfReady</a>
 ;
 </div><span class="l"><a class="anc" name="f465" href="#f465">[f465]</a><a href="#TextBox_ClearShopSizeAtOffset_return" class="la">TextBox_ClearShopSizeAtOffset_return:</a><span class="ce">; [$f465]</span></span>
 <span class="l"><a class="anc" name="f465" href="#f465">[f465]</a><span class="cd"><span class="i">RTS</span></span></span>
@@ -22574,7 +22589,7 @@ Address = <a href="#GameLoop_LoadSpriteImages">GameLoop_LoadSpriteImages</a></sp
 ; CALLS:
 ;     <a href="#MMC1_UpdateROMBank">MMC1_UpdateROMBank</a>
 ;     <a href="#MMC1_UpdatePRGBankToStackA">MMC1_UpdatePRGBankToStackA</a>
-;     <a href="#Maybe_TextBox_ShowCurrentMessageID">Maybe_TextBox_ShowCurrentMessageID</a>
+;     <a href="#TextBox_ShowNextChar_IfReady">TextBox_ShowNextChar_IfReady</a>
 ;
 ; XREFS:
 ;     <a href="PRG12.html#IScriptAction_OpenShop">IScriptAction_OpenShop</a>
@@ -22598,10 +22613,10 @@ Address = <a href="#GameLoop_LoadSpriteImages">GameLoop_LoadSpriteImages</a></sp
 <div class="c">;
 ; Show the next character.
 ;
-</div><span class="l"><a class="anc" name="f46f" href="#f46f">[f46f]</a><span class="cd"><span class="i">INC</span> <span class="o">a:<a href="RAM.html#TextBox_Timer">TextBox_Timer</a></span></span><span class="ce">; Increment the next character position.</span></span>
+</div><span class="l"><a class="anc" name="f46f" href="#f46f">[f46f]</a><span class="cd"><span class="i">INC</span> <span class="o">a:<a href="RAM.html#TextBox_Timer">TextBox_Timer</a></span></span><span class="ce">; Increment the timer delay.</span></span>
 <span class="l"><a class="anc" name="f472" href="#f472">[f472]</a><span class="cd"><span class="i">LDA</span> <span class="o">#$01</span></span><span class="ce">; A = 1</span></span>
 <span class="l"><a class="anc" name="f474" href="#f474">[f474]</a><span class="cd"><span class="i">STA</span> <span class="o">a:<a href="RAM.html#TextBox_PlayTextSound">TextBox_PlayTextSound</a></span></span><span class="ce">; Store it.</span></span>
-<span class="l"><a class="anc" name="f477" href="#f477">[f477]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#Maybe_TextBox_ShowCurrentMessageID">Maybe_TextBox_ShowCurrentMessageID</a></span></span><span class="ce">; Show this character in the message.</span></span>
+<span class="l"><a class="anc" name="f477" href="#f477">[f477]</a><span class="cd"><span class="i">JSR</span> <span class="o"><a href="#TextBox_ShowNextChar_IfReady">TextBox_ShowNextChar_IfReady</a></span></span><span class="ce">; Show this character in the message.</span></span>
 <span class="l"></span>
 <span class="l"></span>
 <div class="c">;
@@ -22643,26 +22658,42 @@ Address = <a href="#GameLoop_LoadSpriteImages">GameLoop_LoadSpriteImages</a></sp
 ;
 </div><span class="l"><a class="anc" name="f48e" href="#f48e">[f48e]</a><span class="cd"><span class="i">JMP</span> <span class="o"><a href="#MMC1_UpdatePRGBankToStackA">MMC1_UpdatePRGBankToStackA</a></span></span></span>
 <span class="l"></span>
-</pre><pre><a name="Maybe_TextBox_ShowCurrentMessageID"></a><div class="cp">;============================================================================
-; TODO: Document Maybe_TextBox_ShowCurrentMessageID
+<span class="l"></span>
+</pre><pre><a name="TextBox_ShowNextChar_IfReady"></a><div class="cp">;============================================================================
+; Show the next character in a message if the state allows it.
+;
+; A character will be shown if:
+;
+; 1. A message is loaded.
+; 2. The message is not paused.
+; 3. The delay timer is a multiple of 3.
+;
+; This falls through to <a href="#TextBox_DisplayMessage">TextBox_DisplayMessage</a>.
 ;
 ; INPUTS:
-;     None.
+;     <a href="RAM.html#MessageID">MessageID</a>:
+;         The loaded message ID.
+;
+;     <a href="RAM.html#TextBox_MessagePaused">TextBox_MessagePaused</a>:
+;         Whether the message is currently paused.
+;
+;     <a href="RAM.html#TextBox_Timer">TextBox_Timer</a>:
+;         The character display timer.
 ;
 ; OUTPUTS:
-;     TODO
+;     None.
 ;
 ; XREFS:
 ;     <a href="#TextBox_ShowNextChar">TextBox_ShowNextChar</a>
 ;============================================================================
-</div><span class="l"><a class="anc" name="f491" href="#f491">[f491]</a><a href="#Maybe_TextBox_ShowCurrentMessageID" class="la">Maybe_TextBox_ShowCurrentMessageID:</a><span class="ce">; [$f491]</span></span>
+</div><span class="l"><a class="anc" name="f491" href="#f491">[f491]</a><a href="#TextBox_ShowNextChar_IfReady" class="la">TextBox_ShowNextChar_IfReady:</a><span class="ce">; [$f491]</span></span>
 <span class="l"><a class="anc" name="f491" href="#f491">[f491]</a><span class="cd"><span class="i">LDA</span> <span class="o">a:<a href="RAM.html#MessageID">MessageID</a></span></span><span class="ce">; Load the message ID to show.</span></span>
 <span class="l"><a class="anc" name="f494" href="#f494">[f494]</a><span class="cd"><span class="i">BEQ</span> <span class="o"><a href="#TextBox_ClearShopSizeAtOffset_return">TextBox_ClearShopSizeAtOffset_return</a></span></span><span class="ce">; If unset, return.</span></span>
-<span class="l"><a class="anc" name="f496" href="#f496">[f496]</a><span class="cd"><span class="i">LDA</span> <span class="o">a:<a href="RAM.html#TextBox_MessagePaused">TextBox_MessagePaused</a></span></span></span>
-<span class="l"><a class="anc" name="f499" href="#f499">[f499]</a><span class="cd"><span class="i">BNE</span> <span class="o"><a href="#TextBox_ClearShopSizeAtOffset_return">TextBox_ClearShopSizeAtOffset_return</a></span></span></span>
-<span class="l"><a class="anc" name="f49b" href="#f49b">[f49b]</a><span class="cd"><span class="i">LDA</span> <span class="o">a:<a href="RAM.html#TextBox_Timer">TextBox_Timer</a></span></span><span class="ce">; Load the character position to display.</span></span>
-<span class="l"><a class="anc" name="f49e" href="#f49e">[f49e]</a><span class="cd"><span class="i">AND</span> <span class="o">#$03</span></span><span class="ce">; Check the first 2 bits.</span></span>
-<span class="l"><a class="anc" name="f4a0" href="#f4a0">[f4a0]</a><span class="cd"><span class="i">BNE</span> <span class="o"><a href="#TextBox_ClearShopSizeAtOffset_return">TextBox_ClearShopSizeAtOffset_return</a></span></span><span class="ce">; If neither bit is set, return.</span></span>
+<span class="l"><a class="anc" name="f496" href="#f496">[f496]</a><span class="cd"><span class="i">LDA</span> <span class="o">a:<a href="RAM.html#TextBox_MessagePaused">TextBox_MessagePaused</a></span></span><span class="ce">; Is the message paused?</span></span>
+<span class="l"><a class="anc" name="f499" href="#f499">[f499]</a><span class="cd"><span class="i">BNE</span> <span class="o"><a href="#TextBox_ClearShopSizeAtOffset_return">TextBox_ClearShopSizeAtOffset_return</a></span></span><span class="ce">; If so, return.</span></span>
+<span class="l"><a class="anc" name="f49b" href="#f49b">[f49b]</a><span class="cd"><span class="i">LDA</span> <span class="o">a:<a href="RAM.html#TextBox_Timer">TextBox_Timer</a></span></span><span class="ce">; Load the character display timer.</span></span>
+<span class="l"><a class="anc" name="f49e" href="#f49e">[f49e]</a><span class="cd"><span class="i">AND</span> <span class="o">#$03</span></span><span class="ce">; Is it 3?</span></span>
+<span class="l"><a class="anc" name="f4a0" href="#f4a0">[f4a0]</a><span class="cd"><span class="i">BNE</span> <span class="o"><a href="#TextBox_ClearShopSizeAtOffset_return">TextBox_ClearShopSizeAtOffset_return</a></span></span><span class="ce">; If not, we're not ready to display the next character. Return.</span></span>
 <span class="l"></span>
 <div class="c">;
 ; v-- Fall through --v
@@ -22742,7 +22773,7 @@ Address = <a href="#GameLoop_LoadSpriteImages">GameLoop_LoadSpriteImages</a></sp
 <span class="l"><a class="anc" name="f4e3" href="#f4e3">[f4e3]</a><span class="cd"><span class="i">CMP</span> <span class="o">#$fe</span></span></span>
 <span class="l"><a class="anc" name="f4e5" href="#f4e5">[f4e5]</a><span class="cd"><span class="i">BEQ</span> <span class="o"><a href="#TextBox_ShowMessage_Newline">TextBox_ShowMessage_Newline</a></span></span></span>
 <span class="l"><a class="anc" name="f4e7" href="#f4e7">[f4e7]</a><span class="cd"><span class="i">CMP</span> <span class="o">#$fd</span></span></span>
-<span class="l"><a class="anc" name="f4e9" href="#f4e9">[f4e9]</a><span class="cd"><span class="i">BEQ</span> <span class="o"><a href="#TextBox_ShowMessage_Space">TextBox_ShowMessage_Space</a></span></span></span>
+<span class="l"><a class="anc" name="f4e9" href="#f4e9">[f4e9]</a><span class="cd"><span class="i">BEQ</span> <span class="o"><a href="#TextBox_ShowMessage_HandleSpaceOrEndOfLine">TextBox_ShowMessage_HandleSpaceOrEndOfLine</a></span></span></span>
 <span class="l"><a class="anc" name="f4eb" href="#f4eb">[f4eb]</a><span class="cd"><span class="i">CMP</span> <span class="o">#$fb</span></span></span>
 <span class="l"><a class="anc" name="f4ed" href="#f4ed">[f4ed]</a><span class="cd"><span class="i">BEQ</span> <span class="o"><a href="#TextBox_ShowMessage_ShowPlayerTitle">TextBox_ShowMessage_ShowPlayerTitle</a></span></span></span>
 <span class="l"><a class="anc" name="f4ef" href="#f4ef">[f4ef]</a><span class="cd"><span class="i">CMP</span> <span class="o">#$fc</span></span></span>
@@ -22801,8 +22832,8 @@ Address = <a href="#GameLoop_LoadSpriteImages">GameLoop_LoadSpriteImages</a></sp
 <div class="c">;
 ; v-- Fall through --v
 ;
-</div></pre><pre><a name="TextBox_ShowMessage_Space"></a><div class="cp">;============================================================================
-; TODO: Document TextBox_ShowMessage_Space
+</div></pre><pre><a name="TextBox_ShowMessage_HandleSpaceOrEndOfLine"></a><div class="cp">;============================================================================
+; TODO: Document TextBox_ShowMessage_HandleSpaceOrEndOfLine
 ;
 ; INPUTS:
 ;     None.
@@ -22813,7 +22844,7 @@ Address = <a href="#GameLoop_LoadSpriteImages">GameLoop_LoadSpriteImages</a></sp
 ; XREFS:
 ;     <a href="#TextBox_ShowMessage_LoadMessage">TextBox_ShowMessage_LoadMessage</a>
 ;============================================================================
-</div><span class="l"><a class="anc" name="f502" href="#f502">[f502]</a><a href="#TextBox_ShowMessage_Space" class="la">TextBox_ShowMessage_Space:</a><span class="ce">; [$f502]</span></span>
+</div><span class="l"><a class="anc" name="f502" href="#f502">[f502]</a><a href="#TextBox_ShowMessage_HandleSpaceOrEndOfLine" class="la">TextBox_ShowMessage_HandleSpaceOrEndOfLine:</a><span class="ce">; [$f502]</span></span>
 <div class="c">;
 ; If it's 0xFD, it's a space.
 ;
@@ -23023,7 +23054,7 @@ Address = <a href="#GameLoop_LoadSpriteImages">GameLoop_LoadSpriteImages</a></sp
 <span class="l"></span>
 <a name="TextBox_ShowMessage_Return"></a><div class="c">;
 ; XREFS:
-;     <a href="#TextBox_ShowMessage_Space">TextBox_ShowMessage_Space</a>
+;     <a href="#TextBox_ShowMessage_HandleSpaceOrEndOfLine">TextBox_ShowMessage_HandleSpaceOrEndOfLine</a>
 ;
 </div><span class="l"><a class="anc" name="f557" href="#f557">[f557]</a><a href="#TextBox_ShowMessage_Return" class="la">TextBox_ShowMessage_Return:</a><span class="ce">; [$f557]</span></span>
 <span class="l"><a class="anc" name="f557" href="#f557">[f557]</a><span class="cd"><span class="i">RTS</span></span></span>
@@ -23034,9 +23065,9 @@ Address = <a href="#GameLoop_LoadSpriteImages">GameLoop_LoadSpriteImages</a></sp
 ;
 ;
 ; XREFS:
+;     <a href="#TextBox_ShowMessage_HandleSpaceOrEndOfLine">TextBox_ShowMessage_HandleSpaceOrEndOfLine</a>
 ;     <a href="#TextBox_ShowMessage_LoadMessage">TextBox_ShowMessage_LoadMessage</a>
 ;     <a href="#TextBox_ShowMessage_Pause">TextBox_ShowMessage_Pause</a>
-;     <a href="#TextBox_ShowMessage_Space">TextBox_ShowMessage_Space</a>
 ;
 </div><span class="l"><a class="anc" name="f558" href="#f558">[f558]</a><a href="#TextBox_ShowMessage_EndOfMessage" class="la">TextBox_ShowMessage_EndOfMessage:</a><span class="ce">; [$f558]</span></span>
 <span class="l"><a class="anc" name="f558" href="#f558">[f558]</a><span class="cd"><span class="i">LDA</span> <span class="o">#$00</span></span><span class="ce">; A = 0</span></span>
