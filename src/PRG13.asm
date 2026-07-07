@@ -18,7 +18,8 @@
 ; ........
 ; ........
 ;
-TILE_GLYPH_SPACE:                           ; [$8000]
+TILE_GLYPHS_START:                          ; [$8000]
+TILE_GLYPH_SPACE:
     .byte $00,$00,$00,$00,$00,$00,$00,$00   ; [$8000] byte
 
 

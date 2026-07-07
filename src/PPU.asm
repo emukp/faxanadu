@@ -14,8 +14,8 @@
 ;     PPU_HandleOnInterrupt
 ;     PPU_InitVBlank
 ;     PPU_SetVRAMIncrementAdd1Across
-;     Screen_WriteScrollHorizPPUTileData
-;     Screen_WriteScrollVertPPUTileData
+;     Screen_WriteBlockTilesColumnToPPU
+;     Screen_WriteBlockTilesRowToPPU
 ;
 PPUCTRL:                                    ; [$2000]
     .byte $00                               ; [$2000] PPUCtrlFlags
@@ -68,10 +68,10 @@ PPUSCROLL:                                  ; [$2005]
 ;     PPU_LoadGlyphsForStrings
 ;     PPU_SetAddr
 ;     PPU_WriteTilesFromCHRRAM
-;     Screen_WriteScrollHorizPPUAttrData
-;     Screen_WriteScrollHorizPPUTileData
-;     Screen_WriteScrollVertPPUAttrData
-;     Screen_WriteScrollVertPPUTileData
+;     Screen_WriteBlockAttrsColumnToPPU
+;     Screen_WriteBlockAttrsRowToPPU
+;     Screen_WriteBlockTilesColumnToPPU
+;     Screen_WriteBlockTilesRowToPPU
 ;     Sprites_LoadCommon
 ;     UI_DrawHUDSprites
 ;     UI_DrawSelectedItem
@@ -91,13 +91,13 @@ PPUADDR:                                    ; [$2006]
 ;     PPUBuffer_DrawCommand_RotateTilesRight1Pixel
 ;     PPUBuffer_DrawCommand_WritePalette
 ;     PPU_FillData
-;     PPU_FillGrid
 ;     PPU_WriteGlyphTile
+;     PPU_WriteRowsWithInitial
 ;     PPU_WriteTilesFromCHRRAM
-;     Screen_WriteScrollHorizPPUAttrData
-;     Screen_WriteScrollHorizPPUTileData
-;     Screen_WriteScrollVertPPUAttrData
-;     Screen_WriteScrollVertPPUTileData
+;     Screen_WriteBlockAttrsColumnToPPU
+;     Screen_WriteBlockAttrsRowToPPU
+;     Screen_WriteBlockTilesColumnToPPU
+;     Screen_WriteBlockTilesRowToPPU
 ;     Sprites_LoadCommon
 ;     UI_DrawHUDSprites
 ;     UI_DrawSelectedItem

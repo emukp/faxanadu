@@ -146,7 +146,7 @@ Temp_01:                                    ; [$0001]
 ;     Player_DrawWeapon
 ;     Player_HitEnemyWithMagic
 ;     Sprite_GetBounds
-;     Area_LoadScrollDataRight
+;     Area_LoadScrollData
 ;     Area_SetBlocks_SetAttributes
 ;     Area_SetStateFromDoorDestination
 ;     CurrentSprite_LoadTilesInfo
@@ -178,7 +178,7 @@ Temp_Addr_L:                                ; [$0002]
 ;     Player_ApplyDamage
 ;     Player_DrawWeapon
 ;     Sprite_GetBounds
-;     Area_LoadScrollDataRight
+;     Area_LoadScrollData
 ;     Area_SetBlocks_SetAttributes
 ;     Area_SetStateFromDoorDestination
 ;     CurrentSprite_LoadTilesInfo
@@ -296,8 +296,8 @@ Temp_09:                                    ; [$0009]
 ;     PPU_HandleOnInterrupt
 ;     PPU_InitVBlank
 ;     PPU_SetVRAMIncrementAdd1Across
-;     Screen_WriteScrollHorizPPUTileData
-;     Screen_WriteScrollVertPPUTileData
+;     Screen_WriteBlockTilesColumnToPPU
+;     Screen_WriteBlockTilesRowToPPU
 ;============================================================================
 
 ;
@@ -307,8 +307,8 @@ Temp_09:                                    ; [$0009]
 ;     PPU_HandleOnInterrupt
 ;     PPU_InitVBlank
 ;     PPU_SetVRAMIncrementAdd1Across
-;     Screen_WriteScrollHorizPPUTileData
-;     Screen_WriteScrollVertPPUTileData
+;     Screen_WriteBlockTilesColumnToPPU
+;     Screen_WriteBlockTilesRowToPPU
 ;
 PPU_ControlFlags:                           ; [$000a]
     .byte $00                               ; [$000a] PPUCtrlFlags
@@ -349,7 +349,7 @@ PPU_Mask:                                   ; [$000b]
 ; between screens 0 and 1.
 ;
 ; XREFS:
-;     Area_LoadScrollDataRight
+;     Area_LoadScrollData
 ;     Area_ScrollScreenRight
 ;     Game_InitScreenAndMusic
 ;     Game_InitStateForSpawn
@@ -362,7 +362,7 @@ PPU_Mask:                                   ; [$000b]
 
 ;
 ; XREFS:
-;     Area_LoadScrollDataRight
+;     Area_LoadScrollData
 ;     Area_ScrollScreenRight
 ;     Game_InitScreenAndMusic
 ;     Game_InitStateForSpawn
@@ -385,7 +385,7 @@ PPU_ScrollX:                                ; [$000c]
 ;
 ; XREFS:
 ;     TextBox_FillBackground
-;     Area_LoadScrollDataRight
+;     Area_LoadScrollData
 ;     Area_ScrollScreenRight
 ;     Area_SetBlocks_SetAttributes
 ;     Area_SetPPUAddrForBlockIndex
@@ -400,7 +400,7 @@ PPU_ScrollX:                                ; [$000c]
 ;
 ; XREFS:
 ;     TextBox_FillBackground
-;     Area_LoadScrollDataRight
+;     Area_LoadScrollData
 ;     Area_ScrollScreenRight
 ;     Area_SetBlocks_SetAttributes
 ;     Area_SetPPUAddrForBlockIndex
@@ -605,11 +605,11 @@ PauseInterruptCounter:                      ; [$0014]
 ;     Game_UpdatePlayerOnScroll
 ;     GetRandom
 ;     Input_HandleOnInterrupt
-;     Player_CheckHandleClimb
-;     Player_CheckHandleClimbMaybeSide
 ;     Player_CheckHandleJump
+;     Player_CheckHandleVertMovement
 ;     Player_CheckPushingBlock
 ;     Player_GetBodySpriteFrameOffset
+;     Player_HandleVertLadderOrJump
 ;     Player_UpdateAcceleration
 ;============================================================================
 
@@ -635,11 +635,11 @@ PauseInterruptCounter:                      ; [$0014]
 ;     Game_UpdatePlayerOnScroll
 ;     GetRandom
 ;     Input_HandleOnInterrupt
-;     Player_CheckHandleClimb
-;     Player_CheckHandleClimbMaybeSide
 ;     Player_CheckHandleJump
+;     Player_CheckHandleVertMovement
 ;     Player_CheckPushingBlock
 ;     Player_GetBodySpriteFrameOffset
+;     Player_HandleVertLadderOrJump
 ;     Player_UpdateAcceleration
 ;
 Joy1_ButtonMask:                            ; [$0016]
@@ -725,7 +725,7 @@ Joy1_PrevButtonMask:                        ; [$0018]
 ;     TextBox_DismissIfBElseContinue
 ;     Player_CastMagic
 ;     Player_CheckHandlePressUpOnNPC
-;     Area_CheckCanClimbAdjacent
+;     Area_CheckClimbAdjacentImpassable
 ;     EndGame_MovePlayerTowardKing
 ;     GameLoop_CheckPauseGame
 ;     GameLoop_CheckShowPlayerMenu
@@ -734,7 +734,7 @@ Joy1_PrevButtonMask:                        ; [$0018]
 ;     Input_HandleOnInterrupt
 ;     Player_CheckHandleAttack
 ;     Player_CheckHandleEnterDoor
-;     Player_ContinueHandleClimbOrJump
+;     Player_UpdateClimbOrJump
 ;
 Joy1_ChangedButtonMask:                     ; [$0019]
     .byte $00                               ; [$0019] ButtonBitmask
@@ -925,8 +925,8 @@ PPUBuffer_ReadOffset:                       ; [$001f]
 ;     TextBox_Open
 ;     UI_DrawString
 ;     Area_SetBlocks_SetAttributes
-;     Area_SetBlocks_WriteBlockData12
-;     Area_SetBlocks_WriteBlockData34
+;     Area_SetBlocks_WriteBlockDataColumn1
+;     Area_SetBlocks_WriteBlockDataColumn2
 ;     DEADCODE_FUN_PRG15_MIRROR__c033
 ;     Fog_UpdateTiles
 ;     Game_InitStateForSpawn
@@ -1542,7 +1542,7 @@ Screen_ScrollVertLoadCounter:               ; [$0044]
 ;
 ;
 ; XREFS:
-;     Area_LoadScrollDataRight
+;     Area_LoadScrollData
 ;     Screen_HandleScrollLeft
 ;     Screen_HandleScrollRight
 ;     Screen_LoadBlocksHoriz
@@ -1593,7 +1593,7 @@ Unused_Blocks_0049:                         ; [$0049]
 ;
 ; XREFS:
 ;     Screen_LoadBlocksHoriz
-;     Screen_WriteScrollHorizPPUTileData
+;     Screen_WriteBlockTilesColumnToPPU
 ;============================================================================
 
 ;
@@ -1602,7 +1602,7 @@ Unused_Blocks_0049:                         ; [$0049]
 ;
 ; XREFS:
 ;     Screen_LoadBlocksHoriz
-;     Screen_WriteScrollHorizPPUTileData
+;     Screen_WriteBlockTilesColumnToPPU
 ;
 Screen_ScrollHorizBlocks_PPUTileMapAddr_L:  ; [$004c]
     .byte $00                               ; [$004c] byte
@@ -1610,7 +1610,7 @@ Screen_ScrollHorizBlocks_PPUTileMapAddr_L:  ; [$004c]
 ;
 ; XREFS:
 ;     Screen_LoadBlocksHoriz
-;     Screen_WriteScrollHorizPPUTileData
+;     Screen_WriteBlockTilesColumnToPPU
 ;
 Screen_ScrollHorizBlocks_PPUTileMapAddr_U:  ; [$004d]
     .byte $00                               ; [$004d] byte
@@ -1622,7 +1622,7 @@ Screen_ScrollHorizBlocks_PPUTileMapAddr_U:  ; [$004d]
 ;
 ; XREFS:
 ;     Screen_LoadBlockDataVert
-;     Screen_WriteScrollVertPPUTileData
+;     Screen_WriteBlockTilesRowToPPU
 ;
 Screen_ScrollVertBlocks_PPUTileMapAddr_L:   ; [$004e]
     .byte $00                               ; [$004e] byte
@@ -1630,7 +1630,7 @@ Screen_ScrollVertBlocks_PPUTileMapAddr_L:   ; [$004e]
 ;
 ; XREFS:
 ;     Screen_LoadBlockDataVert
-;     Screen_WriteScrollVertPPUTileData
+;     Screen_WriteBlockTilesRowToPPU
 ;
 Screen_ScrollVertBlocks_PPUTileMapAddr_U:   ; [$004f]
     .byte $00                               ; [$004f] byte
@@ -1642,7 +1642,7 @@ Screen_ScrollVertBlocks_PPUTileMapAddr_U:   ; [$004f]
 ;
 ; XREFS:
 ;     Screen_LoadBlocksHoriz
-;     Screen_WriteScrollHorizPPUAttrData
+;     Screen_WriteBlockAttrsColumnToPPU
 ;
 Screen_ScrollHorizBlocks_PPUAttrAddr_L:     ; [$0050]
     .byte $00                               ; [$0050] byte
@@ -1650,7 +1650,7 @@ Screen_ScrollHorizBlocks_PPUAttrAddr_L:     ; [$0050]
 ;
 ; XREFS:
 ;     Screen_LoadBlocksHoriz
-;     Screen_WriteScrollHorizPPUAttrData
+;     Screen_WriteBlockAttrsColumnToPPU
 ;
 Screen_ScrollHorizBlocks_PPUAttrAddr_U:     ; [$0051]
     .byte $00                               ; [$0051] byte
@@ -1662,7 +1662,7 @@ Screen_ScrollHorizBlocks_PPUAttrAddr_U:     ; [$0051]
 ;
 ; XREFS:
 ;     Screen_LoadBlockDataVert
-;     Screen_WriteScrollVertPPUAttrData
+;     Screen_WriteBlockAttrsRowToPPU
 ;
 Screen_ScrollVertBlocks_PPUAttrAddr_L:      ; [$0052]
     .byte $00                               ; [$0052] byte
@@ -1670,7 +1670,7 @@ Screen_ScrollVertBlocks_PPUAttrAddr_L:      ; [$0052]
 ;
 ; XREFS:
 ;     Screen_LoadBlockDataVert
-;     Screen_WriteScrollVertPPUAttrData
+;     Screen_WriteBlockAttrsRowToPPU
 ;
 Screen_ScrollVertBlocks_PPUAttrAddr_U:      ; [$0053]
     .byte $00                               ; [$0053] byte
@@ -1685,7 +1685,7 @@ Screen_ScrollVertBlocks_PPUAttrAddr_U:      ; [$0053]
 ; 3 = Down
 ;
 ; XREFS:
-;     Area_LoadScrollDataRight
+;     Area_LoadScrollData
 ;     Area_ScrollScreenRight
 ;     GameLoop_UpdatePlayer
 ;     Game_MainLoop
@@ -1698,7 +1698,7 @@ Screen_ScrollVertBlocks_PPUAttrAddr_U:      ; [$0053]
 
 ;
 ; XREFS:
-;     Area_LoadScrollDataRight
+;     Area_LoadScrollData
 ;     Area_ScrollScreenRight
 ;     GameLoop_UpdatePlayer
 ;     Game_MainLoop
@@ -1747,7 +1747,7 @@ PPU_ScrollScreenVert:                       ; [$0058]
 
 ;
 ; XREFS:
-;     Area_LoadScrollDataRight
+;     Area_LoadScrollData
 ;     Player_DrawBody
 ;     Player_SetInitialState
 ;     Screen_HandleScrollLeft
@@ -1914,9 +1914,7 @@ Player_SpriteTileReadAddr_U:                ; [$0062]
 ; Area/screen information.
 ;
 ; XREFS:
-;     Area_LoadScrollDataRight
-;     Area_ScrollScreenDown
-;     Area_ScrollScreenUp
+;     Area_LoadScrollData
 ;     Debug_ChooseArea
 ;     EndGame_MoveToKingsRoom
 ;     GameLoop_CheckShowPlayerMenu
@@ -1928,9 +1926,11 @@ Player_SpriteTileReadAddr_U:                ; [$0062]
 ;     Game_SpawnInTemple
 ;     Player_CheckHandleClimbUp
 ;     Player_CheckSwitchScreen_SwitchAreaHoriz
+;     Player_HandleVertLadderOrJump
 ;     Player_MoveDownScreen
 ;     Player_TryMoveLeft
 ;     Player_TryMoveRight
+;     Player_UpdateClimbOrJump
 ;     Screen_LoadAllScreenInfo
 ;     Screen_LoadBlockDataVert
 ;     Screen_LoadBlocksHoriz
@@ -1946,9 +1946,7 @@ Player_SpriteTileReadAddr_U:                ; [$0062]
 ;
 ;
 ; XREFS:
-;     Area_LoadScrollDataRight
-;     Area_ScrollScreenDown
-;     Area_ScrollScreenUp
+;     Area_LoadScrollData
 ;     Debug_ChooseArea
 ;     EndGame_MoveToKingsRoom
 ;     GameLoop_CheckShowPlayerMenu
@@ -1960,9 +1958,11 @@ Player_SpriteTileReadAddr_U:                ; [$0062]
 ;     Game_SpawnInTemple
 ;     Player_CheckHandleClimbUp
 ;     Player_CheckSwitchScreen_SwitchAreaHoriz
+;     Player_HandleVertLadderOrJump
 ;     Player_MoveDownScreen
 ;     Player_TryMoveLeft
 ;     Player_TryMoveRight
+;     Player_UpdateClimbOrJump
 ;     Screen_LoadAllScreenInfo
 ;     Screen_LoadBlockDataVert
 ;     Screen_LoadBlocksHoriz
@@ -2019,7 +2019,7 @@ Screen_DestPaletteOrIndex:                  ; [$0065]
 ;
 ;
 ; XREFS:
-;     Area_LoadScrollDataRight
+;     Area_LoadScrollData
 ;     Player_TryMoveLeft
 ;
 Area_ScreenToTheLeft:                       ; [$0066]
@@ -2031,7 +2031,7 @@ Area_ScreenToTheLeft:                       ; [$0066]
 ;
 ;
 ; XREFS:
-;     Area_LoadScrollDataRight
+;     Area_LoadScrollData
 ;     Player_TryMoveRight
 ;
 Area_ScreenToTheRight:                      ; [$0067]
@@ -2043,9 +2043,9 @@ Area_ScreenToTheRight:                      ; [$0067]
 ;
 ;
 ; XREFS:
-;     Area_LoadScrollDataRight
-;     Area_ScrollScreenUp
+;     Area_LoadScrollData
 ;     Player_CheckHandleClimbUp
+;     Player_UpdateClimbOrJump
 ;
 Area_ScreenAbove:                           ; [$0068]
     .byte $00                               ; [$0068] byte
@@ -2056,8 +2056,8 @@ Area_ScreenAbove:                           ; [$0068]
 ;
 ;
 ; XREFS:
-;     Area_LoadScrollDataRight
-;     Area_ScrollScreenDown
+;     Area_LoadScrollData
+;     Player_HandleVertLadderOrJump
 ;     Player_MoveDownScreen
 ;
 Area_ScreenBelow:                           ; [$0069]
@@ -2173,14 +2173,30 @@ CurrentArea_BlockData3CurAddr:              ; [$0071]
 CurrentArea_BlockData4CurAddr:              ; [$0072]
     .byte $00                               ; [$0072] byte
 
+
+;============================================================================
+; A table marking screen scroll handlers to run.
+;
+; This applies to the current screen scroll process. At the
+; start of screen scroll, all will be set to 0. Once a phase
+; has been completed that requires a handler to be run, the
+; associated handler's entry will be set to 1.
+;
+; XREFS:
+;     Area_ScrollScreenRight
+;     Screen_LoadBlockDataVert
+;     Screen_RunWriteScrollDataHandler
+;============================================================================
+
 ;
 ; XREFS:
 ;     Area_ScrollScreenRight
 ;     Screen_LoadBlockDataVert
 ;     Screen_RunWriteScrollDataHandler
 ;
-Screen_NeighborBlocksLoadedByDirection:     ; [$0073]
+Screen_ScrollHandlersPending:               ; [$0073]
     .byte $00                               ; [0]:
+                                            ; Screen_WriteBlockTilesRowToPPU
 
 ;
 ; XREFS:
@@ -2189,6 +2205,7 @@ Screen_NeighborBlocksLoadedByDirection:     ; [$0073]
 ;
 Screen_ScrollHorizBlocksLoaded:             ; [$0074]
     .byte $00                               ; [1]:
+                                            ; Screen_WriteBlockTilesColumnToPPU
 
 ;
 ; XREFS:
@@ -2197,6 +2214,7 @@ Screen_ScrollHorizBlocksLoaded:             ; [$0074]
 ;
 Screen_MaybeUnused_0075:                    ; [$0075]
     .byte $00                               ; [2]:
+                                            ; Screen_WriteBlockAttrsRowToPPU
 
 ;
 ; XREFS:
@@ -2205,16 +2223,17 @@ Screen_MaybeUnused_0075:                    ; [$0075]
 ;
 Screen_ScrollHorizAttrsLoaded:              ; [$0076]
     .byte $00                               ; [3]:
+                                            ; Screen_WriteBlockAttrsColumnToPPU
 
 ;
 ; XREFS:
 ;     Area_ScrollScreenRight
 ;     Screen_RunWriteScrollDataHandler
 ;
-Screen_LoadBlocksStage:                     ; [$0077]
-    .byte $00                               ; [0]:
-    .byte $00                               ; [1]:
-    .byte $00                               ; [2]:
+Screen_NextScrollDataHandlerIndex:          ; [$0077]
+    .byte $00                               ; [$0077] byte
+
+    .byte $00,$00                           ; [$0079] undefined
 
 ;
 ; XREFS:
@@ -2258,7 +2277,7 @@ CurrentArea_BlockAttributesAddr:            ; [$007e]
 
 ;
 ; XREFS:
-;     Area_SetBlocks_WriteBlockData12
+;     Area_SetBlocks_WriteBlockDataColumn1
 ;     Screen_LoadBlockDataVert
 ;     Screen_LoadBlocksHoriz
 ;
@@ -2267,7 +2286,7 @@ CurrentArea_BlockData1StartAddr:            ; [$0080]
 
 ;
 ; XREFS:
-;     Area_SetBlocks_WriteBlockData12
+;     Area_SetBlocks_WriteBlockDataColumn1
 ;     Screen_LoadBlockDataVert
 ;     Screen_LoadBlocksHoriz
 ;
@@ -2276,7 +2295,7 @@ CurrentArea_BlockData2StartAddr:            ; [$0082]
 
 ;
 ; XREFS:
-;     Area_SetBlocks_WriteBlockData34
+;     Area_SetBlocks_WriteBlockDataColumn2
 ;     Screen_LoadBlockDataVert
 ;     Screen_LoadBlocksHoriz
 ;
@@ -2285,7 +2304,7 @@ CurrentArea_BlockData3StartAddr:            ; [$0084]
 
 ;
 ; XREFS:
-;     Area_SetBlocks_WriteBlockData34
+;     Area_SetBlocks_WriteBlockDataColumn2
 ;     Screen_LoadBlockDataVert
 ;     Screen_LoadBlocksHoriz
 ;
@@ -2309,7 +2328,7 @@ CurrentArea_BlockPropertiesAddr_U:          ; [$0089]
 
 ;
 ; XREFS:
-;     Area_LoadScrollDataRight
+;     Area_LoadScrollData
 ;     Game_LoadAreaTable
 ;
 CurrentArea_ScrollingDataAddr:              ; [$008a]
@@ -2317,7 +2336,7 @@ CurrentArea_ScrollingDataAddr:              ; [$008a]
 
 ;
 ; XREFS:
-;     Area_LoadScrollDataRight
+;     Area_LoadScrollData
 ;     Game_LoadAreaTable
 ;
 ScrollingData_U:                            ; [$008b]
@@ -2329,7 +2348,7 @@ ScrollingData_U:                            ; [$008b]
 ;
 ;
 ; XREFS:
-;     Area_LoadScrollDataRight
+;     Area_LoadScrollData
 ;     Game_EnterAreaHandler
 ;     Game_EnterBuilding
 ;     Game_ExitBuilding
@@ -2566,8 +2585,8 @@ Player_PosX_Frac:                           ; [$009d]
 ;     Area_CanPlayerMoveLeft
 ;     Area_CanPlayerMoveRight
 ;     Area_CanPlayerMoveUp
-;     Area_CheckCanClimbAdjacent
-;     Area_LoadScrollDataRight
+;     Area_CheckClimbAdjacentImpassable
+;     Area_LoadScrollData
 ;     Area_SetStateFromDoorDestination
 ;     EndGame_MovePlayerTowardKing
 ;     FUN_PRG15_MIRROR__ec58
@@ -2575,8 +2594,8 @@ Player_PosX_Frac:                           ; [$009d]
 ;     Game_MovePlayerOnScroll
 ;     Game_MovePlayerOnScrollLeft
 ;     Game_SpawnInTemple
-;     Player_CheckHandleClimb
 ;     Player_CheckHandleJump
+;     Player_CheckHandleVertMovement
 ;     Player_CheckIfOnLadder
 ;     Player_CheckIfPassable
 ;     Player_CheckOnBreakableBlock
@@ -2619,13 +2638,44 @@ Player_PosX_Block:                          ; [$009e]
 Screen_Maybe_ScrollXCounter:                ; [$009f]
     .byte $00                               ; [$009f] byte
 
+
+;============================================================================
+; A climb/fly speed modifier.
+;
+; This works like a gravity-like modifier applied to the
+; player when climbing/flying.
+;
+; When flying with Wing Boots, this will act as a dampener
+; when going up. When moving down a ladder, or moving down
+; with Wing Boots, this will affect the climb speed.
+;
+; Specifically:
+;
+; 1. When climbing up, this does not apply.
+;
+; 2. When climbing down, the Y position increases if this is
+;    < 63. The value is then reduced by 64.
+;
+; 3. When flying up, the value is reduced by 160, and if
+;    that wraps around, then the Y position is reduced by 1.
+;
+; 4. When flying/gliding down, the Y position increases by
+;    an additional 1 if this is < 127. The value is then
+;    increased by 128.
 ;
 ; XREFS:
 ;     Player_CheckHandleClimbDown
-;     Player_CheckHandleClimbMaybeSide
 ;     Player_CheckHandleClimbUp
+;     Player_HandleVertLadderOrJump
+;============================================================================
+
 ;
-BYTE_00a0:                                  ; [$00a0]
+; XREFS:
+;     Player_CheckHandleClimbDown
+;     Player_CheckHandleClimbUp
+;     Player_HandleVertLadderOrJump
+;
+Player_ClimbFlySpeedModifier:               ; [$00a0]
     .byte $00                               ; [$00a0] byte
 
 
@@ -2649,29 +2699,24 @@ BYTE_00a0:                                  ; [$00a0]
 ;     Area_CanPlayerMoveAtY
 ;     Area_CanPlayerMoveLeft
 ;     Area_CanPlayerMoveUp
-;     Area_CheckCanClimbAdjacent
-;     Area_LoadScrollDataRight
-;     Area_ScrollScreenDown
-;     Area_ScrollScreenUp
+;     Area_CheckClimbAdjacentImpassable
+;     Area_LoadScrollData
 ;     Area_SetStateFromDoorDestination
 ;     FUN_PRG15_MIRROR__ec58
 ;     Game_EnterBuilding
 ;     Game_SpawnInTemple
-;     LAB_PRG15_MIRROR__e49a [$PRG15_MIRROR::e49a]
-;     LAB_PRG15_MIRROR__e4a2 [$PRG15_MIRROR::e4a2]
-;     Maybe_SetPlayerForScrollUp
 ;     Player_CheckHandleClimbDown
-;     Player_CheckHandleClimbMaybeSide
 ;     Player_CheckHandleClimbUp
 ;     Player_CheckIfOnLadder
 ;     Player_CheckIfPassable
 ;     Player_CheckOnBreakableBlock
 ;     Player_CheckPushingBlock
 ;     Player_CheckSwitchScreen
-;     Player_ContinueHandleClimbOrJump
 ;     Player_DrawBody
+;     Player_HandleVertLadderOrJump
 ;     Player_MoveDownScreen
 ;     Player_SetPosAtBottomEdge
+;     Player_UpdateClimbOrJump
 ;     Player_UseMattock
 ;     Screen_SetupNew
 ;
@@ -2682,13 +2727,13 @@ Player_PosY:                                ; [$00a1]
 ; XREFS:
 ;     CurrentSprite_UpdateState
 ;     Player_DrawWeapon
-;     Area_ScrollScreenDown
-;     Area_ScrollScreenUp
 ;     CastMagic_RunUpdateSpellHandler
 ;     Player_CheckHandleClimbUp
 ;     Player_DrawBody
+;     Player_HandleVertLadderOrJump
 ;     Player_MoveDownScreen
 ;     Player_SetInitialState
+;     Player_UpdateClimbOrJump
 ;     Screen_SetupNew
 ;
 Player_Something_ScrollPosY:                ; [$00a2]
@@ -2746,31 +2791,29 @@ Player_MovementTick:                        ; [$00a3]
 ;     GameLoop_CheckUseCurrentItem
 ;     Game_BeginExitBuilding
 ;     Game_SpawnInTemple
-;     LAB_PRG15_MIRROR__e42c [$PRG15_MIRROR::e42c]
-;     Maybe_SetPlayerForScrollUp
 ;     Player_CheckHandleAttack
-;     Player_CheckHandleClimb
 ;     Player_CheckHandleClimbDown
-;     Player_CheckHandleClimbMaybeSide
 ;     Player_CheckHandleClimbUp
 ;     Player_CheckHandleJump
+;     Player_CheckHandleVertMovement
 ;     Player_CheckIfOnLadder
 ;     Player_CheckOnBreakableBlock
 ;     Player_CheckPushingBlock
 ;     Player_ClearJumpingAndHoldingToClimb
-;     Player_ContinueHandleClimbOrJump
 ;     Player_EnterDoorToInside
 ;     Player_GetBodySpriteFrameOffset
+;     Player_GrabClimbLadderOrJump
 ;     Player_HandleDeath
 ;     Player_HandleKnockback
+;     Player_HandleVertLadderOrJump
 ;     Player_IsClimbing
 ;     Player_KnockbackHoriz
 ;     Player_SetFacingLeft
 ;     Player_SetInitialState
-;     Player_StayOnLadderAndContinue
 ;     Player_TryMoveLeft
 ;     Player_TryMoveRight
 ;     Player_UpdateAcceleration
+;     Player_UpdateClimbOrJump
 ;     Player_UseMattock
 ;
 Player_Flags:                               ; [$00a4]
@@ -2792,28 +2835,48 @@ Player_Flags:                               ; [$00a4]
 ;     Game_DecWingBootsDuration
 ;     Game_DrawScreenInFrozenState
 ;     Player_CheckHandleAttack
-;     Player_CheckHandleClimb
 ;     Player_CheckHandleClimbDown
-;     Player_CheckHandleClimbMaybeSide
 ;     Player_CheckHandleClimbUp
 ;     Player_CheckHandleJump
+;     Player_CheckHandleVertMovement
 ;     Player_GetBodySpriteFrameOffset
 ;     Player_HandleDeath
 ;     Player_HandleIFrames
+;     Player_HandleVertLadderOrJump
 ;     Player_SetInitialState
 ;     Player_UpdateAcceleration
 ;
 Player_StatusFlag:                          ; [$00a5]
     .byte $00                               ; [$00a5] PlayerStatusFlags
 
+
+;============================================================================
+; An index into the player's jump curve table.
+;
+; When a jump starts, this will be set to 1. It will
+; increase as the player's jump continues to rise. Once
+; it hits its midpoint (0x10), the player will begin to
+; fall.
+;
+; If, while moving in an upward direction, the player hits
+; an obstacle, this will be reset to the midpoint of 0x10.
+;
+; This can go as high as 0x1F, which is the end of the
+; curve.
+;
+; See PLAYER_JUMP_CURVE for details.
 ;
 ; XREFS:
-;     Area_Something_IncDAT00a6
-;     [$PRG15_MIRROR::e4b1]
-;     Player_CheckHandleClimbMaybeSide
-;     Player_ContinueHandleClimbOrJump
+;     Player_HandleVertLadderOrJump
+;     Player_UpdateClimbOrJump
+;============================================================================
+
 ;
-Something_Player_ClimbLadderCheckPos:       ; [$00a6]
+; XREFS:
+;     Player_HandleVertLadderOrJump
+;     Player_UpdateClimbOrJump
+;
+Player_JumpCurveIndex:                      ; [$00a6]
     .byte $00                               ; [$00a6] byte
 
 ;
@@ -2881,7 +2944,7 @@ Player_Unused_00ab:                         ; [$00ab]
 ; XREFS:
 ;     Player_CheckHandleAttack
 ;
-PlayerHitsPhaseTimer:                       ; [$00ac]
+Player_AttackPhaseTimer:                    ; [$00ac]
     .byte $00                               ; [$00ac] byte
 
 
@@ -2913,7 +2976,7 @@ Player_InvincibilityPhase:                  ; [$00ad]
 ;     Player_CheckHandleAttack
 ;     Player_GetBodySpriteFrameOffset
 ;
-PlayerHitsPhaseCounter:                     ; [$00ae]
+Player_AttackPhaseAnimFrame:                ; [$00ae]
     .byte $00                               ; [$00ae] byte
 
 
@@ -2922,12 +2985,21 @@ PlayerHitsPhaseCounter:                     ; [$00ae]
 ;============================================================================
     .byte $00,$00                           ; [$00af] undefined
 
+
+;============================================================================
+; Amount of ticks the player can climb left/right before falling off.
 ;
 ; XREFS:
-;     Player_CheckHandleClimbMaybeSide
-;     Player_StayOnLadderAndContinue
+;     Player_GrabClimbLadderOrJump
+;     Player_HandleVertLadderOrJump
+;============================================================================
+
 ;
-Maybe_ClimbLadderOffset:                    ; [$00b1]
+; XREFS:
+;     Player_GrabClimbLadderOrJump
+;     Player_HandleVertLadderOrJump
+;
+Player_ClimbLadderHangTime:                 ; [$00b1]
     .byte $00                               ; [$00b1] byte
 
 
@@ -2936,7 +3008,7 @@ Maybe_ClimbLadderOffset:                    ; [$00b1]
 ;
 ;
 ; XREFS:
-;     Area_LoadScrollDataRight
+;     Area_LoadScrollData
 ;     Game_MovePlayerOnScroll
 ;     Game_MovePlayerOnScrollLeft
 ;     Player_DrawBody
@@ -2950,7 +3022,7 @@ Maybe_PlayerX_ForScroll:                    ; [$00b2]
 ;
 ;
 ; XREFS:
-;     Area_LoadScrollDataRight
+;     Area_LoadScrollData
 ;     Game_MovePlayerOnScroll
 ;     Player_DrawBody
 ;
@@ -2966,7 +3038,7 @@ Maybe_PlayerY_ForScroll:                    ; [$00b3]
 ;
 ;
 ; XREFS:
-;     Area_LoadScrollDataRight
+;     Area_LoadScrollData
 ;     Game_MovePlayerOnScroll
 ;     Game_MovePlayerOnScrollLeft
 ;     Game_UpdatePlayerOnScroll
@@ -2993,7 +3065,7 @@ Screen_ScrollPlayerTransitionCounter:       ; [$00b4]
 ;     Area_CanMoveImmediatelyRight
 ;     Area_CanPlayerMoveLeft
 ;     Area_CanPlayerMoveRight
-;     Area_CheckCanClimbAdjacent
+;     Area_CheckClimbAdjacentImpassable
 ;     Area_ConvertPixelsToBlockPos
 ;     Area_SetStateFromDoorDestination
 ;     CastMagic_CalculateVisibility
@@ -3022,7 +3094,7 @@ Screen_ScrollPlayerTransitionCounter:       ; [$00b4]
 ;     Area_CanMoveImmediatelyRight
 ;     Area_CanPlayerMoveLeft
 ;     Area_CanPlayerMoveRight
-;     Area_CheckCanClimbAdjacent
+;     Area_CheckClimbAdjacentImpassable
 ;     Area_ConvertPixelsToBlockPos
 ;     Area_SetStateFromDoorDestination
 ;     CastMagic_CalculateVisibility
@@ -3051,7 +3123,7 @@ Arg_PixelPosX:                              ; [$00b5]
 ;     Sprites_MoveRight__86c6
 ;     Area_CanPlayerMoveAtY
 ;     Area_CanPlayerMoveUp
-;     Area_CheckCanClimbAdjacent
+;     Area_CheckClimbAdjacentImpassable
 ;     Area_ConvertPixelsToBlockPos
 ;     Area_SetStateFromDoorDestination
 ;     CastMagic_CalculateVisibility
@@ -3090,16 +3162,16 @@ Arg_PixelPosY:                              ; [$00b6]
 ;     Area_CanPlayerMoveAtY
 ;     Area_CanPlayerMoveLeft
 ;     Area_CanPlayerMoveUp
-;     Area_CheckCanClimbAdjacent
+;     Area_CheckClimbAdjacentImpassable
 ;     Area_HandleBreakableFloor
 ;     Area_IsBlockClimbable
 ;     Area_SetStateFromDoorDestination
 ;     Area_StoreBlockIsAir
-;     Player_CheckHandleClimbMaybeSide
 ;     Player_CheckHandleEnterDoor
 ;     Player_CheckIfOnLadder
 ;     Player_CheckIfPassable
 ;     Player_CheckOnBreakableBlock
+;     Player_HandleVertLadderOrJump
 ;
 Blocks_Result:                              ; [$00b7]
     .byte $00                               ; [$00b7] byte
@@ -3624,9 +3696,9 @@ BankedCallSetup_SavedY:                     ; [$00e0]
 ;     UI_ClearSelectedItemPic
 ;     UI_DrawGoldValue
 ;     UI_DrawHUDSprites
-;     UI_DrawManaOrHPBar
 ;     UI_DrawPlayerExperience
 ;     UI_DrawTimeValue
+;     UI_SetHUDBarValue
 ;============================================================================
 
 ;
@@ -3659,9 +3731,9 @@ BankedCallSetup_SavedY:                     ; [$00e0]
 ;     UI_ClearSelectedItemPic
 ;     UI_DrawGoldValue
 ;     UI_DrawHUDSprites
-;     UI_DrawManaOrHPBar
 ;     UI_DrawPlayerExperience
 ;     UI_DrawTimeValue
+;     UI_SetHUDBarValue
 ;
 PPU_TargetAddr:                             ; [$00e8]
     .byte $00                               ; [$00e8] byte
@@ -3693,9 +3765,9 @@ PPU_TargetAddr:                             ; [$00e8]
 ;     UI_ClearSelectedItemPic
 ;     UI_DrawGoldValue
 ;     UI_DrawHUDSprites
-;     UI_DrawManaOrHPBar
 ;     UI_DrawPlayerExperience
 ;     UI_DrawTimeValue
+;     UI_SetHUDBarValue
 ;
 PPU_TargetAddr_U:                           ; [$00e9]
     .byte $00                               ; [$00e9] byte
@@ -3820,12 +3892,12 @@ TextBox_ContentsY:                          ; [$00eb]
 ;     Textbox_Maybe_GetAreaBehindTextbox
 ;     UI_DrawDigitsZeroPadded
 ;     UI_DrawGoldValue
-;     UI_DrawManaOrHPBar
 ;     UI_DrawPlayerExperience
 ;     UI_DrawSelectedItem
 ;     UI_DrawTimeValue
 ;     UI_GetValueForDigit
 ;     UI_Maybe_GetItemSpritePPUTileAddr
+;     UI_SetHUDBarValue
 ;============================================================================
 
 ;
@@ -3892,12 +3964,12 @@ TextBox_ContentsY:                          ; [$00eb]
 ;     Textbox_Maybe_GetAreaBehindTextbox
 ;     UI_DrawDigitsZeroPadded
 ;     UI_DrawGoldValue
-;     UI_DrawManaOrHPBar
 ;     UI_DrawPlayerExperience
 ;     UI_DrawSelectedItem
 ;     UI_DrawTimeValue
 ;     UI_GetValueForDigit
 ;     UI_Maybe_GetItemSpritePPUTileAddr
+;     UI_SetHUDBarValue
 ;
 Temp_Int24:                                 ; [$00ec]
     .byte $00                               ; [$00ec] byte
@@ -3971,10 +4043,10 @@ Temp_Int24_M:                               ; [$00ed]
 ;     MMC1_LoadBankAndJump
 ;     TextBox_LoadItemSourceTiles
 ;     UI_DrawGoldValue
-;     UI_DrawManaOrHPBar
 ;     UI_DrawPlayerExperience
 ;     UI_DrawTimeValue
 ;     UI_GetValueForDigit
+;     UI_SetHUDBarValue
 ;
 Temp_Int24_U:                               ; [$00ee]
     .byte $00                               ; [$00ee] byte
@@ -3987,9 +4059,9 @@ Temp_Int24_U:                               ; [$00ee]
 ;     Player_RemoveItem
 ;     MMC1_LoadBankAndJump
 ;     TextBox_LoadItemSourceTiles
-;     UI_DrawManaOrHPBar
+;     UI_SetHUDBarValue
 ;
-Maybe_Temp4:                                ; [$00ef]
+Temp_0xEF:                                  ; [$00ef]
     .byte $00                               ; [$00ef] byte
 
 

@@ -161,7 +161,7 @@ pre {
 ;
 ; XREFS:
 ;     <a href="PRG15_MIRROR.html#Area_LoadBlockProperties">Area_LoadBlockProperties</a>
-;     <a href="PRG15_MIRROR.html#Area_LoadScrollDataRight">Area_LoadScrollDataRight</a>
+;     <a href="PRG15_MIRROR.html#Area_LoadScrollData">Area_LoadScrollData</a>
 ;     <a href="PRG15_MIRROR.html#Area_LoadTiles">Area_LoadTiles</a>
 ;     <a href="PRG15_MIRROR.html#Area_SetBlocks">Area_SetBlocks</a>
 ;     <a href="PRG15_MIRROR.html#Area_SetStateFromDoorDestination">Area_SetStateFromDoorDestination</a>
@@ -212,7 +212,7 @@ pre {
 <div class="c">;
 ; XREFS:
 ;     <a href="PRG15_MIRROR.html#Area_LoadBlockProperties">Area_LoadBlockProperties</a>
-;     <a href="PRG15_MIRROR.html#Area_LoadScrollDataRight">Area_LoadScrollDataRight</a>
+;     <a href="PRG15_MIRROR.html#Area_LoadScrollData">Area_LoadScrollData</a>
 ;     <a href="PRG15_MIRROR.html#Area_LoadTiles">Area_LoadTiles</a>
 ;     <a href="PRG15_MIRROR.html#Area_SetBlocks">Area_SetBlocks</a>
 ;     <a href="PRG15_MIRROR.html#Area_SetStateFromDoorDestination">Area_SetStateFromDoorDestination</a>
@@ -352,7 +352,7 @@ pre {
 ;     <a href="PRG5.html#Music_PlaySQEnvelopeModeCurveButHeld">Music_PlaySQEnvelopeModeCurveButHeld</a>
 ;     <a href="PRG5.html#Music_PlaySQEnvelopeModeLinearTrailoff">Music_PlaySQEnvelopeModeLinearTrailoff</a>
 ;     <a href="PRG5.html#Music_PlaySQEnvelopeModePluck">Music_PlaySQEnvelopeModePluck</a>
-;     <a href="PRG5.html#Music_PlayWave">Music_PlayWave</a>
+;     <a href="PRG5.html#Music_SetupWave">Music_SetupWave</a>
 ;     <a href="PRG5.html#SoundEffect_PlayerDied_Setup">SoundEffect_PlayerDied_Setup</a>
 ;     <a href="PRG5.html#SoundEffects_HandleOnInterrupt">SoundEffects_HandleOnInterrupt</a>
 ;     <a href="PRG5.html#SoundEffects_Init">SoundEffects_Init</a>
@@ -365,7 +365,7 @@ pre {
 ;     <a href="PRG5.html#Music_PlaySQEnvelopeModeCurveButHeld">Music_PlaySQEnvelopeModeCurveButHeld</a>
 ;     <a href="PRG5.html#Music_PlaySQEnvelopeModeLinearTrailoff">Music_PlaySQEnvelopeModeLinearTrailoff</a>
 ;     <a href="PRG5.html#Music_PlaySQEnvelopeModePluck">Music_PlaySQEnvelopeModePluck</a>
-;     <a href="PRG5.html#Music_PlayWave">Music_PlayWave</a>
+;     <a href="PRG5.html#Music_SetupWave">Music_SetupWave</a>
 ;     <a href="PRG5.html#SoundEffect_PlayerDied_Setup">SoundEffect_PlayerDied_Setup</a>
 ;     <a href="PRG5.html#SoundEffects_HandleOnInterrupt">SoundEffects_HandleOnInterrupt</a>
 ;     <a href="PRG5.html#SoundEffects_Init">SoundEffects_Init</a>
@@ -581,7 +581,7 @@ pre {
 ; XREFS:
 ;     <a href="PRG5.html#MScripts_SetNoteLengthFromValue">MScripts_SetNoteLengthFromValue</a>
 ;     <a href="PRG5.html#Music_Load">Music_Load</a>
-;     <a href="PRG5.html#Music_StoreNoteDuration">Music_StoreNoteDuration</a>
+;     <a href="PRG5.html#Music_ResetTicksRemaining">Music_ResetTicksRemaining</a>
 ;
 </div><span class="l"><a class="anc" name="012c" href="#012c">[012c]</a><a href="#MScript_NoteDurations" class="la">MScript_NoteDurations:</a><span class="ce">; [$012c]</span></span>
 <span class="l"><a class="anc" name="012c" href="#012c">[012c]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [0]:</span></span>
@@ -607,36 +607,36 @@ pre {
 </div><span class="l"><a class="anc" name="012f" href="#012f">[012f]</a><a href="#MScript_NoteDurations_3_" class="la">MScript_NoteDurations_3_:</a><span class="ce">; [$012f]</span></span>
 <span class="l"><a class="anc" name="012f" href="#012f">[012f]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [3]:</span></span>
 <span class="l"></span>
-<a name="Music_NoteTicksRemaining"></a><div class="c">;
+<a name="Music_ChannelTicksRemaining"></a><div class="c">;
 ; XREFS:
 ;     <a href="PRG5.html#MScript_Op_End">MScript_Op_End</a>
 ;     <a href="PRG5.html#Music_Load">Music_Load</a>
 ;     <a href="PRG5.html#Music_PlayNext">Music_PlayNext</a>
-;     <a href="PRG5.html#Music_StoreNoteDuration">Music_StoreNoteDuration</a>
+;     <a href="PRG5.html#Music_ResetTicksRemaining">Music_ResetTicksRemaining</a>
 ;
-</div><span class="l"><a class="anc" name="0130" href="#0130">[0130]</a><a href="#Music_NoteTicksRemaining" class="la">Music_NoteTicksRemaining:</a><span class="ce">; [$0130]</span></span>
+</div><span class="l"><a class="anc" name="0130" href="#0130">[0130]</a><a href="#Music_ChannelTicksRemaining" class="la">Music_ChannelTicksRemaining:</a><span class="ce">; [$0130]</span></span>
 <span class="l"><a class="anc" name="0130" href="#0130">[0130]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [0]:</span></span>
 <span class="l"></span>
-<a name="Music_NoteTicksRemaining_1_"></a><div class="c">;
+<a name="Music_ChannelTicksRemaining_1_"></a><div class="c">;
 ; XREFS:
 ;     <a href="PRG5.html#Music_Load">Music_Load</a>
 ;     <a href="PRG5.html#Music_PlayNext">Music_PlayNext</a>
 ;
-</div><span class="l"><a class="anc" name="0131" href="#0131">[0131]</a><a href="#Music_NoteTicksRemaining_1_" class="la">Music_NoteTicksRemaining_1_:</a><span class="ce">; [$0131]</span></span>
+</div><span class="l"><a class="anc" name="0131" href="#0131">[0131]</a><a href="#Music_ChannelTicksRemaining_1_" class="la">Music_ChannelTicksRemaining_1_:</a><span class="ce">; [$0131]</span></span>
 <span class="l"><a class="anc" name="0131" href="#0131">[0131]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [1]:</span></span>
 <span class="l"></span>
-<a name="Music_NoteTicksRemaining_2_"></a><div class="c">;
+<a name="Music_ChannelTicksRemaining_2_"></a><div class="c">;
 ; XREFS:
 ;     <a href="PRG5.html#Music_Load">Music_Load</a>
 ;
-</div><span class="l"><a class="anc" name="0132" href="#0132">[0132]</a><a href="#Music_NoteTicksRemaining_2_" class="la">Music_NoteTicksRemaining_2_:</a><span class="ce">; [$0132]</span></span>
+</div><span class="l"><a class="anc" name="0132" href="#0132">[0132]</a><a href="#Music_ChannelTicksRemaining_2_" class="la">Music_ChannelTicksRemaining_2_:</a><span class="ce">; [$0132]</span></span>
 <span class="l"><a class="anc" name="0132" href="#0132">[0132]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [2]:</span></span>
 <span class="l"></span>
-<a name="Music_NoteTicksRemaining_3_"></a><div class="c">;
+<a name="Music_ChannelTicksRemaining_3_"></a><div class="c">;
 ; XREFS:
 ;     <a href="PRG5.html#Music_Load">Music_Load</a>
 ;
-</div><span class="l"><a class="anc" name="0133" href="#0133">[0133]</a><a href="#Music_NoteTicksRemaining_3_" class="la">Music_NoteTicksRemaining_3_:</a><span class="ce">; [$0133]</span></span>
+</div><span class="l"><a class="anc" name="0133" href="#0133">[0133]</a><a href="#Music_ChannelTicksRemaining_3_" class="la">Music_ChannelTicksRemaining_3_:</a><span class="ce">; [$0133]</span></span>
 <span class="l"><a class="anc" name="0133" href="#0133">[0133]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [3]:</span></span>
 <span class="l"><a class="anc" name="0134" href="#0134">[0134]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00,$00</span></span><span class="ce">; [$0134] undefined</span></span>
 <span class="l"></span>
@@ -764,7 +764,7 @@ pre {
 ; XREFS:
 ;     <a href="PRG5.html#MScripts_SetNoteLengthFromValue">MScripts_SetNoteLengthFromValue</a>
 ;     <a href="PRG5.html#Music_Load">Music_Load</a>
-;     <a href="PRG5.html#Music_PlayWave">Music_PlayWave</a>
+;     <a href="PRG5.html#Music_SetupWave">Music_SetupWave</a>
 ;
 </div><span class="l"><a class="anc" name="0164" href="#0164">[0164]</a><a href="#Music_SQ_Note_Lengths" class="la">Music_SQ_Note_Lengths:</a><span class="ce">; [$0164]</span></span>
 <span class="l"><a class="anc" name="0164" href="#0164">[0164]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [0]:</span></span>
@@ -772,7 +772,7 @@ pre {
 <a name="Music_Note_Length_High"></a><div class="c">;
 ; XREFS:
 ;     <a href="PRG5.html#Music_Load">Music_Load</a>
-;     <a href="PRG5.html#Music_PlayWave">Music_PlayWave</a>
+;     <a href="PRG5.html#Music_SetupWave">Music_SetupWave</a>
 ;
 </div><span class="l"><a class="anc" name="0165" href="#0165">[0165]</a><a href="#Music_Note_Length_High" class="la">Music_Note_Length_High:</a><span class="ce">; [$0165]</span></span>
 <span class="l"><a class="anc" name="0165" href="#0165">[0165]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [1]:</span></span>
@@ -843,10 +843,10 @@ pre {
 ;     <a href="PRG5.html#Music_PlaySQEnvelopeModeCurveButHeld">Music_PlaySQEnvelopeModeCurveButHeld</a>
 ;     <a href="PRG5.html#Music_PlaySQEnvelopeModeLinearTrailoff">Music_PlaySQEnvelopeModeLinearTrailoff</a>
 ;     <a href="PRG5.html#Music_PlaySQEnvelopeModePluck">Music_PlaySQEnvelopeModePluck</a>
-;     <a href="PRG5.html#Music_PlayWave">Music_PlayWave</a>
 ;     <a href="PRG5.html#Music_PlayWaveOrNoise">Music_PlayWaveOrNoise</a>
+;     <a href="PRG5.html#Music_ResetTicksRemaining">Music_ResetTicksRemaining</a>
 ;     <a href="PRG5.html#Music_SetNote">Music_SetNote</a>
-;     <a href="PRG5.html#Music_StoreNoteDuration">Music_StoreNoteDuration</a>
+;     <a href="PRG5.html#Music_SetupWave">Music_SetupWave</a>
 ;     <a href="PRG5.html#Music_UpdateSQVolRegister">Music_UpdateSQVolRegister</a>
 ;============================================================================
 </div><span class="l"></span>
@@ -874,14 +874,14 @@ pre {
 ;     <a href="PRG5.html#Music_PlaySQEnvelopeModeCurveButHeld">Music_PlaySQEnvelopeModeCurveButHeld</a>
 ;     <a href="PRG5.html#Music_PlaySQEnvelopeModeLinearTrailoff">Music_PlaySQEnvelopeModeLinearTrailoff</a>
 ;     <a href="PRG5.html#Music_PlaySQEnvelopeModePluck">Music_PlaySQEnvelopeModePluck</a>
-;     <a href="PRG5.html#Music_PlayWave">Music_PlayWave</a>
 ;     <a href="PRG5.html#Music_PlayWaveOrNoise">Music_PlayWaveOrNoise</a>
+;     <a href="PRG5.html#Music_ResetTicksRemaining">Music_ResetTicksRemaining</a>
 ;     <a href="PRG5.html#Music_SetNote">Music_SetNote</a>
-;     <a href="PRG5.html#Music_StoreNoteDuration">Music_StoreNoteDuration</a>
+;     <a href="PRG5.html#Music_SetupWave">Music_SetupWave</a>
 ;     <a href="PRG5.html#Music_UpdateSQVolRegister">Music_UpdateSQVolRegister</a>
 ;
 </div><span class="l"><a class="anc" name="016a" href="#016a">[016a]</a><a href="#MScript_CurrentChannel" class="la">MScript_CurrentChannel:</a><span class="ce">; [$016a]</span></span>
-<span class="l"><a class="anc" name="016a" href="#016a">[016a]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [$016a] byte</span></span>
+<span class="l"><a class="anc" name="016a" href="#016a">[016a]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [$016a] SoundChannel</span></span>
 <span class="l"></span>
 <span class="l"></span>
 <a name="Music_NumChannelsCompleted"></a><div class="cp">;============================================================================
@@ -903,7 +903,7 @@ pre {
 </div><span class="l"><a class="anc" name="016b" href="#016b">[016b]</a><a href="#Music_NumChannelsCompleted" class="la">Music_NumChannelsCompleted:</a><span class="ce">; [$016b]</span></span>
 <span class="l"><a class="anc" name="016b" href="#016b">[016b]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [$016b] byte</span></span>
 <span class="l"></span>
-<a name="MScript_CurValue"></a><div class="c">;
+<a name="Music_TempValue"></a><div class="c">;
 ; XREFS:
 ;     <a href="PRG5.html#MScripts_InvokeNext">MScripts_InvokeNext</a>
 ;     <a href="PRG5.html#MScripts_SetNoteLengthFromNext">MScripts_SetNoteLengthFromNext</a>
@@ -913,19 +913,19 @@ pre {
 ;     <a href="PRG5.html#Music_PlaySQEnvelopeModeCurveButHeld">Music_PlaySQEnvelopeModeCurveButHeld</a>
 ;     <a href="PRG5.html#Music_PlaySQEnvelopeModeLinearTrailoff">Music_PlaySQEnvelopeModeLinearTrailoff</a>
 ;     <a href="PRG5.html#Music_PlaySQEnvelopeModePluck">Music_PlaySQEnvelopeModePluck</a>
-;     <a href="PRG5.html#Music_PlayTriangleWave">Music_PlayTriangleWave</a>
-;     <a href="PRG5.html#Music_PlayWave">Music_PlayWave</a>
 ;     <a href="PRG5.html#Music_SetNote">Music_SetNote</a>
+;     <a href="PRG5.html#Music_SetupTriangleWave">Music_SetupTriangleWave</a>
+;     <a href="PRG5.html#Music_SetupWave">Music_SetupWave</a>
 ;     <a href="PRG5.html#Music_UpdateSQVolRegister">Music_UpdateSQVolRegister</a>
 ;
-</div><span class="l"><a class="anc" name="016c" href="#016c">[016c]</a><a href="#MScript_CurValue" class="la">MScript_CurValue:</a><span class="ce">; [$016c]</span></span>
+</div><span class="l"><a class="anc" name="016c" href="#016c">[016c]</a><a href="#Music_TempValue" class="la">Music_TempValue:</a><span class="ce">; [$016c]</span></span>
 <span class="l"><a class="anc" name="016c" href="#016c">[016c]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [$016c] byte</span></span>
 <span class="l"></span>
 <a name="Music_Note_Period_Low"></a><div class="c">;
 ; XREFS:
 ;     <a href="PRG5.html#Music_Load">Music_Load</a>
-;     <a href="PRG5.html#Music_PlayWave">Music_PlayWave</a>
 ;     <a href="PRG5.html#Music_SetNote">Music_SetNote</a>
+;     <a href="PRG5.html#Music_SetupWave">Music_SetupWave</a>
 ;
 </div><span class="l"><a class="anc" name="016d" href="#016d">[016d]</a><a href="#Music_Note_Period_Low" class="la">Music_Note_Period_Low:</a><span class="ce">; [$016d]</span></span>
 <span class="l"><a class="anc" name="016d" href="#016d">[016d]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [$016d] byte</span></span>
@@ -933,8 +933,8 @@ pre {
 <a name="Music_Note_Period_High"></a><div class="c">;
 ; XREFS:
 ;     <a href="PRG5.html#Music_Load">Music_Load</a>
-;     <a href="PRG5.html#Music_PlayWave">Music_PlayWave</a>
 ;     <a href="PRG5.html#Music_SetNote">Music_SetNote</a>
+;     <a href="PRG5.html#Music_SetupWave">Music_SetupWave</a>
 ;
 </div><span class="l"><a class="anc" name="016e" href="#016e">[016e]</a><a href="#Music_Note_Period_High" class="la">Music_Note_Period_High:</a><span class="ce">; [$016e]</span></span>
 <span class="l"><a class="anc" name="016e" href="#016e">[016e]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [$016e] byte</span></span>
@@ -960,14 +960,14 @@ pre {
 ; XREFS:
 ;     <a href="PRG5.html#Music_PlaySQEnvelopeModeCurveButHeld">Music_PlaySQEnvelopeModeCurveButHeld</a>
 ;     <a href="PRG5.html#Music_PlaySQEnvelopeModeLinearTrailoff">Music_PlaySQEnvelopeModeLinearTrailoff</a>
-;     <a href="PRG5.html#Music_PlayWave">Music_PlayWave</a>
+;     <a href="PRG5.html#Music_SetupWave">Music_SetupWave</a>
 ;============================================================================
 </div><span class="l"></span>
 <div class="c">;
 ; XREFS:
 ;     <a href="PRG5.html#Music_PlaySQEnvelopeModeCurveButHeld">Music_PlaySQEnvelopeModeCurveButHeld</a>
 ;     <a href="PRG5.html#Music_PlaySQEnvelopeModeLinearTrailoff">Music_PlaySQEnvelopeModeLinearTrailoff</a>
-;     <a href="PRG5.html#Music_PlayWave">Music_PlayWave</a>
+;     <a href="PRG5.html#Music_SetupWave">Music_SetupWave</a>
 ;
 </div><span class="l"><a class="anc" name="0170" href="#0170">[0170]</a><a href="#Music_SQEnvelope_Value" class="la">Music_SQEnvelope_Value:</a><span class="ce">; [$0170]</span></span>
 <span class="l"><a class="anc" name="0170" href="#0170">[0170]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [0]:</span></span>
@@ -1049,7 +1049,7 @@ pre {
 ; XREFS:
 ;     <a href="PRG5.html#Music_ApplySQPitchEffectToLO">Music_ApplySQPitchEffectToLO</a>
 ;     <a href="PRG5.html#Music_Load">Music_Load</a>
-;     <a href="PRG5.html#Music_PlayTriangleWave">Music_PlayTriangleWave</a>
+;     <a href="PRG5.html#Music_SetupTriangleWave">Music_SetupTriangleWave</a>
 ;
 </div><span class="l"><a class="anc" name="0178" href="#0178">[0178]</a><a href="#Music_SQEffect_Delta" class="la">Music_SQEffect_Delta:</a><span class="ce">; [$0178]</span></span>
 <span class="l"><a class="anc" name="0178" href="#0178">[0178]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [$0178] undefined1</span></span>
@@ -1060,7 +1060,7 @@ pre {
 ;     <a href="PRG5.html#Music_Load">Music_Load</a>
 ;     <a href="PRG5.html#Music_PlaySQEnvelopeModeCurveButHeld">Music_PlaySQEnvelopeModeCurveButHeld</a>
 ;     <a href="PRG5.html#Music_PlaySQEnvelopeModePluck">Music_PlaySQEnvelopeModePluck</a>
-;     <a href="PRG5.html#Music_PlayWave">Music_PlayWave</a>
+;     <a href="PRG5.html#Music_SetupWave">Music_SetupWave</a>
 ;
 </div><span class="l"><a class="anc" name="0179" href="#0179">[0179]</a><a href="#Music_SQEnvelope_Phase" class="la">Music_SQEnvelope_Phase:</a><span class="ce">; [$0179]</span></span>
 <span class="l"><a class="anc" name="0179" href="#0179">[0179]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [0]:</span></span>
@@ -1068,7 +1068,7 @@ pre {
 <a name="Music_SQEnvelope_Phase_1_"></a><div class="c">;
 ; XREFS:
 ;     <a href="PRG5.html#Music_Load">Music_Load</a>
-;     <a href="PRG5.html#Music_PlayWave">Music_PlayWave</a>
+;     <a href="PRG5.html#Music_SetupWave">Music_SetupWave</a>
 ;
 </div><span class="l"><a class="anc" name="017a" href="#017a">[017a]</a><a href="#Music_SQEnvelope_Phase_1_" class="la">Music_SQEnvelope_Phase_1_:</a><span class="ce">; [$017a]</span></span>
 <span class="l"><a class="anc" name="017a" href="#017a">[017a]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [1]:</span></span>
@@ -1078,7 +1078,7 @@ pre {
 ; XREFS:
 ;     <a href="PRG5.html#Music_ApplySQPitchEffectToLO">Music_ApplySQPitchEffectToLO</a>
 ;     <a href="PRG5.html#Music_Load">Music_Load</a>
-;     <a href="PRG5.html#Music_PlayWave">Music_PlayWave</a>
+;     <a href="PRG5.html#Music_SetupWave">Music_SetupWave</a>
 ;
 </div><span class="l"><a class="anc" name="017c" href="#017c">[017c]</a><a href="#Music_Current_SQ_Low" class="la">Music_Current_SQ_Low:</a><span class="ce">; [$017c]</span></span>
 <span class="l"><a class="anc" name="017c" href="#017c">[017c]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [0]:</span></span>
@@ -1086,18 +1086,18 @@ pre {
 <a name="Music_Current_SQ_Low_1_"></a><div class="c">;
 ; XREFS:
 ;     <a href="PRG5.html#Music_Load">Music_Load</a>
-;     <a href="PRG5.html#Music_PlayWave">Music_PlayWave</a>
+;     <a href="PRG5.html#Music_SetupWave">Music_SetupWave</a>
 ;
 </div><span class="l"><a class="anc" name="017d" href="#017d">[017d]</a><a href="#Music_Current_SQ_Low_1_" class="la">Music_Current_SQ_Low_1_:</a><span class="ce">; [$017d]</span></span>
 <span class="l"><a class="anc" name="017d" href="#017d">[017d]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [1]:</span></span>
 <span class="l"></span>
-<a name="Something_Music_Triangle_017e"></a><div class="c">;
+<a name="Music_Triangle_Remaining"></a><div class="c">;
 ; XREFS:
 ;     <a href="PRG5.html#Music_Load">Music_Load</a>
 ;     <a href="PRG5.html#Music_PlayForChannel">Music_PlayForChannel</a>
-;     <a href="PRG5.html#Music_PlayTriangleWave">Music_PlayTriangleWave</a>
+;     <a href="PRG5.html#Music_SetupTriangleWave">Music_SetupTriangleWave</a>
 ;
-</div><span class="l"><a class="anc" name="017e" href="#017e">[017e]</a><a href="#Something_Music_Triangle_017e" class="la">Something_Music_Triangle_017e:</a><span class="ce">; [$017e]</span></span>
+</div><span class="l"><a class="anc" name="017e" href="#017e">[017e]</a><a href="#Music_Triangle_Remaining" class="la">Music_Triangle_Remaining:</a><span class="ce">; [$017e]</span></span>
 <span class="l"><a class="anc" name="017e" href="#017e">[017e]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [$017e] byte</span></span>
 <span class="l"></span>
 <a name="Music_SQPitchDelta_Mask"></a><div class="c">;
@@ -1120,7 +1120,7 @@ pre {
 ; XREFS:
 ;     <a href="PRG5.html#MScript_Op_SetSQ2Detune">MScript_Op_SetSQ2Detune</a>
 ;     <a href="PRG5.html#Music_Load">Music_Load</a>
-;     <a href="PRG5.html#Music_PlayWave">Music_PlayWave</a>
+;     <a href="PRG5.html#Music_SetupWave">Music_SetupWave</a>
 ;
 </div><span class="l"><a class="anc" name="0181" href="#0181">[0181]</a><a href="#Music_SQ2_TimerLowBias" class="la">Music_SQ2_TimerLowBias:</a><span class="ce">; [$0181]</span></span>
 <span class="l"><a class="anc" name="0181" href="#0181">[0181]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [$0181] undefined</span></span>
@@ -1154,7 +1154,20 @@ pre {
 <span class="l"><a class="anc" name="018f" href="#018f">[018f]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [5]:</span></span>
 <span class="l"><a class="anc" name="0190" href="#0190">[0190]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [6]:</span></span>
 <span class="l"><a class="anc" name="0191" href="#0191">[0191]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [7]:</span></span>
-<span class="l"><a class="anc" name="0192" href="#0192">[0192]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00,$00,$00,$00,$00,$00</span></span><span class="ce">; [$0192] undefined</span></span>
+<span class="l"></span>
+<a name="Screen_ScrollVert_ZeroData"></a><div class="c">;
+; XREFS:
+;     <a href="PRG15_MIRROR.html#Screen_LoadBlockDataVert">Screen_LoadBlockDataVert</a>
+;
+</div><span class="l"><a class="anc" name="0192" href="#0192">[0192]</a><a href="#Screen_ScrollVert_ZeroData" class="la">Screen_ScrollVert_ZeroData:</a><span class="ce">; [$0192]</span></span>
+<span class="l"><a class="anc" name="0192" href="#0192">[0192]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [0]:</span></span>
+<span class="l"><a class="anc" name="0193" href="#0193">[0193]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [1]:</span></span>
+<span class="l"><a class="anc" name="0194" href="#0194">[0194]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [2]:</span></span>
+<span class="l"><a class="anc" name="0195" href="#0195">[0195]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [3]:</span></span>
+<span class="l"><a class="anc" name="0196" href="#0196">[0196]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [4]:</span></span>
+<span class="l"><a class="anc" name="0197" href="#0197">[0197]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [5]:</span></span>
+<span class="l"><a class="anc" name="0198" href="#0198">[0198]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [6]:</span></span>
+<span class="l"><a class="anc" name="0199" href="#0199">[0199]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [7]:</span></span>
 <span class="l"><a class="anc" name="019a" href="#019a">[019a]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00,$00,$00,$00,$00,$00</span></span><span class="ce">; [$019a] undefined</span></span>
 <span class="l"><a class="anc" name="01a2" href="#01a2">[01a2]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00,$00,$00,$00,$00,$00</span></span><span class="ce">; [$01a2] undefined</span></span>
 <span class="l"><a class="anc" name="01aa" href="#01aa">[01aa]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00,$00,$00,$00,$00,$00</span></span><span class="ce">; [$01aa] undefined</span></span>
@@ -1174,7 +1187,7 @@ pre {
 ;     <a href="PRG12.html#IScripts_Begin">IScripts_Begin</a>
 ;     <a href="PRG15_MIRROR.html#Game_Init">Game_Init</a>
 ;     <a href="PRG15_MIRROR.html#Screen_LoadBlocksHoriz">Screen_LoadBlocksHoriz</a>
-;     <a href="PRG15_MIRROR.html#Screen_WriteScrollHorizPPUTileData">Screen_WriteScrollHorizPPUTileData</a>
+;     <a href="PRG15_MIRROR.html#Screen_WriteBlockTilesColumnToPPU">Screen_WriteBlockTilesColumnToPPU</a>
 ;
 </div><span class="l"><a class="anc" name="0200" href="#0200">[0200]</a><a href="#Temp_0200" class="la">Temp_0200:</a><span class="ce">; [$0200]</span></span>
 <span class="l"><a class="anc" name="0200" href="#0200">[0200]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [$0200] byte</span></span>
@@ -1186,7 +1199,7 @@ pre {
 ;     <a href="PRG12.html#IScripts_UpdatePortraitAnimation">IScripts_UpdatePortraitAnimation</a>
 ;     <a href="PRG12.html#TextBox_SetCoordsForNPC">TextBox_SetCoordsForNPC</a>
 ;     <a href="PRG15_MIRROR.html#Screen_LoadBlocksHoriz">Screen_LoadBlocksHoriz</a>
-;     <a href="PRG15_MIRROR.html#Screen_WriteScrollHorizPPUTileData">Screen_WriteScrollHorizPPUTileData</a>
+;     <a href="PRG15_MIRROR.html#Screen_WriteBlockTilesColumnToPPU">Screen_WriteBlockTilesColumnToPPU</a>
 ;
 </div><span class="l"><a class="anc" name="0201" href="#0201">[0201]</a><a href="#Temp_0201" class="la">Temp_0201:</a><span class="ce">; [$0201]</span></span>
 <span class="l"><a class="anc" name="0201" href="#0201">[0201]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [$0201] byte</span></span>
@@ -1765,7 +1778,7 @@ pre {
 ;     <a href="PRG12.html#Shop_GetPlayerHasSelectedItem">Shop_GetPlayerHasSelectedItem</a>
 ;     <a href="PRG12.html#Shop_Populate">Shop_Populate</a>
 ;     <a href="PRG15_MIRROR.html#Screen_LoadBlockDataVert">Screen_LoadBlockDataVert</a>
-;     <a href="PRG15_MIRROR.html#Screen_WriteScrollVertPPUTileData">Screen_WriteScrollVertPPUTileData</a>
+;     <a href="PRG15_MIRROR.html#Screen_WriteBlockTilesRowToPPU">Screen_WriteBlockTilesRowToPPU</a>
 ;============================================================================
 </div><span class="l"></span>
 <div class="c">;
@@ -1783,7 +1796,7 @@ pre {
 ;     <a href="PRG12.html#Shop_GetPlayerHasSelectedItem">Shop_GetPlayerHasSelectedItem</a>
 ;     <a href="PRG12.html#Shop_Populate">Shop_Populate</a>
 ;     <a href="PRG15_MIRROR.html#Screen_LoadBlockDataVert">Screen_LoadBlockDataVert</a>
-;     <a href="PRG15_MIRROR.html#Screen_WriteScrollVertPPUTileData">Screen_WriteScrollVertPPUTileData</a>
+;     <a href="PRG15_MIRROR.html#Screen_WriteBlockTilesRowToPPU">Screen_WriteBlockTilesRowToPPU</a>
 ;
 </div><span class="l"><a class="anc" name="0220" href="#0220">[0220]</a><a href="#DataArray" class="la">DataArray:</a><span class="ce">; [$0220]</span></span>
 <span class="l"><a class="anc" name="0220" href="#0220">[0220]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [0]:</span></span>
@@ -1794,7 +1807,7 @@ pre {
 ;     <a href="PRG12.html#PlayerMenu_ShowInventoryMenu">PlayerMenu_ShowInventoryMenu</a>
 ;     <a href="PRG12.html#PlayerMenu_ShowStatusMenu">PlayerMenu_ShowStatusMenu</a>
 ;     <a href="PRG15_MIRROR.html#Screen_LoadBlockDataVert">Screen_LoadBlockDataVert</a>
-;     <a href="PRG15_MIRROR.html#Screen_WriteScrollVertPPUTileData">Screen_WriteScrollVertPPUTileData</a>
+;     <a href="PRG15_MIRROR.html#Screen_WriteBlockTilesRowToPPU">Screen_WriteBlockTilesRowToPPU</a>
 ;
 </div><span class="l"><a class="anc" name="0221" href="#0221">[0221]</a><a href="#DataArray_1_" class="la">DataArray_1_:</a><span class="ce">; [$0221]</span></span>
 <span class="l"><a class="anc" name="0221" href="#0221">[0221]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [1]:</span></span>
@@ -1812,7 +1825,6 @@ pre {
 ; XREFS:
 ;     <a href="PRG12.html#PlayerMenu_Show">PlayerMenu_Show</a>
 ;     <a href="PRG12.html#PlayerMenu_ShowStatusMenu">PlayerMenu_ShowStatusMenu</a>
-;     <a href="PRG15_MIRROR.html#Screen_LoadBlockDataVert">Screen_LoadBlockDataVert</a>
 ;
 </div><span class="l"><a class="anc" name="0223" href="#0223">[0223]</a><a href="#DataArray_3_" class="la">DataArray_3_:</a><span class="ce">; [$0223]</span></span>
 <span class="l"><a class="anc" name="0223" href="#0223">[0223]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [3]:</span></span>
@@ -1955,7 +1967,7 @@ pre {
 <a name="Screen_ScrollHorizPPUAttrData"></a><div class="c">;
 ; XREFS:
 ;     <a href="PRG15_MIRROR.html#Screen_LoadBlocksHoriz">Screen_LoadBlocksHoriz</a>
-;     <a href="PRG15_MIRROR.html#Screen_WriteScrollHorizPPUAttrData">Screen_WriteScrollHorizPPUAttrData</a>
+;     <a href="PRG15_MIRROR.html#Screen_WriteBlockAttrsColumnToPPU">Screen_WriteBlockAttrsColumnToPPU</a>
 ;
 </div><span class="l"><a class="anc" name="0282" href="#0282">[0282]</a><a href="#Screen_ScrollHorizPPUAttrData" class="la">Screen_ScrollHorizPPUAttrData:</a><span class="ce">; [$0282]</span></span>
 <span class="l"><a class="anc" name="0282" href="#0282">[0282]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [0]:</span></span>
@@ -1963,7 +1975,7 @@ pre {
 <a name="Screen_ScrollHorizPPUAttrData_1_"></a><div class="c">;
 ; XREFS:
 ;     <a href="PRG15_MIRROR.html#Screen_LoadBlocksHoriz">Screen_LoadBlocksHoriz</a>
-;     <a href="PRG15_MIRROR.html#Screen_WriteScrollHorizPPUAttrData">Screen_WriteScrollHorizPPUAttrData</a>
+;     <a href="PRG15_MIRROR.html#Screen_WriteBlockAttrsColumnToPPU">Screen_WriteBlockAttrsColumnToPPU</a>
 ;
 </div><span class="l"><a class="anc" name="0283" href="#0283">[0283]</a><a href="#Screen_ScrollHorizPPUAttrData_1_" class="la">Screen_ScrollHorizPPUAttrData_1_:</a><span class="ce">; [$0283]</span></span>
 <span class="l"><a class="anc" name="0283" href="#0283">[0283]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [1]:</span></span>
@@ -1977,7 +1989,7 @@ pre {
 <a name="Screen_ScrollVertPPUAttrData"></a><div class="c">;
 ; XREFS:
 ;     <a href="PRG15_MIRROR.html#Screen_LoadBlockDataVert">Screen_LoadBlockDataVert</a>
-;     <a href="PRG15_MIRROR.html#Screen_WriteScrollVertPPUAttrData">Screen_WriteScrollVertPPUAttrData</a>
+;     <a href="PRG15_MIRROR.html#Screen_WriteBlockAttrsRowToPPU">Screen_WriteBlockAttrsRowToPPU</a>
 ;
 </div><span class="l"><a class="anc" name="028a" href="#028a">[028a]</a><a href="#Screen_ScrollVertPPUAttrData" class="la">Screen_ScrollVertPPUAttrData:</a><span class="ce">; [$028a]</span></span>
 <span class="l"><a class="anc" name="028a" href="#028a">[028a]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [0]:</span></span>
@@ -1985,7 +1997,7 @@ pre {
 <a name="Screen_ScrollVertPPUAttrData_1_"></a><div class="c">;
 ; XREFS:
 ;     <a href="PRG15_MIRROR.html#Screen_LoadBlockDataVert">Screen_LoadBlockDataVert</a>
-;     <a href="PRG15_MIRROR.html#Screen_WriteScrollVertPPUAttrData">Screen_WriteScrollVertPPUAttrData</a>
+;     <a href="PRG15_MIRROR.html#Screen_WriteBlockAttrsRowToPPU">Screen_WriteBlockAttrsRowToPPU</a>
 ;
 </div><span class="l"><a class="anc" name="028b" href="#028b">[028b]</a><a href="#Screen_ScrollVertPPUAttrData_1_" class="la">Screen_ScrollVertPPUAttrData_1_:</a><span class="ce">; [$028b]</span></span>
 <span class="l"><a class="anc" name="028b" href="#028b">[028b]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [1]:</span></span>
@@ -1999,6 +2011,8 @@ pre {
 <span class="l"></span>
 <a name="Screen_PaletteData_Tiles"></a><div class="c">;
 ; XREFS:
+;     <a href="PRG12.html#PasswordScreen_Show">PasswordScreen_Show</a>
+;     <a href="PRG12.html#SplashAnimation_DrawScenery">SplashAnimation_DrawScenery</a>
 ;     <a href="PRG15_MIRROR.html#PPUBuffer_DrawCommand_WritePalette">PPUBuffer_DrawCommand_WritePalette</a>
 ;
 </div><span class="l"><a class="anc" name="0293" href="#0293">[0293]</a><a href="#Screen_PaletteData_Tiles" class="la">Screen_PaletteData_Tiles:</a><span class="ce">; [$0293]</span></span>
@@ -2031,7 +2045,11 @@ pre {
 </div><span class="l"><a class="anc" name="02a2" href="#02a2">[02a2]</a><a href="#Screen_PaletteData_Tiles_15_" class="la">Screen_PaletteData_Tiles_15_:</a><span class="ce">; [$02a2]</span></span>
 <span class="l"><a class="anc" name="02a2" href="#02a2">[02a2]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [15]:</span></span>
 <span class="l"></span>
-<a name="Screen_PaletteData_Sprites"></a><span class="l"><a class="anc" name="02a3" href="#02a3">[02a3]</a><a href="#Screen_PaletteData_Sprites" class="la">Screen_PaletteData_Sprites:</a><span class="ce">; [$02a3]</span></span>
+<a name="Screen_PaletteData_Sprites"></a><div class="c">;
+; XREFS:
+;     <a href="PRG12.html#StartScreen_Draw">StartScreen_Draw</a>
+;
+</div><span class="l"><a class="anc" name="02a3" href="#02a3">[02a3]</a><a href="#Screen_PaletteData_Sprites" class="la">Screen_PaletteData_Sprites:</a><span class="ce">; [$02a3]</span></span>
 <span class="l"><a class="anc" name="02a3" href="#02a3">[02a3]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [0]:</span></span>
 <span class="l"><a class="anc" name="02a4" href="#02a4">[02a4]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [1]:</span></span>
 <span class="l"><a class="anc" name="02a5" href="#02a5">[02a5]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [2]:</span></span>
@@ -2049,10 +2067,7 @@ pre {
 <span class="l"></span>
 <a name="Screen_PaletteData_Sprites_14_"></a><div class="c">;
 ; XREFS:
-;     <a href="PRG12.html#PasswordScreen_Show">PasswordScreen_Show</a>
-;     <a href="PRG12.html#SplashAnimation_DrawScenery">SplashAnimation_DrawScenery</a>
 ;     <a href="PRG12.html#SplashAnimation_Intro_SomethingA708">SplashAnimation_Intro_SomethingA708</a>
-;     <a href="PRG12.html#StartScreen_Draw">StartScreen_Draw</a>
 ;     <a href="PRG15_MIRROR.html#Screen_SetPaletteData">Screen_SetPaletteData</a>
 ;
 </div><span class="l"><a class="anc" name="02b1" href="#02b1">[02b1]</a><a href="#Screen_PaletteData_Sprites_14_" class="la">Screen_PaletteData_Sprites_14_:</a><span class="ce">; [$02b1]</span></span>
@@ -2060,10 +2075,7 @@ pre {
 <span class="l"></span>
 <a name="Screen_PaletteData_Sprites_15_"></a><div class="c">;
 ; XREFS:
-;     <a href="PRG12.html#PasswordScreen_Show">PasswordScreen_Show</a>
-;     <a href="PRG12.html#SplashAnimation_DrawScenery">SplashAnimation_DrawScenery</a>
 ;     <a href="PRG12.html#SplashAnimation_Intro_SomethingA708">SplashAnimation_Intro_SomethingA708</a>
-;     <a href="PRG12.html#StartScreen_Draw">StartScreen_Draw</a>
 ;     <a href="PRG15_MIRROR.html#Screen_SetPaletteData">Screen_SetPaletteData</a>
 ;
 </div><span class="l"><a class="anc" name="02b2" href="#02b2">[02b2]</a><a href="#Screen_PaletteData_Sprites_15_" class="la">Screen_PaletteData_Sprites_15_:</a><span class="ce">; [$02b2]</span></span>
@@ -4642,8 +4654,8 @@ pre {
 ;     <a href="PRG15_MIRROR.html#Area_HandleBreakableFloor">Area_HandleBreakableFloor</a>
 ;     <a href="PRG15_MIRROR.html#Area_SetBlocks">Area_SetBlocks</a>
 ;     <a href="PRG15_MIRROR.html#Area_SetBlocks_SetAttributes">Area_SetBlocks_SetAttributes</a>
-;     <a href="PRG15_MIRROR.html#Area_SetBlocks_WriteBlockData12">Area_SetBlocks_WriteBlockData12</a>
-;     <a href="PRG15_MIRROR.html#Area_SetBlocks_WriteBlockData34">Area_SetBlocks_WriteBlockData34</a>
+;     <a href="PRG15_MIRROR.html#Area_SetBlocks_WriteBlockDataColumn1">Area_SetBlocks_WriteBlockDataColumn1</a>
+;     <a href="PRG15_MIRROR.html#Area_SetBlocks_WriteBlockDataColumn2">Area_SetBlocks_WriteBlockDataColumn2</a>
 ;     <a href="PRG15_MIRROR.html#Player_UseMattock">Player_UseMattock</a>
 ;
 </div><span class="l"><a class="anc" name="03c9" href="#03c9">[03c9]</a><a href="#Arg_BlockAttributesIndex" class="la">Arg_BlockAttributesIndex:</a><span class="ce">; [$03c9]</span></span>
@@ -4879,20 +4891,20 @@ pre {
 ;
 ; XREFS:
 ;     <a href="PRG15_MIRROR.html#Area_CanPlayerMoveLeft">Area_CanPlayerMoveLeft</a>
-;     <a href="PRG15_MIRROR.html#Area_LoadScrollDataRight">Area_LoadScrollDataRight</a>
+;     <a href="PRG15_MIRROR.html#Area_LoadScrollData">Area_LoadScrollData</a>
 ;============================================================================
 </div><span class="l"></span>
 <div class="c">;
 ; XREFS:
 ;     <a href="PRG15_MIRROR.html#Area_CanPlayerMoveLeft">Area_CanPlayerMoveLeft</a>
-;     <a href="PRG15_MIRROR.html#Area_LoadScrollDataRight">Area_LoadScrollDataRight</a>
+;     <a href="PRG15_MIRROR.html#Area_LoadScrollData">Area_LoadScrollData</a>
 ;
 </div><span class="l"><a class="anc" name="03e6" href="#03e6">[03e6]</a><a href="#LastColumnLeftScreen" class="la">LastColumnLeftScreen:</a><span class="ce">; [$03e6]</span></span>
 <span class="l"><a class="anc" name="03e6" href="#03e6">[03e6]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [0]:</span></span>
 <span class="l"></span>
 <a name="LastColumnLeftScreen_1_"></a><div class="c">;
 ; XREFS:
-;     <a href="PRG15_MIRROR.html#Area_LoadScrollDataRight">Area_LoadScrollDataRight</a>
+;     <a href="PRG15_MIRROR.html#Area_LoadScrollData">Area_LoadScrollData</a>
 ;
 </div><span class="l"><a class="anc" name="03e7" href="#03e7">[03e7]</a><a href="#LastColumnLeftScreen_1_" class="la">LastColumnLeftScreen_1_:</a><span class="ce">; [$03e7]</span></span>
 <span class="l"><a class="anc" name="03e7" href="#03e7">[03e7]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [1]:</span></span>
@@ -4917,20 +4929,20 @@ pre {
 ;
 ; XREFS:
 ;     <a href="PRG15_MIRROR.html#Area_CanMoveUp">Area_CanMoveUp</a>
-;     <a href="PRG15_MIRROR.html#Area_LoadScrollDataRight">Area_LoadScrollDataRight</a>
+;     <a href="PRG15_MIRROR.html#Area_LoadScrollData">Area_LoadScrollData</a>
 ;============================================================================
 </div><span class="l"></span>
 <div class="c">;
 ; XREFS:
 ;     <a href="PRG15_MIRROR.html#Area_CanMoveUp">Area_CanMoveUp</a>
-;     <a href="PRG15_MIRROR.html#Area_LoadScrollDataRight">Area_LoadScrollDataRight</a>
+;     <a href="PRG15_MIRROR.html#Area_LoadScrollData">Area_LoadScrollData</a>
 ;
 </div><span class="l"><a class="anc" name="03f6" href="#03f6">[03f6]</a><a href="#FirstColumnInRightScreen" class="la">FirstColumnInRightScreen:</a><span class="ce">; [$03f6]</span></span>
 <span class="l"><a class="anc" name="03f6" href="#03f6">[03f6]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [0]:</span></span>
 <span class="l"></span>
 <a name="FirstColumnInRightScreen_1_"></a><div class="c">;
 ; XREFS:
-;     <a href="PRG15_MIRROR.html#Area_LoadScrollDataRight">Area_LoadScrollDataRight</a>
+;     <a href="PRG15_MIRROR.html#Area_LoadScrollData">Area_LoadScrollData</a>
 ;
 </div><span class="l"><a class="anc" name="03f7" href="#03f7">[03f7]</a><a href="#FirstColumnInRightScreen_1_" class="la">FirstColumnInRightScreen_1_:</a><span class="ce">; [$03f7]</span></span>
 <span class="l"><a class="anc" name="03f7" href="#03f7">[03f7]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [1]:</span></span>
@@ -4961,20 +4973,20 @@ pre {
 ;
 ; XREFS:
 ;     <a href="PRG15_MIRROR.html#Area_CanPlayerMoveUp">Area_CanPlayerMoveUp</a>
-;     <a href="PRG15_MIRROR.html#Area_LoadScrollDataRight">Area_LoadScrollDataRight</a>
+;     <a href="PRG15_MIRROR.html#Area_LoadScrollData">Area_LoadScrollData</a>
 ;============================================================================
 </div><span class="l"></span>
 <div class="c">;
 ; XREFS:
 ;     <a href="PRG15_MIRROR.html#Area_CanPlayerMoveUp">Area_CanPlayerMoveUp</a>
-;     <a href="PRG15_MIRROR.html#Area_LoadScrollDataRight">Area_LoadScrollDataRight</a>
+;     <a href="PRG15_MIRROR.html#Area_LoadScrollData">Area_LoadScrollData</a>
 ;
 </div><span class="l"><a class="anc" name="0406" href="#0406">[0406]</a><a href="#LastRowAboveScreen" class="la">LastRowAboveScreen:</a><span class="ce">; [$0406]</span></span>
 <span class="l"><a class="anc" name="0406" href="#0406">[0406]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [0]:</span></span>
 <span class="l"></span>
 <a name="LastRowAboveScreen_1_"></a><div class="c">;
 ; XREFS:
-;     <a href="PRG15_MIRROR.html#Area_LoadScrollDataRight">Area_LoadScrollDataRight</a>
+;     <a href="PRG15_MIRROR.html#Area_LoadScrollData">Area_LoadScrollData</a>
 ;
 </div><span class="l"><a class="anc" name="0407" href="#0407">[0407]</a><a href="#LastRowAboveScreen_1_" class="la">LastRowAboveScreen_1_:</a><span class="ce">; [$0407]</span></span>
 <span class="l"><a class="anc" name="0407" href="#0407">[0407]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [1]:</span></span>
@@ -4998,13 +5010,13 @@ pre {
 ; IDs of blocks in the first row of screen below
 ;
 ; XREFS:
-;     <a href="PRG15_MIRROR.html#Area_LoadScrollDataRight">Area_LoadScrollDataRight</a>
+;     <a href="PRG15_MIRROR.html#Area_LoadScrollData">Area_LoadScrollData</a>
 ;     <a href="PRG15_MIRROR.html#Player_CheckIfPassable">Player_CheckIfPassable</a>
 ;============================================================================
 </div><span class="l"></span>
 <div class="c">;
 ; XREFS:
-;     <a href="PRG15_MIRROR.html#Area_LoadScrollDataRight">Area_LoadScrollDataRight</a>
+;     <a href="PRG15_MIRROR.html#Area_LoadScrollData">Area_LoadScrollData</a>
 ;     <a href="PRG15_MIRROR.html#Player_CheckIfPassable">Player_CheckIfPassable</a>
 ;
 </div><span class="l"><a class="anc" name="0416" href="#0416">[0416]</a><a href="#FirstRowBelowScreen" class="la">FirstRowBelowScreen:</a><span class="ce">; [$0416]</span></span>
@@ -5012,7 +5024,7 @@ pre {
 <span class="l"></span>
 <a name="FirstRowBelowScreen_1_"></a><div class="c">;
 ; XREFS:
-;     <a href="PRG15_MIRROR.html#Area_LoadScrollDataRight">Area_LoadScrollDataRight</a>
+;     <a href="PRG15_MIRROR.html#Area_LoadScrollData">Area_LoadScrollData</a>
 ;
 </div><span class="l"><a class="anc" name="0417" href="#0417">[0417]</a><a href="#FirstRowBelowScreen_1_" class="la">FirstRowBelowScreen_1_:</a><span class="ce">; [$0417]</span></span>
 <span class="l"><a class="anc" name="0417" href="#0417">[0417]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [1]:</span></span>
@@ -5924,13 +5936,13 @@ pre {
 ;
 ; XREFS:
 ;     <a href="PRG15_MIRROR.html#UI_DrawHUDSprites">UI_DrawHUDSprites</a>
-;     <a href="PRG15_MIRROR.html#UI_DrawManaOrHPBar">UI_DrawManaOrHPBar</a>
+;     <a href="PRG15_MIRROR.html#UI_SetHUDBarValue">UI_SetHUDBarValue</a>
 ;============================================================================
 </div><span class="l"></span>
 <div class="c">;
 ; XREFS:
 ;     <a href="PRG15_MIRROR.html#UI_DrawHUDSprites">UI_DrawHUDSprites</a>
-;     <a href="PRG15_MIRROR.html#UI_DrawManaOrHPBar">UI_DrawManaOrHPBar</a>
+;     <a href="PRG15_MIRROR.html#UI_SetHUDBarValue">UI_SetHUDBarValue</a>
 ;
 </div><span class="l"><a class="anc" name="04ee" href="#04ee">[04ee]</a><a href="#UI_MPAndHPBarWidth" class="la">UI_MPAndHPBarWidth:</a><span class="ce">; [$04ee]</span></span>
 <span class="l"><a class="anc" name="04ee" href="#04ee">[04ee]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [$04ee] byte</span></span>
@@ -5961,8 +5973,8 @@ pre {
 ;
 ; XREFS:
 ;     <a href="PRG15_MIRROR.html#Area_SetBlocks_SetAttributes">Area_SetBlocks_SetAttributes</a>
-;     <a href="PRG15_MIRROR.html#Area_SetBlocks_WriteBlockData12">Area_SetBlocks_WriteBlockData12</a>
-;     <a href="PRG15_MIRROR.html#Area_SetBlocks_WriteBlockData34">Area_SetBlocks_WriteBlockData34</a>
+;     <a href="PRG15_MIRROR.html#Area_SetBlocks_WriteBlockDataColumn1">Area_SetBlocks_WriteBlockDataColumn1</a>
+;     <a href="PRG15_MIRROR.html#Area_SetBlocks_WriteBlockDataColumn2">Area_SetBlocks_WriteBlockDataColumn2</a>
 ;     <a href="PRG15_MIRROR.html#DEADCODE_FUN_PRG15_MIRROR__c033">DEADCODE_FUN_PRG15_MIRROR__c033</a>
 ;     <a href="PRG15_MIRROR.html#Fog_UpdateTiles">Fog_UpdateTiles</a>
 ;     <a href="PRG15_MIRROR.html#Game_Init">Game_Init</a>
@@ -5979,8 +5991,8 @@ pre {
 <div class="c">;
 ; XREFS:
 ;     <a href="PRG15_MIRROR.html#Area_SetBlocks_SetAttributes">Area_SetBlocks_SetAttributes</a>
-;     <a href="PRG15_MIRROR.html#Area_SetBlocks_WriteBlockData12">Area_SetBlocks_WriteBlockData12</a>
-;     <a href="PRG15_MIRROR.html#Area_SetBlocks_WriteBlockData34">Area_SetBlocks_WriteBlockData34</a>
+;     <a href="PRG15_MIRROR.html#Area_SetBlocks_WriteBlockDataColumn1">Area_SetBlocks_WriteBlockDataColumn1</a>
+;     <a href="PRG15_MIRROR.html#Area_SetBlocks_WriteBlockDataColumn2">Area_SetBlocks_WriteBlockDataColumn2</a>
 ;     <a href="PRG15_MIRROR.html#DEADCODE_FUN_PRG15_MIRROR__c033">DEADCODE_FUN_PRG15_MIRROR__c033</a>
 ;     <a href="PRG15_MIRROR.html#Fog_UpdateTiles">Fog_UpdateTiles</a>
 ;     <a href="PRG15_MIRROR.html#Game_Init">Game_Init</a>
@@ -6292,11 +6304,12 @@ pre {
 ;     <a href="PRG12.html#PasswordScreen_HandleDeleteAtCursor">PasswordScreen_HandleDeleteAtCursor</a>
 ;     <a href="PRG12.html#PasswordScreen_HandleDeleteLastChar">PasswordScreen_HandleDeleteLastChar</a>
 ;     <a href="PRG12.html#PasswordScreen_HandleInputChar">PasswordScreen_HandleInputChar</a>
+;     <a href="PRG12.html#PasswordScreen_Show">PasswordScreen_Show</a>
 ;     <a href="PRG12.html#Password_Maybe_CheckPasswordLength">Password_Maybe_CheckPasswordLength</a>
 ;     <a href="PRG15_MIRROR.html#Area_HandleBreakableFloor">Area_HandleBreakableFloor</a>
 ;     <a href="PRG15_MIRROR.html#Area_IsBlockImpassableOrLadder">Area_IsBlockImpassableOrLadder</a>
 ;     <a href="PRG15_MIRROR.html#Area_LoadBlocks">Area_LoadBlocks</a>
-;     <a href="PRG15_MIRROR.html#Area_LoadScrollDataRight">Area_LoadScrollDataRight</a>
+;     <a href="PRG15_MIRROR.html#Area_LoadScrollData">Area_LoadScrollData</a>
 ;     <a href="PRG15_MIRROR.html#Area_SetStateFromDoorDestination">Area_SetStateFromDoorDestination</a>
 ;     <a href="PRG15_MIRROR.html#Area_StoreBlockIsAir">Area_StoreBlockIsAir</a>
 ;     <a href="PRG15_MIRROR.html#Game_Init">Game_Init</a>
@@ -6319,11 +6332,12 @@ pre {
 ;     <a href="PRG12.html#PasswordScreen_HandleDeleteAtCursor">PasswordScreen_HandleDeleteAtCursor</a>
 ;     <a href="PRG12.html#PasswordScreen_HandleDeleteLastChar">PasswordScreen_HandleDeleteLastChar</a>
 ;     <a href="PRG12.html#PasswordScreen_HandleInputChar">PasswordScreen_HandleInputChar</a>
+;     <a href="PRG12.html#PasswordScreen_Show">PasswordScreen_Show</a>
 ;     <a href="PRG12.html#Password_Maybe_CheckPasswordLength">Password_Maybe_CheckPasswordLength</a>
 ;     <a href="PRG15_MIRROR.html#Area_HandleBreakableFloor">Area_HandleBreakableFloor</a>
 ;     <a href="PRG15_MIRROR.html#Area_IsBlockImpassableOrLadder">Area_IsBlockImpassableOrLadder</a>
 ;     <a href="PRG15_MIRROR.html#Area_LoadBlocks">Area_LoadBlocks</a>
-;     <a href="PRG15_MIRROR.html#Area_LoadScrollDataRight">Area_LoadScrollDataRight</a>
+;     <a href="PRG15_MIRROR.html#Area_LoadScrollData">Area_LoadScrollData</a>
 ;     <a href="PRG15_MIRROR.html#Area_SetStateFromDoorDestination">Area_SetStateFromDoorDestination</a>
 ;     <a href="PRG15_MIRROR.html#Area_StoreBlockIsAir">Area_StoreBlockIsAir</a>
 ;     <a href="PRG15_MIRROR.html#Game_Init">Game_Init</a>
@@ -6347,7 +6361,7 @@ pre {
 ; XREFS:
 ;     <a href="PRG12.html#PasswordScreen_HandleDeleteAtCursor">PasswordScreen_HandleDeleteAtCursor</a>
 ;     <a href="PRG12.html#Password_Maybe_CheckPasswordLength">Password_Maybe_CheckPasswordLength</a>
-;     <a href="PRG15_MIRROR.html#Area_LoadScrollDataRight">Area_LoadScrollDataRight</a>
+;     <a href="PRG15_MIRROR.html#Area_LoadScrollData">Area_LoadScrollData</a>
 ;     <a href="PRG15_MIRROR.html#ScreenBuffer_Clear">ScreenBuffer_Clear</a>
 ;
 </div><span class="l"><a class="anc" name="0601" href="#0601">[0601]</a><a href="#DAT_0601" class="la">DAT_0601:</a><span class="ce">; [$0601]</span></span>
@@ -6377,30 +6391,22 @@ pre {
 <span class="l"></span>
 <a name="DAT_060f"></a><div class="c">;
 ; XREFS:
-;     <a href="PRG15_MIRROR.html#Area_LoadScrollDataRight">Area_LoadScrollDataRight</a>
+;     <a href="PRG15_MIRROR.html#Area_LoadScrollData">Area_LoadScrollData</a>
 ;
 </div><span class="l"><a class="anc" name="060f" href="#060f">[060f]</a><a href="#DAT_060f" class="la">DAT_060f:</a><span class="ce">; [$060f]</span></span>
 <span class="l"><a class="anc" name="060f" href="#060f">[060f]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [$060f] undefined</span></span>
 <span class="l"></span>
 <a name="DAT_0610"></a><div class="c">;
 ; XREFS:
-;     <a href="PRG15_MIRROR.html#Area_LoadScrollDataRight">Area_LoadScrollDataRight</a>
+;     <a href="PRG15_MIRROR.html#Area_LoadScrollData">Area_LoadScrollData</a>
 ;
 </div><span class="l"><a class="anc" name="0610" href="#0610">[0610]</a><a href="#DAT_0610" class="la">DAT_0610:</a><span class="ce">; [$0610]</span></span>
 <span class="l"><a class="anc" name="0610" href="#0610">[0610]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00,$00,$00,$00,$00,$00</span></span><span class="ce">; [$0610] undefined</span></span>
-<span class="l"><a class="anc" name="0618" href="#0618">[0618]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00,$00,$00,$00</span></span><span class="ce">; [$0618] undefined</span></span>
-<span class="l"></span>
-<a name="DAT_061e"></a><div class="c">;
-; XREFS:
-;     <a href="PRG12.html#PasswordScreen_Show">PasswordScreen_Show</a>
-;
-</div><span class="l"><a class="anc" name="061e" href="#061e">[061e]</a><a href="#DAT_061e" class="la">DAT_061e:</a><span class="ce">; [$061e]</span></span>
-<span class="l"><a class="anc" name="061e" href="#061e">[061e]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [$061e] undefined</span></span>
+<span class="l"><a class="anc" name="0618" href="#0618">[0618]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00,$00,$00,$00,$00</span></span><span class="ce">; [$0618] undefined</span></span>
 <span class="l"></span>
 <a name="DAT_061f"></a><div class="c">;
 ; XREFS:
-;     <a href="PRG12.html#PasswordScreen_Show">PasswordScreen_Show</a>
-;     <a href="PRG15_MIRROR.html#Area_LoadScrollDataRight">Area_LoadScrollDataRight</a>
+;     <a href="PRG15_MIRROR.html#Area_LoadScrollData">Area_LoadScrollData</a>
 ;
 </div><span class="l"><a class="anc" name="061f" href="#061f">[061f]</a><a href="#DAT_061f" class="la">DAT_061f:</a><span class="ce">; [$061f]</span></span>
 <span class="l"><a class="anc" name="061f" href="#061f">[061f]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00</span></span><span class="ce">; [$061f] undefined</span></span>
@@ -6527,12 +6533,12 @@ pre {
 </div><span class="l"><a class="anc" name="0687" href="#0687">[0687]</a><a href="#DAT_0687" class="la">DAT_0687:</a><span class="ce">; [$0687]</span></span>
 <span class="l"><a class="anc" name="0687" href="#0687">[0687]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [$0687] undefined</span></span>
 <span class="l"></span>
-<a name="SplashAnimation_0688"></a><div class="c">;
+<a name="SplashAnimation_Something_SpriteOffset"></a><div class="c">;
 ; XREFS:
 ;     <a href="PRG12.html#SplashAnimation_FuncAA94">SplashAnimation_FuncAA94</a>
 ;     <a href="PRG12.html#SplashAnimation_SomethingUpdateState">SplashAnimation_SomethingUpdateState</a>
 ;
-</div><span class="l"><a class="anc" name="0688" href="#0688">[0688]</a><a href="#SplashAnimation_0688" class="la">SplashAnimation_0688:</a><span class="ce">; [$0688]</span></span>
+</div><span class="l"><a class="anc" name="0688" href="#0688">[0688]</a><a href="#SplashAnimation_Something_SpriteOffset" class="la">SplashAnimation_Something_SpriteOffset:</a><span class="ce">; [$0688]</span></span>
 <span class="l"><a class="anc" name="0688" href="#0688">[0688]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [$0688] undefined</span></span>
 <span class="l"></span>
 <a name="SplashAnimation_0689"></a><div class="c">;
@@ -6803,14 +6809,14 @@ pre {
 <span class="l"></span>
 <a name="DAT_06c0"></a><div class="c">;
 ; XREFS:
-;     <a href="PRG15_MIRROR.html#Area_LoadScrollDataRight">Area_LoadScrollDataRight</a>
+;     <a href="PRG15_MIRROR.html#Area_LoadScrollData">Area_LoadScrollData</a>
 ;
 </div><span class="l"><a class="anc" name="06c0" href="#06c0">[06c0]</a><a href="#DAT_06c0" class="la">DAT_06c0:</a><span class="ce">; [$06c0]</span></span>
 <span class="l"><a class="anc" name="06c0" href="#06c0">[06c0]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [$06c0] undefined</span></span>
 <span class="l"></span>
 <a name="DAT_06c1"></a><div class="c">;
 ; XREFS:
-;     <a href="PRG15_MIRROR.html#Area_LoadScrollDataRight">Area_LoadScrollDataRight</a>
+;     <a href="PRG15_MIRROR.html#Area_LoadScrollData">Area_LoadScrollData</a>
 ;
 </div><span class="l"><a class="anc" name="06c1" href="#06c1">[06c1]</a><a href="#DAT_06c1" class="la">DAT_06c1:</a><span class="ce">; [$06c1]</span></span>
 <span class="l"><a class="anc" name="06c1" href="#06c1">[06c1]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00,$00,$00,$00,$00,$00</span></span><span class="ce">; [$06c1] undefined</span></span>
@@ -6876,7 +6882,6 @@ pre {
 ; XREFS:
 ;     <a href="PRG12.html#SplashAnimation_SomethingUpdateState">SplashAnimation_SomethingUpdateState</a>
 ;     <a href="PRG15_MIRROR.html#Sprites_FlipRanges">Sprites_FlipRanges</a>
-;     <a href="PRG15_MIRROR.html#Sprites_Reset">Sprites_Reset</a>
 ;
 </div><span class="l"><a class="anc" name="0704" href="#0704">[0704]</a><a href="#SPRITE_1_RANGE_1_START" class="la">SPRITE_1_RANGE_1_START:</a><span class="ce">; [$0704]</span></span>
 <span class="l"><a class="anc" name="0704" href="#0704">[0704]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [$0704] byte</span></span>
@@ -6886,28 +6891,22 @@ pre {
 ;     <a href="PRG15_MIRROR.html#Sprites_FlipRanges">Sprites_FlipRanges</a>
 ;
 </div><span class="l"><a class="anc" name="0705" href="#0705">[0705]</a><a href="#BYTE_0705" class="la">BYTE_0705:</a><span class="ce">; [$0705]</span></span>
-<span class="l"><a class="anc" name="0705" href="#0705">[0705]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00</span></span><span class="ce">; [$0705] byte</span></span>
-<span class="l"></span>
-<a name="BYTE_0708"></a><div class="c">;
-; XREFS:
-;     <a href="PRG15_MIRROR.html#Sprites_Reset">Sprites_Reset</a>
-;
-</div><span class="l"><a class="anc" name="0708" href="#0708">[0708]</a><a href="#BYTE_0708" class="la">BYTE_0708:</a><span class="ce">; [$0708]</span></span>
-<span class="l"><a class="anc" name="0708" href="#0708">[0708]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00,$00,$00,$00,$00,$00</span></span><span class="ce">; [$0708] byte</span></span>
-<span class="l"><a class="anc" name="0710" href="#0710">[0710]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00,$00,$00,$00,$00,$00</span></span><span class="ce">; [$0710] byte</span></span>
-<span class="l"><a class="anc" name="0718" href="#0718">[0718]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00,$00,$00,$00,$00,$00</span></span><span class="ce">; [$0718] byte</span></span>
-<span class="l"><a class="anc" name="0720" href="#0720">[0720]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00,$00,$00,$00,$00,$00</span></span><span class="ce">; [$0720] byte</span></span>
-<span class="l"><a class="anc" name="0728" href="#0728">[0728]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00,$00,$00,$00,$00,$00</span></span><span class="ce">; [$0728] byte</span></span>
-<span class="l"><a class="anc" name="0730" href="#0730">[0730]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00,$00,$00,$00,$00,$00</span></span><span class="ce">; [$0730] byte</span></span>
-<span class="l"><a class="anc" name="0738" href="#0738">[0738]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00,$00,$00,$00,$00,$00</span></span><span class="ce">; [$0738] byte</span></span>
-<span class="l"><a class="anc" name="0740" href="#0740">[0740]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00,$00,$00,$00,$00,$00</span></span><span class="ce">; [$0740] byte</span></span>
-<span class="l"><a class="anc" name="0748" href="#0748">[0748]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00,$00,$00,$00,$00,$00</span></span><span class="ce">; [$0748] byte</span></span>
-<span class="l"><a class="anc" name="0750" href="#0750">[0750]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00,$00,$00,$00,$00,$00</span></span><span class="ce">; [$0750] byte</span></span>
-<span class="l"><a class="anc" name="0758" href="#0758">[0758]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00,$00,$00,$00,$00,$00</span></span><span class="ce">; [$0758] byte</span></span>
-<span class="l"><a class="anc" name="0760" href="#0760">[0760]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00,$00,$00,$00,$00,$00</span></span><span class="ce">; [$0760] byte</span></span>
-<span class="l"><a class="anc" name="0768" href="#0768">[0768]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00,$00,$00,$00,$00,$00</span></span><span class="ce">; [$0768] byte</span></span>
-<span class="l"><a class="anc" name="0770" href="#0770">[0770]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00,$00,$00,$00,$00,$00</span></span><span class="ce">; [$0770] byte</span></span>
-<span class="l"><a class="anc" name="0778" href="#0778">[0778]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00,$00,$00,$00,$00,$00</span></span><span class="ce">; [$0778] byte</span></span>
+<span class="l"><a class="anc" name="0705" href="#0705">[0705]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00,$00,$00,$00,$00,$00</span></span><span class="ce">; [$0705] byte</span></span>
+<span class="l"><a class="anc" name="070d" href="#070d">[070d]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00,$00,$00,$00,$00,$00</span></span><span class="ce">; [$070d] byte</span></span>
+<span class="l"><a class="anc" name="0715" href="#0715">[0715]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00,$00,$00,$00,$00,$00</span></span><span class="ce">; [$0715] byte</span></span>
+<span class="l"><a class="anc" name="071d" href="#071d">[071d]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00,$00,$00,$00,$00,$00</span></span><span class="ce">; [$071d] byte</span></span>
+<span class="l"><a class="anc" name="0725" href="#0725">[0725]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00,$00,$00,$00,$00,$00</span></span><span class="ce">; [$0725] byte</span></span>
+<span class="l"><a class="anc" name="072d" href="#072d">[072d]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00,$00,$00,$00,$00,$00</span></span><span class="ce">; [$072d] byte</span></span>
+<span class="l"><a class="anc" name="0735" href="#0735">[0735]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00,$00,$00,$00,$00,$00</span></span><span class="ce">; [$0735] byte</span></span>
+<span class="l"><a class="anc" name="073d" href="#073d">[073d]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00,$00,$00,$00,$00,$00</span></span><span class="ce">; [$073d] byte</span></span>
+<span class="l"><a class="anc" name="0745" href="#0745">[0745]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00,$00,$00,$00,$00,$00</span></span><span class="ce">; [$0745] byte</span></span>
+<span class="l"><a class="anc" name="074d" href="#074d">[074d]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00,$00,$00,$00,$00,$00</span></span><span class="ce">; [$074d] byte</span></span>
+<span class="l"><a class="anc" name="0755" href="#0755">[0755]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00,$00,$00,$00,$00,$00</span></span><span class="ce">; [$0755] byte</span></span>
+<span class="l"><a class="anc" name="075d" href="#075d">[075d]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00,$00,$00,$00,$00,$00</span></span><span class="ce">; [$075d] byte</span></span>
+<span class="l"><a class="anc" name="0765" href="#0765">[0765]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00,$00,$00,$00,$00,$00</span></span><span class="ce">; [$0765] byte</span></span>
+<span class="l"><a class="anc" name="076d" href="#076d">[076d]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00,$00,$00,$00,$00,$00</span></span><span class="ce">; [$076d] byte</span></span>
+<span class="l"><a class="anc" name="0775" href="#0775">[0775]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00,$00,$00,$00,$00,$00</span></span><span class="ce">; [$0775] byte</span></span>
+<span class="l"><a class="anc" name="077d" href="#077d">[077d]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00</span></span><span class="ce">; [$077d] byte</span></span>
 <span class="l"></span>
 <a name="SPRITE_0_RANGE_2_START"></a><span class="l"><a class="anc" name="0780" href="#0780">[0780]</a><a href="#SPRITE_0_RANGE_2_START" class="la">SPRITE_0_RANGE_2_START:</a><span class="ce">; [$0780]</span></span>
 <span class="l"><a class="anc" name="0780" href="#0780">[0780]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00,$00</span></span><span class="ce">; [$0780] byte</span></span>

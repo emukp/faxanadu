@@ -162,8 +162,8 @@ pre {
 ;     <a href="PRG15_MIRROR.html#PPU_HandleOnInterrupt">PPU_HandleOnInterrupt</a>
 ;     <a href="PRG15_MIRROR.html#PPU_InitVBlank">PPU_InitVBlank</a>
 ;     <a href="PRG15_MIRROR.html#PPU_SetVRAMIncrementAdd1Across">PPU_SetVRAMIncrementAdd1Across</a>
-;     <a href="PRG15_MIRROR.html#Screen_WriteScrollHorizPPUTileData">Screen_WriteScrollHorizPPUTileData</a>
-;     <a href="PRG15_MIRROR.html#Screen_WriteScrollVertPPUTileData">Screen_WriteScrollVertPPUTileData</a>
+;     <a href="PRG15_MIRROR.html#Screen_WriteBlockTilesColumnToPPU">Screen_WriteBlockTilesColumnToPPU</a>
+;     <a href="PRG15_MIRROR.html#Screen_WriteBlockTilesRowToPPU">Screen_WriteBlockTilesRowToPPU</a>
 ;
 </div><span class="l"><a class="anc" name="2000" href="#2000">[2000]</a><a href="#PPUCTRL" class="la">PPUCTRL:</a><span class="ce">; [$2000]</span></span>
 <span class="l"><a class="anc" name="2000" href="#2000">[2000]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [$2000] PPUCtrlFlags</span></span>
@@ -216,10 +216,10 @@ pre {
 ;     <a href="PRG15_MIRROR.html#PPU_LoadGlyphsForStrings">PPU_LoadGlyphsForStrings</a>
 ;     <a href="PRG15_MIRROR.html#PPU_SetAddr">PPU_SetAddr</a>
 ;     <a href="PRG15_MIRROR.html#PPU_WriteTilesFromCHRRAM">PPU_WriteTilesFromCHRRAM</a>
-;     <a href="PRG15_MIRROR.html#Screen_WriteScrollHorizPPUAttrData">Screen_WriteScrollHorizPPUAttrData</a>
-;     <a href="PRG15_MIRROR.html#Screen_WriteScrollHorizPPUTileData">Screen_WriteScrollHorizPPUTileData</a>
-;     <a href="PRG15_MIRROR.html#Screen_WriteScrollVertPPUAttrData">Screen_WriteScrollVertPPUAttrData</a>
-;     <a href="PRG15_MIRROR.html#Screen_WriteScrollVertPPUTileData">Screen_WriteScrollVertPPUTileData</a>
+;     <a href="PRG15_MIRROR.html#Screen_WriteBlockAttrsColumnToPPU">Screen_WriteBlockAttrsColumnToPPU</a>
+;     <a href="PRG15_MIRROR.html#Screen_WriteBlockAttrsRowToPPU">Screen_WriteBlockAttrsRowToPPU</a>
+;     <a href="PRG15_MIRROR.html#Screen_WriteBlockTilesColumnToPPU">Screen_WriteBlockTilesColumnToPPU</a>
+;     <a href="PRG15_MIRROR.html#Screen_WriteBlockTilesRowToPPU">Screen_WriteBlockTilesRowToPPU</a>
 ;     <a href="PRG15_MIRROR.html#Sprites_LoadCommon">Sprites_LoadCommon</a>
 ;     <a href="PRG15_MIRROR.html#UI_DrawHUDSprites">UI_DrawHUDSprites</a>
 ;     <a href="PRG15_MIRROR.html#UI_DrawSelectedItem">UI_DrawSelectedItem</a>
@@ -239,13 +239,13 @@ pre {
 ;     <a href="PRG15_MIRROR.html#PPUBuffer_DrawCommand_RotateTilesRight1Pixel">PPUBuffer_DrawCommand_RotateTilesRight1Pixel</a>
 ;     <a href="PRG15_MIRROR.html#PPUBuffer_DrawCommand_WritePalette">PPUBuffer_DrawCommand_WritePalette</a>
 ;     <a href="PRG15_MIRROR.html#PPU_FillData">PPU_FillData</a>
-;     <a href="PRG15_MIRROR.html#PPU_FillGrid">PPU_FillGrid</a>
 ;     <a href="PRG15_MIRROR.html#PPU_WriteGlyphTile">PPU_WriteGlyphTile</a>
+;     <a href="PRG15_MIRROR.html#PPU_WriteRowsWithInitial">PPU_WriteRowsWithInitial</a>
 ;     <a href="PRG15_MIRROR.html#PPU_WriteTilesFromCHRRAM">PPU_WriteTilesFromCHRRAM</a>
-;     <a href="PRG15_MIRROR.html#Screen_WriteScrollHorizPPUAttrData">Screen_WriteScrollHorizPPUAttrData</a>
-;     <a href="PRG15_MIRROR.html#Screen_WriteScrollHorizPPUTileData">Screen_WriteScrollHorizPPUTileData</a>
-;     <a href="PRG15_MIRROR.html#Screen_WriteScrollVertPPUAttrData">Screen_WriteScrollVertPPUAttrData</a>
-;     <a href="PRG15_MIRROR.html#Screen_WriteScrollVertPPUTileData">Screen_WriteScrollVertPPUTileData</a>
+;     <a href="PRG15_MIRROR.html#Screen_WriteBlockAttrsColumnToPPU">Screen_WriteBlockAttrsColumnToPPU</a>
+;     <a href="PRG15_MIRROR.html#Screen_WriteBlockAttrsRowToPPU">Screen_WriteBlockAttrsRowToPPU</a>
+;     <a href="PRG15_MIRROR.html#Screen_WriteBlockTilesColumnToPPU">Screen_WriteBlockTilesColumnToPPU</a>
+;     <a href="PRG15_MIRROR.html#Screen_WriteBlockTilesRowToPPU">Screen_WriteBlockTilesRowToPPU</a>
 ;     <a href="PRG15_MIRROR.html#Sprites_LoadCommon">Sprites_LoadCommon</a>
 ;     <a href="PRG15_MIRROR.html#UI_DrawHUDSprites">UI_DrawHUDSprites</a>
 ;     <a href="PRG15_MIRROR.html#UI_DrawSelectedItem">UI_DrawSelectedItem</a>

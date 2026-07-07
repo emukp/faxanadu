@@ -32,8 +32,8 @@
 ;     Player_LoadArmorSpriteTilesAddr
 ;
 TILES_ARMOR_ADDRS_INDEX_REF:                ; [$8000]
-    .word $0012                             ; TILES_PLAYER_ARMOR_ADDRS_INDEX
-                                            ; [$PRG8::8000]
+    bank_offset_16 TILES_PLAYER_ARMOR_ADDRS_INDEX ; TILES_PLAYER_ARMOR_ADDRS_INDEX
+                                                  ; [$PRG8::8000]
 
 
 ;
@@ -44,8 +44,8 @@ TILES_ARMOR_ADDRS_INDEX_REF:                ; [$8000]
 ;     Player_LoadWeaponSpriteTileAddrs
 ;
 TILES_WEAPON_ADDRS_INDEX_REF:               ; [$8002]
-    .word $016b                             ; TILES_PLAYER_WEAPON_ADDRS_INDEX
-                                            ; [$PRG8::8002]
+    bank_offset_16 TILES_PLAYER_WEAPON_ADDRS_INDEX ; TILES_PLAYER_WEAPON_ADDRS_INDEX
+                                                   ; [$PRG8::8002]
 
 
 ;
@@ -56,7 +56,7 @@ TILES_WEAPON_ADDRS_INDEX_REF:               ; [$8002]
 ;     Player_LoadArmorTile
 ;
 TILES_ARMOR_START_REF:                      ; [$8004]
-    .word $01a4                             ; SPRITE_TILES_PLAYER_ARMOR_LEATHER_00_WSHIELD_00__STUDDED_00_WSHIELD_00__FULL_PLATE_00_WSHIELD_00
+    bank_offset_16 TILES_ARMOR_START        ; TILES_ARMOR_START
                                             ; [$PRG8::8004]
 
 
@@ -68,7 +68,7 @@ TILES_ARMOR_START_REF:                      ; [$8004]
 ;     Player_LoadWeaponTile
 ;
 TILES_WEAPONS_START_REF:                    ; [$8006]
-    .word $0a94                             ; TILES_WEAPONS_START_DAGGER_02
+    bank_offset_16 TILES_WEAPONS_START      ; TILES_WEAPONS_START
                                             ; [$PRG8::8006]
 
 
@@ -80,7 +80,7 @@ TILES_WEAPONS_START_REF:                    ; [$8006]
 ;     Sprites_LoadCommon
 ;
 TILES_COMMON_START_REF:                     ; [$8008]
-    .word $0c04                             ; TILES_COMMON_START
+    bank_offset_16 TILES_COMMON_START       ; TILES_COMMON_START
                                             ; [$PRG8::8008]
 
 
@@ -92,7 +92,7 @@ TILES_COMMON_START_REF:                     ; [$8008]
 ;     Player_LoadShieldTile
 ;
 TILES_SHIELDS_START_REF:                    ; [$800a]
-    .word $1104                             ; TILES_SHIELDS_START_SMALL_SHIELD_01
+    bank_offset_16 TILES_SHIELDS_START      ; TILES_SHIELDS_START
                                             ; [$PRG8::800a]
 
 
@@ -104,8 +104,8 @@ TILES_SHIELDS_START_REF:                    ; [$800a]
 ;     Player_LoadShieldSpriteTileAddrs
 ;
 TILES_SHIELDS_ADDRS_INDEX_REF:              ; [$800c]
-    .word $018c                             ; TILES_SHIELDS_ADDRS_INDEX
-                                            ; [$PRG8::800c]
+    bank_offset_16 TILES_SHIELDS_ADDRS_INDEX ; TILES_SHIELDS_ADDRS_INDEX
+                                             ; [$PRG8::800c]
 
 
 ;
@@ -116,8 +116,8 @@ TILES_SHIELDS_ADDRS_INDEX_REF:              ; [$800c]
 ;     IScripts_LoadPortraitTilesAddress
 ;
 TILES_PORTRAITS_ADDRS_INDEX_REF:            ; [$800e]
-    .word $1224                             ; SPRITE_TILES_PORTRAITS_ADDRS_INDEX
-                                            ; [$PRG8::800e]
+    bank_offset_16 SPRITE_TILES_PORTRAITS_ADDRS_INDEX ; SPRITE_TILES_PORTRAITS_ADDRS_INDEX
+                                                      ; [$PRG8::800e]
 
 
 ;
@@ -128,8 +128,8 @@ TILES_PORTRAITS_ADDRS_INDEX_REF:            ; [$800e]
 ;     IScripts_DrawPortraitTileToPPU
 ;
 TILES_PORTRAITS_START_REF:                  ; [$8010]
-    .word $136b                             ; SPRITE_TILES_PORTRAIT_PINKSHIRT_00
-                                            ; [$PRG8::8010]
+    bank_offset_16 SPRITE_TILES_PORTRAITS_START ; SPRITE_TILES_PORTRAITS_START
+                                                ; [$PRG8::8010]
 
 
 ;============================================================================
@@ -147,22 +147,22 @@ TILES_PORTRAITS_START_REF:                  ; [$8010]
 ;     TILES_ARMOR_ADDRS_INDEX_REF [$PRG8::8000]
 ;
 TILES_PLAYER_ARMOR_ADDRS_INDEX:             ; [$8012]
-    .word $0022                             ; TILES_PLAYER_ARMOR_LEATHER_START
-                                            ; [$PRG8::8012]
-    .word $00f2                             ; TILES_PLAYER_ARMOR_LEATHER_WSHIELD_START
-                                            ; [$PRG8::8014]
-    .word $0056                             ; TILES_PLAYER_ARMOR_STUDDED_MAIL_START
-                                            ; [$PRG8::8016]
-    .word $011a                             ; TILES_PLAYER_ARMOR_STUDDED_MAIL_WSHIELD_START
-                                            ; [$PRG8::8018]
-    .word $008a                             ; TILES_PLAYER_ARMOR_FULL_PLATE_START
-                                            ; [$PRG8::801a]
-    .word $0142                             ; TILES_PLAYER_ARMOR_FULL_PLATE_WSHIELD_START
-                                            ; [$PRG8::801c]
-    .word $00bf                             ; TILES_PLAYER_ARMOR_BATTLE_SUIT_START
-                                            ; [$PRG8::801e]
-    .word $00bf                             ; TILES_PLAYER_ARMOR_BATTLE_SUIT_START
-                                            ; [$PRG8::8020]
+    bank_offset_16 TILES_PLAYER_ARMOR_LEATHER_START ; TILES_PLAYER_ARMOR_LEATHER_START
+                                                    ; [$PRG8::8012]
+    bank_offset_16 TILES_PLAYER_ARMOR_LEATHER_WSHIELD_START ; TILES_PLAYER_ARMOR_LEATHER_WSHIELD_START
+                                                            ; [$PRG8::8014]
+    bank_offset_16 TILES_PLAYER_ARMOR_STUDDED_MAIL_START ; TILES_PLAYER_ARMOR_STUDDED_MAIL_START
+                                                         ; [$PRG8::8016]
+    bank_offset_16 TILES_PLAYER_ARMOR_STUDDED_MAIL_WSHIELD_START ; TILES_PLAYER_ARMOR_STUDDED_MAIL_WSHIELD_START
+                                                                 ; [$PRG8::8018]
+    bank_offset_16 TILES_PLAYER_ARMOR_FULL_PLATE_START ; TILES_PLAYER_ARMOR_FULL_PLATE_START
+                                                       ; [$PRG8::801a]
+    bank_offset_16 TILES_PLAYER_ARMOR_FULL_PLATE_WSHIELD_START ; TILES_PLAYER_ARMOR_FULL_PLATE_WSHIELD_START
+                                                               ; [$PRG8::801c]
+    bank_offset_16 TILES_PLAYER_ARMOR_BATTLE_SUIT_START ; TILES_PLAYER_ARMOR_BATTLE_SUIT_START
+                                                        ; [$PRG8::801e]
+    bank_offset_16 TILES_PLAYER_ARMOR_BATTLE_SUIT_START ; TILES_PLAYER_ARMOR_BATTLE_SUIT_START
+                                                        ; [$PRG8::8020]
 
 ;
 ; XREFS:
@@ -865,14 +865,14 @@ TILES_PLAYER_ARMOR_FULL_PLATE_WSHIELD_START: ; [$8142]
 ;     TILES_WEAPON_ADDRS_INDEX_REF [$PRG8::8002]
 ;
 TILES_PLAYER_WEAPON_ADDRS_INDEX:            ; [$816b]
-    .word $0173                             ; TILES_DAGGER_TILE_IDS
+    bank_offset_16 TILES_DAGGER_TILE_IDS    ; TILES_DAGGER_TILE_IDS
                                             ; [$PRG8::816b]
-    .word $0176                             ; TILES_LONG_SWORD_TILE_IDS
-                                            ; [$PRG8::816d]
-    .word $017c                             ; TILES_GIANT_BLADE_TILE_IDS
-                                            ; [$PRG8::816f]
-    .word $0183                             ; TILES_DRAGON_SLAYER_TILE_IDS
-                                            ; [$PRG8::8171]
+    bank_offset_16 TILES_LONG_SWORD_TILE_IDS ; TILES_LONG_SWORD_TILE_IDS
+                                             ; [$PRG8::816d]
+    bank_offset_16 TILES_GIANT_BLADE_TILE_IDS ; TILES_GIANT_BLADE_TILE_IDS
+                                              ; [$PRG8::816f]
+    bank_offset_16 TILES_DRAGON_SLAYER_TILE_IDS ; TILES_DRAGON_SLAYER_TILE_IDS
+                                                ; [$PRG8::8171]
 
 
 ;
@@ -968,11 +968,11 @@ TILES_DRAGON_SLAYER_TILE_IDS:               ; [$8183]
 ;     TILES_SHIELDS_ADDRS_INDEX_REF [$PRG8::800c]
 ;
 TILES_SHIELDS_ADDRS_INDEX:                  ; [$818c]
-    .word $0192                             ; TILES_SHIELDS_SMALL
+    bank_offset_16 TILES_SHIELDS_SMALL      ; TILES_SHIELDS_SMALL
                                             ; [$PRG8::818c]
-    .word $0198                             ; TILES_SHIELDS_LARGE
+    bank_offset_16 TILES_SHIELDS_LARGE      ; TILES_SHIELDS_LARGE
                                             ; [$PRG8::818e]
-    .word $019e                             ; TILES_SHIELDS_MAGIC
+    bank_offset_16 TILES_SHIELDS_MAGIC      ; TILES_SHIELDS_MAGIC
                                             ; [$PRG8::8190]
 
 
@@ -1073,6 +1073,7 @@ TILES_SHIELDS_MAGIC:                        ; [$819e]
 ;     [$PRG8::811a]
 ;
 SPRITE_TILES_PLAYER_ARMOR_LEATHER_00_WSHIELD_00__STUDDED_00_WSHIELD_00__FULL_PLATE_00_WSHIELD_00: ; [$81a4]
+TILES_ARMOR_START:
     .byte $00,$3e,$5f,$4f,$1f,$1f,$5b,$03   ; [$81a4] byte
     .byte $00,$00,$20,$30,$38,$2a,$7e,$3c   ; [$81ac] byte
 
@@ -3230,7 +3231,8 @@ SPRITE_TILES_PLAYER_ARMOR_STUDDED_WSHIELD_04__FULL_PLATE_WSHIELD_04: ; [$8a84]
 ; XREFS:
 ;     TILES_WEAPONS_START_REF [$PRG8::8006]
 ;
-TILES_WEAPONS_START_DAGGER_02:              ; [$8a94]
+TILES_WEAPONS_START:                        ; [$8a94]
+TILES_WEAPONS_START_DAGGER_02:
     .byte $10,$18,$08,$0c,$06,$03,$03,$05   ; [$8a94] byte
     .byte $10,$08,$0c,$04,$04,$05,$02,$05   ; [$8a9c] byte
 
@@ -4827,7 +4829,8 @@ TILES_COMMON_START:                         ; [$8c04]
 ;     TILES_SHIELDS_SMALL [$PRG8::8192]
 ;     TILES_SHIELDS_START_REF [$PRG8::800a]
 ;
-TILES_SHIELDS_START_SMALL_SHIELD_01:        ; [$9104]
+TILES_SHIELDS_START:                        ; [$9104]
+TILES_SHIELDS_START_SMALL_SHIELD_01:
 TILES_SMALL_SHIELD_01:
     .byte $00,$e0,$d0,$f8,$c8,$e8,$c8,$e8   ; [$9104] byte
     .byte $00,$40,$60,$60,$70,$70,$70,$70   ; [$910c] byte
@@ -5121,28 +5124,28 @@ TILE_MAGIC_SHIELD_06:                       ; [$9214]
 ;     TILES_PORTRAITS_ADDRS_INDEX_REF [$PRG8::800e]
 ;
 SPRITE_TILES_PORTRAITS_ADDRS_INDEX:         ; [$9224]
-    .word $123a                             ; SPRITE_TILES_PORTRAIT_ADDRS_KING
-                                            ; [$PRG8::9224]
-    .word $1252                             ; SPRITE_TILES_PORTRAIT_ADDRS_GURU
-                                            ; [$PRG8::9226]
-    .word $1265                             ; SPRITE_TILES_PORTRAIT_ADDRS_MARTIAL_ARTIST
-                                            ; [$PRG8::9228]
-    .word $1285                             ; SPRITE_TILES_PORTRAIT_ADDRS_MAGICIAN
-                                            ; [$PRG8::922a]
-    .word $1298                             ; SPRITE_TILES_PORTRAIT_ADDRS_DOCTOR
-                                            ; [$PRG8::922c]
-    .word $12b1                             ; SPRITE_TILES_PORTRAIT_ADDRS_NURSE
-                                            ; [$PRG8::922e]
-    .word $12cd                             ; SPRITE_TILES_PORTRAIT_ADDRS_PINKSHIRT
-                                            ; [$PRG8::9230]
-    .word $12e9                             ; SPRITE_TILES_PORTRAIT_ADDRS_SMOKING_GUY
-                                            ; [$PRG8::9232]
-    .word $1307                             ; SPRITE_TILES_PORTRAIT_ADDRS_MEAT_SALESMAN
-                                            ; [$PRG8::9234]
-    .word $132d                             ; SPRITE_TILES_PORTRAIT_ADDRS_TOOLS_SALESMAN
-                                            ; [$PRG8::9236]
-    .word $1343                             ; SPRITE_TILES_PORTRAIT_ADDRS_KEY_SALESMAN
-                                            ; [$PRG8::9238]
+    bank_offset_16 SPRITE_TILES_PORTRAIT_ADDRS_KING ; SPRITE_TILES_PORTRAIT_ADDRS_KING
+                                                    ; [$PRG8::9224]
+    bank_offset_16 SPRITE_TILES_PORTRAIT_ADDRS_GURU ; SPRITE_TILES_PORTRAIT_ADDRS_GURU
+                                                    ; [$PRG8::9226]
+    bank_offset_16 SPRITE_TILES_PORTRAIT_ADDRS_MARTIAL_ARTIST ; SPRITE_TILES_PORTRAIT_ADDRS_MARTIAL_ARTIST
+                                                              ; [$PRG8::9228]
+    bank_offset_16 SPRITE_TILES_PORTRAIT_ADDRS_MAGICIAN ; SPRITE_TILES_PORTRAIT_ADDRS_MAGICIAN
+                                                        ; [$PRG8::922a]
+    bank_offset_16 SPRITE_TILES_PORTRAIT_ADDRS_DOCTOR ; SPRITE_TILES_PORTRAIT_ADDRS_DOCTOR
+                                                      ; [$PRG8::922c]
+    bank_offset_16 SPRITE_TILES_PORTRAIT_ADDRS_NURSE ; SPRITE_TILES_PORTRAIT_ADDRS_NURSE
+                                                     ; [$PRG8::922e]
+    bank_offset_16 SPRITE_TILES_PORTRAIT_ADDRS_PINKSHIRT ; SPRITE_TILES_PORTRAIT_ADDRS_PINKSHIRT
+                                                         ; [$PRG8::9230]
+    bank_offset_16 SPRITE_TILES_PORTRAIT_ADDRS_SMOKING_GUY ; SPRITE_TILES_PORTRAIT_ADDRS_SMOKING_GUY
+                                                           ; [$PRG8::9232]
+    bank_offset_16 SPRITE_TILES_PORTRAIT_ADDRS_MEAT_SALESMAN ; SPRITE_TILES_PORTRAIT_ADDRS_MEAT_SALESMAN
+                                                             ; [$PRG8::9234]
+    bank_offset_16 SPRITE_TILES_PORTRAIT_ADDRS_TOOLS_SALESMAN ; SPRITE_TILES_PORTRAIT_ADDRS_TOOLS_SALESMAN
+                                                              ; [$PRG8::9236]
+    bank_offset_16 SPRITE_TILES_PORTRAIT_ADDRS_KEY_SALESMAN ; SPRITE_TILES_PORTRAIT_ADDRS_KEY_SALESMAN
+                                                            ; [$PRG8::9238]
 
 ;
 ; XREFS:
@@ -5792,7 +5795,8 @@ SPRITE_TILES_PORTRAIT_ADDRS_KEY_SALESMAN:   ; [$9343]
 ;     SPRITE_TILES_PORTRAIT_ADDRS_PINKSHIRT [$PRG8::92cd]
 ;     TILES_PORTRAITS_START_REF [$PRG8::8010]
 ;
-SPRITE_TILES_PORTRAIT_PINKSHIRT_00:         ; [$936b]
+SPRITE_TILES_PORTRAITS_START:               ; [$936b]
+SPRITE_TILES_PORTRAIT_PINKSHIRT_00:
     .byte $00,$01,$03,$0a,$0c,$06,$1c,$14   ; [$936b] byte
     .byte $00,$00,$01,$07,$07,$0c,$08,$39   ; [$9373] byte
 

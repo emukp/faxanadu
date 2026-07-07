@@ -13,7 +13,7 @@
 ;
 ; XREFS:
 ;     Area_LoadBlockProperties
-;     Area_LoadScrollDataRight
+;     Area_LoadScrollData
 ;     Area_LoadTiles
 ;     Area_SetBlocks
 ;     Area_SetStateFromDoorDestination
@@ -64,7 +64,7 @@
 ;
 ; XREFS:
 ;     Area_LoadBlockProperties
-;     Area_LoadScrollDataRight
+;     Area_LoadScrollData
 ;     Area_LoadTiles
 ;     Area_SetBlocks
 ;     Area_SetStateFromDoorDestination
@@ -204,7 +204,7 @@ SoundEffect_HandlerIndex:                   ; [$0122]
 ;     Music_PlaySQEnvelopeModeCurveButHeld
 ;     Music_PlaySQEnvelopeModeLinearTrailoff
 ;     Music_PlaySQEnvelopeModePluck
-;     Music_PlayWave
+;     Music_SetupWave
 ;     SoundEffect_PlayerDied_Setup
 ;     SoundEffects_HandleOnInterrupt
 ;     SoundEffects_Init
@@ -217,7 +217,7 @@ SoundEffect_HandlerIndex:                   ; [$0122]
 ;     Music_PlaySQEnvelopeModeCurveButHeld
 ;     Music_PlaySQEnvelopeModeLinearTrailoff
 ;     Music_PlaySQEnvelopeModePluck
-;     Music_PlayWave
+;     Music_SetupWave
 ;     SoundEffect_PlayerDied_Setup
 ;     SoundEffects_HandleOnInterrupt
 ;     SoundEffects_Init
@@ -433,7 +433,7 @@ SoundEffect_Note_High:                      ; [$012b]
 ; XREFS:
 ;     MScripts_SetNoteLengthFromValue
 ;     Music_Load
-;     Music_StoreNoteDuration
+;     Music_ResetTicksRemaining
 ;
 MScript_NoteDurations:                      ; [$012c]
     .byte $00                               ; [0]:
@@ -464,9 +464,9 @@ MScript_NoteDurations_3_:                   ; [$012f]
 ;     MScript_Op_End
 ;     Music_Load
 ;     Music_PlayNext
-;     Music_StoreNoteDuration
+;     Music_ResetTicksRemaining
 ;
-Music_NoteTicksRemaining:                   ; [$0130]
+Music_ChannelTicksRemaining:                ; [$0130]
     .byte $00                               ; [0]:
 
 ;
@@ -474,21 +474,21 @@ Music_NoteTicksRemaining:                   ; [$0130]
 ;     Music_Load
 ;     Music_PlayNext
 ;
-Music_NoteTicksRemaining_1_:                ; [$0131]
+Music_ChannelTicksRemaining_1_:             ; [$0131]
     .byte $00                               ; [1]:
 
 ;
 ; XREFS:
 ;     Music_Load
 ;
-Music_NoteTicksRemaining_2_:                ; [$0132]
+Music_ChannelTicksRemaining_2_:             ; [$0132]
     .byte $00                               ; [2]:
 
 ;
 ; XREFS:
 ;     Music_Load
 ;
-Music_NoteTicksRemaining_3_:                ; [$0133]
+Music_ChannelTicksRemaining_3_:             ; [$0133]
     .byte $00                               ; [3]:
     .byte $00,$00,$00,$00                   ; [$0134] undefined
 
@@ -616,7 +616,7 @@ Music_Channel_Transpose_2_:                 ; [$0163]
 ; XREFS:
 ;     MScripts_SetNoteLengthFromValue
 ;     Music_Load
-;     Music_PlayWave
+;     Music_SetupWave
 ;
 Music_SQ_Note_Lengths:                      ; [$0164]
     .byte $00                               ; [0]:
@@ -624,7 +624,7 @@ Music_SQ_Note_Lengths:                      ; [$0164]
 ;
 ; XREFS:
 ;     Music_Load
-;     Music_PlayWave
+;     Music_SetupWave
 ;
 Music_Note_Length_High:                     ; [$0165]
     .byte $00                               ; [1]:
@@ -695,10 +695,10 @@ Music_Noise_Remaining:                      ; [$0169]
 ;     Music_PlaySQEnvelopeModeCurveButHeld
 ;     Music_PlaySQEnvelopeModeLinearTrailoff
 ;     Music_PlaySQEnvelopeModePluck
-;     Music_PlayWave
 ;     Music_PlayWaveOrNoise
+;     Music_ResetTicksRemaining
 ;     Music_SetNote
-;     Music_StoreNoteDuration
+;     Music_SetupWave
 ;     Music_UpdateSQVolRegister
 ;============================================================================
 
@@ -726,14 +726,14 @@ Music_Noise_Remaining:                      ; [$0169]
 ;     Music_PlaySQEnvelopeModeCurveButHeld
 ;     Music_PlaySQEnvelopeModeLinearTrailoff
 ;     Music_PlaySQEnvelopeModePluck
-;     Music_PlayWave
 ;     Music_PlayWaveOrNoise
+;     Music_ResetTicksRemaining
 ;     Music_SetNote
-;     Music_StoreNoteDuration
+;     Music_SetupWave
 ;     Music_UpdateSQVolRegister
 ;
 MScript_CurrentChannel:                     ; [$016a]
-    .byte $00                               ; [$016a] byte
+    .byte $00                               ; [$016a] SoundChannel
 
 
 ;============================================================================
@@ -765,19 +765,19 @@ Music_NumChannelsCompleted:                 ; [$016b]
 ;     Music_PlaySQEnvelopeModeCurveButHeld
 ;     Music_PlaySQEnvelopeModeLinearTrailoff
 ;     Music_PlaySQEnvelopeModePluck
-;     Music_PlayTriangleWave
-;     Music_PlayWave
 ;     Music_SetNote
+;     Music_SetupTriangleWave
+;     Music_SetupWave
 ;     Music_UpdateSQVolRegister
 ;
-MScript_CurValue:                           ; [$016c]
+Music_TempValue:                            ; [$016c]
     .byte $00                               ; [$016c] byte
 
 ;
 ; XREFS:
 ;     Music_Load
-;     Music_PlayWave
 ;     Music_SetNote
+;     Music_SetupWave
 ;
 Music_Note_Period_Low:                      ; [$016d]
     .byte $00                               ; [$016d] byte
@@ -785,8 +785,8 @@ Music_Note_Period_Low:                      ; [$016d]
 ;
 ; XREFS:
 ;     Music_Load
-;     Music_PlayWave
 ;     Music_SetNote
+;     Music_SetupWave
 ;
 Music_Note_Period_High:                     ; [$016e]
     .byte $00                               ; [$016e] byte
@@ -812,14 +812,14 @@ MScript_Unused_RawValue:                    ; [$016f]
 ; XREFS:
 ;     Music_PlaySQEnvelopeModeCurveButHeld
 ;     Music_PlaySQEnvelopeModeLinearTrailoff
-;     Music_PlayWave
+;     Music_SetupWave
 ;============================================================================
 
 ;
 ; XREFS:
 ;     Music_PlaySQEnvelopeModeCurveButHeld
 ;     Music_PlaySQEnvelopeModeLinearTrailoff
-;     Music_PlayWave
+;     Music_SetupWave
 ;
 Music_SQEnvelope_Value:                     ; [$0170]
     .byte $00                               ; [0]:
@@ -901,7 +901,7 @@ Music_SQEnvelope_Mode_1_:                   ; [$0177]
 ; XREFS:
 ;     Music_ApplySQPitchEffectToLO
 ;     Music_Load
-;     Music_PlayTriangleWave
+;     Music_SetupTriangleWave
 ;
 Music_SQEffect_Delta:                       ; [$0178]
     .byte $00                               ; [$0178] undefined1
@@ -912,7 +912,7 @@ Music_SQEffect_Delta:                       ; [$0178]
 ;     Music_Load
 ;     Music_PlaySQEnvelopeModeCurveButHeld
 ;     Music_PlaySQEnvelopeModePluck
-;     Music_PlayWave
+;     Music_SetupWave
 ;
 Music_SQEnvelope_Phase:                     ; [$0179]
     .byte $00                               ; [0]:
@@ -920,7 +920,7 @@ Music_SQEnvelope_Phase:                     ; [$0179]
 ;
 ; XREFS:
 ;     Music_Load
-;     Music_PlayWave
+;     Music_SetupWave
 ;
 Music_SQEnvelope_Phase_1_:                  ; [$017a]
     .byte $00                               ; [1]:
@@ -930,7 +930,7 @@ Music_SQEnvelope_Phase_1_:                  ; [$017a]
 ; XREFS:
 ;     Music_ApplySQPitchEffectToLO
 ;     Music_Load
-;     Music_PlayWave
+;     Music_SetupWave
 ;
 Music_Current_SQ_Low:                       ; [$017c]
     .byte $00                               ; [0]:
@@ -938,7 +938,7 @@ Music_Current_SQ_Low:                       ; [$017c]
 ;
 ; XREFS:
 ;     Music_Load
-;     Music_PlayWave
+;     Music_SetupWave
 ;
 Music_Current_SQ_Low_1_:                    ; [$017d]
     .byte $00                               ; [1]:
@@ -947,9 +947,9 @@ Music_Current_SQ_Low_1_:                    ; [$017d]
 ; XREFS:
 ;     Music_Load
 ;     Music_PlayForChannel
-;     Music_PlayTriangleWave
+;     Music_SetupTriangleWave
 ;
-Something_Music_Triangle_017e:              ; [$017e]
+Music_Triangle_Remaining:                   ; [$017e]
     .byte $00                               ; [$017e] byte
 
 ;
@@ -972,7 +972,7 @@ Music_SQPitchDelta_Mask_1_:                 ; [$0180]
 ; XREFS:
 ;     MScript_Op_SetSQ2Detune
 ;     Music_Load
-;     Music_PlayWave
+;     Music_SetupWave
 ;
 Music_SQ2_TimerLowBias:                     ; [$0181]
     .byte $00                               ; [$0181] undefined
@@ -1006,7 +1006,20 @@ Screen_ScrollHoriz_ZeroData:                ; [$018a]
     .byte $00                               ; [5]:
     .byte $00                               ; [6]:
     .byte $00                               ; [7]:
-    .byte $00,$00,$00,$00,$00,$00,$00,$00   ; [$0192] undefined
+
+;
+; XREFS:
+;     Screen_LoadBlockDataVert
+;
+Screen_ScrollVert_ZeroData:                 ; [$0192]
+    .byte $00                               ; [0]:
+    .byte $00                               ; [1]:
+    .byte $00                               ; [2]:
+    .byte $00                               ; [3]:
+    .byte $00                               ; [4]:
+    .byte $00                               ; [5]:
+    .byte $00                               ; [6]:
+    .byte $00                               ; [7]:
     .byte $00,$00,$00,$00,$00,$00,$00,$00   ; [$019a] undefined
     .byte $00,$00,$00,$00,$00,$00,$00,$00   ; [$01a2] undefined
     .byte $00,$00,$00,$00,$00,$00,$00,$00   ; [$01aa] undefined
@@ -1026,7 +1039,7 @@ Screen_ScrollHoriz_ZeroData:                ; [$018a]
 ;     IScripts_Begin
 ;     Game_Init
 ;     Screen_LoadBlocksHoriz
-;     Screen_WriteScrollHorizPPUTileData
+;     Screen_WriteBlockTilesColumnToPPU
 ;
 Temp_0200:                                  ; [$0200]
     .byte $00                               ; [$0200] byte
@@ -1038,7 +1051,7 @@ Temp_0200:                                  ; [$0200]
 ;     IScripts_UpdatePortraitAnimation
 ;     TextBox_SetCoordsForNPC
 ;     Screen_LoadBlocksHoriz
-;     Screen_WriteScrollHorizPPUTileData
+;     Screen_WriteBlockTilesColumnToPPU
 ;
 Temp_0201:                                  ; [$0201]
     .byte $00                               ; [$0201] byte
@@ -1617,7 +1630,7 @@ Arg_StringsCount:                           ; [$021f]
 ;     Shop_GetPlayerHasSelectedItem
 ;     Shop_Populate
 ;     Screen_LoadBlockDataVert
-;     Screen_WriteScrollVertPPUTileData
+;     Screen_WriteBlockTilesRowToPPU
 ;============================================================================
 
 ;
@@ -1635,7 +1648,7 @@ Arg_StringsCount:                           ; [$021f]
 ;     Shop_GetPlayerHasSelectedItem
 ;     Shop_Populate
 ;     Screen_LoadBlockDataVert
-;     Screen_WriteScrollVertPPUTileData
+;     Screen_WriteBlockTilesRowToPPU
 ;
 DataArray:                                  ; [$0220]
     .byte $00                               ; [0]:
@@ -1646,7 +1659,7 @@ DataArray:                                  ; [$0220]
 ;     PlayerMenu_ShowInventoryMenu
 ;     PlayerMenu_ShowStatusMenu
 ;     Screen_LoadBlockDataVert
-;     Screen_WriteScrollVertPPUTileData
+;     Screen_WriteBlockTilesRowToPPU
 ;
 DataArray_1_:                               ; [$0221]
     .byte $00                               ; [1]:
@@ -1664,7 +1677,6 @@ DataArray_2_:                               ; [$0222]
 ; XREFS:
 ;     PlayerMenu_Show
 ;     PlayerMenu_ShowStatusMenu
-;     Screen_LoadBlockDataVert
 ;
 DataArray_3_:                               ; [$0223]
     .byte $00                               ; [3]:
@@ -1807,7 +1819,7 @@ ScreenBlocks:                               ; [$024a]
 ;
 ; XREFS:
 ;     Screen_LoadBlocksHoriz
-;     Screen_WriteScrollHorizPPUAttrData
+;     Screen_WriteBlockAttrsColumnToPPU
 ;
 Screen_ScrollHorizPPUAttrData:              ; [$0282]
     .byte $00                               ; [0]:
@@ -1815,7 +1827,7 @@ Screen_ScrollHorizPPUAttrData:              ; [$0282]
 ;
 ; XREFS:
 ;     Screen_LoadBlocksHoriz
-;     Screen_WriteScrollHorizPPUAttrData
+;     Screen_WriteBlockAttrsColumnToPPU
 ;
 Screen_ScrollHorizPPUAttrData_1_:           ; [$0283]
     .byte $00                               ; [1]:
@@ -1829,7 +1841,7 @@ Screen_ScrollHorizPPUAttrData_1_:           ; [$0283]
 ;
 ; XREFS:
 ;     Screen_LoadBlockDataVert
-;     Screen_WriteScrollVertPPUAttrData
+;     Screen_WriteBlockAttrsRowToPPU
 ;
 Screen_ScrollVertPPUAttrData:               ; [$028a]
     .byte $00                               ; [0]:
@@ -1837,7 +1849,7 @@ Screen_ScrollVertPPUAttrData:               ; [$028a]
 ;
 ; XREFS:
 ;     Screen_LoadBlockDataVert
-;     Screen_WriteScrollVertPPUAttrData
+;     Screen_WriteBlockAttrsRowToPPU
 ;
 Screen_ScrollVertPPUAttrData_1_:            ; [$028b]
     .byte $00                               ; [1]:
@@ -1851,6 +1863,8 @@ Screen_ScrollVertPPUAttrData_1_:            ; [$028b]
 
 ;
 ; XREFS:
+;     PasswordScreen_Show
+;     SplashAnimation_DrawScenery
 ;     PPUBuffer_DrawCommand_WritePalette
 ;
 Screen_PaletteData_Tiles:                   ; [$0293]
@@ -1883,6 +1897,10 @@ Screen_PaletteData_Tiles_1_:                ; [$0294]
 Screen_PaletteData_Tiles_15_:               ; [$02a2]
     .byte $00                               ; [15]:
 
+;
+; XREFS:
+;     StartScreen_Draw
+;
 Screen_PaletteData_Sprites:                 ; [$02a3]
     .byte $00                               ; [0]:
     .byte $00                               ; [1]:
@@ -1901,10 +1919,7 @@ Screen_PaletteData_Sprites:                 ; [$02a3]
 
 ;
 ; XREFS:
-;     PasswordScreen_Show
-;     SplashAnimation_DrawScenery
 ;     SplashAnimation_Intro_SomethingA708
-;     StartScreen_Draw
 ;     Screen_SetPaletteData
 ;
 Screen_PaletteData_Sprites_14_:             ; [$02b1]
@@ -1912,10 +1927,7 @@ Screen_PaletteData_Sprites_14_:             ; [$02b1]
 
 ;
 ; XREFS:
-;     PasswordScreen_Show
-;     SplashAnimation_DrawScenery
 ;     SplashAnimation_Intro_SomethingA708
-;     StartScreen_Draw
 ;     Screen_SetPaletteData
 ;
 Screen_PaletteData_Sprites_15_:             ; [$02b2]
@@ -4494,8 +4506,8 @@ Player_CurWeapon:                           ; [$03c8]
 ;     Area_HandleBreakableFloor
 ;     Area_SetBlocks
 ;     Area_SetBlocks_SetAttributes
-;     Area_SetBlocks_WriteBlockData12
-;     Area_SetBlocks_WriteBlockData34
+;     Area_SetBlocks_WriteBlockDataColumn1
+;     Area_SetBlocks_WriteBlockDataColumn2
 ;     Player_UseMattock
 ;
 Arg_BlockAttributesIndex:                   ; [$03c9]
@@ -4731,20 +4743,20 @@ SpriteBox_Height:                           ; [$03e5]
 ;
 ; XREFS:
 ;     Area_CanPlayerMoveLeft
-;     Area_LoadScrollDataRight
+;     Area_LoadScrollData
 ;============================================================================
 
 ;
 ; XREFS:
 ;     Area_CanPlayerMoveLeft
-;     Area_LoadScrollDataRight
+;     Area_LoadScrollData
 ;
 LastColumnLeftScreen:                       ; [$03e6]
     .byte $00                               ; [0]:
 
 ;
 ; XREFS:
-;     Area_LoadScrollDataRight
+;     Area_LoadScrollData
 ;
 LastColumnLeftScreen_1_:                    ; [$03e7]
     .byte $00                               ; [1]:
@@ -4769,20 +4781,20 @@ LastColumnLeftScreen_1_:                    ; [$03e7]
 ;
 ; XREFS:
 ;     Area_CanMoveUp
-;     Area_LoadScrollDataRight
+;     Area_LoadScrollData
 ;============================================================================
 
 ;
 ; XREFS:
 ;     Area_CanMoveUp
-;     Area_LoadScrollDataRight
+;     Area_LoadScrollData
 ;
 FirstColumnInRightScreen:                   ; [$03f6]
     .byte $00                               ; [0]:
 
 ;
 ; XREFS:
-;     Area_LoadScrollDataRight
+;     Area_LoadScrollData
 ;
 FirstColumnInRightScreen_1_:                ; [$03f7]
     .byte $00                               ; [1]:
@@ -4813,20 +4825,20 @@ FirstColumnInRightScreen_10_:               ; [$0400]
 ;
 ; XREFS:
 ;     Area_CanPlayerMoveUp
-;     Area_LoadScrollDataRight
+;     Area_LoadScrollData
 ;============================================================================
 
 ;
 ; XREFS:
 ;     Area_CanPlayerMoveUp
-;     Area_LoadScrollDataRight
+;     Area_LoadScrollData
 ;
 LastRowAboveScreen:                         ; [$0406]
     .byte $00                               ; [0]:
 
 ;
 ; XREFS:
-;     Area_LoadScrollDataRight
+;     Area_LoadScrollData
 ;
 LastRowAboveScreen_1_:                      ; [$0407]
     .byte $00                               ; [1]:
@@ -4850,13 +4862,13 @@ LastRowAboveScreen_1_:                      ; [$0407]
 ; IDs of blocks in the first row of screen below
 ;
 ; XREFS:
-;     Area_LoadScrollDataRight
+;     Area_LoadScrollData
 ;     Player_CheckIfPassable
 ;============================================================================
 
 ;
 ; XREFS:
-;     Area_LoadScrollDataRight
+;     Area_LoadScrollData
 ;     Player_CheckIfPassable
 ;
 FirstRowBelowScreen:                        ; [$0416]
@@ -4864,7 +4876,7 @@ FirstRowBelowScreen:                        ; [$0416]
 
 ;
 ; XREFS:
-;     Area_LoadScrollDataRight
+;     Area_LoadScrollData
 ;
 FirstRowBelowScreen_1_:                     ; [$0417]
     .byte $00                               ; [1]:
@@ -5776,13 +5788,13 @@ NextPlayerTitle:                            ; [$04ed]
 ;
 ; XREFS:
 ;     UI_DrawHUDSprites
-;     UI_DrawManaOrHPBar
+;     UI_SetHUDBarValue
 ;============================================================================
 
 ;
 ; XREFS:
 ;     UI_DrawHUDSprites
-;     UI_DrawManaOrHPBar
+;     UI_SetHUDBarValue
 ;
 UI_MPAndHPBarWidth:                         ; [$04ee]
     .byte $00                               ; [$04ee] byte
@@ -5813,8 +5825,8 @@ UI_MPAndHPBarWidth:                         ; [$04ee]
 ;
 ; XREFS:
 ;     Area_SetBlocks_SetAttributes
-;     Area_SetBlocks_WriteBlockData12
-;     Area_SetBlocks_WriteBlockData34
+;     Area_SetBlocks_WriteBlockDataColumn1
+;     Area_SetBlocks_WriteBlockDataColumn2
 ;     DEADCODE_FUN_PRG15_MIRROR__c033
 ;     Fog_UpdateTiles
 ;     Game_Init
@@ -5831,8 +5843,8 @@ UI_MPAndHPBarWidth:                         ; [$04ee]
 ;
 ; XREFS:
 ;     Area_SetBlocks_SetAttributes
-;     Area_SetBlocks_WriteBlockData12
-;     Area_SetBlocks_WriteBlockData34
+;     Area_SetBlocks_WriteBlockDataColumn1
+;     Area_SetBlocks_WriteBlockDataColumn2
 ;     DEADCODE_FUN_PRG15_MIRROR__c033
 ;     Fog_UpdateTiles
 ;     Game_Init
@@ -6144,11 +6156,12 @@ PPUBuffer_9_:                               ; [$0509]
 ;     PasswordScreen_HandleDeleteAtCursor
 ;     PasswordScreen_HandleDeleteLastChar
 ;     PasswordScreen_HandleInputChar
+;     PasswordScreen_Show
 ;     Password_Maybe_CheckPasswordLength
 ;     Area_HandleBreakableFloor
 ;     Area_IsBlockImpassableOrLadder
 ;     Area_LoadBlocks
-;     Area_LoadScrollDataRight
+;     Area_LoadScrollData
 ;     Area_SetStateFromDoorDestination
 ;     Area_StoreBlockIsAir
 ;     Game_Init
@@ -6171,11 +6184,12 @@ PPUBuffer_9_:                               ; [$0509]
 ;     PasswordScreen_HandleDeleteAtCursor
 ;     PasswordScreen_HandleDeleteLastChar
 ;     PasswordScreen_HandleInputChar
+;     PasswordScreen_Show
 ;     Password_Maybe_CheckPasswordLength
 ;     Area_HandleBreakableFloor
 ;     Area_IsBlockImpassableOrLadder
 ;     Area_LoadBlocks
-;     Area_LoadScrollDataRight
+;     Area_LoadScrollData
 ;     Area_SetStateFromDoorDestination
 ;     Area_StoreBlockIsAir
 ;     Game_Init
@@ -6199,7 +6213,7 @@ ScreenBuffer:
 ; XREFS:
 ;     PasswordScreen_HandleDeleteAtCursor
 ;     Password_Maybe_CheckPasswordLength
-;     Area_LoadScrollDataRight
+;     Area_LoadScrollData
 ;     ScreenBuffer_Clear
 ;
 DAT_0601:                                   ; [$0601]
@@ -6229,30 +6243,22 @@ DAT_0604:                                   ; [$0604]
 
 ;
 ; XREFS:
-;     Area_LoadScrollDataRight
+;     Area_LoadScrollData
 ;
 DAT_060f:                                   ; [$060f]
     .byte $00                               ; [$060f] undefined
 
 ;
 ; XREFS:
-;     Area_LoadScrollDataRight
+;     Area_LoadScrollData
 ;
 DAT_0610:                                   ; [$0610]
     .byte $00,$00,$00,$00,$00,$00,$00,$00   ; [$0610] undefined
-    .byte $00,$00,$00,$00,$00,$00           ; [$0618] undefined
+    .byte $00,$00,$00,$00,$00,$00,$00       ; [$0618] undefined
 
 ;
 ; XREFS:
-;     PasswordScreen_Show
-;
-DAT_061e:                                   ; [$061e]
-    .byte $00                               ; [$061e] undefined
-
-;
-; XREFS:
-;     PasswordScreen_Show
-;     Area_LoadScrollDataRight
+;     Area_LoadScrollData
 ;
 DAT_061f:                                   ; [$061f]
     .byte $00,$00,$00                       ; [$061f] undefined
@@ -6384,7 +6390,7 @@ DAT_0687:                                   ; [$0687]
 ;     SplashAnimation_FuncAA94
 ;     SplashAnimation_SomethingUpdateState
 ;
-SplashAnimation_0688:                       ; [$0688]
+SplashAnimation_Something_SpriteOffset:     ; [$0688]
     .byte $00                               ; [$0688] undefined
 
 ;
@@ -6655,14 +6661,14 @@ SplashAnimation_SceneIndex:                 ; [$06a5]
 
 ;
 ; XREFS:
-;     Area_LoadScrollDataRight
+;     Area_LoadScrollData
 ;
 DAT_06c0:                                   ; [$06c0]
     .byte $00                               ; [$06c0] undefined
 
 ;
 ; XREFS:
-;     Area_LoadScrollDataRight
+;     Area_LoadScrollData
 ;
 DAT_06c1:                                   ; [$06c1]
     .byte $00,$00,$00,$00,$00,$00,$00,$00   ; [$06c1] undefined
@@ -6728,7 +6734,6 @@ SPRITE0_X:                                  ; [$0703]
 ; XREFS:
 ;     SplashAnimation_SomethingUpdateState
 ;     Sprites_FlipRanges
-;     Sprites_Reset
 ;
 SPRITE_1_RANGE_1_START:                     ; [$0704]
     .byte $00                               ; [$0704] byte
@@ -6738,28 +6743,22 @@ SPRITE_1_RANGE_1_START:                     ; [$0704]
 ;     Sprites_FlipRanges
 ;
 BYTE_0705:                                  ; [$0705]
-    .byte $00,$00,$00                       ; [$0705] byte
-
-;
-; XREFS:
-;     Sprites_Reset
-;
-BYTE_0708:                                  ; [$0708]
-    .byte $00,$00,$00,$00,$00,$00,$00,$00   ; [$0708] byte
-    .byte $00,$00,$00,$00,$00,$00,$00,$00   ; [$0710] byte
-    .byte $00,$00,$00,$00,$00,$00,$00,$00   ; [$0718] byte
-    .byte $00,$00,$00,$00,$00,$00,$00,$00   ; [$0720] byte
-    .byte $00,$00,$00,$00,$00,$00,$00,$00   ; [$0728] byte
-    .byte $00,$00,$00,$00,$00,$00,$00,$00   ; [$0730] byte
-    .byte $00,$00,$00,$00,$00,$00,$00,$00   ; [$0738] byte
-    .byte $00,$00,$00,$00,$00,$00,$00,$00   ; [$0740] byte
-    .byte $00,$00,$00,$00,$00,$00,$00,$00   ; [$0748] byte
-    .byte $00,$00,$00,$00,$00,$00,$00,$00   ; [$0750] byte
-    .byte $00,$00,$00,$00,$00,$00,$00,$00   ; [$0758] byte
-    .byte $00,$00,$00,$00,$00,$00,$00,$00   ; [$0760] byte
-    .byte $00,$00,$00,$00,$00,$00,$00,$00   ; [$0768] byte
-    .byte $00,$00,$00,$00,$00,$00,$00,$00   ; [$0770] byte
-    .byte $00,$00,$00,$00,$00,$00,$00,$00   ; [$0778] byte
+    .byte $00,$00,$00,$00,$00,$00,$00,$00   ; [$0705] byte
+    .byte $00,$00,$00,$00,$00,$00,$00,$00   ; [$070d] byte
+    .byte $00,$00,$00,$00,$00,$00,$00,$00   ; [$0715] byte
+    .byte $00,$00,$00,$00,$00,$00,$00,$00   ; [$071d] byte
+    .byte $00,$00,$00,$00,$00,$00,$00,$00   ; [$0725] byte
+    .byte $00,$00,$00,$00,$00,$00,$00,$00   ; [$072d] byte
+    .byte $00,$00,$00,$00,$00,$00,$00,$00   ; [$0735] byte
+    .byte $00,$00,$00,$00,$00,$00,$00,$00   ; [$073d] byte
+    .byte $00,$00,$00,$00,$00,$00,$00,$00   ; [$0745] byte
+    .byte $00,$00,$00,$00,$00,$00,$00,$00   ; [$074d] byte
+    .byte $00,$00,$00,$00,$00,$00,$00,$00   ; [$0755] byte
+    .byte $00,$00,$00,$00,$00,$00,$00,$00   ; [$075d] byte
+    .byte $00,$00,$00,$00,$00,$00,$00,$00   ; [$0765] byte
+    .byte $00,$00,$00,$00,$00,$00,$00,$00   ; [$076d] byte
+    .byte $00,$00,$00,$00,$00,$00,$00,$00   ; [$0775] byte
+    .byte $00,$00,$00                       ; [$077d] byte
 
 SPRITE_0_RANGE_2_START:                     ; [$0780]
     .byte $00,$00,$00,$00                   ; [$0780] byte

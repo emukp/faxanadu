@@ -909,13 +909,22 @@ SHOP_ITEM_DEATH                                    = $63
 SHOP_ITEM_TILTE                                    = $64
 
 ;============================================================================
-; SoundChannels
+; SoundChannel
 ;============================================================================
-SNDCHN_PULSE_1                                     = $01
-SNDCHN_PULSE_2                                     = $02
-SNDCHN_TRIANGLE                                    = $04
-SNDCHAN_NOISE                                      = $08
-SNDCHN_DMC                                         = $10
+SNDCHN_PULSE_1                                     = $00
+SNDCHN_PULSE_2                                     = $01
+SNDCHN_TRIANGLE                                    = $02
+SNDCHN_NOISE                                       = $03
+SNDCHN_DMC                                         = $04
+
+;============================================================================
+; SoundChannelsBitmask
+;============================================================================
+SNDCHN_BITS_PULSE_1                                = $01
+SNDCHN_BITS_PULSE_2                                = $02
+SNDCHN_BITS_TRIANGLE                               = $04
+SNDCHAN_BITS_NOISE                                 = $08
+SNDCHN_BITS_DMC                                    = $10
 
 ;============================================================================
 ; SoundID

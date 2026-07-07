@@ -170,7 +170,7 @@ pre {
 <span class="l"><a class="anc" name="8008" href="#8008">[8008]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00,$00,$00,$00,$00,$00</span></span><span class="ce">; [$8008] byte</span></span>
 <span class="l"></span>
 <span class="l"></span>
-<div class="c">;
+<a name="START_SCREEN_LOGO_TILES"></a><div class="c">;
 ; ........
 ; ........
 ; ........
@@ -180,7 +180,8 @@ pre {
 ; ....█▒▒▒
 ; ....█▒░░
 ;
-</div><span class="l"><a class="anc" name="8010" href="#8010">[8010]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00,$00,$00,$0f,$08,$0b</span></span><span class="ce">; [$8010] undefined</span></span>
+</div><span class="l"><a class="anc" name="8010" href="#8010">[8010]</a><a href="#START_SCREEN_LOGO_TILES" class="la">START_SCREEN_LOGO_TILES:</a><span class="ce">; [$8010]</span></span>
+<span class="l"><a class="anc" name="8010" href="#8010">[8010]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00,$00,$00,$0f,$08,$0b</span></span><span class="ce">; [$8010] undefined</span></span>
 <span class="l"><a class="anc" name="8018" href="#8018">[8018]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00,$00,$00,$07,$0f,$0c</span></span><span class="ce">; [$8018] undefined</span></span>
 <span class="l"></span>
 <span class="l"></span>
@@ -436,7 +437,7 @@ pre {
 <span class="l"><a class="anc" name="8138" href="#8138">[8138]</a><span class="cd"><span class="i">.byte</span> <span class="o">$0c,$0c,$0f,$07,$00,$c7,$ef,$6c</span></span><span class="ce">; [$8138] byte</span></span>
 <span class="l"></span>
 <span class="l"></span>
-<div class="c">;
+<a name="HUD_TILES_START"></a><div class="c">;
 ; ........
 ; ........
 ; ........
@@ -446,7 +447,8 @@ pre {
 ; ........
 ; ........
 ;
-</div><span class="l"><a class="anc" name="8140" href="#8140">[8140]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00,$00,$00,$00,$00,$00</span></span><span class="ce">; [$8140] byte</span></span>
+</div><span class="l"><a class="anc" name="8140" href="#8140">[8140]</a><a href="#HUD_TILES_START" class="la">HUD_TILES_START:</a><span class="ce">; [$8140]</span></span>
+<span class="l"><a class="anc" name="8140" href="#8140">[8140]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00,$00,$00,$00,$00,$00</span></span><span class="ce">; [$8140] byte</span></span>
 <span class="l"><a class="anc" name="8148" href="#8148">[8148]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00,$00,$00,$00,$00,$00</span></span><span class="ce">; [$8148] byte</span></span>
 <span class="l"></span>
 <span class="l"></span>
@@ -6325,64 +6327,74 @@ pre {
 </div><span class="l"><a class="anc" name="9b50" href="#9b50">[9b50]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00,$00,$00,$00,$00,$00</span></span><span class="ce">; [$9b50] byte</span></span>
 <span class="l"><a class="anc" name="9b58" href="#9b58">[9b58]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00,$00,$00,$00,$00,$00</span></span><span class="ce">; [$9b58] byte</span></span>
 <span class="l"></span>
+<a name="START_SCREEN_PPU_ATTRIBUTES"></a><span class="l"><a class="anc" name="9b60" href="#9b60">[9b60]</a><a href="#START_SCREEN_PPU_ATTRIBUTES" class="la">START_SCREEN_PPU_ATTRIBUTES:</a><span class="ce">; [$9b60]</span></span>
+<span class="l"><a class="anc" name="9b60" href="#9b60">[9b60]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [0]:</span></span>
+<span class="l"><a class="anc" name="9b61" href="#9b61">[9b61]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [1]:</span></span>
+<span class="l"><a class="anc" name="9b62" href="#9b62">[9b62]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [2]:</span></span>
+<span class="l"><a class="anc" name="9b63" href="#9b63">[9b63]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [3]:</span></span>
+<span class="l"><a class="anc" name="9b64" href="#9b64">[9b64]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [4]:</span></span>
+<span class="l"><a class="anc" name="9b65" href="#9b65">[9b65]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [5]:</span></span>
+<span class="l"><a class="anc" name="9b66" href="#9b66">[9b66]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [6]:</span></span>
+<span class="l"><a class="anc" name="9b67" href="#9b67">[9b67]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [7]:</span></span>
+<span class="l"><a class="anc" name="9b68" href="#9b68">[9b68]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [8]:</span></span>
+<span class="l"><a class="anc" name="9b69" href="#9b69">[9b69]</a><span class="cd"><span class="i">.byte</span> <span class="o">$0c</span></span><span class="ce">; [9]:</span></span>
+<span class="l"><a class="anc" name="9b6a" href="#9b6a">[9b6a]</a><span class="cd"><span class="i">.byte</span> <span class="o">$05</span></span><span class="ce">; [10]:</span></span>
+<span class="l"><a class="anc" name="9b6b" href="#9b6b">[9b6b]</a><span class="cd"><span class="i">.byte</span> <span class="o">$aa</span></span><span class="ce">; [11]:</span></span>
+<span class="l"><a class="anc" name="9b6c" href="#9b6c">[9b6c]</a><span class="cd"><span class="i">.byte</span> <span class="o">$20</span></span><span class="ce">; [12]:</span></span>
+<span class="l"><a class="anc" name="9b6d" href="#9b6d">[9b6d]</a><span class="cd"><span class="i">.byte</span> <span class="o">$2d</span></span><span class="ce">; [13]:</span></span>
+<span class="l"><a class="anc" name="9b6e" href="#9b6e">[9b6e]</a><span class="cd"><span class="i">.byte</span> <span class="o">$03</span></span><span class="ce">; [14]:</span></span>
+<span class="l"><a class="anc" name="9b6f" href="#9b6f">[9b6f]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [15]:</span></span>
+<span class="l"><a class="anc" name="9b70" href="#9b70">[9b70]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [16]:</span></span>
+<span class="l"><a class="anc" name="9b71" href="#9b71">[9b71]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [17]:</span></span>
+<span class="l"><a class="anc" name="9b72" href="#9b72">[9b72]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [18]:</span></span>
+<span class="l"><a class="anc" name="9b73" href="#9b73">[9b73]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [19]:</span></span>
+<span class="l"><a class="anc" name="9b74" href="#9b74">[9b74]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [20]:</span></span>
+<span class="l"><a class="anc" name="9b75" href="#9b75">[9b75]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [21]:</span></span>
+<span class="l"><a class="anc" name="9b76" href="#9b76">[9b76]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [22]:</span></span>
+<span class="l"><a class="anc" name="9b77" href="#9b77">[9b77]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [23]:</span></span>
+<span class="l"><a class="anc" name="9b78" href="#9b78">[9b78]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [24]:</span></span>
+<span class="l"><a class="anc" name="9b79" href="#9b79">[9b79]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [25]:</span></span>
+<span class="l"><a class="anc" name="9b7a" href="#9b7a">[9b7a]</a><span class="cd"><span class="i">.byte</span> <span class="o">$80</span></span><span class="ce">; [26]:</span></span>
+<span class="l"><a class="anc" name="9b7b" href="#9b7b">[9b7b]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [27]:</span></span>
+<span class="l"><a class="anc" name="9b7c" href="#9b7c">[9b7c]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [28]:</span></span>
+<span class="l"><a class="anc" name="9b7d" href="#9b7d">[9b7d]</a><span class="cd"><span class="i">.byte</span> <span class="o">$30</span></span><span class="ce">; [29]:</span></span>
+<span class="l"><a class="anc" name="9b7e" href="#9b7e">[9b7e]</a><span class="cd"><span class="i">.byte</span> <span class="o">$30</span></span><span class="ce">; [30]:</span></span>
+<span class="l"><a class="anc" name="9b7f" href="#9b7f">[9b7f]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [31]:</span></span>
+<span class="l"><a class="anc" name="9b80" href="#9b80">[9b80]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [32]:</span></span>
+<span class="l"><a class="anc" name="9b81" href="#9b81">[9b81]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [33]:</span></span>
+<span class="l"><a class="anc" name="9b82" href="#9b82">[9b82]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [34]:</span></span>
+<span class="l"><a class="anc" name="9b83" href="#9b83">[9b83]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [35]:</span></span>
+<span class="l"><a class="anc" name="9b84" href="#9b84">[9b84]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [36]:</span></span>
+<span class="l"><a class="anc" name="9b85" href="#9b85">[9b85]</a><span class="cd"><span class="i">.byte</span> <span class="o">$20</span></span><span class="ce">; [37]:</span></span>
+<span class="l"><a class="anc" name="9b86" href="#9b86">[9b86]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [38]:</span></span>
+<span class="l"><a class="anc" name="9b87" href="#9b87">[9b87]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [39]:</span></span>
+<span class="l"><a class="anc" name="9b88" href="#9b88">[9b88]</a><span class="cd"><span class="i">.byte</span> <span class="o">$55</span></span><span class="ce">; [40]:</span></span>
+<span class="l"><a class="anc" name="9b89" href="#9b89">[9b89]</a><span class="cd"><span class="i">.byte</span> <span class="o">$55</span></span><span class="ce">; [41]:</span></span>
+<span class="l"><a class="anc" name="9b8a" href="#9b8a">[9b8a]</a><span class="cd"><span class="i">.byte</span> <span class="o">$55</span></span><span class="ce">; [42]:</span></span>
+<span class="l"><a class="anc" name="9b8b" href="#9b8b">[9b8b]</a><span class="cd"><span class="i">.byte</span> <span class="o">$55</span></span><span class="ce">; [43]:</span></span>
+<span class="l"><a class="anc" name="9b8c" href="#9b8c">[9b8c]</a><span class="cd"><span class="i">.byte</span> <span class="o">$55</span></span><span class="ce">; [44]:</span></span>
+<span class="l"><a class="anc" name="9b8d" href="#9b8d">[9b8d]</a><span class="cd"><span class="i">.byte</span> <span class="o">$55</span></span><span class="ce">; [45]:</span></span>
+<span class="l"><a class="anc" name="9b8e" href="#9b8e">[9b8e]</a><span class="cd"><span class="i">.byte</span> <span class="o">$55</span></span><span class="ce">; [46]:</span></span>
+<span class="l"><a class="anc" name="9b8f" href="#9b8f">[9b8f]</a><span class="cd"><span class="i">.byte</span> <span class="o">$55</span></span><span class="ce">; [47]:</span></span>
+<span class="l"><a class="anc" name="9b90" href="#9b90">[9b90]</a><span class="cd"><span class="i">.byte</span> <span class="o">$55</span></span><span class="ce">; [48]:</span></span>
+<span class="l"><a class="anc" name="9b91" href="#9b91">[9b91]</a><span class="cd"><span class="i">.byte</span> <span class="o">$55</span></span><span class="ce">; [49]:</span></span>
+<span class="l"><a class="anc" name="9b92" href="#9b92">[9b92]</a><span class="cd"><span class="i">.byte</span> <span class="o">$55</span></span><span class="ce">; [50]:</span></span>
+<span class="l"><a class="anc" name="9b93" href="#9b93">[9b93]</a><span class="cd"><span class="i">.byte</span> <span class="o">$55</span></span><span class="ce">; [51]:</span></span>
+<span class="l"><a class="anc" name="9b94" href="#9b94">[9b94]</a><span class="cd"><span class="i">.byte</span> <span class="o">$55</span></span><span class="ce">; [52]:</span></span>
+<span class="l"><a class="anc" name="9b95" href="#9b95">[9b95]</a><span class="cd"><span class="i">.byte</span> <span class="o">$55</span></span><span class="ce">; [53]:</span></span>
+<span class="l"><a class="anc" name="9b96" href="#9b96">[9b96]</a><span class="cd"><span class="i">.byte</span> <span class="o">$55</span></span><span class="ce">; [54]:</span></span>
+<span class="l"><a class="anc" name="9b97" href="#9b97">[9b97]</a><span class="cd"><span class="i">.byte</span> <span class="o">$55</span></span><span class="ce">; [55]:</span></span>
+<span class="l"><a class="anc" name="9b98" href="#9b98">[9b98]</a><span class="cd"><span class="i">.byte</span> <span class="o">$55</span></span><span class="ce">; [56]:</span></span>
+<span class="l"><a class="anc" name="9b99" href="#9b99">[9b99]</a><span class="cd"><span class="i">.byte</span> <span class="o">$55</span></span><span class="ce">; [57]:</span></span>
+<span class="l"><a class="anc" name="9b9a" href="#9b9a">[9b9a]</a><span class="cd"><span class="i">.byte</span> <span class="o">$55</span></span><span class="ce">; [58]:</span></span>
+<span class="l"><a class="anc" name="9b9b" href="#9b9b">[9b9b]</a><span class="cd"><span class="i">.byte</span> <span class="o">$55</span></span><span class="ce">; [59]:</span></span>
+<span class="l"><a class="anc" name="9b9c" href="#9b9c">[9b9c]</a><span class="cd"><span class="i">.byte</span> <span class="o">$55</span></span><span class="ce">; [60]:</span></span>
+<span class="l"><a class="anc" name="9b9d" href="#9b9d">[9b9d]</a><span class="cd"><span class="i">.byte</span> <span class="o">$55</span></span><span class="ce">; [61]:</span></span>
+<span class="l"><a class="anc" name="9b9e" href="#9b9e">[9b9e]</a><span class="cd"><span class="i">.byte</span> <span class="o">$55</span></span><span class="ce">; [62]:</span></span>
+<span class="l"><a class="anc" name="9b9f" href="#9b9f">[9b9f]</a><span class="cd"><span class="i">.byte</span> <span class="o">$55</span></span><span class="ce">; [63]:</span></span>
 <span class="l"></span>
-<div class="c">;
-; ........
-; ....▒▒..
-; .....▒.▒
-; ▒.▒.▒.▒.
-; ..▒.....
-; ..▒.▒▒.▒
-; ......▒▒
-; ........
-;
-</div><span class="l"><a class="anc" name="9b60" href="#9b60">[9b60]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00,$00,$00,$00,$00,$00</span></span><span class="ce">; [$9b60] byte</span></span>
-<span class="l"><a class="anc" name="9b68" href="#9b68">[9b68]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$0c,$05,$aa,$20,$2d,$03,$00</span></span><span class="ce">; [$9b68] byte</span></span>
 <span class="l"></span>
-<span class="l"></span>
-<div class="c">;
-; ........
-; ........
-; ▒.......
-; ........
-; ........
-; ..▒▒....
-; ..▒▒....
-; ........
-;
-</div><span class="l"><a class="anc" name="9b70" href="#9b70">[9b70]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00,$00,$00,$00,$00,$00</span></span><span class="ce">; [$9b70] byte</span></span>
-<span class="l"><a class="anc" name="9b78" href="#9b78">[9b78]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$80,$00,$00,$30,$30,$00</span></span><span class="ce">; [$9b78] byte</span></span>
-<span class="l"></span>
-<span class="l"></span>
-<div class="c">;
-; .▒.▒.▒.▒
-; .▒.▒.▒.▒
-; .▒.▒.▒.▒
-; .▒.▒.▒.▒
-; .▒.▒.▒.▒
-; .▒░▒.▒.▒
-; .▒.▒.▒.▒
-; .▒.▒.▒.▒
-;
-</div><span class="l"><a class="anc" name="9b80" href="#9b80">[9b80]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00,$00,$00,$20,$00,$00</span></span><span class="ce">; [$9b80] byte</span></span>
-<span class="l"><a class="anc" name="9b88" href="#9b88">[9b88]</a><span class="cd"><span class="i">.byte</span> <span class="o">$55,$55,$55,$55,$55,$55,$55,$55</span></span><span class="ce">; [$9b88] byte</span></span>
-<span class="l"></span>
-<span class="l"></span>
-<div class="c">;
-; .█.█.█.█
-; .█.█.█.█
-; .█.█.█.█
-; .█.█.█.█
-; .█.█.█.█
-; .█.█.█.█
-; .█.█.█.█
-; .█.█.█.█
-;
-</div><span class="l"><a class="anc" name="9b90" href="#9b90">[9b90]</a><span class="cd"><span class="i">.byte</span> <span class="o">$55,$55,$55,$55,$55,$55,$55,$55</span></span><span class="ce">; [$9b90] byte</span></span>
-<span class="l"><a class="anc" name="9b98" href="#9b98">[9b98]</a><span class="cd"><span class="i">.byte</span> <span class="o">$55,$55,$55,$55,$55,$55,$55,$55</span></span><span class="ce">; [$9b98] byte</span></span>
-<span class="l"></span>
-<span class="l"></span>
-<div class="c">;
+<a name="INTRO_ANIM_PLAYER_TILES"></a><div class="c">;
 ; ........
 ; ......░░
 ; .....░░░
@@ -6392,7 +6404,8 @@ pre {
 ; ....░░█░
 ; ....░▒▒▒
 ;
-</div><span class="l"><a class="anc" name="9ba0" href="#9ba0">[9ba0]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$03,$07,$0e,$08,$0f,$0f,$08</span></span><span class="ce">; [$9ba0] byte</span></span>
+</div><span class="l"><a class="anc" name="9ba0" href="#9ba0">[9ba0]</a><a href="#INTRO_ANIM_PLAYER_TILES" class="la">INTRO_ANIM_PLAYER_TILES:</a><span class="ce">; [$9ba0]</span></span>
+<span class="l"><a class="anc" name="9ba0" href="#9ba0">[9ba0]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$03,$07,$0e,$08,$0f,$0f,$08</span></span><span class="ce">; [$9ba0] byte</span></span>
 <span class="l"><a class="anc" name="9ba8" href="#9ba8">[9ba8]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00,$01,$07,$02,$02,$07</span></span><span class="ce">; [$9ba8] byte</span></span>
 <span class="l"></span>
 <span class="l"></span>
@@ -8398,7 +8411,7 @@ pre {
 <span class="l"><a class="anc" name="a498" href="#a498">[a498]</a><span class="cd"><span class="i">.byte</span> <span class="o">$ff,$7f,$37,$00,$00,$00,$00,$00</span></span><span class="ce">; [$a498] byte</span></span>
 <span class="l"></span>
 <span class="l"></span>
-<div class="c">;
+<a name="INTRO_ANIM_BACKGROUND_TILES"></a><div class="c">;
 ; ░░░░░░░░
 ; ░░░░░░░░
 ; ░░░░░░░░
@@ -8408,7 +8421,8 @@ pre {
 ; ░░░░░░░░
 ; ░░░░░░░░
 ;
-</div><span class="l"><a class="anc" name="a4a0" href="#a4a0">[a4a0]</a><span class="cd"><span class="i">.byte</span> <span class="o">$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff</span></span><span class="ce">; [$a4a0] byte</span></span>
+</div><span class="l"><a class="anc" name="a4a0" href="#a4a0">[a4a0]</a><a href="#INTRO_ANIM_BACKGROUND_TILES" class="la">INTRO_ANIM_BACKGROUND_TILES:</a><span class="ce">; [$a4a0]</span></span>
+<span class="l"><a class="anc" name="a4a0" href="#a4a0">[a4a0]</a><span class="cd"><span class="i">.byte</span> <span class="o">$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff</span></span><span class="ce">; [$a4a0] byte</span></span>
 <span class="l"><a class="anc" name="a4a8" href="#a4a8">[a4a8]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00,$00,$00,$00,$00,$00,$00</span></span><span class="ce">; [$a4a8] byte</span></span>
 <span class="l"></span>
 <span class="l"></span>

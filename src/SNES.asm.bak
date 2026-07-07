@@ -1,0 +1,1255 @@
+;-------------
+; Emulated PPU state
+;-------------
+
+.segment "RAM";
+.setcpu "65816";
+.a8
+.i16
+
+
+; 14-bit NES PPU address.
+NESPPU_Addr:
+    .word $0000
+
+
+; 1 or 32
+NESPPU_Inc:
+    .word $0001
+
+
+
+; Temporary high byte for PPUADDR writes.
+NESPPU_AddrLatchHi:
+    .byte $00
+
+
+; Bits:
+;
+; 0 = PAL
+; 1 = NT
+; 2 = CHR
+NESPPU_DirtyFlags:
+    .byte $00
+
+
+NESPPU_TempPtr:
+    .word $0000
+
+
+NESPPU_DIRTY_PAL = $01
+NESPPU_DIRTY_NT  = $02
+NESPPU_DIRTY_CHR = $04
+
+
+;-------------
+; Shadows
+;-------------
+
+.segment "WRAM"
+
+
+; Dirty tile tracking for CHR conversion
+; 512 tiles (pattern tables $0000-$1FFF), 1 bit each = 64 bytes
+SNES_CHRDirtyBits:
+    .res 64
+
+
+; NES attribute table shadow
+; 4 nametables × 64 bytes = 256 bytes
+; Stores the NES attribute bytes to combine with tile numbers for SNES tilemap
+NES_AttributeShadow:
+    .res 256
+
+
+; SNES OAM buffer
+; 512 bytes: 128 sprites × 4 bytes (X, Y, tile, attributes)
+; 32 bytes: size/position high bits table
+SNES_OAMBuffer:
+    .res 544
+
+; NES pattern table shadow ($0000-$1FFF)
+NESPPU_CHRShadow:
+    .res $2000
+
+
+; NES nametable shadow ($2000-$2FFF -> 4x $400 = $1000)
+NESPPU_NTShadow:
+    .res $1000
+
+
+; NES palette shadow ($3F00-$3F1F)
+NESPPU_PALShadow:
+    .res $20
+
+
+;-------------
+; Logic
+;-------------
+
+.segment "SNES"
+.setcpu "65816";
+.a8
+.i16
+
+
+;=============================================================================
+; NES to SNES Color Lookup Table
+;
+; Converts NES 6-bit palette indices ($00-$3F) to SNES 15-bit BGR format
+; Format: 0bbbbbgg gggrrrrr (5 bits per channel, BGR order)
+;
+; Based on standard NES palette RGB values converted to SNES BGR555
+;=============================================================================
+
+NEStoSNESPalette_Lo:
+    .byte $1F, $09, $00, $40, $00, $01, $02, $04   ; $00-$07
+    .byte $05, $00, $00, $00, $00, $00, $00, $00   ; $08-$0F
+    .byte $3F, $4F, $60, $C0, $60, $61, $42, $24   ; $10-$17
+    .byte $05, $00, $00, $00, $00, $00, $00, $00   ; $18-$1F
+    .byte $7F, $9F, $E0, $00, $E0, $E1, $E3, $65   ; $20-$27
+    .byte $47, $08, $08, $00, $00, $00, $00, $00   ; $28-$2F
+    .byte $7F, $FF, $3F, $5F, $5F, $3F, $3F, $DF   ; $30-$37
+    .byte $DF, $9F, $7F, $5F, $1F, $00, $00, $00   ; $38-$3F
+
+NEStoSNESPalette_Hi:
+    .byte $00, $02, $00, $01, $04, $05, $06, $07   ; $00-$07
+    .byte $06, $04, $00, $00, $00, $00, $00, $00   ; $08-$0F
+    .byte $29, $31, $39, $3D, $45, $48, $4B, $4E   ; $10-$17
+    .byte $4E, $49, $41, $31, $00, $00, $00, $00   ; $18-$1F
+    .byte $56, $5E, $66, $6B, $72, $76, $7A, $7D   ; $20-$27
+    .byte $7D, $79, $71, $65, $00, $00, $00, $00   ; $28-$2F
+    .byte $56, $5E, $67, $6B, $72, $77, $7B, $7E   ; $30-$37
+    .byte $7E, $7D, $79, $73, $6B, $00, $00, $00   ; $38-$3F
+
+
+;=============================================================================
+; SNES_InitVideo
+;
+; Initialize SNES video hardware for Mode 1 operation.
+;
+; SNES Mode 1 Configuration:
+;   - BG1: Main game playfield (16-color, priority 1, 32x32 tiles)
+;   - BG2: Secondary nametable for scrolling (16-color, priority 0, 32x32 tiles)
+;   - BG3: UI/HUD overlay (4-color, priority 1, 32x32 tiles)
+;   - Sprites: 16-color mode (8x8 and 16x16)
+;
+; VRAM Layout:
+;   $0000-$3FFF: BG tiles (CHR data converted from 2bpp to 4bpp)
+;   $4000-$47FF: BG1 tilemap (32x32 = 2KB)
+;   $4800-$4FFF: BG2 tilemap (32x32 = 2KB)
+;   $5000-$57FF: BG3 tilemap (32x32 = 2KB)
+;   $6000-$7FFF: Sprite tiles
+;
+; REGISTERS:
+;   Uses A (8-bit)
+;=============================================================================
+SNES_InitVideo:
+    PHP
+    SEP #$20                        ; A = 8-bit
+    REP #$10                        ; X/Y = 16-bit
+    .a8
+    .i16
+
+    ; Force blank during setup
+    LDA #$80                        ; Force blank
+    STA $2100                       ; INIDISP
+
+    ; Set Mode 1 (3 BG layers, BG1/BG2 16-color, BG3 4-color)
+    LDA #$01                        ; Mode 1
+    STA $2105                       ; BGMODE
+
+    ; Configure BG1: Tilemap at VRAM $4000 (word address $2000), 32x32
+    ; SC = tilemap base / $400, size = 00 (32x32)
+    LDA #$20                        ; Tilemap at VRAM word address $2000
+    STA $2107                       ; BG1SC
+
+    ; Configure BG2: Tilemap at VRAM $4800 (word address $2400), 32x32
+    LDA #$24                        ; Tilemap at VRAM word address $2400
+    STA $2108                       ; BG2SC
+
+    ; Configure BG3: Tilemap at VRAM $5000 (word address $2800), 32x32
+    LDA #$28                        ; Tilemap at VRAM word address $2800
+    STA $2109                       ; BG3SC
+
+    ; Configure tile base addresses for BG1/BG2
+    ; BG1/BG2 tiles start at VRAM $0000 (word address $0000)
+    LDA #$00                        ; BG1 = $0000, BG2 = $0000
+    STA $210B                       ; BG12NBA
+
+    ; Configure tile base address for BG3
+    ; BG3 tiles also at VRAM $0000
+    LDA #$00                        ; BG3 = $0000, BG4 = $0000
+    STA $210C                       ; BG34NBA
+
+    ; Set sprite tile base address (VRAM $6000 = word address $3000)
+    ; Object base = $6000 (bits 0-2), Name select = 0, Name base select = 3
+    LDA #$03                        ; Sprite tiles at VRAM $6000
+    STA $2101                       ; OBSEL
+
+    ; Enable BG1, BG2, BG3 on main screen
+    LDA #$07                        ; Enable BG1, BG2, BG3
+    STA $212C                       ; TM (main screen)
+
+    ; Disable subscreen
+    LDA #$00
+    STA $212D                       ; TS (subscreen)
+
+    ; Disable color math
+    LDA #$00
+    STA $2130                       ; CGWSEL
+    STA $2131                       ; CGADSUB
+
+    ; Enable sprites on main screen
+    LDA #$10                        ; Enable sprites
+    ORA $212C
+    STA $212C                       ; TM
+
+    ; Clear VRAM (set to $0000)
+    ; Set VRAM address to $0000
+    LDA #$00
+    STA $2116                       ; VMADDL
+    STA $2117                       ; VMADDH
+
+    ; Set VRAM increment mode (increment after writing VMDATAH)
+    LDA #$80                        ; Word access, increment +1
+    STA $2115                       ; VMAIN
+
+    ; Clear 32KB of VRAM
+    LDX #$0000
+  @clearVRAM:
+    STZ $2118                       ; VMDATAL
+    STZ $2119                       ; VMDATAH
+    INX
+    CPX #$8000                      ; 32KB in words
+    BNE @clearVRAM
+
+    ; Initialize CGRAM (clear all colors to black)
+    LDA #$00
+    STA $2121                       ; CGADD
+
+    LDX #$0000
+  @clearCGRAM:
+    STZ $2122                       ; CGDATA (write low byte)
+    STZ $2122                       ; CGDATA (write high byte)
+    INX
+    CPX #$0100                      ; 256 colors
+    BNE @clearCGRAM
+
+    ; Initialize scroll positions to 0
+    LDA #$00
+    STA $210D                       ; BG1HOFS
+    STA $210D                       ; BG1HOFS (write twice)
+    STA $210E                       ; BG1VOFS
+    STA $210E                       ; BG1VOFS (write twice)
+    STA $210F                       ; BG2HOFS
+    STA $210F                       ; BG2HOFS
+    STA $2110                       ; BG2VOFS
+    STA $2110                       ; BG2VOFS
+    STA $2111                       ; BG3HOFS
+    STA $2111                       ; BG3HOFS
+    STA $2112                       ; BG3VOFS
+    STA $2112                       ; BG3VOFS
+
+    ; Enable NMI (vblank interrupt)
+    LDA #$81                        ; Enable NMI and joypad auto-read
+    STA $4200                       ; NMITIMEN
+
+    ; End force blank (set brightness to maximum)
+    LDA #$0F                        ; Full brightness, no force blank
+    STA $2100                       ; INIDISP
+
+    PLP
+    RTL
+
+
+;=============================================================================
+; SNES_WritePaletteByte
+;
+; Write a single NES palette color to SNES CGRAM.
+;
+; INPUTS:
+;   A = NES color index ($00-$3F)
+;   X = Palette byte offset (0-31) which maps to CGRAM color slots
+;
+; The NES has 8 palettes of 4 colors each (32 bytes total):
+;   - 4 background palettes ($3F00-$3F0F)
+;   - 4 sprite palettes ($3F10-$3F1F)
+;
+; SNES palettes:
+;   - BG palettes 0-7 (colors 0-127)
+;   - Sprite palettes 8-15 (colors 128-255)
+;
+; Each NES 4-color palette maps to 16 colors in SNES (only using 4 slots).
+;=============================================================================
+SNES_WritePaletteByte:
+    PHP
+    SEP #$20
+    REP #$10
+    .a8
+    .i16
+
+    ; Save NES color index
+    PHA
+
+    ; Calculate CGRAM address from palette offset
+    ; X contains NES palette byte offset (0-31)
+    ; Map to SNES: each NES palette of 4 colors -> 16 SNES colors
+    ; NES offset 0-3 (BG pal 0) -> SNES colors 0,1,2,3
+    ; NES offset 4-7 (BG pal 1) -> SNES colors 16,17,18,19 etc.
+    TXA
+    AND #$03                        ; Get position within palette (0-3)
+    STA NESPPU_TempPtr              ; Save position
+
+    TXA
+    LSR A                           ; Divide by 4 to get palette number
+    LSR A
+    ASL A                           ; Multiply by 16 (shift left 4 = multiply by 16)
+    ASL A
+    ASL A
+    ASL A
+    CLC
+    ADC NESPPU_TempPtr              ; Add position within palette
+
+    ; Now A has the SNES color index
+    STA $2121                       ; Set CGRAM address
+
+    ; Retrieve NES color index
+    PLA
+    AND #$3F                        ; Mask to valid range
+    TAX                             ; Use as index into lookup table
+
+    ; Write low byte of SNES color
+    LDA NEStoSNESPalette_Lo,X
+    STA $2122                       ; CGDATA
+
+    ; Write high byte of SNES color
+    LDA NEStoSNESPalette_Hi,X
+    STA $2122                       ; CGDATA
+
+    PLP
+    RTL
+
+
+;=============================================================================
+; SNES_FlushPaletteBuffer
+;
+; Flush the entire NES palette buffer to SNES CGRAM.
+;
+; Reads from Screen_PaletteData_Tiles (32 bytes) and converts each NES
+; color to SNES format, writing to the appropriate CGRAM slots.
+;
+; Should be called during vblank.
+;=============================================================================
+SNES_FlushPaletteBuffer:
+    PHP
+    SEP #$20
+    REP #$10
+    .a8
+    .i16
+
+    ; Loop through all 32 palette entries
+    LDX #$0000
+
+  @loop:
+    ; Load NES color from palette buffer
+    LDA Screen_PaletteData_Tiles,X
+
+    ; Calculate CGRAM address (same logic as SNES_WritePaletteByte)
+    PHA                             ; Save color
+
+    TXA
+    AND #$03                        ; Position within palette
+    STA NESPPU_TempPtr
+
+    TXA
+    LSR A
+    LSR A
+    ASL A
+    ASL A
+    ASL A
+    ASL A
+    CLC
+    ADC NESPPU_TempPtr
+    STA $2121                       ; Set CGRAM address
+
+    ; Retrieve color and convert
+    PLA
+    AND #$3F                        ; Mask to valid range
+    TAY                             ; Use Y as index
+
+    ; Write SNES color
+    LDA NEStoSNESPalette_Lo,Y
+    STA $2122                       ; CGDATA low byte
+
+    LDA NEStoSNESPalette_Hi,Y
+    STA $2122                       ; CGDATA high byte
+
+    INX
+    CPX #$0020                      ; Processed all 32 bytes?
+    BNE @loop
+
+    PLP
+    RTL
+
+
+;=============================================================================
+; SNES_MarkCHRDirty
+;
+; Mark a CHR tile as dirty for later conversion and upload to VRAM.
+;
+; INPUTS:
+;   X = Tile number (0-511)
+;
+; Modifies the corresponding bit in SNES_CHRDirtyBits.
+;=============================================================================
+SNES_MarkCHRDirty:
+    PHP
+    SEP #$20
+    REP #$10
+    .a8
+    .i16
+
+    ; Calculate byte offset: tile / 8
+    TXA
+    LSR A
+    LSR A
+    LSR A
+    TAY                             ; Y = byte offset
+
+    ; Calculate bit mask: 1 << (tile & 7)
+    TXA
+    AND #$07                        ; Get bit position
+    TAX
+    LDA #$01
+  @shiftLoop:
+    CPX #$0000
+    BEQ @setBit
+    ASL A
+    DEX
+    BRA @shiftLoop
+
+  @setBit:
+    ORA SNES_CHRDirtyBits,Y
+    STA SNES_CHRDirtyBits,Y
+
+    PLP
+    RTL
+
+
+;=============================================================================
+; SNES_ConvertAndWriteCHRTile
+;
+; Convert a single 8x8 tile from NES 2bpp to SNES 4bpp and write to VRAM.
+;
+; NES 2bpp format (16 bytes):
+;   Bytes 0-7: Plane 0 (bit 0 of each pixel)
+;   Bytes 8-15: Plane 1 (bit 1 of each pixel)
+;
+; SNES 4bpp format (32 bytes):
+;   Bytes 0-15: Planes 0-1 interleaved by row
+;   Bytes 16-31: Planes 2-3 interleaved by row (zeroed for NES compatibility)
+;
+; INPUTS:
+;   X = Tile number (0-511)
+;
+; VRAM must be set to word access mode before calling.
+;=============================================================================
+SNES_ConvertAndWriteCHRTile:
+    PHP
+    PHB
+    SEP #$20
+    REP #$10
+    .a8
+    .i16
+
+    ; Set data bank to WRAM ($7E)
+    LDA #$7E
+    PHA
+    PLB
+
+    ; Calculate source address in CHR shadow: tile * 16
+    TXA
+    PHA                             ; Save tile number
+    ASL A                           ; Multiply by 16
+    ASL A
+    ASL A
+    ASL A
+    STA NESPPU_TempPtr              ; Store low byte
+
+    ; High byte of offset
+    PLA                             ; Restore tile number
+    PHA                             ; Save again
+    LSR A                           ; Divide by 16 (tile / 16 gives page)
+    LSR A
+    LSR A
+    LSR A
+    STA NESPPU_TempPtr+1
+
+    ; Add base address of NESPPU_CHRShadow
+    REP #$20
+    .a16
+    LDA NESPPU_TempPtr
+    CLC
+    ADC #.loword(NESPPU_CHRShadow)
+    STA NESPPU_TempPtr
+    SEP #$20
+    .a8
+
+    ; Calculate VRAM destination address: tile * 16 (word address)
+    PLA                             ; Restore tile number
+    PHA
+    ASL A
+    ASL A
+    ASL A
+    ASL A
+    STA $2116                       ; VMADDL
+
+    PLA                             ; Restore tile number
+    LSR A
+    LSR A
+    LSR A
+    LSR A
+    STA $2117                       ; VMADDH
+
+    ; Set VRAM increment mode
+    LDA #$80                        ; Word access, increment +1
+    STA $2115                       ; VMAIN
+
+    ; Load source address into X for indexed addressing
+    REP #$20
+    .a16
+    LDA NESPPU_TempPtr
+    TAX                             ; X = source address
+    SEP #$20
+    .a8
+
+    ; Convert and write 8 rows of plane 0-1
+    LDY #$0000
+  @rowLoop:
+    ; Write plane 0 byte (row Y, bits 0)
+    LDA $7E0000,X                   ; Read from WRAM bank $7E
+    STA $2118                       ; VMDATAL
+
+    ; Write plane 1 byte (row Y, bits 1) - 8 bytes after plane 0
+    LDA $7E0008,X                   ; Read from WRAM bank $7E + 8
+    STA $2119                       ; VMDATAH
+
+    ; Move to next row
+    INX
+    INY
+    CPY #$0008
+    BNE @rowLoop
+
+    ; Write 8 rows of plane 2-3 (all zeros for NES compatibility)
+    LDY #$0000
+  @zeroLoop:
+    STZ $2118                       ; VMDATAL (plane 2)
+    STZ $2119                       ; VMDATAH (plane 3)
+    INY
+    CPY #$0008
+    BNE @zeroLoop
+
+    PLB
+    PLP
+    RTL
+
+
+;=============================================================================
+; SNES_FlushDirtyCHR
+;
+; Scan dirty tile bits and convert/upload all dirty tiles to VRAM.
+;
+; Should be called during vblank.
+;
+; Uses a simple approach: for each dirty bit, calculate tile number and convert.
+;=============================================================================
+SNES_FlushDirtyCHR:
+    PHP
+    SEP #$20
+    REP #$10
+    .a8
+    .i16
+
+    ; SIMPLIFIED: Just flush first 256 tiles for now (one pattern table)
+    ; Skip dirty tracking to avoid bugs
+    LDX #$0000
+
+  @tileLoop:
+    JSL SNES_ConvertAndWriteCHRTile
+    INX
+    CPX #$0100                      ; Just do 256 tiles for now
+    BNE @tileLoop
+
+    PLP
+    RTL
+
+
+;=============================================================================
+; SNES_GetNESAttribute
+;
+; Get the 2-bit palette number for a tile from the NES attribute shadow.
+;
+; INPUTS:
+;   A = Nametable base page ($20/$24/$28/$2C)
+;   X = Tile index within nametable (0-959 for 32x30 tiles)
+;
+; OUTPUTS:
+;   A = 2-bit palette number (0-3)
+;
+; NES attributes are stored as 64 bytes per nametable, where each byte
+; controls a 4x4 tile block (16 tiles). Each byte has 4 2-bit palette values
+; for the 4 2x2 tile quadrants.
+;=============================================================================
+SNES_GetNESAttribute:
+    PHP
+    SEP #$20
+    REP #$10
+    .a8
+    .i16
+
+    ; Calculate attribute shadow offset based on nametable
+    ; $20 -> offset 0, $24 -> offset 64, $28 -> offset 128, $2C -> offset 192
+    PHA                             ; Save nametable page
+    AND #$0C                        ; Isolate bits for NT selection
+    LSR A                           ; Divide by 4 (shift right 2)
+    LSR A
+    ASL A                           ; Multiply by 64 (shift left 6)
+    ASL A
+    ASL A
+    ASL A
+    ASL A
+    ASL A
+    STA NESPPU_TempPtr              ; Store attribute base offset
+
+    ; Calculate attribute byte offset within the 64-byte table
+    ; Attribute offset = (tile_row / 4) * 8 + (tile_col / 4)
+    ; tile_row = tile_index / 32, tile_col = tile_index % 32
+
+    ; Get row number (tile / 32)
+    TXA
+    PHA                             ; Save tile index
+    LSR A                           ; Divide by 32 (shift right 5)
+    LSR A
+    LSR A
+    LSR A
+    LSR A
+    LSR A                           ; A = row number (0-29)
+
+    ; Divide row by 4 and multiply by 8
+    LSR A
+    LSR A                           ; A = row / 4
+    ASL A                           ; Multiply by 8
+    ASL A
+    ASL A
+    STA NESPPU_TempPtr+1            ; Store partial offset
+
+    ; Get column number (tile % 32)
+    PLA                             ; Restore tile index
+    AND #$1F                        ; A = column (0-31)
+
+    ; Divide column by 4
+    LSR A
+    LSR A                           ; A = column / 4
+
+    ; Add to partial offset
+    CLC
+    ADC NESPPU_TempPtr+1
+    ADC NESPPU_TempPtr              ; Add nametable base offset
+    TAX                             ; X = final attribute offset
+
+    ; Read attribute byte
+    LDA NES_AttributeShadow,X
+    STA NESPPU_TempPtr+1            ; Save attribute byte
+
+    ; Determine which 2-bit quadrant to extract
+    ; Based on (tile_row % 4) and (tile_col % 4)
+    PLA                             ; Restore nametable page (clean stack)
+    PLA                             ; Get tile index again
+    PHA                             ; Save for return
+
+    ; Check if in right half (column % 4 >= 2)
+    AND #$03                        ; Column % 4
+    CMP #$02
+    BCC @leftHalf
+    ; Right half - shift right 2
+    LDA NESPPU_TempPtr+1
+    LSR A
+    LSR A
+    STA NESPPU_TempPtr+1
+
+  @leftHalf:
+    ; Check if in bottom half (row % 4 >= 2)
+    PLA                             ; Restore tile index
+    PHA
+    LSR A                           ; Divide by 32 to get row
+    LSR A
+    LSR A
+    LSR A
+    LSR A
+    AND #$03                        ; Row % 4
+    CMP #$02
+    BCC @topHalf
+    ; Bottom half - shift right 4
+    LDA NESPPU_TempPtr+1
+    LSR A
+    LSR A
+    LSR A
+    LSR A
+    STA NESPPU_TempPtr+1
+
+  @topHalf:
+    ; Mask to 2 bits
+    LDA NESPPU_TempPtr+1
+    AND #$03
+
+    ; Clean up stack
+    PLX                             ; Remove tile index
+
+    PLP
+    RTL
+
+
+;=============================================================================
+; SNES_WriteTilemapWord
+;
+; Write a single tile to the SNES tilemap combining tile number and palette.
+;
+; INPUTS:
+;   A = NES tile number (0-255)
+;   X = NES palette number (0-3)
+;   Y = SNES VRAM word address for tilemap
+;
+; SNES tilemap format (16-bit):
+;   vhopppcc cccccccc
+;   v = vertical flip
+;   h = horizontal flip
+;   o = priority
+;   p = palette (3 bits, we use lower 2 bits from NES palette)
+;   c = tile/character number (10 bits)
+;=============================================================================
+SNES_WriteTilemapWord:
+    PHP
+    SEP #$20
+    REP #$10
+    .a8
+    .i16
+
+    ; Save tile number
+    PHA
+
+    ; Set VRAM address
+    TYA
+    STA $2116                       ; VMADDL
+    TYA
+    XBA
+    STA $2117                       ; VMADDH
+
+    ; Set VRAM to word access, increment +1
+    LDA #$80
+    STA $2115                       ; VMAIN
+
+    ; Build tilemap word
+    ; Low byte: tile number (bits 0-7)
+    PLA                             ; Restore tile number
+    STA $2118                       ; VMDATAL
+
+    ; High byte: palette in bits 2-4
+    TXA
+    AND #$03                        ; Mask to 2 bits
+    ASL A                           ; Shift to bits 2-3
+    ASL A
+    STA $2119                       ; VMDATAH
+
+    PLP
+    RTL
+
+
+;=============================================================================
+; SNES_RemapNESTileToSNES
+;
+; Remap NES tile number to SNES tile number.
+;
+; NES has two pattern tables:
+;   $0000-$0FFF: Pattern table 0 (tiles 0-255)
+;   $1000-$1FFF: Pattern table 1 (tiles 0-255)
+;
+; SNES tiles are at VRAM $6000+ for sprites (word address $3000+)
+; Each NES tile becomes SNES tile at: $3000 + (tile_number * 2)
+;
+; INPUTS:
+;   A = NES tile number (0-255)
+;   X = Pattern table select (0 or 1)
+;
+; OUTPUTS:
+;   A = SNES tile number (low byte)
+;   X = SNES tile number (high byte)
+;=============================================================================
+SNES_RemapNESTileToSNES:
+    PHP
+    SEP #$20
+    REP #$10
+    .a8
+    .i16
+
+    ; For now, simple 1:1 mapping
+    ; Tile number stays the same, just offset into VRAM
+    ; TODO: Handle pattern table banking if needed
+
+    PLP
+    RTL
+
+
+;=============================================================================
+; SNES_ConvertNESOAMToSNES
+;
+; Convert NES OAM format to SNES OAM format.
+;
+; NES OAM: 64 sprites × 4 bytes at $0700
+;   Byte 0: Y position
+;   Byte 1: Tile number
+;   Byte 2: Attributes (VHP000PP)
+;     V = vertical flip
+;     H = horizontal flip
+;     P = priority
+;     PP = palette (0-3)
+;   Byte 3: X position
+;
+; SNES OAM: 128 sprites × 4 bytes + 32 bytes high table
+;   Bytes 0-3: Y, tile, attributes, X
+;   SNES attributes: vhopppcc
+;     v = vertical flip
+;     h = horizontal flip
+;     o = priority (over background)
+;     ppp = palette (0-7, sprites use 8-15 so add 8)
+;     cc = tile number high bits (we use 00)
+;=============================================================================
+SNES_ConvertNESOAMToSNES:
+    PHP
+    PHB
+    SEP #$20
+    REP #$10
+    .a8
+    .i16
+
+    ; Set data bank to $00 for NES OAM access
+    LDA #$00
+    PHA
+    PLB
+
+    ; Source: NES OAM at $0700
+    ; Dest: SNES_OAMBuffer
+    LDX #$0000                      ; Sprite counter
+    LDY #$0000                      ; Byte offset
+
+  @spriteLoop:
+    ; Copy Y position (byte 0)
+    LDA $0700,Y
+    STA SNES_OAMBuffer,Y
+
+    ; Tile number (byte 1) - remap if needed
+    INY
+    LDA $0700,Y
+    STA SNES_OAMBuffer,Y
+
+    ; Attributes (byte 2) - convert format
+    INY
+    LDA $0700,Y
+    PHA                             ; Save NES attributes
+
+    ; Build SNES attributes
+    ; Start with 0
+    LDA #$00
+
+    ; Check vertical flip (bit 7)
+    PLA
+    PHA
+    AND #$80                        ; Isolate V bit
+    ORA NESPPU_TempPtr              ; Combine
+    STA NESPPU_TempPtr
+
+    ; Check horizontal flip (bit 6)
+    PLA
+    PHA
+    AND #$40                        ; Isolate H bit
+    ORA NESPPU_TempPtr
+    STA NESPPU_TempPtr
+
+    ; Check priority (bit 5)
+    PLA
+    PHA
+    AND #$20                        ; Isolate P bit
+    ORA NESPPU_TempPtr
+    STA NESPPU_TempPtr
+
+    ; Get palette (bits 0-1) and add 8 for sprite palettes
+    PLA
+    AND #$03                        ; Get palette number (0-3)
+    CLC
+    ADC #$08                        ; Add 8 for sprite palettes (8-11)
+    ASL A                           ; Shift to bits 1-3
+    ORA NESPPU_TempPtr              ; Combine
+    STA SNES_OAMBuffer,Y            ; Store SNES attributes
+
+    ; Copy X position (byte 3)
+    INY
+    LDA $0700,Y
+    STA SNES_OAMBuffer,Y
+
+    ; Next sprite
+    INY
+    INX
+    CPX #$0040                      ; 64 NES sprites
+    BNE @spriteLoop
+
+    ; Clear remaining SNES sprites (64-127)
+    LDX #$0100                      ; Offset for sprite 64
+  @clearLoop:
+    LDA #$F0                        ; Y = 240 (offscreen)
+    STA SNES_OAMBuffer,X
+    INX
+    INX
+    INX
+    INX
+    CPX #$0200                      ; End of sprite data
+    BNE @clearLoop
+
+    ; Initialize high table (all zeros for 8x8 sprites)
+    LDX #$0200                      ; Start of high table
+  @clearHighTable:
+    STZ SNES_OAMBuffer,X
+    INX
+    CPX #$0220                      ; End of high table (32 bytes)
+    BNE @clearHighTable
+
+    PLB
+    PLP
+    RTL
+
+
+;=============================================================================
+; SNES_TransferOAM
+;
+; Transfer SNES OAM buffer to hardware OAM via DMA.
+;
+; Should be called during vblank.
+;=============================================================================
+SNES_TransferOAM:
+    PHP
+    SEP #$20
+    REP #$10
+    .a8
+    .i16
+
+    ; Set OAM address to 0
+    STZ $2102                       ; OAMADDL
+    STZ $2103                       ; OAMADDH
+
+    ; Set up DMA channel 0
+    LDA #$00                        ; Transfer mode: 1 byte, A→B
+    STA $4300                       ; DMAP0
+
+    LDA #$04                        ; Destination: $2104 (OAMDATA)
+    STA $4301                       ; BBAD0
+
+    ; Source address: SNES_OAMBuffer
+    LDA #.lobyte(SNES_OAMBuffer)
+    STA $4302                       ; A1T0L
+    LDA #.hibyte(SNES_OAMBuffer)
+    STA $4303                       ; A1T0H
+    LDA #.bankbyte(SNES_OAMBuffer)
+    STA $4304                       ; A1B0
+
+    ; Transfer size: 544 bytes
+    LDA #.lobyte(544)
+    STA $4305                       ; DAS0L
+    LDA #.hibyte(544)
+    STA $4306                       ; DAS0H
+
+    ; Start DMA transfer
+    LDA #$01                        ; Enable channel 0
+    STA $420B                       ; MDMAEN
+
+    PLP
+    RTL
+
+
+;=============================================================================
+; SNES_SetScroll
+;
+; Update SNES background scroll registers from NES scroll variables.
+;
+; NES uses PPUSCROLL (write twice: X then Y)
+; SNES has separate registers for each background layer
+;
+; We update BG1 (main game layer) with the scroll values.
+;
+; INPUTS:
+;   PPU_ScrollX - horizontal scroll position
+;   PPU_ScrollY - vertical scroll position
+;=============================================================================
+SNES_SetScroll:
+    PHP
+    SEP #$20
+    REP #$10
+    .a8
+    .i16
+
+    ; Set BG1 horizontal scroll
+    LDA PPU_ScrollX
+    STA $210D                       ; BG1HOFS (low byte)
+    LDA #$00
+    STA $210D                       ; BG1HOFS (high byte)
+
+    ; Set BG1 vertical scroll
+    LDA PPU_ScrollY
+    STA $210E                       ; BG1VOFS (low byte)
+    LDA #$00
+    STA $210E                       ; BG1VOFS (high byte)
+
+    PLP
+    RTL
+
+
+;=============================================================================
+; SNES_VBlankUpdate
+;
+; Main vblank orchestrator - calls all SNES PPU update functions.
+;
+; Should be called once per frame during vblank from the NMI handler.
+;
+; Sequence:
+;   1. Flush palette if dirty
+;   2. Flush CHR tiles if dirty
+;   3. Update scroll registers
+;   4. Convert and transfer OAM
+;=============================================================================
+SNES_VBlankUpdate:
+    PHP
+    SEP #$20
+    REP #$10
+    .a8
+    .i16
+
+    ; TEMPORARY: Return immediately to isolate crash location
+    ; TODO: Re-enable once we confirm NMI works
+    PLP
+    RTL
+
+    ; Check and flush palette
+    LDA NESPPU_DirtyFlags
+    AND #NESPPU_DIRTY_PAL
+    BEQ @skipPalette
+    JSL SNES_FlushPaletteBuffer
+    LDA NESPPU_DirtyFlags
+    AND #($FF ^ NESPPU_DIRTY_PAL)
+    STA NESPPU_DirtyFlags
+
+  @skipPalette:
+    ; Check and flush CHR
+    LDA NESPPU_DirtyFlags
+    AND #NESPPU_DIRTY_CHR
+    BEQ @skipCHR
+    JSL SNES_FlushDirtyCHR
+    LDA NESPPU_DirtyFlags
+    AND #($FF ^ NESPPU_DIRTY_CHR)
+    STA NESPPU_DirtyFlags
+
+  @skipCHR:
+    ; Update scroll
+    JSL SNES_SetScroll
+
+    ; Convert and transfer OAM
+    JSL SNES_ConvertNESOAMToSNES
+    JSL SNES_TransferOAM
+
+    PLP
+    RTL
+
+
+SNES_NESPPU_SetIncModeFromFlags:
+    PHP
+    SEP #$20                    ; A = 8
+    REP #$10                    ; X/Y = 16
+    .a8
+    .i16
+
+    BMI @_inc32
+
+  @_inc1:
+    LDA #$01
+    JMP @_finish
+
+  @_inc32:
+    LDA #$20
+
+  @_finish:
+    STA NESPPU_Inc
+    STZ NESPPU_Inc+1
+    PLP
+    RTL
+
+
+
+
+SNES_NESPPU_SetAddrHi:
+    STA NESPPU_AddrLatchHi
+    RTL
+
+
+SNES_NESPPU_SetAddrLoCommit:
+    PHP
+    SEP #$20                        ; A = 8
+    .a8
+
+    ; Build 16-bit address in NESPPU_Addr and mask to 14-bit.
+    STA NESPPU_Addr              ; Store the low byte
+
+    LDA NESPPU_AddrLatchHi
+    AND #$3F
+    STA NESPPU_Addr+1            ; Store the high byte
+
+    PLP
+    RTL
+
+
+SNES_NESPPU_WritePPUData:
+    PHP
+    PHB
+    SEP #$20
+    REP #$10
+    .a8
+    .i16
+
+    ; Set DB to WRAM ($7E) so long absolute works without 24-bit addressing
+    LDA #$7E
+    PHA
+    PLB
+
+    LDA NESPPU_Addr+1
+
+    ; Route by address range.
+    ; CHR: $0000-$1FFF
+    CMP #$20
+    BCC @_isCHR
+
+    ; Palette: $3F00-$3FFF mirrors; Detect opt byte == $3F
+    CMP #$3F
+    BEQ @_isPalette
+
+    ; NT: $2000-$3EFF -> Map to 0..0FFF
+  @_isNT:
+    ; Check if this is an attribute write ($23C0-$23FF, etc.)
+    ; Attribute area starts at offset $3C0 within each nametable
+    REP #$20
+    .a16
+    LDA NESPPU_Addr
+    AND #$03FF                      ; Get offset within nametable
+    CMP #$03C0
+    SEP #$20
+    .a8
+    BCS @_isAttribute               ; If >= $3C0, it's attribute data
+
+    ; Regular nametable tile write
+    REP #$20
+    .a16
+    LDA NESPPU_Addr
+    SEC
+    SBC #$2000
+    AND #$0FFF
+    TAX
+    SEP #$20
+    .a8
+    LDA #$00                        ; Dummy data for now
+    STA NESPPU_NTShadow,X
+    BRA @_ntDone
+
+  @_isAttribute:
+    ; Attribute write - store in attribute shadow
+    ; Calculate offset: (nametable * 64) + (addr & $3F)
+    LDA NESPPU_Addr+1               ; Get high byte
+    AND #$0C                        ; Isolate nametable bits
+    LSR A                           ; Divide by 4
+    LSR A
+    ASL A                           ; Multiply by 64
+    ASL A
+    ASL A
+    ASL A
+    ASL A
+    ASL A
+    STA NESPPU_TempPtr              ; Store base offset
+
+    LDA NESPPU_Addr                 ; Get low byte
+    AND #$3F                        ; Mask to attribute offset
+    CLC
+    ADC NESPPU_TempPtr
+    TAX
+
+    LDA #$00                        ; Dummy data for now
+    STA NES_AttributeShadow,X
+
+  @_ntDone:
+    LDA NESPPU_DirtyFlags
+    ORA #NESPPU_DIRTY_NT
+    STA NESPPU_DirtyFlags
+    BRA @_inc
+
+  @_isPalette:
+    ; Switch to 16-bit A for address arithmetic
+    REP #$20
+    .a16
+    LDA NESPPU_Addr
+    AND #$001F
+    TAX
+    SEP #$20
+    .a8
+    LDA #$00  ; Dummy data
+    STA NESPPU_PALShadow,X
+
+    LDA NESPPU_DirtyFlags
+    ORA #NESPPU_DIRTY_PAL
+    STA NESPPU_DirtyFlags
+    BRA @_inc
+
+  @_isCHR:
+    STA NESPPU_CHRShadow,X
+
+    ; Mark the specific tile dirty
+    ; DISABLED - causing stack corruption, just mark all CHR dirty for now
+    ; PHX
+    ; REP #$20
+    ; .a16
+    ; TXA
+    ; LSR A
+    ; LSR A
+    ; LSR A
+    ; LSR A
+    ; TAX
+    ; SEP #$20
+    ; .a8
+    ; JSL SNES_MarkCHRDirty
+    ; PLX
+
+    LDA NESPPU_DirtyFlags
+    ORA #NESPPU_DIRTY_CHR
+    STA NESPPU_DirtyFlags
+
+  @_inc:
+    REP #$20
+    .a16
+    LDA NESPPU_Addr
+    CLC
+    ADC NESPPU_Inc
+    AND #$3FFF
+    STA NESPPU_Addr
+    SEP #$20
+    .a8
+
+    PLB
+    PLP
+    RTL
+
+
+
+SNES_NESPPU_FlushDirty:
+    RTL

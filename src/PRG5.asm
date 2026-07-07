@@ -283,7 +283,7 @@ Audio_ResetIfNothingSet:                    ; [$8038]
     LDX #$03                                ; X = 3 (loop counter).
 
   @_checkSoundEffectLoop:                   ; [$803e]
-    LDA SoundEffect_TicksRemaining,X        ; Load the sound effect at the
+    LDA a:SoundEffect_TicksRemaining,X      ; Load the sound effect at the
                                             ; current index.
     BNE @_return                            ; If it's set, then return.
     DEX                                     ; X-- (loop counter).
@@ -303,26 +303,30 @@ Audio_ResetIfNothingSet:                    ; [$8038]
 ;============================================================================
 ; Reset all audio channels.
 ;
-; Square Wave 1 Hi/Lo and Noise Volume will be set to 16.
-; Everything else will be set to 0.
+; This will enable constant volume for the Square Wave and
+; Noise channels, and clear all other audio state.
 ;
 ; INPUTS:
 ;     None.
 ;
 ; OUTPUTS:
-;     SQ1_HI:
-;     SQ1_LO:
+;     SQ1_VOL:
+;     SQ2_VOL:
+;         Set to Constant Volume, no length, no counter
+;         load, no duty.
+;
 ;     NOISE_VOL:
-;         Set to 16.
+;         Set to Constant Volume, no length, no counter
+;         load.
 ;
 ;     NOISE_HI:
 ;     NOISE_LO:
+;     SQ1_HI:
+;     SQ1_LO:
 ;     SQ1_SWEEP:
-;     SQ1_VOL:
 ;     SQ2_HI:
 ;     SQ2_LO:
 ;     SQ2_SWEEP:
-;     SQ2_VOL:
 ;     TRI_HI:
 ;     TRI_LINEAR:
 ;     TRI_LO:
@@ -335,10 +339,19 @@ Audio_ResetIfNothingSet:                    ; [$8038]
 ;     SoundEffects_Init
 ;============================================================================
 Audio_Reset:                                ; [$804a]
+    ;
+    ; Enable the Constant Volume bit on Pulse 1/2 and Noise
+    ; channels.
+    ;
     LDA #$10
-    STA a:SQ1_VOL                           ; Set to 16.
-    STA a:SQ2_VOL                           ; Set to 16.
-    STA a:NOISE_VOL                         ; Set to 16.
+    STA a:SQ1_VOL                           ; Enable the Constant Volume bit.
+    STA a:SQ2_VOL                           ; Enable the Constant Volume bit.
+    STA a:NOISE_VOL                         ; Enable the Constant Volume bit.
+
+
+    ;
+    ; Clear all other channel state.
+    ;
     LDA #$00
     STA a:SQ1_SWEEP                         ; Set to 0.
     STA a:SQ1_LO                            ; Set to 0.
@@ -356,6 +369,13 @@ Audio_Reset:                                ; [$804a]
 
 ;============================================================================
 ; Load channel and MScript state for music.
+;
+; This will take the index of the music to load and convert
+; it into an address for processing.
+;
+; The initial state of the music engine (note durations,
+; transpose, note lengths, etc.) will be reset for the
+; song across all channels.
 ;
 ; XREFS:
 ;     Music_HandleOnInterrupt
@@ -395,7 +415,7 @@ Music_Load:                                 ; [$8079]
     LDX #$07                                ; X = 7 (loop counter).
 
   @_loadMusicLoop:                          ; [$8085]
-    LDA MSCRIPTS_LOOKUP,Y                   ; Load the MScript channel
+    LDA a:MSCRIPTS_LOOKUP,Y                 ; Load the MScript channel
                                             ; address at Y.
     STA Music_CurrentScriptAddrs,X          ; Store it in the list of channel
                                             ; addresses.
@@ -438,10 +458,10 @@ Music_Load:                                 ; [$8079]
     STX a:Music_Note_Period_Low
     STX a:Music_Note_Period_High
     STX a:MScript_Unused_RawValue
-    STX a:Something_Music_Triangle_017e
+    STX a:Music_Triangle_Remaining
     STX a:Music_Noise_Remaining
     STX a:Music_SQEffect_Delta
-    STX a:MScript_CurValue
+    STX a:Music_TempValue
     STX a:Music_SQPitchDelta_Mask
     STX a:Music_SQPitchDelta_Mask_1_
     STX a:Music_SQ2_TimerLowBias
@@ -451,14 +471,14 @@ Music_Load:                                 ; [$8079]
     ; Set the following to 1.
     ;
     INX                                     ; X = 1
-    STX a:Music_NoteTicksRemaining
-    STX a:Music_NoteTicksRemaining_1_
-    STX a:Music_NoteTicksRemaining_2_
-    STX a:Music_NoteTicksRemaining_3_
+    STX a:Music_ChannelTicksRemaining
+    STX a:Music_ChannelTicksRemaining_1_
+    STX a:Music_ChannelTicksRemaining_2_
+    STX a:Music_ChannelTicksRemaining_3_
 
 
     ;
-    ; Clear the repeat counts for each channel.
+    ; Set the durations for each channel to 1.
     ;
     STX a:MScript_NoteDurations
     STX a:MScript_NoteDurations_1_
@@ -505,11 +525,11 @@ Music_Load:                                 ; [$8079]
 ; unset.
 ;
 ; INPUTS:
-;     Music_NoteTicksRemaining:
+;     Music_ChannelTicksRemaining:
 ;         The repeat counters for each channel.
 ;
 ; OUTPUTS:
-;     Music_NoteTicksRemaining:
+;     Music_ChannelTicksRemaining:
 ;         The updated repeat counters for each channel.
 ;
 ;     Music_NumChannelsCompleted:
@@ -548,7 +568,7 @@ Music_PlayNext:                             ; [$8106]
     ;
   @_loop:                                   ; [$810e]
     LDX a:MScript_CurrentChannel            ; X = Current channel index
-    DEC Music_NoteTicksRemaining,X
+    DEC a:Music_ChannelTicksRemaining,X
     BNE @_play
     JSR MScripts_InvokeNext
 
@@ -578,14 +598,16 @@ Music_PlayNext:                             ; [$8106]
   @_return:                                 ; [$8131]
     RTS
 
+
 ;============================================================================
-; TODO: Document Music_PlayForChannel
+; Play a Square Wave or Triangle channel every tick.
 ;
-; INPUTS:
-;     None.
+; Noise is not handled here. Instead it's handled in
+; Music_PlayNoise when
+; Music_ChannelTicksRemaining
+; reaches 0.
 ;
-; OUTPUTS:
-;     TODO
+;
 ;
 ; XREFS:
 ;     Music_PlayNext
@@ -605,20 +627,20 @@ Music_PlayForChannel:                       ; [$8132]
     ;
   @_isTriangleWave:                         ; [$813e]
     LDX a:MScript_CurrentChannel            ; Load the current channel index.
-    LDA a:Something_Music_Triangle_017e
+    LDA a:Music_Triangle_Remaining
     BEQ @_checkSoundEffectOnTri
-    DEC a:Something_Music_Triangle_017e
+    DEC a:Music_Triangle_Remaining
     LDA #$c0
 
   @_checkSoundEffectOnTri:                  ; [$814b]
-    STA a:MScript_CurValue
+    STA a:Music_TempValue
 
 
     ;
     ; Check if there's currently a sound effect playing
     ; on the Triangle Wave channel.
     ;
-    LDA SoundEffect_TicksRemaining,X        ; Load the current sound effect
+    LDA a:SoundEffect_TicksRemaining,X      ; Load the current sound effect
                                             ; on the Triangle Wave channel.
     BNE @_clearTriangleWave                 ; If one is set, jump to clear
                                             ; it.
@@ -627,7 +649,7 @@ Music_PlayForChannel:                       ; [$8132]
     ;
     ; No sound effect is playing on the Triangle Wave channel.
     ;
-    LDA a:MScript_CurValue                  ; Load the value to play.
+    LDA a:Music_TempValue                   ; Load the value to play.
     STA a:TRI_LINEAR                        ; Set it on the channel.
     RTS                                     ; And return.
 
@@ -643,7 +665,7 @@ Music_PlayForChannel:                       ; [$8132]
     ;
   @_isSquareWave:                           ; [$8160]
     LDX a:MScript_CurrentChannel
-    LDY Music_SQEnvelope_Mode,X
+    LDY a:Music_SQEnvelope_Mode,X
     BEQ Music_PlaySQEnvelopeModeLinearTrailoff
     DEY
     BEQ Music_PlaySQEnvelopeModeCurveButHeld
@@ -675,7 +697,7 @@ Music_PlayForChannel:                       ; [$8132]
 ;     Music_SQEnvelope_Value:
 ;         The updated counter values.
 ;
-;     MScript_CurValue:
+;     Music_TempValue:
 ;         The updated volume.
 ;
 ; CALLS:
@@ -694,17 +716,17 @@ Music_PlaySQEnvelopeModeLinearTrailoff:     ; [$816f]
     ; Check if the counter is 0. If so, it'll stay that way
     ; until playback finishes.
     ;
-    LDA Music_SQEnvelope_Value,X            ; Load the fade-out counter value
+    LDA a:Music_SQEnvelope_Value,X          ; Load the fade-out counter value
                                             ; for the mode.
     BEQ @LAB_PRG5__817d                     ; If it's 0, jump.
 
 
     ;
-    ; The counter is a positive value. Subtract 3 and store it.
+    ; The counter is a non-zero value. Subtract 3 and store it.
     ;
     SEC
     SBC #$03                                ; Subtract 3 from the counter.
-    STA Music_SQEnvelope_Value,X            ; Store the new counter.
+    STA a:Music_SQEnvelope_Value,X          ; Store the new counter.
 
 
     ;
@@ -718,14 +740,14 @@ Music_PlaySQEnvelopeModeLinearTrailoff:     ; [$816f]
     LSR A
     LSR A
     AND #$0f                                ; Mask out the upper nibble.
-    STA a:MScript_CurValue                  ; Store as the new volume value
+    STA a:Music_TempValue                   ; Store as the new volume value
                                             ; for the Square Wave.
 
 
     ;
     ; Check if any special effects are playing on this channel.
     ;
-    LDA SoundEffect_TicksRemaining,X        ; Load any current special
+    LDA a:SoundEffect_TicksRemaining,X      ; Load any current special
                                             ; effects on this channel.
     BNE @_return                            ; If set, return.
     JSR Music_UpdateSQVolRegister           ; Update the volume and flags the
@@ -753,22 +775,59 @@ Music_PlaySQEnvelopeModeCurveButHeld:       ; [$8192]
     ;
     LDX a:MScript_CurrentChannel            ; Load the current MScript
                                             ; channel.
-    LDA Music_SQEnvelope_Value,X
-    AND #$0f
-    STA Music_SQEnvelope_Value,X
-    CMP #$0d
-    BCC @LAB_PRG5__81a7
-    DEC Music_SQEnvelope_Value,X
-    DEC Music_SQEnvelope_Value,X
+    LDA a:Music_SQEnvelope_Value,X          ; Load the envelopve value for
+                                            ; the channel.
+    AND #$0f                                ; Keep the lower nibble (0-15).
+    STA a:Music_SQEnvelope_Value,X          ; Store as the new value.
 
-  @LAB_PRG5__81a7:                          ; [$81a7]
-    INC Music_SQEnvelope_Phase,X
-    LDA Music_SQEnvelope_Value,X
-    STA a:MScript_CurValue
-    LDA SoundEffect_TicksRemaining,X
-    BNE @_return
-    JSR Music_UpdateSQVolRegister
-    JSR Music_ApplySQPitchEffectToLO
+
+    ;
+    ; Apply a cap on the envelope value. If it's >= 13, reduce
+    ; it by 2 (capping at a max of 13).
+    ;
+    CMP #$0d                                ; Is it < 13?
+    BCC @_applyMode                         ; If so, jump.
+
+
+    ;
+    ; Cap this value to a max of 13.
+    ;
+    ; We can safely say it'll be capped here, because we've
+    ; ensured a range of 0-15 above, and have checked if it's
+    ; >= 13.
+    ;
+    ; A value of 15 will become 13.
+    ; A value of 14 will become 12.
+    ; A value of 13 will become 11.
+    ;
+    DEC a:Music_SQEnvelope_Value,X          ; Decrement the envelope value by
+                                            ; 2.
+    DEC a:Music_SQEnvelope_Value,X
+
+
+    ;
+    ; Increment the phase.
+    ;
+  @_applyMode:                              ; [$81a7]
+    INC a:Music_SQEnvelope_Phase,X          ; Increment the phase by 1.
+    LDA a:Music_SQEnvelope_Value,X          ; Load the envelope value.
+    STA a:Music_TempValue                   ; Store it as the volume to set.
+
+
+    ;
+    ; Check if there are any sound effects currently playing.
+    ; If so, give them priority.
+    ;
+    LDA a:SoundEffect_TicksRemaining,X      ; Check if a sound effect is
+                                            ; playing.
+    BNE @_return                            ; If so, return.
+
+
+    ;
+    ; Apply a volume and pitch effect.
+    ;
+    JSR Music_UpdateSQVolRegister           ; Update the volume.
+    JSR Music_ApplySQPitchEffectToLO        ; Apply a pitch effect.
 
   @_return:                                 ; [$81bb]
     RTS
@@ -790,20 +849,44 @@ Music_PlaySQEnvelopeModePluck:              ; [$81bc]
     ;
     LDX a:MScript_CurrentChannel            ; Load the current MScript
                                             ; channel.
-    LDA Music_SQEnvelope_Phase,X
+    LDA a:Music_SQEnvelope_Phase,X          ; Load the current phase.
+    LSR A                                   ; Divide by 4 and use the result
+                                            ; as an index in the lookup
+                                            ; table.
     LSR A
-    LSR A
-    TAY
-    LDA SQ_MODE_2_PLUCK_VALUES,Y
-    BEQ @LAB_PRG5__81cd
-    INC Music_SQEnvelope_Phase,X
+    TAY                                     ; Y = resulting index.
+    LDA a:SQ_MODE_2_PLUCK_VALUES,Y          ; Load the pluck value from the
+                                            ; table.
+    BEQ @_applyEffect                       ; If it's 0 (end of table), jump
+                                            ; to avoid incrementing the index
+                                            ; within the table.
 
-  @LAB_PRG5__81cd:                          ; [$81cd]
-    STA a:MScript_CurValue
-    LDA SoundEffect_TicksRemaining,X
-    BNE @_return
-    JSR Music_UpdateSQVolRegister
-    JSR Music_ApplySQPitchEffectToLO
+
+    ;
+    ; The index is still within the range of the table.
+    ; Increment the index for the next table value.
+    ;
+    INC a:Music_SQEnvelope_Phase,X          ; Increment the phase.
+
+  @_applyEffect:                            ; [$81cd]
+    STA a:Music_TempValue                   ; Store the table entry as the
+                                            ; volume to apply.
+
+
+    ;
+    ; Check if there are any sound effects playing. If so, give
+    ; them priority.
+    ;
+    LDA a:SoundEffect_TicksRemaining,X      ; Check if any sound effects are
+                                            ; playing.
+    BNE @_return                            ; If so, return.
+
+
+    ;
+    ; Apply the volume and pitch effect.
+    ;
+    JSR Music_UpdateSQVolRegister           ; Update the volume.
+    JSR Music_ApplySQPitchEffectToLO        ; Apply the pitch effect.
 
   @_return:                                 ; [$81db]
     RTS
@@ -854,7 +937,7 @@ SQ_MODE_2_PLUCK_VALUES:                     ; [$81dc]
 ;     MScript_CurrentChannel:
 ;         The current channel being processed (0 or 1).
 ;
-;     MScript_CurValue:
+;     Music_TempValue:
 ;         The current volume value to use as a base.
 ;
 ;     Music_SQ_Fades:
@@ -880,19 +963,20 @@ Music_UpdateSQVolRegister:                  ; [$81f1]
     ;
     LDX a:MScript_CurrentChannel            ; Load the MScript channel.
     TXA                                     ; A = result.
-    ASL A                                   ; Convert to a word boundary.
-    ASL A                                   ; And double, giving us the start
-                                            ; of either SQ channel volume
-                                            ; addresses.
-    TAY                                     ; Y = resulting index.
+    ASL A                                   ; Convert to a starting index in
+                                            ; the set of Square Wave
+                                            ; registers.
+    ASL A
+    TAY                                     ; Y = resulting register index
+                                            ; ($4000/$4004).
 
 
     ;
     ; Apply any fade set.
     ;
-    LDA a:MScript_CurValue                  ; Load the volume to set.
+    LDA a:Music_TempValue                   ; Load the volume to set.
     SEC
-    SBC Music_SQ_Fades,X                    ; Subtract any fade that was set.
+    SBC a:Music_SQ_Fades,X                  ; Subtract any fade that was set.
     BCS @_setVolume                         ; If positive, jump.
 
 
@@ -904,9 +988,9 @@ Music_UpdateSQVolRegister:                  ; [$81f1]
   @_setVolume:                              ; [$8203]
     LDX a:MScript_CurrentChannel            ; Load the current SQ channel as
                                             ; an index.
-    ORA Music_SQ_ControlBits,X              ; Apply control bits to the value
+    ORA a:Music_SQ_ControlBits,X            ; Apply control bits to the value
                                             ; to set for the register.
-    STA SQ1_VOL,Y                           ; And set the register.
+    STA a:SQ1_VOL,Y                         ; And set the register.
     RTS
 
 ;============================================================================
@@ -932,7 +1016,7 @@ Music_ApplySQPitchEffectToLO:               ; [$820d]
     ; Make sure the phase counter reached 18 before we make any
     ; changes. This provides a delay.
     ;
-    LDA Music_SQEnvelope_Phase,X            ; Load the phase counter for the
+    LDA a:Music_SQEnvelope_Phase,X          ; Load the phase counter for the
                                             ; channel.
     CMP #$12                                ; Is it < 18?
     BCC @_return                            ; If so, end.
@@ -950,10 +1034,16 @@ Music_ApplySQPitchEffectToLO:               ; [$820d]
     LSR A                                   ; Divide by 4, giving quarter
                                             ; speed.
     LSR A
-    AND Music_SQPitchDelta_Mask,X           ; AND with our depth mask,
+    AND a:Music_SQPitchDelta_Mask,X         ; AND with our depth mask,
                                             ; defining the range.
     STA a:Music_SQEffect_Delta              ; Store as the delta.
-    LDA SoundEffect_TicksRemaining,X        ; Check for sound effects on this
+
+
+    ;
+    ; If any sound effects are playing on this channel, don't
+    ; play. Give the sound effectws priority.
+    ;
+    LDA a:SoundEffect_TicksRemaining,X      ; Check for sound effects on this
                                             ; channel.
     BNE @_return                            ; If any are set, skip playing on
                                             ; this channel.
@@ -964,17 +1054,18 @@ Music_ApplySQPitchEffectToLO:               ; [$820d]
     ;
     LDA a:MScript_CurrentChannel            ; Load the current MScript
                                             ; channel.
-    ASL A                                   ; Convert to a word boundary.
-    ASL A                                   ; And multiply by 2 for the
-                                            ; channel offset.
-    TAY                                     ; Y = resulting index.
+    ASL A                                   ; Convert to an index within the
+                                            ; set of Square Wave registers
+    ASL A
+    TAY                                     ; Y = resulting registers index
+                                            ; ($4000/$4004).
 
 
     ;
     ; Don't apply the effect if the base is too small to subtract from.
     ;
-    LDA Music_Current_SQ_Low,X              ; Load the low value .
-    CMP Music_SQPitchDelta_Mask,X           ; Is it less than the depth mask?
+    LDA a:Music_Current_SQ_Low,X            ; Load the low value .
+    CMP a:Music_SQPitchDelta_Mask,X         ; Is it less than the depth mask?
     BCC @_return                            ; If so, return.
 
 
@@ -984,7 +1075,7 @@ Music_ApplySQPitchEffectToLO:               ; [$820d]
     SEC
     SBC a:Music_SQEffect_Delta              ; Subtract the delta calculated
                                             ; above.
-    STA SQ1_LO,Y                            ; And store it in the register.
+    STA a:SQ1_LO,Y                          ; And store it in the register.
 
   @_return:                                 ; [$8239]
     RTS
@@ -1023,28 +1114,40 @@ MScripts_InvokeNext:                        ; [$823a]
                                             ; processed
     CPX #$03                                ; Is this the noise channel?
     BNE @_loadNextValue                     ; If not, jump.
+
+
+    ;
+    ; This is the Noise channel. See if there's noise to play.
+    ;
     LDA a:Music_Noise_Remaining             ; Is there noise to play?
     BEQ @_loadNextValue                     ; If not, process the next value
                                             ; in the script.
+
+
+    ;
+    ; There is noise, so play it.
+    ;
     JMP Music_PlayNoise                     ; Else, play the noise.
 
   @_loadNextValue:                          ; [$8249]
     JSR MScripts_GetNextValue               ; Get the next value from the
                                             ; MScript.
-    STA a:MScript_CurValue                  ; Store it.
+    STA a:Music_TempValue                   ; Store it.
     TAY                                     ; Y = Value
     BMI @_handleScriptValue                 ; If the script value is >= 0x80,
                                             ; jump to handle it.
-    JMP MScripts_PlayIfHasValue             ; Play if there's a value, or
+    JMP Music_PlayOrRest                    ; Play if there's a value, or
                                             ; finish if 0.
 
 
     ;
-    ; Check if this is an MScript op (>= 0xEE).
+    ; Check if this is an MScript op (>= 0xEE) or a note length
+    ; (>= 0x80, < 0xEE).
     ;
   @_handleScriptValue:                      ; [$8255]
     CMP #$ee                                ; Is this < 0xEE?
-    BCC MScripts_SetNoteLengthFromNext      ; If so, jump.
+    BCC MScripts_SetNoteLengthFromNext      ; If so, set the note length from
+                                            ; the next value.
 
 
     ;
@@ -1052,17 +1155,17 @@ MScripts_InvokeNext:                        ; [$823a]
     ;
     SEC
     LDA #$ff                                ; A = 0xFF
-    SBC a:MScript_CurValue                  ; Subtract the opcode, giving an
+    SBC a:Music_TempValue                   ; Subtract the opcode, giving an
                                             ; index into the lookup table.
     ASL A                                   ; Normalize to a word boundary
                                             ; for the lookup table.
     TAY                                     ; Y = A
-    LDA MSCRIPT_OP_HANDLERS+1,Y             ; Load the address of the handler
+    LDA a:MSCRIPT_OP_HANDLERS+1,Y           ; Load the address of the handler
                                             ; and push to the stack.
     PHA
-    LDA MSCRIPT_OP_HANDLERS,Y
+    LDA a:MSCRIPT_OP_HANDLERS,Y
     PHA
-    RTS
+    RTS                                     ; And call it.
 
 
 ;============================================================================
@@ -1114,26 +1217,28 @@ MSCRIPT_OP_HANDLERS:                        ; [$826a]
     pointer MScript_Op_SetSQ2Detune-1       ; MScript_Op_SetSQ2Detune
                                             ; [$PRG5::828c]
 
+
 ;============================================================================
-; TODO: Document MScripts_SetNoteLengthFromNext
+; Set the note length from the next value read from the MScript.
 ;
 ; INPUTS:
-;     None.
+;     Music_TempValue:
+;         The value loaded from the script.
 ;
 ; OUTPUTS:
-;     TODO
+;     None.
+;
+; CALLS:
+;     MScripts_SetNoteLengthFromValue
 ;
 ; XREFS:
 ;     MScripts_InvokeNext
 ;============================================================================
 MScripts_SetNoteLengthFromNext:             ; [$828e]
-    LDA a:MScript_CurValue                  ; Load the current script value.
+    LDA a:Music_TempValue                   ; Load the current script value.
     AND #$7f                                ; Discard bit 7.
-    BPL MScripts_SetNoteLengthFromValue
-
-    ;
-    ; v-- Fall through --v
-    ;
+    BPL MScripts_SetNoteLengthFromValue     ; Unconditionally jump (bit 7
+                                            ; will always be clear).
 
 ;============================================================================
 ; TODO: Document MScript_Op_RepeatValue
@@ -1165,148 +1270,290 @@ MScript_Op_RepeatValue:                     ; [$8295]
 ;     MScripts_SetNoteLengthFromNext
 ;============================================================================
 MScripts_SetNoteLengthFromValue:            ; [$8298]
-    LDX a:MScript_CurrentChannel
-    STA MScript_NoteDurations,X
-    STA a:MScript_CurValue
-    LDX a:MScript_CurrentChannel
-    CPX #$02
-    BEQ MScripts_InvokeNext
-    LDA a:MScript_CurValue
-    PHA
-    LSR A
-    LSR A
-    LSR A
-    STA a:MScript_CurValue
-    PLA
-    SEC
-    SBC a:MScript_CurValue
-    CMP #$10
-    BCS @_beginCheckOffsets
-    ASL A
-    ASL A
-    ASL A
-    ASL A
-    ORA #$08
-    STA Music_SQ_Note_Lengths,X
-    CMP #$08
-    BNE @_invokeNext
-    LDA #$18
-    BNE @_storeLength
+    LDX a:MScript_CurrentChannel            ; Load the current channel.
+    STA a:MScript_NoteDurations,X           ; Set the duration for the
+                                            ; channel.
+    STA a:Music_TempValue                   ; Store temporarily for later
+                                            ; calculations.
+    LDX a:MScript_CurrentChannel            ; Load the current channel index
+                                            ; (again).
+    CPX #$02                                ; Is it 2 (triangle)?
+    BEQ MScripts_InvokeNext                 ; If so, run the next op from the
+                                            ; script.
 
+
+    ;
+    ; This is not the Triangle channel. It's Square Wave/Pulse
+    ; or Noise.
+    ;
+    LDA a:Music_TempValue                   ; Load the current value from the
+                                            ; MScript.
+    PHA                                     ; Push it to the stack.
+    LSR A                                   ; Divide by 8.
+    LSR A
+    LSR A
+    STA a:Music_TempValue                   ; Store it back temporarily.
+    PLA                                     ; Pop the value back from the
+                                            ; stack.
+    SEC
+    SBC a:Music_TempValue                   ; Subtract the result of our
+                                            ; division.
+    CMP #$10                                ; Is it >= 16?
+    BCS @_beginCheckOffsets                 ; If so, jump.
+    ASL A                                   ; Multiply by 16.
+    ASL A
+    ASL A
+    ASL A
+    ORA #$08                                ; OR with 8.
+    STA a:Music_SQ_Note_Lengths,X           ; Store as the note length.
+    CMP #$08                                ; Is the value exactly 8?
+    BNE @_invokeNext                        ; If not, jump.
+    LDA #$18                                ; Else, set 24 as the note
+                                            ; duration.
+    BNE @_storeLength                       ; Jump to set the length.
+
+
+    ;
+    ; Look for an entry in the table that is <= our calculated
+    ; value.
+    ;
+    ; The loop counter seems to wrap from 0 on up through 0
+    ; (overflowing), but in reality the last entry in the table
+    ; will always terminate the loop (as it's 0, and 0 <= all
+    ; values).
+    ;
   @_beginCheckOffsets:                      ; [$82cc]
-    LDY #$00
+    LDY #$00                                ; Y = 0 (loop counter).
 
   @_checkOffsetLoop:                        ; [$82ce]
-    CMP MUSIC_CHANNEL_NOTE_OFFSETS_3_,Y
-    BCS @_loadLength
+    CMP a:NOTE_LENGTH_CMP_LOWER_BOUNDS,Y    ; Is the value from the table <=
+                                            ; our calculated value?
+    BCS @_loadLength                        ; If so, break.
+    INY                                     ; Y += 2 (loop counter).
     INY
-    INY
-    BNE @_checkOffsetLoop
+    BNE @_checkOffsetLoop                   ; If != 0, loop.
 
   @_loadLength:                             ; [$82d7]
-    LDA BYTE_PRG5__8570,Y
+    LDA a:NOTE_LENGTH_VALUES,Y              ; Load the value from the tabe.
 
   @_storeLength:                            ; [$82da]
-    STA Music_SQ_Note_Lengths,X
+    STA a:Music_SQ_Note_Lengths,X
 
   @_invokeNext:                             ; [$82dd]
     JMP MScripts_InvokeNext
     JMP MScripts_InvokeNext                 ; Unreachable?
 
+
 ;============================================================================
-; TODO: Document MScripts_PlayIfHasValue
+; Play a note, noise, or rest from the MScript.
+;
+; This takes the loaded value in both A and Y, and then
+; checks if it's 0 (indicating a Rest) or non-0 (either a
+; wave value or noise value, depending on the channel).
 ;
 ; INPUTS:
-;     A
-;     Y
+;     A:
+;     Y:
+;         The value loaded from the MScript.
 ;
 ; OUTPUTS:
-;     TODO
+;     None.
+;
+; CALLS:
+;     Music_PlayWaveOrNoise
+;     Music_ResetTicksRemaining
 ;
 ; XREFS:
 ;     MScripts_InvokeNext
 ;============================================================================
-MScripts_PlayIfHasValue:                    ; [$82e3]
-    CMP #$00
-    BNE Music_PlayWaveOrNoise
-    JMP Music_StoreNoteDuration
+Music_PlayOrRest:                           ; [$82e3]
+    CMP #$00                                ; Is the value > 0?
+    BNE Music_PlayWaveOrNoise               ; If so, play it on the channel.
+
+
+    ;
+    ; This is a Rest. Set the duration as the number of ticks
+    ; remaining.
+    ;
+    JMP Music_ResetTicksRemaining           ; Set the duration as the number
+                                            ; of ticks remaining.
+
 
 ;============================================================================
-; TODO: Document Music_PlayWaveOrNoise
+; Play audio on the noise of wave channels.
+;
+; This will determine which channel is being played and
+; then begin playing the current note value in the MScript
+; on that channel.
 ;
 ; INPUTS:
-;     A
-;     Y
+;     A:
+;         The byte loaded from the MScript.
+;
+;     MScript_CurrentChannel:
+;         The current channel being processed.
 ;
 ; OUTPUTS:
-;     TODO
+;     Music_Noise_Index:
+;         The loaded index within the noise register lookup table.
+;
+;     Music_Noise_Remaining:
+;         The duration of the loaded noise.
+;
+; CALLS:
+;     Music_PlayNoise
+;     Music_SetupWave
 ;
 ; XREFS:
-;     MScripts_PlayIfHasValue
+;     Music_PlayOrRest
 ;============================================================================
 Music_PlayWaveOrNoise:                      ; [$82ea]
-    LDX a:MScript_CurrentChannel
-    CPX #$03
-    BNE Music_PlayWave
+    LDX a:MScript_CurrentChannel            ; Load the current music channel.
+    CPX #$03                                ; Is it the noise channel?
+    BNE Music_SetupWave                     ; If not, play as a wave (square
+                                            ; or triangle).
 
 
     ;
     ; This is the Noise channel.
     ;
-    PHA
-    AND #$0f
-    STA a:Music_Noise_Remaining
-    PLA
+    PHA                                     ; Push the noise value to the
+                                            ; stack.
+    AND #$0f                                ; Keep the lower nibble.
+    STA a:Music_Noise_Remaining             ; Store as the noise ticks
+                                            ; remaining.
+    PLA                                     ; Pop the noise value from the
+                                            ; stack.
+    LSR A                                   ; Shift the upper nibble into the
+                                            ; lower.
     LSR A
     LSR A
     LSR A
-    LSR A
-    STA a:Music_Noise_Index
+    STA a:Music_Noise_Index                 ; Store as the index into the
+                                            ; noise table.
 
     ;
     ; v-- Fall through --v
     ;
 
+
 ;============================================================================
-; TODO: Document Music_PlayNoise
+; Play audio on the noise channel.
+;
+; If we're not already in the middle of playing noise, and
+; there's a noise index loaded to play, this will write the
+; corresponding noise from the MUSIC_NOISE_REGISTER_VALUES
+; lookup table to the registers.
+;
+; If there are sound effects being played, this will not
+; play noise.
+;
+; Whether the noise ends up being played or silenced in
+; favor of a sound effect, the number of ticks remaining
+; for the noise will be set based on its duration.
 ;
 ; INPUTS:
-;     None.
+;     Music_Noise_Remaining:
+;         The number of ticks of noise remaining.
+;
+;     SoundEffect_TicksRemaining:
+;         Ticks remaining for any sound effects on the
+;         noise channel.
+;
+;         If set, noise will not play.
+;
+;     Music_Noise_Index:
+;         The index of the precomputed noise to play.
+;
+;     MUSIC_NOISE_REGISTER_VALUES:
+;         The table of noise register values by noise index.
 ;
 ; OUTPUTS:
-;     TODO
+;     NOISE_VOL:
+;     NOISE_HI:
+;     NOISE_LO:
+;         Register state for the played noise.
+;
+; CALLS:
+;     Music_ResetTicksRemaining
 ;
 ; XREFS:
 ;     MScripts_InvokeNext
 ;============================================================================
 Music_PlayNoise:                            ; [$82ff]
-    DEC a:Music_Noise_Remaining
-    LDA a:SoundEffect_TicksRemaining_3_
-    BEQ @LAB_PRG5__830a
-    JMP Music_StoreNoteDuration
+    DEC a:Music_Noise_Remaining             ; Decrement the number of noise
+                                            ; ticks remaining.
 
-  @LAB_PRG5__830a:                          ; [$830a]
-    LDA a:Music_Noise_Index
-    BNE @LAB_PRG5__8312
-    JMP Music_StoreNoteDuration
 
-  @LAB_PRG5__8312:                          ; [$8312]
+    ;
+    ; First check if any sound effects are playing on the
+    ; noise channel. If so, we don't want to play music (give
+    ; the sound effects priority).
+    ;
+    LDA a:SoundEffect_TicksRemaining_3_     ; Check if any sound effects are
+                                            ; playing on the noise channel.
+    BEQ @_noNoiseSoundEffects               ; If not, jump to process noise.
+
+
+    ;
+    ; A sound effect is playing on the noise channel. Sync
+    ; the number of ticks remaining to the note duration.
+    ;
+    JMP Music_ResetTicksRemaining           ; Set the number of ticks for
+                                            ; this noise based on its
+                                            ; duration.
+
+
+    ;
+    ; There are no more ticks remaining. Check if the noise
+    ; index for the values table is 0 (which means no noise
+    ; to play, just a duration). If so, we'll simply sync the
+    ; note duration again and return.
+    ;
+  @_noNoiseSoundEffects:                    ; [$830a]
+    LDA a:Music_Noise_Index                 ; Load the current noise table
+                                            ; index.
+    BNE @_hasNoiseIndex
+
+
+    ;
+    ; The noise index loaded in from the byte is 0. We won't
+    ; be playing. Instead, sync the ticks remaining from the
+    ; current noise duration.
+    ;
+    JMP Music_ResetTicksRemaining           ; Set the number of ticks for
+                                            ; this noise based on its
+                                            ; duration.
+
+
+    ;
+    ; Generate an index into the noise register value table, and
+    ; begin writing to the registers.
+    ;
+  @_hasNoiseIndex:                          ; [$8312]
+    ASL A                                   ; Convert the index to a 4-byte
+                                            ; boundary.
     ASL A
-    ASL A
-    TAX
-    LDY #$00
+    TAX                                     ; X = resulting index.
+    LDY #$00                                ; Y = 0 (loop counter/write
+                                            ; index).
 
-  @LAB_PRG5__8317:                          ; [$8317]
-    LDA MUSIC_NOISE_VALUES,X
-    STA NOISE_VOL,Y
-    INX
-    INY
-    CPY #$04
-    BCC @LAB_PRG5__8317
-    JMP Music_StoreNoteDuration
+  @_noiseLoop:                              ; [$8317]
+    LDA a:MUSIC_NOISE_REGISTER_VALUES,X     ; Load the register value to
+                                            ; write from the table index.
+    STA a:NOISE_VOL,Y                       ; Write it in the appropriate
+                                            ; register.
+    INX                                     ; X++ (table read index).
+    INY                                     ; Y++ (loop/write index).
+    CPY #$04                                ; Is the counter < 4 (max number
+                                            ; of registers)?
+    BCC @_noiseLoop                         ; If so, loop.
+    JMP Music_ResetTicksRemaining           ; Set the number of ticks for
+                                            ; this noise based on its
+                                            ; duration.
 
 ;============================================================================
-; TODO: Document Music_PlayWave
+; TODO: Document Music_SetupWave
 ;
 ; INPUTS:
 ;     Y
@@ -1317,11 +1564,19 @@ Music_PlayNoise:                            ; [$82ff]
 ; XREFS:
 ;     Music_PlayWaveOrNoise
 ;============================================================================
-Music_PlayWave:                             ; [$8326]
-    LDX a:MScript_CurrentChannel
-    LDA SoundEffect_TicksRemaining,X
-    BEQ @_setNote
-    JMP Music_StoreNoteDuration
+Music_SetupWave:                            ; [$8326]
+    LDX a:MScript_CurrentChannel            ; Load the current channel.
+    LDA a:SoundEffect_TicksRemaining,X      ; Is there a sound effect playing
+                                            ; on this channel?
+    BEQ @_setNote                           ; If not, jump to set the note.
+
+
+    ;
+    ; There's a sound effect playing on the channel. Set the
+    ; duration but skip playing.
+    ;
+    JMP Music_ResetTicksRemaining           ; Set the ticks remaining to the
+                                            ; duration of the note.
 
   @_setNote:                                ; [$8331]
     LDX a:MScript_CurrentChannel
@@ -1333,34 +1588,50 @@ Music_PlayWave:                             ; [$8326]
     ;
     ; This is the Triangle Wave channel.
     ;
-    LDA #$c0
-    STA a:TRI_LINEAR
-    JSR Music_SetNote
-    LDA a:Music_Note_Period_Low
-    STA a:TRI_LO
-    LDX a:MScript_CurrentChannel
+    ; Set a looped play with a reload value of 64, with
+    ; provided timer value and max length.
+    ;
+    LDA #$c0                                ; Set looped play, length 64.
+    STA a:TRI_LINEAR                        ; Set for the Triangle channel.
+    JSR Music_SetNote                       ; Set the note to play.
+    LDA a:Music_Note_Period_Low             ; Load the queued low bits of the
+                                            ; period.
+    STA a:TRI_LO                            ; Write to the triangle register.
+    LDX a:MScript_CurrentChannel            ; Load the current channel being
+                                            ; played.
     LDA a:Music_Note_Period_High            ; Load the note period to play.
     ORA #$f8                                ; Set the full play length.
     STA a:TRI_HI                            ; And set as the Triangle High.
-    JMP Music_PlayTriangleWave
+    JMP Music_SetupTriangleWave             ; Jump to play the note on the
+                                            ; channel.
 
 
     ;
     ; This is the Square Wave 1 channel.
     ;
+    ; This will play the queued period for the given
+    ; length, with sweep disabled.
+    ;
   @_setSquareWave1:                         ; [$8355]
-    JSR Music_SetNote
+    JSR Music_SetNote                       ; Set the note to play.
     LDA #$00
-    STA a:SQ1_SWEEP
-    LDA a:Music_Note_Period_Low
-    STA a:SQ1_LO
-    STA a:Music_Current_SQ_Low
-    LDA a:Music_Note_Period_High
-    ORA a:Music_SQ_Note_Lengths
-    STA a:SQ1_HI
+    STA a:SQ1_SWEEP                         ; Disable sweep.
+    LDA a:Music_Note_Period_Low             ; Load the queued low bits of the
+                                            ; period.
+    STA a:SQ1_LO                            ; Write to the Square Wave 1
+                                            ; register.
+    STA a:Music_Current_SQ_Low              ; Store for the current Square
+                                            ; Wave channel for processing.
+    LDA a:Music_Note_Period_High            ; Load the queued high bits for
+                                            ; the period.
+    ORA a:Music_SQ_Note_Lengths             ; OR it with the stored note
+                                            ; length for this channel,
+                                            ; forming the register value.
+    STA a:SQ1_HI                            ; Write to the Square Wave
+                                            ; register.
     LDA #$00
-    STA a:Music_SQEnvelope_Phase
-    BEQ @_finish
+    STA a:Music_SQEnvelope_Phase            ; Clear the envelope phase.
+    BEQ @_finish                            ; Jump to finish.
 
 
     ;
@@ -1369,28 +1640,37 @@ Music_PlayWave:                             ; [$8326]
   @_setSquareWave2Sweep:                    ; [$8376]
     JSR Music_SetNote
     LDA #$00
-    STA a:SQ2_SWEEP
-    LDY a:MScript_CurValue
-    LDA a:Music_Note_Period_Low
-    CMP a:Music_SQ2_TimerLowBias
-    BCC @_setSQ2HiLo
+    STA a:SQ2_SWEEP                         ; Disable sweep.
+    LDY a:Music_TempValue                   ; Load the value to play.
+    LDA a:Music_Note_Period_Low             ; Load the queued low bits for
+                                            ; the period.
+    CMP a:Music_SQ2_TimerLowBias            ; Is the period low < the timer
+                                            ; low bias?
+    BCC @_setSQ2HiLo                        ; If so, jump.
     SEC
-    SBC a:Music_SQ2_TimerLowBias
+    SBC a:Music_SQ2_TimerLowBias            ; Else, subtract from the period
+                                            ; low.
 
   @_setSQ2HiLo:                             ; [$838d]
-    STA a:SQ2_LO
-    STA a:Music_Current_SQ_Low_1_
-    LDA a:Music_Note_Period_High
-    ORA a:Music_Note_Length_High
-    STA a:SQ2_HI
+    STA a:SQ2_LO                            ; Write the result to the
+                                            ; register.
+    STA a:Music_Current_SQ_Low_1_           ; And store as the low bits for
+                                            ; the current channel.
+    LDA a:Music_Note_Period_High            ; Load the queued high bits for
+                                            ; the period.
+    ORA a:Music_Note_Length_High            ; OR it with the length bits.
+    STA a:SQ2_HI                            ; Write it to the register.
     LDA #$00
-    STA a:Music_SQEnvelope_Phase_1_
+    STA a:Music_SQEnvelope_Phase_1_         ; Clear the envelope phase for
+                                            ; this channel.
 
   @_finish:                                 ; [$83a1]
-    LDX a:MScript_CurrentChannel
+    LDX a:MScript_CurrentChannel            ; Load the current channel.
     LDA #$ff
-    STA Music_SQEnvelope_Value,X
-    JSR Music_StoreNoteDuration
+    STA a:Music_SQEnvelope_Value,X          ; Set the channel's envelope
+                                            ; value to 0xFF.
+    JSR Music_ResetTicksRemaining           ; Set the ticks remaining to the
+                                            ; note duration.
     RTS
 
 
@@ -1403,7 +1683,7 @@ Music_PlayWave:                             ; [$8326]
 ; advances to the next byte.
 ;
 ; This copies MScript_NoteDurations (set by a script) into
-; Music_NoteTicksRemaining (used for play back) for the
+; Music_ChannelTicksRemaining (used for play back) for the
 ; current channel, which is decremented by the main music
 ; update loop to delay script advancement.
 ;
@@ -1415,25 +1695,25 @@ Music_PlayWave:                             ; [$8326]
 ;         The per-channel repeat counts set by the script.
 ;
 ; OUTPUTS:
-;     Music_NoteTicksRemaining:
+;     Music_ChannelTicksRemaining:
 ;         The remaining tick counts for playback.
 ;
 ; XREFS:
-;     MScripts_PlayIfHasValue
 ;     Music_PlayNoise
-;     Music_PlayTriangleWave
-;     Music_PlayWave
+;     Music_PlayOrRest
+;     Music_SetupTriangleWave
+;     Music_SetupWave
 ;============================================================================
-Music_StoreNoteDuration:                    ; [$83ad]
+Music_ResetTicksRemaining:                  ; [$83ad]
     LDX a:MScript_CurrentChannel            ; Load the current MScript
                                             ; channel.
-    LDA MScript_NoteDurations,X             ; Load the repeat counts for this
+    LDA a:MScript_NoteDurations,X           ; Load the repeat counts for this
                                             ; channel.
-    STA Music_NoteTicksRemaining,X          ; Copy them over.
+    STA a:Music_ChannelTicksRemaining,X     ; Copy them over.
     RTS
 
 ;============================================================================
-; TODO: Document Music_PlayTriangleWave
+; TODO: Document Music_SetupTriangleWave
 ;
 ; INPUTS:
 ;     A
@@ -1442,18 +1722,32 @@ Music_StoreNoteDuration:                    ; [$83ad]
 ;     TODO
 ;
 ; XREFS:
-;     Music_PlayWave
+;     Music_SetupWave
 ;============================================================================
-Music_PlayTriangleWave:                     ; [$83b7]
-    JSR Music_StoreNoteDuration
-    STA a:MScript_CurValue
+Music_SetupTriangleWave:                    ; [$83b7]
+    JSR Music_ResetTicksRemaining           ; Set the ticks remaining to the
+                                            ; note duration.
+    STA a:Music_TempValue                   ; Store it temporarily for the
+                                            ; next set of calculations.
+
+
+    ;
+    ; Shift 2 of the timer bits out of the value.
+    ;
+    ; NOTE: This leaves 1 timer bit. Is this right? This does not
+    ;       seem right.
+    ;
+    LSR A                                   ; Shift right twice, keeping 1
+                                            ; bit of timer and 5 of length.
     LSR A
-    LSR A
-    STA a:Music_SQEffect_Delta
-    LDA a:MScript_CurValue
+    STA a:Music_SQEffect_Delta              ; Store as the delta for the
+                                            ; effect.
+    LDA a:Music_TempValue                   ; Load the original value passed
+                                            ; in.
     SEC
-    SBC a:Music_SQEffect_Delta
-    STA a:Something_Music_Triangle_017e
+    SBC a:Music_SQEffect_Delta              ; Subtract the delta.
+    STA a:Music_Triangle_Remaining          ; Store as the ticks remaining
+                                            ; for the channel.
     RTS
 
 
@@ -1479,15 +1773,15 @@ Music_PlayTriangleWave:                     ; [$83b7]
 ; the same audible pitch.
 ;
 ; XREFS:
-;     Music_PlayWave
+;     Music_SetupWave
 ;============================================================================
 Music_SetNote:                              ; [$83cd]
     LDX a:MScript_CurrentChannel
-    LDA a:MScript_CurValue
+    LDA a:Music_TempValue
     CLC
-    ADC MUSIC_CHANNEL_NOTE_OFFSETS,X
+    ADC a:MUSIC_CHANNEL_NOTE_OFFSETS,X
     CLC
-    ADC Music_Channel_Transpose,X
+    ADC a:Music_Channel_Transpose,X
     CLC
     ADC a:Music_Global_Transpose
     STY a:MScript_Unused_RawValue
@@ -1516,9 +1810,9 @@ Music_SetNote:                              ; [$83cd]
     ADC #$0d
     ASL A
     TAX
-    LDA AUDIO_NOTES,X
+    LDA a:AUDIO_NOTES,X
     STA a:Music_Note_Period_Low
-    LDA AUDIO_NOTES+1,X
+    LDA a:AUDIO_NOTES+1,X
     STA a:Music_Note_Period_High
 
 
@@ -1555,7 +1849,7 @@ MScript_Op_End:                             ; [$8408]
     ; instruction until every channel has completed.
     ;
     LDA #$01
-    STA Music_NoteTicksRemaining,X          ; Set this to repeat 1 more time
+    STA a:Music_ChannelTicksRemaining,X     ; Set this to repeat 1 more time
                                             ; (infinitely).
     TXA                                     ; A = MScript channel.
     ASL A                                   ; Convert to a word boundary for
@@ -1616,7 +1910,7 @@ MScript_Op_BeginLoop:                       ; [$841f]
                                             ; script.
     LDX a:MScript_CurrentChannel            ; Load the current MScript
                                             ; channel.
-    STA MScript_LoopLength,X                ; Store the length of this loop
+    STA a:MScript_LoopLength,X              ; Store the length of this loop
                                             ; to the next value.
 
 
@@ -1624,7 +1918,7 @@ MScript_Op_BeginLoop:                       ; [$841f]
     ; Set the starting value for the loop counter (1).
     ;
     LDA #$01
-    STA MScript_LoopCounter,X               ; Set the starting loop counter
+    STA a:MScript_LoopCounter,X             ; Set the starting loop counter
                                             ; to 1.
 
 
@@ -1638,10 +1932,10 @@ MScript_Op_BeginLoop:                       ; [$841f]
     LDA Music_CurrentScriptAddrs,X          ; Load the lower byte of the
                                             ; current script address for the
                                             ; channel.
-    STA MScript_LoopStartAddrs,X            ; Store as the lower byte of the
+    STA a:MScript_LoopStartAddrs,X          ; Store as the lower byte of the
                                             ; starting address for the loop.
     LDA Music_CurrentScriptAddrs+1,X        ; Load the upper byte.
-    STA MScript_LoopStartAddrs+1,X          ; Store that.
+    STA a:MScript_LoopStartAddrs+1,X        ; Store that.
 
 
     ;
@@ -1667,7 +1961,7 @@ MScript_Op_NextLoopIfNCompleted:            ; [$843d]
                                             ; channel.
     LDX a:MScript_CurrentChannel            ; Load the current MScript
                                             ; channel.
-    CMP MScript_LoopCounter,X               ; Has the specified number of
+    CMP a:MScript_LoopCounter,X             ; Has the specified number of
                                             ; loops been completed?
     BCS @_invokeNext                        ; If so, invoke the next
                                             ; operation within this loop.
@@ -1681,11 +1975,11 @@ MScript_Op_NextLoopIfNCompleted:            ; [$843d]
     ASL A                                   ; Convert to a word boundary for
                                             ; lookup tables.
     TAX                                     ; X = result.
-    LDA MScript_LoopEndAddrs,X              ; Load the lower byte of the loop
+    LDA a:MScript_LoopEndAddrs,X            ; Load the lower byte of the loop
                                             ; end address.
     STA Music_CurrentScriptAddrs,X          ; Set as the lower byte of the
                                             ; next address.
-    LDA MScript_LoopEndAddrs+1,X            ; Load the upper byte of the loop
+    LDA a:MScript_LoopEndAddrs+1,X          ; Load the upper byte of the loop
                                             ; end address.
     STA Music_CurrentScriptAddrs+1,X        ; Set as the upper byte of the
                                             ; next address.
@@ -1708,8 +2002,8 @@ MScript_Op_NextLoopIfNCompleted:            ; [$843d]
 MScript_Op_EndLoop:                         ; [$8458]
     LDX a:MScript_CurrentChannel            ; Load the current MScript
                                             ; channel.
-    LDA MScript_LoopCounter,X               ; Load the current loop counter.
-    CMP MScript_LoopLength,X                ; Is it >= the loop length?
+    LDA a:MScript_LoopCounter,X             ; Load the current loop counter.
+    CMP a:MScript_LoopLength,X              ; Is it >= the loop length?
     BCS @_invokeNext                        ; If so, invoke the next
                                             ; operation after the loop.
 
@@ -1717,7 +2011,7 @@ MScript_Op_EndLoop:                         ; [$8458]
     ;
     ; The script can continue to loop.
     ;
-    INC MScript_LoopCounter,X               ; Increment the loop counter.
+    INC a:MScript_LoopCounter,X             ; Increment the loop counter.
     TXA                                     ; A = MScript channel.
     ASL A                                   ; Convert to a word boundary for
                                             ; lookup tables.
@@ -1729,23 +2023,23 @@ MScript_Op_EndLoop:                         ; [$8458]
     ;
     LDA Music_CurrentScriptAddrs,X          ; Load the lower byte of the
                                             ; current script address.
-    STA MScript_LoopEndAddrs,X              ; Set as the lower byte of the
+    STA a:MScript_LoopEndAddrs,X            ; Set as the lower byte of the
                                             ; end of the loop.
     LDA Music_CurrentScriptAddrs+1,X        ; Load the upper byte of the
                                             ; current script address.
-    STA MScript_LoopEndAddrs+1,X            ; Set as the upper byte of the
+    STA a:MScript_LoopEndAddrs+1,X          ; Set as the upper byte of the
                                             ; end of the loop.
 
 
     ;
     ; Set the start of the loop as the current script address.
     ;
-    LDA MScript_LoopStartAddrs,X            ; Load the lower byte of the
+    LDA a:MScript_LoopStartAddrs,X          ; Load the lower byte of the
                                             ; address of the start of the
                                             ; loop.
     STA Music_CurrentScriptAddrs,X          ; Set as the lower byte of the
                                             ; current script address.
-    LDA MScript_LoopStartAddrs+1,X          ; Load the upper byte of the
+    LDA a:MScript_LoopStartAddrs+1,X        ; Load the upper byte of the
                                             ; address of the start of the
                                             ; loop.
     STA Music_CurrentScriptAddrs+1,X        ; Set as the upper byte of the
@@ -1783,7 +2077,7 @@ MScript_Op_NoOp:                            ; [$8480]
 MScript_Op_SetControlBits:                  ; [$8483]
     JSR MScripts_GetNextValue
     LDX a:MScript_CurrentChannel
-    STA Music_SQ_ControlBits,X
+    STA a:Music_SQ_ControlBits,X
     JMP MScripts_InvokeNext
 
 ;============================================================================
@@ -1816,9 +2110,9 @@ MScript_Op_SaveAddr_Store:                  ; [$8495]
     ASL A
     TAX
     LDA Music_CurrentScriptAddrs,X
-    STA MScript_SavedAddr,X
+    STA a:MScript_SavedAddr,X
     LDA Music_CurrentScriptAddrs+1,X
-    STA MScript_SavedAddr+1,X
+    STA a:MScript_SavedAddr+1,X
     RTS
 
 ;============================================================================
@@ -1834,9 +2128,9 @@ MScript_Op_RestoreAddr:                     ; [$84a5]
     LDA a:MScript_CurrentChannel
     ASL A
     TAX
-    LDA MScript_SavedAddr,X
+    LDA a:MScript_SavedAddr,X
     STA Music_CurrentScriptAddrs,X
-    LDA MScript_SavedAddr+1,X
+    LDA a:MScript_SavedAddr+1,X
     STA Music_CurrentScriptAddrs+1,X
     JMP MScripts_InvokeNext
 
@@ -1860,7 +2154,7 @@ MScript_Op_RestartChannel:                  ; [$84b7]
     LDX #$00
 
   @_loop:                                   ; [$84c2]
-    LDA MSCRIPTS_TITLESCREEN,Y
+    LDA a:MSCRIPTS_TITLESCREEN,Y
     STA Music_CurrentScriptAddrs,X
     INY
     INX
@@ -1886,9 +2180,9 @@ MScript_Op_JumpSubroutine:                  ; [$84d0]
     ASL A
     TAX
     LDA Music_CurrentScriptAddrs,X
-    STA MScript_PushedAddrs,X
+    STA a:MScript_PushedAddrs,X
     LDA Music_CurrentScriptAddrs+1,X
-    STA MScript_PushedAddrs+1,X
+    STA a:MScript_PushedAddrs+1,X
     PLA
     STA Music_CurrentScriptAddrs+1,X
     PLA
@@ -1908,10 +2202,10 @@ MScript_Op_Return:                          ; [$84f0]
     LDA a:MScript_CurrentChannel            ; Load the current channel.
     ASL A                                   ; Shift to a word boundary.
     TAX                                     ; X = Result.
-    LDA MScript_PushedAddrs,X               ; Load the lower byte of the
+    LDA a:MScript_PushedAddrs,X             ; Load the lower byte of the
                                             ; pushed address.
     STA Music_CurrentScriptAddrs,X          ; Set for the script address.
-    LDA MScript_PushedAddrs+1,X             ; Load the upper byte.
+    LDA a:MScript_PushedAddrs+1,X           ; Load the upper byte.
     STA Music_CurrentScriptAddrs+1,X        ; And set that.
     JMP MScripts_InvokeNext                 ; Invoke the script there.
 
@@ -1927,7 +2221,7 @@ MScript_Op_Return:                          ; [$84f0]
 MScript_Op_SetChannelTranspose:             ; [$8502]
     JSR MScripts_GetNextValue
     LDX a:MScript_CurrentChannel
-    STA Music_Channel_Transpose,X
+    STA a:Music_Channel_Transpose,X
     JMP MScripts_InvokeNext
 
 ;============================================================================
@@ -1956,7 +2250,7 @@ MScript_Op_SetGlobalTranspose:              ; [$850e]
 MScript_Op_SetSQVol:                        ; [$8517]
     JSR MScripts_GetNextValue
     LDX a:MScript_CurrentChannel
-    STA Music_SQ_Fades,X
+    STA a:Music_SQ_Fades,X
     JMP MScripts_InvokeNext
 
 
@@ -1981,7 +2275,7 @@ MScript_Op_SetSQVol:                        ; [$8517]
 MScript_Op_SetSQEnvelopeMode:               ; [$8523]
     JSR MScripts_GetNextValue
     LDX a:MScript_CurrentChannel
-    STA Music_SQEnvelope_Mode,X
+    STA a:Music_SQEnvelope_Mode,X
     JMP MScripts_InvokeNext
 
 ;============================================================================
@@ -1996,7 +2290,7 @@ MScript_Op_SetSQEnvelopeMode:               ; [$8523]
 MScript_Op_SetSQPitchEffectDepth:           ; [$852f]
     JSR MScripts_GetNextValue
     LDX a:MScript_CurrentChannel
-    STA Music_SQPitchDelta_Mask,X
+    STA a:Music_SQPitchDelta_Mask,X
     JMP MScripts_InvokeNext
 
 
@@ -2105,60 +2399,103 @@ AUDIO_NOTES:                                ; [$8552]
 ;     Music_SetNote
 ;
 MUSIC_CHANNEL_NOTE_OFFSETS:                 ; [$856c]
-    .byte $f4                               ; [0]: SQ1 (one octave down)
-    .byte $f4                               ; [1]: SQ2 (one octave down)
-    .byte $0c                               ; [2]: Triangle (1 octave up)
+    .byte $f4                               ; [0]: Square Wave 1
+    .byte $f4                               ; [1]: Square Wave 2
+    .byte $0c                               ; [2]: Triangle
+
+
+;============================================================================
+; Pairs of a lower bound (for note length matching) and a resulting length.
+;
+; XREFS:
+;     MScripts_SetNoteLengthFromValue
+;============================================================================
 
 ;
 ; XREFS:
 ;     MScripts_SetNoteLengthFromValue
 ;
-MUSIC_CHANNEL_NOTE_OFFSETS_3_:              ; [$856f]
-    .byte $7f                               ; [3]: Noise (sentinel?)
+NOTE_LENGTH_CMP_LOWER_BOUNDS:               ; [$856f]
+    .byte $7f                               ; If X >= 127:
 
 ;
 ; XREFS:
 ;     MScripts_SetNoteLengthFromValue
 ;
-BYTE_PRG5__8570:                            ; [$8570]
-    .byte $08                               ; [$8570] byte
+NOTE_LENGTH_VALUES:                         ; [$8570]
+    .byte $08                               ; Length = 8
 
 ;
 ; XREFS:
 ;     MScripts_SetNoteLengthFromValue
 ;
 BYTE_PRG5__8571:                            ; [$8571]
-    .byte $60                               ; [$8571] byte
+    .byte $60                               ; If X >= 96:
 
 ;
 ; XREFS:
 ;     MScripts_SetNoteLengthFromValue
 ;
 BYTE_PRG5__8572:                            ; [$8572]
-    .byte $c0,$50,$40,$30,$b0,$28,$30,$24   ; [$8572] byte
-    .byte $d0,$1e,$50,$18,$a0               ; [$857a] byte
+    .byte $c0                               ; Length = 192
+    .byte $50                               ; If X >= 80:
+    .byte $40                               ; Length = 64
+    .byte $30                               ; If X >= 48:
+    .byte $b0                               ; Length = 176
+    .byte $28                               ; If X >= 40:
+    .byte $30                               ; Length = 48
+    .byte $24                               ; If X >= 36:
+    .byte $d0                               ; Length = 208
+    .byte $1e                               ; If X >= 30:
+    .byte $50                               ; Length = 80
+    .byte $18                               ; If X >= 24:
+    .byte $a0                               ; Length = 160
+
+
+;============================================================================
+; Lookup table of noise indexes to register state.
+;
+; NOTE: The data actually starts 4 bytes lower (at {@address 8583}).
+;       This label is actually placed within
+;       MUSIC_CHANNEL_NOTE_OFFSETS. The reason they're
+;       doing this is to save an operation. An index into
+;       this table will always start at 1 (an index of 0
+;       has a special meaning), and they don't want to have
+;       to normalize the value before lookup. Hence starting
+;       it 4 bytes early.
+;
+; XREFS:
+;     Music_PlayNoise
+;============================================================================
 
 ;
 ; XREFS:
 ;     Music_PlayNoise
 ;
-MUSIC_NOISE_VALUES:                         ; [$857f]
-    .byte $14                               ; [0]:
-    .byte $20                               ; [1]:
-    .byte $00                               ; [2]:
-    .byte $f0                               ; [3]:
-    .byte $00                               ; [0]:
-    .byte $00                               ; [1]:
-    .byte $0f                               ; [2]:
-    .byte $20                               ; [3]:
-    .byte $00                               ; [0]:
-    .byte $00                               ; [1]:
-    .byte $0a                               ; [2]:
-    .byte $10                               ; [3]:
-    .byte $00                               ; [0]:
-    .byte $00                               ; [1]:
-    .byte $05                               ; [2]:
-    .byte $00                               ; [3]:
+MUSIC_NOISE_REGISTER_VALUES:                ; [$857f]
+    .byte $14                               ; If X >= 20:
+    .byte $20                               ; Length = 32
+    .byte $00                               ; If X >= 0 (last possible
+                                            ; value):
+    .byte $f0                               ; Length = 240
+
+
+;============================================================================
+; This is the *actual* start of the noise register values.
+;============================================================================
+REAL_MUSIC_NOISE_REGISTER_VALUES:           ; [$8583]
+    .byte $00                               ; [0]: Volume of 0.
+    .byte $00                               ; [1]: Unused.
+    .byte $0f                               ; [2]: Noise mode 0, period 15.
+    .byte $20                               ; [3]: Length 4.
+    .byte $00                               ; [0]: Volume of 0.
+    .byte $00                               ; [1]: Unused.
+    .byte $0a                               ; [2]: Noise mode 0, period 10.
+    .byte $10                               ; [3]: Length 2.
+    .byte $00                               ; [0]: Volume of 0.
+    .byte $00                               ; [1]: Unused.
+    .byte $05                               ; [2]: Noise mode 0, period 5.
+    .byte $00                               ; [3]: Length 0.
     .byte $ff                               ; [$858f] byte
 
 
@@ -2396,11 +2733,11 @@ SoundEffects_HandleOnInterrupt:             ; [$862f]
     LDX #$03                                ; X = 3 (channel loop counter).
 
   @_checkActiveEffectsLoop:                 ; [$8631]
-    LDA SoundEffect_TicksRemaining,X        ; Load the sound effect ticks
+    LDA a:SoundEffect_TicksRemaining,X      ; Load the sound effect ticks
                                             ; remaining for this channel.
     BEQ @_prepareNextActiveEffectsLoopIter  ; If this channel is done,
                                             ; prepare for the next iteration.
-    DEC SoundEffect_TicksRemaining,X        ; Reduce the ticks remaining by
+    DEC a:SoundEffect_TicksRemaining,X      ; Reduce the ticks remaining by
                                             ; 1.
 
   @_prepareNextActiveEffectsLoopIter:       ; [$8639]
@@ -2447,7 +2784,7 @@ SoundEffects_HandleOnInterrupt:             ; [$862f]
     ; Check if it matches the sound effect to play, and then
     ; either use it or load a new handler.
     ;
-    LDA SOUND_EFFECT_HANDLER_INDEXES,X      ; Load the sound effect handler
+    LDA a:SOUND_EFFECT_HANDLER_INDEXES,X    ; Load the sound effect handler
                                             ; index for this sound effect.
     CMP a:SoundEffect_HandlerIndex          ; Does it match the existing
                                             ; handler?
@@ -2462,7 +2799,7 @@ SoundEffects_HandleOnInterrupt:             ; [$862f]
     ; effect.
     ;
   @_newHandler:                             ; [$8658]
-    LDA SOUND_EFFECT_HANDLER_INDEXES,X      ; Load the sound effect handler
+    LDA a:SOUND_EFFECT_HANDLER_INDEXES,X    ; Load the sound effect handler
                                             ; index for this ID.
     STA a:SoundEffect_HandlerIndex          ; Store as the new index.
     TAX                                     ; X = A (index).
@@ -2513,10 +2850,10 @@ SoundEffects_HandleOnInterrupt:             ; [$862f]
                                             ; table?
     BCS Sound_ResetCurrentSound             ; If not, reset the current sound
                                             ; effect.
-    LDA SOUND_EFFECT_HANDLERS+1,X           ; Load the upper byte of the
+    LDA a:SOUND_EFFECT_HANDLERS+1,X         ; Load the upper byte of the
                                             ; handler address.
     PHA                                     ; Push it to the stack.
-    LDA SOUND_EFFECT_HANDLERS,X             ; Load the lower byte.
+    LDA a:SOUND_EFFECT_HANDLERS,X           ; Load the lower byte.
     PHA                                     ; Push it to the stack.
 
     ;
@@ -2660,7 +2997,7 @@ SoundEffect_Message_OnTick:                 ; [$86a8]
     AND #$02                                ; Keep bit 1 (on 2 ticks, off 2
                                             ; ticks).
     TAX                                     ; X = result.
-    LDA SOUNDEFFECT_MESSAGE_NOISE_LO,X      ; Load the NOISE_LO value for
+    LDA a:SOUNDEFFECT_MESSAGE_NOISE_LO,X    ; Load the NOISE_LO value for
                                             ; this state.
     STA a:NOISE_LO
     LDA #$00
@@ -2715,7 +3052,7 @@ SoundEffect_HitEnemy_Setup:                 ; [$86d3]
 ;============================================================================
 SoundEffect_HitEnemy_OnTick:                ; [$86e0]
     LDX a:SoundEffect_State_Counter
-    LDA SOUNDEFFECT_HIT_ENEMY_NOTES,X
+    LDA a:SOUNDEFFECT_HIT_ENEMY_NOTES,X
     CMP #$ff
     BNE @_play
     LDA #$10
@@ -2806,7 +3143,7 @@ SoundEffect_EnemyDied_OnTick:               ; [$8743]
     LDX a:SoundEffect_State_0128
     LDA #$1f
     STA a:NOISE_VOL
-    LDA SOUNDEFFECT_ENEMY_DIED_NOISE_LO,X
+    LDA a:SOUNDEFFECT_ENEMY_DIED_NOISE_LO,X
     STA a:NOISE_LO
     LDA #$00
     STA a:NOISE_HI
@@ -2859,7 +3196,7 @@ SoundEffect_HitPlayer_Setup:                ; [$8771]
 ;============================================================================
 SoundEffect_HitPlayer_OnTick:               ; [$877b]
     LDX a:SoundEffect_State_Counter
-    LDA SOUNDEFFECT_HITPLAYER_NOTES,X
+    LDA a:SOUNDEFFECT_HITPLAYER_NOTES,X
     CMP #$ff
     BNE @_play
     LDA #$10
@@ -2927,7 +3264,7 @@ SoundEffect_Magic_Setup:                    ; [$87b5]
 ;============================================================================
 SoundEffect_Magic_OnTick:                   ; [$87c2]
     LDX a:SoundEffect_State_0128
-    LDA SOUNDEFFECT_MAGIC_SQ2_VOL,X
+    LDA a:SOUNDEFFECT_MAGIC_SQ2_VOL,X
     BNE @_play
     LDA #$10
     STA a:SQ2_VOL
@@ -2941,7 +3278,7 @@ SoundEffect_Magic_OnTick:                   ; [$87c2]
     LDA a:SoundEffect_State_Counter
     AND #$03
     TAX
-    LDA SOUNDEFFECT_MAGIC_SQ2_LO,X
+    LDA a:SOUNDEFFECT_MAGIC_SQ2_LO,X
     STA a:SQ2_LO
     LDA #$00
     STA a:SQ2_HI
@@ -3026,7 +3363,7 @@ SoundEffect_OpenDoor_OnTick:                ; [$881f]
     TAY
     LDA #$60
     SEC
-    SBC SOUNDEFFECT_OPEN_DOOR_SQ2_NOISE_LO,Y
+    SBC a:SOUNDEFFECT_OPEN_DOOR_SQ2_NOISE_LO,Y
     STA a:SQ2_LO
     AND #$0f
     STA a:NOISE_LO
@@ -3076,7 +3413,7 @@ SoundEffect_Maybe_Typing_OnTick:            ; [$8877]
     AND #$01
     BNE @_return
     LDX a:SoundEffect_State_Counter
-    LDA SOUNDEFFECT_MAYBE_TYPING_NOTES,X
+    LDA a:SOUNDEFFECT_MAYBE_TYPING_NOTES,X
     CMP #$ff
     BNE @_play
     LDA #$10
@@ -3141,7 +3478,7 @@ SoundEffect_ItemPickedUp_Setup:             ; [$88c5]
 ;============================================================================
 SoundEffect_ItemPickedUp_OnTick:            ; [$88d2]
     LDX a:SoundEffect_State_Counter
-    LDA SOUNDEFFECT_ITEM_PICKED_UP_NOTES,X
+    LDA a:SOUNDEFFECT_ITEM_PICKED_UP_NOTES,X
     CMP #$ff
     BNE @_playNote
     INC a:SoundEffect_State_0128
@@ -3152,7 +3489,7 @@ SoundEffect_ItemPickedUp_OnTick:            ; [$88d2]
   @_playNote:                               ; [$88e5]
     JSR SoundEffect_SetNote
     LDX a:SoundEffect_State_0128
-    LDA SOUNDEFFECT_ITEM_PICKED_UP_SQ2_VOLS,X
+    LDA a:SOUNDEFFECT_ITEM_PICKED_UP_SQ2_VOLS,X
     BNE @_playSQ2
     LDA #$10
     STA a:SQ2_VOL
@@ -3222,7 +3559,7 @@ SoundEffect_CoinTouchedCommon_Setup:        ; [$891f]
 ;============================================================================
 SoundEffect_CoinTouchedCommon_OnTick:       ; [$892e]
     LDX a:SoundEffect_State_0128
-    LDA SOUNDEFFECT_COIN_TOUCHED_SQ2_VOL,X
+    LDA a:SOUNDEFFECT_COIN_TOUCHED_SQ2_VOL,X
     BNE @_play
     LDA #$10
     STA a:SQ2_VOL
@@ -3362,9 +3699,9 @@ SoundEffect_CursorMoved_OnTick:             ; [$89b2]
     CLC
     ADC a:SoundEffect_State_0128
     TAX
-    LDA SOUNDEFFECT_CURSOR_MOVED_SQ2_LO,X
+    LDA a:SOUNDEFFECT_CURSOR_MOVED_SQ2_LO,X
     SEC
-    SBC SOUNDEFFECT_CURSORMOVED_SQ2_LO_DELTA,Y
+    SBC a:SOUNDEFFECT_CURSORMOVED_SQ2_LO_DELTA,Y
     STA a:SQ2_LO
     LDA #$00
     STA a:SQ2_HI
@@ -3435,7 +3772,7 @@ SoundEffect_ShieldHitByMagic_OnTick:        ; [$8a0f]
     LDA a:SoundEffect_State_Counter
     AND #$01
     TAX
-    LDA SOUNDEFFECT_SHIELD_HIT_BY_MAGIC_SQ2_LO,X
+    LDA a:SOUNDEFFECT_SHIELD_HIT_BY_MAGIC_SQ2_LO,X
     STA a:SQ2_LO
     LDA #$00
     STA a:SQ2_HI
@@ -3485,7 +3822,7 @@ SoundEffect_CharacterInput_OnTick:          ; [$8a47]
     LSR A
     LSR A
     TAX
-    LDA SOUNDEFFECT_CHAR_INPUT_NOTES,X
+    LDA a:SOUNDEFFECT_CHAR_INPUT_NOTES,X
     CMP #$ff
     BNE @_play
     LDA #$10
@@ -3580,7 +3917,7 @@ SoundEffect_PushBlock_OnTick:               ; [$8aa7]
     LDA a:SoundEffect_State_Counter
     AND #$01
     TAX
-    LDA SOUNDEFFECT_PUSH_BLOCK_NOISE_LO,X
+    LDA a:SOUNDEFFECT_PUSH_BLOCK_NOISE_LO,X
     STA a:NOISE_LO
     LDA #$00
     STA a:NOISE_HI
@@ -3768,7 +4105,7 @@ SoundEffect_Pakukame_OnTick:                ; [$8b6f]
     CLC
     ADC #$32
     SEC
-    SBC SOUNDEFFECT_PAKUKAME_SQ2_LO,X
+    SBC a:SOUNDEFFECT_PAKUKAME_SQ2_LO,X
     STA a:SQ2_LO
     INC a:SoundEffect_State_Counter
     RTS
@@ -3822,14 +4159,14 @@ SoundEffect_FillHPOrMP_OnTick:              ; [$8bc5]
     LDA a:SoundEffect_State_Counter
     AND #$03
     TAY
-    LDA SOUNDEFFECT_FILL_HP_OR_MP_SQ2_VOL,Y
+    LDA a:SOUNDEFFECT_FILL_HP_OR_MP_SQ2_VOL,Y
     STA a:SQ2_VOL
     LDA #$aa
     STA a:SQ2_SWEEP
     LDA a:SoundEffect_State_Counter
     AND #$01
     TAX
-    LDA SOUNDEFFECT_FILL_HP_OR_MP_SQ2_LO,X
+    LDA a:SOUNDEFFECT_FILL_HP_OR_MP_SQ2_LO,X
     ORA a:SoundEffect_State_0129
     SBC a:SoundEffect_State_Counter
     STA a:SoundEffect_State_0129
@@ -4036,7 +4373,7 @@ SoundEffect_PlayerDied_OnTick:              ; [$8cb4]
     LDA a:SoundEffect_State_Counter
     AND #$03
     TAX
-    LDA SOUNDEFFECT_PLAYER_DIED_NOTES,X
+    LDA a:SOUNDEFFECT_PLAYER_DIED_NOTES,X
     JSR SoundEffect_SetNote
     LDA a:SoundEffect_Note_Low
     CLC
@@ -4162,7 +4499,7 @@ SoundEffect_ShowPlayerMenu_OnTick:          ; [$8d71]
     LDA a:SoundEffect_State_0128
     AND #$03
     TAX
-    LDA SOUNDEFFECT_SHOW_PLAYER_MENU_NOTES,X
+    LDA a:SOUNDEFFECT_SHOW_PLAYER_MENU_NOTES,X
     JSR SoundEffect_SetNote
     LDA a:SoundEffect_Note_Low
     SEC
@@ -4242,7 +4579,7 @@ SoundEffect_Maybe_UseSpecialItem2_OnTick:   ; [$8deb]
     LDA a:SoundEffect_State_0129
     LSR A
     TAX
-    LDA SOUNDEFFECT_SPECIALITEM2_NOISE_VOL,X
+    LDA a:SOUNDEFFECT_SPECIALITEM2_NOISE_VOL,X
     BNE @_hasNoise
     LDA #$10
     STA a:SQ2_VOL
@@ -4259,7 +4596,7 @@ SoundEffect_Maybe_UseSpecialItem2_OnTick:   ; [$8deb]
     ASL A
     STA a:SoundEffect_State_0128
     LDX a:SoundEffect_State_Counter
-    LDA SOUNDEFFECT_SPECIALITEM2_NOTES,X
+    LDA a:SOUNDEFFECT_SPECIALITEM2_NOTES,X
     CMP #$ff
     BEQ @_hasNotes
     JSR SoundEffect_SetNote
@@ -4272,7 +4609,7 @@ SoundEffect_Maybe_UseSpecialItem2_OnTick:   ; [$8deb]
     LDA a:SoundEffect_State_Counter
     AND #$01
     TAX
-    LDA SOUNDEFFECT_SPECIALITEM2_NOISE_LO,X
+    LDA a:SOUNDEFFECT_SPECIALITEM2_NOISE_LO,X
     CLC
     ADC a:SoundEffect_State_Counter
     AND #$0f
@@ -4352,7 +4689,7 @@ SoundEffect_BreadTouched_OnTick:            ; [$8e88]
     LSR A
     LSR A
     TAX
-    LDA SOUNDEFFECT_BREADTOUCHED_SQ2_HI,X
+    LDA a:SOUNDEFFECT_BREADTOUCHED_SQ2_HI,X
     STA a:SoundEffect_State_0129
     BNE @_play
     LDA #$10
@@ -4372,7 +4709,7 @@ SoundEffect_BreadTouched_OnTick:            ; [$8e88]
     TXA
     AND #$03
     TAX
-    LDA SOUNDEFFECT_BREADTOUCHED_SQ2_HI,X
+    LDA a:SOUNDEFFECT_BREADTOUCHED_SQ2_HI,X
     AND #$01
     STA a:SQ2_HI
     INC a:SoundEffect_State_0128
@@ -4451,9 +4788,9 @@ SoundEffect_SetNote:                        ; [$8ed1]
     ADC #$0d
     ASL A
     TAX
-    LDA AUDIO_NOTES,X
+    LDA a:AUDIO_NOTES,X
     STA a:SoundEffect_Note_Low
-    LDA AUDIO_NOTES+1,X
+    LDA a:AUDIO_NOTES+1,X
     STA a:SoundEffect_Note_High
 
 
@@ -4497,7 +4834,7 @@ MSCRIPTS_TITLESCREEN:                       ; [$8efb]
     pointer MSCRIPT_TITLESCREEN_SQ1         ; [0]:
     pointer MSCRIPT_TITLESCREEN_SQ2         ; [1]:
     pointer MSCRIPT_TITLESCREEN_TRI         ; [2]:
-    pointer BYTE_PRG5__928e                 ; [3]:
+    pointer MSCRIPT_TITLESCREEN_NOISE       ; [3]:
 
 MSCRIPTS_DAYBREAK:                          ; [$8f03]
     pointer MSCRIPT_DAYBREAK_SQ1            ; [0]:
@@ -4604,16 +4941,16 @@ MSCRIPTS_EVIL_FORTRESS:                     ; [$8f73]
 ;
 MSCRIPT_TITLESCREEN_SQ1:                    ; [$8f7c]
     .byte MSCRIPT_OP_SET_GLOBAL_TRANSPOSE   ; Op: Set global transpose
-    .byte $ff                               ;  '- Down 1 semitone
+    .byte $ff                               ; '- Down 1 semitone
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
-    .byte $00                               ;  '- Reduce volume by 0
+    .byte $00                               ; '- Reduce volume by 0
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
-    .byte $d0                               ;  '- Duty cycle 3     Constant
+    .byte $d0                               ; '- Duty cycle 3     Constant
                                             ; volume/envelope
     .byte MSCRIPT_OP_SET_SQ_ENVELOPE_MODE   ; Op: Set envelope mode
-    .byte $00                               ;  '- Mode 0: Linear decay
+    .byte $00                               ; '- Mode 0: Linear decay
     .byte MSCRIPT_OP_SET_CHANNEL_TRANSPOSE  ; Op: Set channel transpose
-    .byte $f4                               ;  '- Down 1 octave
+    .byte $f4                               ; '- Down 1 octave
     .byte $86                               ; Note length: 6
     .byte $1f                               ; F#2
     .byte $21                               ; G#2
@@ -4632,10 +4969,10 @@ MSCRIPT_TITLESCREEN_SQ1:                    ; [$8f7c]
     .byte $35                               ; E4
     .byte $36                               ; F4
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
-    .byte $d0                               ;  '- Duty cycle 3     Constant
+    .byte $d0                               ; '- Duty cycle 3     Constant
                                             ; volume/envelope
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $b0                               ; Note length: 48
     .byte $37                               ; F#4
     .byte $3c                               ; B4
@@ -4656,7 +4993,7 @@ MSCRIPT_TITLESCREEN_SQ1:                    ; [$8f7c]
     .byte $37                               ; F#4
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $a4                               ; Note length: 36
     .byte $43                               ; F#5
     .byte $8c                               ; Note length: 12
@@ -4682,7 +5019,7 @@ MSCRIPT_TITLESCREEN_SQ1:                    ; [$8f7c]
     .byte $bc                               ; Note length: 60
     .byte $37                               ; F#4
     .byte MSCRIPT_OP_NEXT_LOOP_IF_N_ITERS   ; Op: Next loop if looped N times
-    .byte $01                               ;  '- 1 loops
+    .byte $01                               ; '- 1 loops
     .byte $86                               ; Note length: 6
     .byte $37                               ; F#4
     .byte $39                               ; G#4
@@ -4694,7 +5031,7 @@ MSCRIPT_TITLESCREEN_SQ1:                    ; [$8f7c]
     .byte $42                               ; F5
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_NEXT_LOOP_IF_N_ITERS   ; Op: Next loop if looped N times
-    .byte $02                               ;  '- 2 loops
+    .byte $02                               ; '- 2 loops
     .byte $86                               ; Note length: 6
     .byte $3c                               ; B4
     .byte $3b                               ; A#4
@@ -4762,7 +5099,7 @@ MSCRIPT_TITLESCREEN_SQ1:                    ; [$8f7c]
     .byte $3c                               ; B4
     .byte $3a                               ; A4
     .byte MSCRIPT_OP_SET_NOTE_DURATION      ; Op: Set note duration
-    .byte $cc                               ;  '- 204 ticks
+    .byte $cc                               ; '- 204 ticks
     .byte $3c                               ; B4
     .byte $d4                               ; Note length: 84
     .byte $00                               ; Rest
@@ -4776,14 +5113,14 @@ MSCRIPT_TITLESCREEN_SQ1:                    ; [$8f7c]
 ;
 MSCRIPT_TITLESCREEN_SQ2:                    ; [$9020]
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
-    .byte $03                               ;  '- Reduce volume by 3
+    .byte $03                               ; '- Reduce volume by 3
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
-    .byte $90                               ;  '- Duty cycle 2     Constant
+    .byte $90                               ; '- Duty cycle 2     Constant
                                             ; volume/envelope
     .byte MSCRIPT_OP_SET_SQ_ENVELOPE_MODE   ; Op: Set envelope mode
-    .byte $00                               ;  '- Mode 0: Linear decay
+    .byte $00                               ; '- Mode 0: Linear decay
     .byte MSCRIPT_OP_SET_SQ2_PITCH_BIAS     ; Op: Set SQ2 pitch bias
-    .byte $02                               ;  '- 2
+    .byte $02                               ; '- 2
     .byte $98                               ; Note length: 24
     .byte $00                               ; Rest
     .byte $86                               ; Note length: 6
@@ -4800,12 +5137,12 @@ MSCRIPT_TITLESCREEN_SQ2:                    ; [$9020]
     .byte $32                               ; D4
     .byte $33                               ; D#4
     .byte MSCRIPT_OP_SET_SQ2_PITCH_BIAS     ; Op: Set SQ2 pitch bias
-    .byte $00                               ;  '- 0
+    .byte $00                               ; '- 0
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
-    .byte $50                               ;  '- Duty cycle 1     Constant
+    .byte $50                               ; '- Duty cycle 1     Constant
                                             ; volume/envelope
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $86                               ; Note length: 6
     .byte $34                               ; E4
     .byte $34                               ; E4
@@ -4873,7 +5210,7 @@ MSCRIPT_TITLESCREEN_SQ2:                    ; [$9020]
     .byte $2f                               ; B3
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $86                               ; Note length: 6
     .byte $34                               ; E4
     .byte $37                               ; G4
@@ -4924,7 +5261,7 @@ MSCRIPT_TITLESCREEN_SQ2:                    ; [$9020]
     .byte $2b                               ; G3
     .byte $26                               ; D3
     .byte MSCRIPT_OP_NEXT_LOOP_IF_N_ITERS   ; Op: Next loop if looped N times
-    .byte $01                               ;  '- 1 loops
+    .byte $01                               ; '- 1 loops
     .byte $86                               ; Note length: 6
     .byte $2b                               ; G3
     .byte $30                               ; C4
@@ -4944,7 +5281,7 @@ MSCRIPT_TITLESCREEN_SQ2:                    ; [$9020]
     .byte $3f                               ; D#5
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_NEXT_LOOP_IF_N_ITERS   ; Op: Next loop if looped N times
-    .byte $02                               ;  '- 2 loops
+    .byte $02                               ; '- 2 loops
     .byte $86                               ; Note length: 6
     .byte $2b                               ; G3
     .byte $30                               ; C4
@@ -4963,7 +5300,7 @@ MSCRIPT_TITLESCREEN_SQ2:                    ; [$9020]
     .byte $3b                               ; B4
     .byte $3c                               ; C5
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $86                               ; Note length: 6
     .byte $2c                               ; G#3
     .byte $30                               ; C4
@@ -5014,7 +5351,7 @@ MSCRIPT_TITLESCREEN_SQ2:                    ; [$9020]
     .byte $2e                               ; A#3
     .byte $32                               ; D4
     .byte MSCRIPT_OP_NEXT_LOOP_IF_N_ITERS   ; Op: Next loop if looped N times
-    .byte $01                               ;  '- 1 loops
+    .byte $01                               ; '- 1 loops
     .byte $8c                               ; Note length: 12
     .byte $33                               ; D#4
     .byte $86                               ; Note length: 6
@@ -5034,7 +5371,7 @@ MSCRIPT_TITLESCREEN_SQ2:                    ; [$9020]
     .byte $27                               ; D#3
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_NEXT_LOOP_IF_N_ITERS   ; Op: Next loop if looped N times
-    .byte $02                               ;  '- 2 loops
+    .byte $02                               ; '- 2 loops
     .byte $86                               ; Note length: 6
     .byte $33                               ; D#4
     .byte $38                               ; G#4
@@ -5116,7 +5453,7 @@ MSCRIPT_TITLESCREEN_TRI:                    ; [$9161]
     .byte $2d                               ; A5
     .byte $2f                               ; B5
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $86                               ; Note length: 6
     .byte $18                               ; C4
     .byte $18                               ; C4
@@ -5184,7 +5521,7 @@ MSCRIPT_TITLESCREEN_TRI:                    ; [$9161]
     .byte $13                               ; G3
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $86                               ; Note length: 6
     .byte $18                               ; C4
     .byte $18                               ; C4
@@ -5410,69 +5747,306 @@ MSCRIPT_TITLESCREEN_TRI:                    ; [$9161]
 ; XREFS:
 ;     MSCRIPTS_TITLESCREEN [$PRG5::8f01]
 ;
-BYTE_PRG5__928e:                            ; [$928e]
-    .byte $8c,$21,$00,$21,$00,$86,$31,$21   ; [$928e] byte
-    .byte $31,$31,$31,$21,$31,$31           ; [$9296] byte
-
+MSCRIPT_TITLESCREEN_NOISE:                  ; [$928e]
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $00                               ; Rest
+    .byte $21                               ; A9
+    .byte $00                               ; Rest
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $21                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $21                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
-    .byte $86,$31,$00,$31,$31,$8c,$21,$86   ; [$929e] byte
-    .byte $31,$31,$31,$00,$31,$31,$8c,$21   ; [$92a6] byte
-    .byte $86,$31,$31,$31,$00,$31,$31,$8c   ; [$92ae] byte
-    .byte $21,$86,$31,$31,$31,$00,$31,$31   ; [$92b6] byte
-    .byte $8c,$21,$86,$31,$31,$31,$00,$31   ; [$92be] byte
-    .byte $31,$8c,$21,$86,$31,$31,$31,$00   ; [$92c6] byte
-    .byte $31,$31,$8c,$21,$21,$21,$21,$21   ; [$92ce] byte
-    .byte $21,$86,$31,$00,$8c,$21,$21,$86   ; [$92d6] byte
-    .byte $21,$21                           ; [$92de] byte
-
+    .byte $02                               ; '- 2 iterations
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $21                               ; A9
+    .byte $21                               ; A9
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
-    .byte $86,$31,$00,$31,$31,$8c,$21,$86   ; [$92e3] byte
-    .byte $31,$31,$31,$00,$31,$31,$8c,$21   ; [$92eb] byte
-    .byte $86,$31,$31,$31,$00,$31,$31,$8c   ; [$92f3] byte
-    .byte $21,$86,$31,$31,$31,$00,$31,$31   ; [$92fb] byte
-    .byte $8c,$21,$86,$31,$31,$31,$00,$31   ; [$9303] byte
-    .byte $31,$8c,$21,$86,$31,$31,$31,$00   ; [$930b] byte
-    .byte $31,$31,$8c,$21,$86,$31,$31,$31   ; [$9313] byte
-    .byte $00,$31,$31,$8c,$21,$86,$31,$31   ; [$931b] byte
-    .byte $31,$00,$31,$31,$21,$21,$21,$00   ; [$9323] byte
+    .byte $02                               ; '- 2 iterations
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $00                               ; Rest
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
-    .byte $86,$31,$00,$31,$31,$8c,$21,$86   ; [$932e] byte
-    .byte $31,$31,$31,$00,$31,$31,$8c,$21   ; [$9336] byte
-    .byte $86,$31,$31,$31,$00,$31,$31,$8c   ; [$933e] byte
-    .byte $21,$86,$31,$31,$31,$00,$31,$31   ; [$9346] byte
-    .byte $8c,$21,$86,$31,$31               ; [$934e] byte
-
+    .byte $02                               ; '- 2 iterations
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $31                               ; A9
     .byte MSCRIPT_OP_NEXT_LOOP_IF_N_ITERS   ; Op: Next loop if looped N times
-    .byte $01                               ;  '- 1 loop
-    .byte $86,$31,$00,$31,$31,$8c,$21,$86   ; [$9355] byte
-    .byte $31,$31,$31,$00,$31,$31,$8c,$21   ; [$935d] byte
-    .byte $86,$31,$31,$31,$00,$31,$31,$8c   ; [$9365] byte
-    .byte $21,$86,$31,$31,$31,$00,$8c,$21   ; [$936d] byte
-    .byte $86,$21,$21,$21,$00               ; [$9375] byte
-
+    .byte $01                               ; '- 1 loop
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $00                               ; Rest
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_NEXT_LOOP_IF_N_ITERS   ; Op: Next loop if looped N times
-    .byte $02                               ;  '- 2 loops
-    .byte $8c,$21,$21,$21,$21,$86,$31,$31   ; [$937d] byte
-    .byte $8c,$21,$21,$86,$21,$21,$8c,$21   ; [$9385] byte
-    .byte $21,$21,$21,$00,$21,$21           ; [$938d] byte
-
+    .byte $02                               ; '- 2 loops
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $00                               ; Rest
+    .byte $21                               ; A9
+    .byte $21                               ; A9
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
-    .byte $86,$31,$00,$31,$31,$31,$00,$31   ; [$9395] byte
-    .byte $31,$31,$00,$31,$31,$31,$00,$31   ; [$939d] byte
-    .byte $31                               ; [$93a5] byte
-
+    .byte $02                               ; '- 2 iterations
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
-    .byte $31,$00,$31,$31,$31,$00,$31,$31   ; [$93a7] byte
-    .byte $31,$00,$31,$31,$31,$31,$ec,$31   ; [$93af] byte
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $ec                               ; Note length: 108
+    .byte $31                               ; A9
     .byte MSCRIPT_OP_END                    ; Op: End
-    .byte MSCRIPT_OP_END                    ; Op: End
+    .byte $ff                               ; [$93b8] byte
 
 
 ;============================================================================
@@ -5488,16 +6062,16 @@ BYTE_PRG5__928e:                            ; [$928e]
 ;
 MSCRIPT_DAYBREAK_SQ1:                       ; [$93b9]
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
-    .byte $01                               ;  '- Reduce volume by 1
+    .byte $01                               ; '- Reduce volume by 1
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
-    .byte $90                               ;  '- Duty cycle 2     Constant
+    .byte $90                               ; '- Duty cycle 2     Constant
                                             ; volume/envelope
     .byte MSCRIPT_OP_SET_SQ_ENVELOPE_MODE   ; Op: Set envelope mode
-    .byte $01                               ;  '- Mode 1: Curve but held
+    .byte $01                               ; '- Mode 1: Curve but held
     .byte MSCRIPT_OP_SET_SQ_PITCH_EFFECT_DEPTH ; Op: Set SQ2 envelope depth
-    .byte $02                               ;  '- 2
+    .byte $02                               ; '- 2
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $98                               ; Note length: 24
     .byte $2d                               ; A3
     .byte $2f                               ; B3
@@ -5555,12 +6129,12 @@ MSCRIPT_DAYBREAK_SQ1:                       ; [$93b9]
     .byte $e0                               ; Note length: 96
     .byte $3b                               ; B4
     .byte MSCRIPT_OP_NEXT_LOOP_IF_N_ITERS   ; Op: Next loop if looped N times
-    .byte $01                               ;  '- 1 loop
+    .byte $01                               ; '- 1 loop
     .byte $e0                               ; Note length: 96
     .byte $34                               ; E4
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_NEXT_LOOP_IF_N_ITERS   ; Op: Next loop if looped N times
-    .byte $02                               ;  '- 2 loops
+    .byte $02                               ; '- 2 loops
     .byte $a4                               ; Note length: 36
     .byte $34                               ; E4
     .byte $8c                               ; Note length: 12
@@ -5607,10 +6181,10 @@ MSCRIPT_DAYBREAK_SQ1:                       ; [$93b9]
     .byte $00                               ; Rest
     .byte $00                               ; Rest
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
-    .byte $90                               ;  '- Duty cycle 2     Constant
+    .byte $90                               ; '- Duty cycle 2     Constant
                                             ; volume/envelope
     .byte MSCRIPT_OP_SET_SQ_ENVELOPE_MODE   ; Op: Set envelope mode
-    .byte $00                               ;  '- Mode 0: Linear decay
+    .byte $00                               ; '- Mode 0: Linear decay
     .byte $34                               ; E4
     .byte $35                               ; F4
     .byte $36                               ; F#4
@@ -5655,14 +6229,14 @@ MSCRIPT_DAYBREAK_SQ1:                       ; [$93b9]
 ;
 MSCRIPT_DAYBREAK_SQ2:                       ; [$9458]
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
-    .byte $05                               ;  '- Reduce volume by 5
+    .byte $05                               ; '- Reduce volume by 5
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
-    .byte $13                               ;  '- Duty cycle 0     Constant
+    .byte $13                               ; '- Duty cycle 0     Constant
                                             ; volume/envelope
     .byte MSCRIPT_OP_SET_SQ_ENVELOPE_MODE   ; Op: Set envelope mode
-    .byte $01                               ;  '- Mode 1: Curve but held
+    .byte $01                               ; '- Mode 1: Curve but held
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
-    .byte $90                               ;  '- Duty cycle 2     Constant
+    .byte $90                               ; '- Duty cycle 2     Constant
                                             ; volume/envelope
     .byte $8c                               ; Note length: 12
     .byte $00                               ; Rest
@@ -5723,7 +6297,7 @@ MSCRIPT_DAYBREAK_SQ2:                       ; [$9458]
     .byte $e0                               ; Note length: 96
     .byte $3b                               ; B4
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
-    .byte $03                               ;  '- Reduce volume by 3
+    .byte $03                               ; '- Reduce volume by 3
     .byte $8c                               ; Note length: 12
     .byte $34                               ; E4
     .byte $32                               ; D4
@@ -5846,12 +6420,12 @@ MSCRIPT_DAYBREAK_SQ2:                       ; [$9458]
     .byte $00                               ; Rest
     .byte $00                               ; Rest
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
-    .byte $03                               ;  '- Reduce volume by 3
+    .byte $03                               ; '- Reduce volume by 3
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
-    .byte $50                               ;  '- Duty cycle 1     Constant
+    .byte $50                               ; '- Duty cycle 1     Constant
                                             ; volume/envelope
     .byte MSCRIPT_OP_SET_SQ_ENVELOPE_MODE   ; Op: Set envelope mode
-    .byte $00                               ;  '- Mode 0: Linear decay
+    .byte $00                               ; '- Mode 0: Linear decay
     .byte $30                               ; C4
     .byte $31                               ; C#4
     .byte $32                               ; D4
@@ -5896,7 +6470,7 @@ MSCRIPT_DAYBREAK_SQ2:                       ; [$9458]
 ;
 MSCRIPT_DAYBREAK_TRI:                       ; [$9540]
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $8c                               ; Note length: 12
     .byte $15                               ; A3
     .byte $21                               ; A4
@@ -6019,7 +6593,7 @@ MSCRIPT_DAYBREAK_TRI:                       ; [$9540]
     .byte $17                               ; B3
     .byte $1c                               ; E4
     .byte MSCRIPT_OP_NEXT_LOOP_IF_N_ITERS   ; Op: Next loop if looped N times
-    .byte $01                               ;  '- 1 loop
+    .byte $01                               ; '- 1 loop
     .byte $8c                               ; Note length: 12
     .byte $10                               ; E3
     .byte $1c                               ; E4
@@ -6031,7 +6605,7 @@ MSCRIPT_DAYBREAK_TRI:                       ; [$9540]
     .byte $17                               ; B3
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_NEXT_LOOP_IF_N_ITERS   ; Op: Next loop if looped N times
-    .byte $02                               ;  '- 2 loops
+    .byte $02                               ; '- 2 loops
     .byte $8c                               ; Note length: 12
     .byte $10                               ; E3
     .byte $11                               ; F3
@@ -6190,7 +6764,7 @@ MSCRIPT_DAYBREAK_TRI:                       ; [$9540]
 ;
 MSCRIPT_DAYBREAK_NOISE:                     ; [$9660]
     .byte MSCRIPT_OP_END                    ; Op: End
-    .byte MSCRIPT_OP_END                    ; Op: End
+    .byte $ff                               ; [$9661] byte
 
 
 ;============================================================================
@@ -6209,16 +6783,16 @@ MSCRIPT_APOLUNE_SQ1:                        ; [$9662]
     .byte $00                               ; Rest
     .byte $00                               ; Rest
     .byte MSCRIPT_OP_JSR                    ; Op: Jump to subroutine
-    pointer @_subroutine                    ;  '- $96C3
+    pointer @_subroutine                    ; '- $96C3
     .byte MSCRIPT_OP_JSR                    ; Op: Jump to subroutine
-    pointer @_subroutine                    ;  '- $96C3
+    pointer @_subroutine                    ; '- $96C3
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
-    .byte $00                               ;  '- Reduce volume by 0
+    .byte $00                               ; '- Reduce volume by 0
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
-    .byte $90                               ;  '- Duty cycle 2     Constant
+    .byte $90                               ; '- Duty cycle 2     Constant
                                             ; volume/envelope
     .byte MSCRIPT_OP_SET_SQ_ENVELOPE_MODE   ; Op: Set envelope mode
-    .byte $00                               ;  '- Mode 0: Linear decay
+    .byte $00                               ; '- Mode 0: Linear decay
     .byte $8c                               ; Note length: 12
     .byte $32                               ; D4
     .byte $34                               ; E4
@@ -6304,12 +6878,12 @@ MSCRIPT_APOLUNE_SQ1:                        ; [$9662]
 
   @_subroutine:                             ; [$96c3]
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
-    .byte $02                               ;  '- Reduce volume by 2
+    .byte $02                               ; '- Reduce volume by 2
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
-    .byte $d0                               ;  '- Duty cycle 3     Constant
+    .byte $d0                               ; '- Duty cycle 3     Constant
                                             ; volume/envelope
     .byte MSCRIPT_OP_SET_SQ_ENVELOPE_MODE   ; Op: Set envelope mode
-    .byte $01                               ;  '- Mode 1: Curve but held
+    .byte $01                               ; '- Mode 1: Curve but held
     .byte $8c                               ; Note length: 12
     .byte $39                               ; A4
     .byte $38                               ; G#4
@@ -6403,16 +6977,16 @@ MSCRIPT_APOLUNE_SQ2:                        ; [$971c]
     .byte $00                               ; Rest
     .byte $00                               ; Rest
     .byte MSCRIPT_OP_JSR                    ; Op: Jump to subroutine
-    pointer @_subroutine                    ;  '- $97A6
+    pointer @_subroutine                    ; '- $97A6
     .byte MSCRIPT_OP_JSR                    ; Op: Jump to subroutine
-    pointer @_subroutine                    ;  '- $97A6
+    pointer @_subroutine                    ; '- $97A6
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
-    .byte $02                               ;  '- Reduce volume by 2
+    .byte $02                               ; '- Reduce volume by 2
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
-    .byte $50                               ;  '- Duty cycle 1     Constant
+    .byte $50                               ; '- Duty cycle 1     Constant
                                             ; volume/envelope
     .byte MSCRIPT_OP_SET_SQ_ENVELOPE_MODE   ; Op: Set envelope mode
-    .byte $00                               ;  '- Mode 0: Linear decay
+    .byte $00                               ; '- Mode 0: Linear decay
     .byte $86                               ; Note length: 6
     .byte $00                               ; Rest
     .byte $8c                               ; Note length: 12
@@ -6539,12 +7113,12 @@ MSCRIPT_APOLUNE_SQ2:                        ; [$971c]
 
   @_subroutine:                             ; [$97a6]
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
-    .byte $04                               ;  '- Reduce volume by 4
+    .byte $04                               ; '- Reduce volume by 4
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
-    .byte $90                               ;  '- Duty cycle 2     Constant
+    .byte $90                               ; '- Duty cycle 2     Constant
                                             ; volume/envelope
     .byte MSCRIPT_OP_SET_SQ_ENVELOPE_MODE   ; Op: Set envelope mode
-    .byte $01                               ;  '- Mode 1: Curve but held
+    .byte $01                               ; '- Mode 1: Curve but held
     .byte $8c                               ; Note length: 12
     .byte $30                               ; A9
     .byte $2f                               ; A9
@@ -6795,9 +7369,9 @@ MSCRIPT_APOLUNE_TRI:                        ; [$987a]
     .byte $1e                               ; F#4
     .byte $00                               ; Rest
     .byte MSCRIPT_OP_JSR                    ; Op: Jump to subroutine
-    pointer @_subroutine                    ;  '- $9927
+    pointer @_subroutine                    ; '- $9927
     .byte MSCRIPT_OP_JSR                    ; Op: Jump to subroutine
-    pointer @_subroutine                    ;  '- $9927
+    pointer @_subroutine                    ; '- $9927
     .byte $0e                               ; F6
     .byte $00                               ; Rest
     .byte $15                               ; C7
@@ -7225,36 +7799,77 @@ MSCRIPT_APOLUNE_TRI:                        ; [$987a]
 ;     MSCRIPTS_APOLUNE [$PRG5::8f11]
 ;
 MSCRIPT_APOLUNE_NOISE:                      ; [$9a48]
-    .byte $8c,$00,$31,$00,$31,$00,$31,$00   ; [$9a48] byte
-    .byte $31,$00,$31,$00,$31,$00,$31,$86   ; [$9a50] byte
-    .byte $31,$31,$8c,$31                   ; [$9a58] byte
-
+    .byte $8c                               ; Note length: 12
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $8c                               ; Note length: 12
+    .byte $31                               ; A9
     .byte MSCRIPT_OP_JSR                    ; Op: Jump to subroutine
-    pointer @_subroutine                    ;  '- $9A70
+    pointer @_subroutine                    ; '- $9A70
     .byte MSCRIPT_OP_JSR                    ; Op: Jump to subroutine
-    pointer @_subroutine                    ;  '- $9A70
+    pointer @_subroutine                    ; '- $9A70
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $08                               ;  '- 8 iterations
-    .byte $8c,$00,$21,$00,$21,$00,$21,$00   ; [$9a64] byte
-    .byte $21                               ; [$9a6c] byte
-
+    .byte $08                               ; '- 8 iterations
+    .byte $8c                               ; Note length: 12
+    .byte $00                               ; Rest
+    .byte $21                               ; A9
+    .byte $00                               ; Rest
+    .byte $21                               ; A9
+    .byte $00                               ; Rest
+    .byte $21                               ; A9
+    .byte $00                               ; Rest
+    .byte $21                               ; A9
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_RESTART_CHANNEL        ; Op: Restart channel
     .byte MSCRIPT_OP_END                    ; Op: End
 
   @_subroutine:                             ; [$9a70]
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $08                               ;  '- 8 iterations
-    .byte $8c,$00,$21,$00,$21,$00,$21,$00   ; [$9a72] byte
-    .byte $21                               ; [$9a7a] byte
-
+    .byte $08                               ; '- 8 iterations
+    .byte $8c                               ; Note length: 12
+    .byte $00                               ; Rest
+    .byte $21                               ; A9
+    .byte $00                               ; Rest
+    .byte $21                               ; A9
+    .byte $00                               ; Rest
+    .byte $21                               ; A9
+    .byte $00                               ; Rest
+    .byte $21                               ; A9
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $08                               ;  '- 8 iterations
-    .byte $86,$31,$00,$31,$31,$31,$00,$31   ; [$9a7e] byte
-    .byte $31,$31,$00,$31,$31,$31,$00,$31   ; [$9a86] byte
-    .byte $31                               ; [$9a8e] byte
-
+    .byte $08                               ; '- 8 iterations
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_RET                    ; Op: Return from subroutine
     .byte MSCRIPT_OP_END                    ; Op: End
@@ -7273,14 +7888,14 @@ MSCRIPT_APOLUNE_NOISE:                      ; [$9a48]
 ;
 MSCRIPT_CONFLATE_SQ1:                       ; [$9a92]
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
-    .byte $02                               ;  '- Reduce volume by 2
+    .byte $02                               ; '- Reduce volume by 2
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
-    .byte $90                               ;  '- Duty cycle 2     Constant
+    .byte $90                               ; '- Duty cycle 2     Constant
                                             ; volume/envelope
     .byte MSCRIPT_OP_SET_SQ_ENVELOPE_MODE   ; Op: Set envelope mode
-    .byte $01                               ;  '- Mode 1: Curve but held
+    .byte $01                               ; '- Mode 1: Curve but held
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $98                               ; Note length: 24
     .byte $37                               ; G4
     .byte $36                               ; F#4
@@ -7411,12 +8026,12 @@ MSCRIPT_CONFLATE_SQ1:                       ; [$9a92]
 ;
 MSCRIPT_CONFLATE_SQ2:                       ; [$9b15]
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
-    .byte $02                               ;  '- Reduce volume by 2
+    .byte $02                               ; '- Reduce volume by 2
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
-    .byte $90                               ;  '- Duty cycle 2     Constant
+    .byte $90                               ; '- Duty cycle 2     Constant
                                             ; volume/envelope
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $98                               ; Note length: 24
     .byte $2f                               ; B3
     .byte $2d                               ; A3
@@ -7447,9 +8062,9 @@ MSCRIPT_CONFLATE_SQ2:                       ; [$9b15]
     .byte $2c                               ; G#3
     .byte $2d                               ; A3
     .byte MSCRIPT_OP_SET_SQ2_PITCH_BIAS     ; Op: Set SQ2 pitch bias
-    .byte $01                               ;  '- 1
+    .byte $01                               ; '- 1
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
-    .byte $05                               ;  '- Reduce volume by 5
+    .byte $05                               ; '- Reduce volume by 5
     .byte $86                               ; Note length: 6
     .byte $00                               ; Rest
     .byte $8c                               ; Note length: 12
@@ -7463,9 +8078,9 @@ MSCRIPT_CONFLATE_SQ2:                       ; [$9b15]
     .byte $39                               ; A4
     .byte $34                               ; E4
     .byte MSCRIPT_OP_SET_SQ2_PITCH_BIAS     ; Op: Set SQ2 pitch bias
-    .byte $00                               ;  '- 0
+    .byte $00                               ; '- 0
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
-    .byte $02                               ;  '- Reduce volume by 2
+    .byte $02                               ; '- Reduce volume by 2
     .byte $a4                               ; Note length: 36
     .byte $3e                               ; D5
     .byte $8c                               ; Note length: 12
@@ -7586,7 +8201,7 @@ MSCRIPT_CONFLATE_SQ2:                       ; [$9b15]
 ;
 MSCRIPT_CONFLATE_TRI:                       ; [$9bbd]
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $b0                               ; Note length: 48
     .byte $00                               ; Rest
     .byte $8c                               ; Note length: 12
@@ -7670,12 +8285,12 @@ MSCRIPT_CONFLATE_TRI:                       ; [$9bbd]
     .byte $1f                               ; G4
     .byte $13                               ; G3
     .byte MSCRIPT_OP_NEXT_LOOP_IF_N_ITERS   ; Op: Next loop if looped N times
-    .byte $01                               ;  '- 1 loop
+    .byte $01                               ; '- 1 loop
     .byte $b0                               ; Note length: 48
     .byte $00                               ; Rest
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_NEXT_LOOP_IF_N_ITERS   ; Op: Next loop if looped N times
-    .byte $02                               ;  '- 2 loops
+    .byte $02                               ; '- 2 loops
     .byte $8c                               ; Note length: 12
     .byte $00                               ; Rest
     .byte $1f                               ; G4
@@ -7754,41 +8369,219 @@ MSCRIPT_CONFLATE_TRI:                       ; [$9bbd]
 ;
 MSCRIPT_CONFLATE_NOISE:                     ; [$9c5f]
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
-    .byte $86,$31,$00,$00,$00,$31,$00,$00   ; [$9c61] byte
-    .byte $00,$86,$31,$00,$31,$00,$8c,$21   ; [$9c69] byte
-    .byte $21,$86,$31,$00,$31,$00,$8c,$21   ; [$9c71] byte
-    .byte $86,$31,$00,$31,$00,$31,$00,$8c   ; [$9c79] byte
-    .byte $21,$21,$86,$31,$00,$31,$00,$8c   ; [$9c81] byte
-    .byte $21,$86,$31,$00,$31,$00,$31,$00   ; [$9c89] byte
-    .byte $8c,$21,$21,$86,$31,$00,$31,$00   ; [$9c91] byte
-    .byte $8c,$21,$21,$86,$31,$00,$31,$00   ; [$9c99] byte
-    .byte $31,$00,$31,$00,$31,$00,$8c,$21   ; [$9ca1] byte
-    .byte $21,$86,$21,$21,$31,$00,$31,$00   ; [$9ca9] byte
-    .byte $8c,$21,$21,$86,$31,$00,$31,$00   ; [$9cb1] byte
-    .byte $8c,$21,$86,$31,$00,$31,$00,$31   ; [$9cb9] byte
-    .byte $00,$8c,$21,$86,$31,$00,$31,$00   ; [$9cc1] byte
-    .byte $8c,$21,$86,$31,$00,$8c,$21,$86   ; [$9cc9] byte
-    .byte $31,$00,$00,$00,$31,$00,$00,$00   ; [$9cd1] byte
-    .byte $8c,$21,$21,$21,$21               ; [$9cd9] byte
-
+    .byte $02                               ; '- 2 iterations
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $21                               ; A9
     .byte MSCRIPT_OP_NEXT_LOOP_IF_N_ITERS   ; Op: Next loop if looped N times
-    .byte $01                               ;  '- 1 loop
-    .byte $8c,$00,$86,$31,$31,$8c,$21,$00   ; [$9ce0] byte
+    .byte $01                               ; '- 1 loop
+    .byte $8c                               ; Note length: 12
+    .byte $00                               ; Rest
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $00                               ; Rest
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_NEXT_LOOP_IF_N_ITERS   ; Op: Next loop if looped N times
-    .byte $02                               ;  '- 2 loops
-    .byte $b0,$00,$8c,$00,$31,$86,$31,$31   ; [$9ceb] byte
-    .byte $31,$00,$8c,$00,$00,$31,$00,$00   ; [$9cf3] byte
-    .byte $31,$00,$00,$00,$00,$31,$00,$00   ; [$9cfb] byte
-    .byte $31,$00,$00,$00,$00,$31,$00,$00   ; [$9d03] byte
-    .byte $31,$00,$00,$00,$00,$31,$00,$00   ; [$9d0b] byte
-    .byte $31,$00,$86,$31,$31,$8c,$00,$00   ; [$9d13] byte
-    .byte $31,$00,$00,$31,$00,$00,$00,$00   ; [$9d1b] byte
-    .byte $31,$00,$00,$31,$00,$00,$00,$00   ; [$9d23] byte
-    .byte $31,$00,$00,$31,$31,$00,$31,$31   ; [$9d2b] byte
-    .byte $31,$00                           ; [$9d33] byte
-
+    .byte $02                               ; '- 2 loops
+    .byte $b0                               ; Note length: 48
+    .byte $00                               ; Rest
+    .byte $8c                               ; Note length: 12
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $8c                               ; Note length: 12
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $8c                               ; Note length: 12
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
     .byte MSCRIPT_OP_RESTART_CHANNEL        ; Op: Restart channel
     .byte MSCRIPT_OP_END                    ; Op: End
     .byte MSCRIPT_OP_END                    ; Op: End
@@ -7807,12 +8600,12 @@ MSCRIPT_CONFLATE_NOISE:                     ; [$9c5f]
 ;
 MSCRIPT_FOREPAW_SQ1:                        ; [$9d38]
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
-    .byte $03                               ;  '- Reduce volume by 3
+    .byte $03                               ; '- Reduce volume by 3
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
-    .byte $50                               ;  '- Duty cycle 1     Constant
+    .byte $50                               ; '- Duty cycle 1     Constant
                                             ; volume/envelope
     .byte MSCRIPT_OP_SET_SQ_ENVELOPE_MODE   ; Op: Set envelope mode
-    .byte $00                               ;  '- Mode 0: Linear decay
+    .byte $00                               ; '- Mode 0: Linear decay
     .byte $90                               ; Note length: 16
     .byte $1f                               ; G2
     .byte $22                               ; A#2
@@ -7832,7 +8625,7 @@ MSCRIPT_FOREPAW_SQ1:                        ; [$9d38]
     .byte $26                               ; D3
     .byte MSCRIPT_OP_PUSH_ADDR              ; Op: Save address
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $90                               ; Note length: 16
     .byte $1f                               ; G2
     .byte $22                               ; A#2
@@ -7868,7 +8661,7 @@ MSCRIPT_FOREPAW_SQ1:                        ; [$9d38]
     .byte $26                               ; D3
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $a0                               ; Note length: 32
     .byte $32                               ; D4
     .byte $33                               ; D#4
@@ -7889,7 +8682,7 @@ MSCRIPT_FOREPAW_SQ1:                        ; [$9d38]
     .byte $32                               ; D4
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $90                               ; Note length: 16
     .byte $26                               ; D3
     .byte $29                               ; F3
@@ -7933,16 +8726,16 @@ MSCRIPT_FOREPAW_SQ1:                        ; [$9d38]
 ;
 MSCRIPT_FOREPAW_SQ2:                        ; [$9daf]
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
-    .byte $05                               ;  '- Reduce volume by 5
+    .byte $05                               ; '- Reduce volume by 5
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
-    .byte $90                               ;  '- Duty cycle 2     Constant
+    .byte $90                               ; '- Duty cycle 2     Constant
                                             ; volume/envelope
     .byte MSCRIPT_OP_SET_SQ_ENVELOPE_MODE   ; Op: Set envelope mode
-    .byte $00                               ;  '- Mode 0: Linear decay
+    .byte $00                               ; '- Mode 0: Linear decay
     .byte MSCRIPT_OP_SET_SQ2_PITCH_BIAS     ; Op: Set SQ2 pitch bias
-    .byte $02                               ;  '- 2
+    .byte $02                               ; '- 2
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
-    .byte $11                               ;  '- Duty cycle 0     Constant
+    .byte $11                               ; '- Duty cycle 0     Constant
                                             ; volume/envelope
     .byte $88                               ; Note length: 8
     .byte $00                               ; Rest
@@ -7968,7 +8761,7 @@ MSCRIPT_FOREPAW_SQ2:                        ; [$9daf]
     .byte $26                               ; D3
     .byte MSCRIPT_OP_PUSH_ADDR              ; Op: Save address
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $88                               ; Note length: 8
     .byte $00                               ; Rest
     .byte $90                               ; Note length: 16
@@ -8013,7 +8806,7 @@ MSCRIPT_FOREPAW_SQ2:                        ; [$9daf]
     .byte $26                               ; D3
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $88                               ; Note length: 8
     .byte $00                               ; Rest
     .byte $32                               ; D4
@@ -8081,9 +8874,9 @@ MSCRIPT_FOREPAW_SQ2:                        ; [$9daf]
     .byte $1f                               ; G2
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
-    .byte $02                               ;  '- Reduce volume by 2
+    .byte $02                               ; '- Reduce volume by 2
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $88                               ; Note length: 8
     .byte $00                               ; Rest
     .byte $90                               ; Note length: 16
@@ -8137,12 +8930,12 @@ MSCRIPT_FOREPAW_SQ2:                        ; [$9daf]
 ;
 MSCRIPT_FOREPAW_TRI:                        ; [$9e73]
     .byte MSCRIPT_OP_SET_NOTE_DURATION      ; Op: Set note duration
-    .byte $80                               ;  '- 128 ticks
+    .byte $80                               ; '- 128 ticks
     .byte $00                               ; Rest
     .byte $00                               ; Rest
     .byte MSCRIPT_OP_PUSH_ADDR              ; Op: Save address
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $90                               ; Note length: 16
     .byte $36                               ; F#6
     .byte $37                               ; G6
@@ -8169,7 +8962,7 @@ MSCRIPT_FOREPAW_TRI:                        ; [$9e73]
     .byte $2d                               ; A5
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $04                               ;  '- 4 iterations
+    .byte $04                               ; '- 4 iterations
     .byte $88                               ; Note length: 8
     .byte $1a                               ; D4
     .byte $00                               ; Rest
@@ -8201,7 +8994,7 @@ MSCRIPT_FOREPAW_TRI:                        ; [$9e73]
     .byte $1a                               ; D4
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $b0                               ; Note length: 48
     .byte $00                               ; Rest
     .byte $88                               ; Note length: 8
@@ -8267,14 +9060,14 @@ MSCRIPT_FOREPAW_NOISE:                      ; [$9ee0]
 ;
 MSCRIPT_TOWER_SQ1:                          ; [$9ee2]
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
-    .byte $02                               ;  '- Reduce volume by 2
+    .byte $02                               ; '- Reduce volume by 2
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
-    .byte $90                               ;  '- Duty cycle 2     Constant
+    .byte $90                               ; '- Duty cycle 2     Constant
                                             ; volume/envelope
     .byte MSCRIPT_OP_SET_SQ_ENVELOPE_MODE   ; Op: Set envelope mode
-    .byte $00                               ;  '- Mode 0: Linear decay
+    .byte $00                               ; '- Mode 0: Linear decay
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $88                               ; Note length: 8
     .byte $00                               ; Rest
     .byte $3c                               ; C5
@@ -8294,7 +9087,7 @@ MSCRIPT_TOWER_SQ1:                          ; [$9ee2]
     .byte $00                               ; Rest
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $88                               ; Note length: 8
     .byte $00                               ; Rest
     .byte $3c                               ; C5
@@ -8314,7 +9107,7 @@ MSCRIPT_TOWER_SQ1:                          ; [$9ee2]
     .byte $00                               ; Rest
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $88                               ; Note length: 8
     .byte $35                               ; F4
     .byte $35                               ; F4
@@ -8376,7 +9169,7 @@ MSCRIPT_TOWER_SQ1:                          ; [$9ee2]
     .byte $00                               ; Rest
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $98                               ; Note length: 24
     .byte $31                               ; C#4
     .byte $30                               ; C4
@@ -8407,16 +9200,16 @@ MSCRIPT_TOWER_SQ1:                          ; [$9ee2]
 ;
 MSCRIPT_TOWER_SQ2:                          ; [$9f67]
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
-    .byte $02                               ;  '- Reduce volume by 2
+    .byte $02                               ; '- Reduce volume by 2
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
-    .byte $90                               ;  '- Duty cycle 2     Constant
+    .byte $90                               ; '- Duty cycle 2     Constant
                                             ; volume/envelope
     .byte MSCRIPT_OP_SET_SQ_ENVELOPE_MODE   ; Op: Set envelope mode
-    .byte $00                               ;  '- Mode 0: Linear decay
+    .byte $00                               ; '- Mode 0: Linear decay
     .byte MSCRIPT_OP_SET_SQ2_PITCH_BIAS     ; Op: Set SQ2 pitch bias
-    .byte $04                               ;  '- 4
+    .byte $04                               ; '- 4
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $88                               ; Note length: 8
     .byte $00                               ; Rest
     .byte $30                               ; C4
@@ -8436,9 +9229,9 @@ MSCRIPT_TOWER_SQ2:                          ; [$9f67]
     .byte $00                               ; Rest
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_SET_SQ2_PITCH_BIAS     ; Op: Set SQ2 pitch bias
-    .byte $00                               ;  '- 0
+    .byte $00                               ; '- 0
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $88                               ; Note length: 8
     .byte $00                               ; Rest
     .byte $37                               ; G4
@@ -8458,7 +9251,7 @@ MSCRIPT_TOWER_SQ2:                          ; [$9f67]
     .byte $00                               ; Rest
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $88                               ; Note length: 8
     .byte $30                               ; C4
     .byte $30                               ; C4
@@ -8520,11 +9313,11 @@ MSCRIPT_TOWER_SQ2:                          ; [$9f67]
     .byte $00                               ; Rest
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
-    .byte $07                               ;  '- Reduce volume by 7
+    .byte $07                               ; '- Reduce volume by 7
     .byte MSCRIPT_OP_SET_SQ2_PITCH_BIAS     ; Op: Set SQ2 pitch bias
-    .byte $01                               ;  '- 1
+    .byte $01                               ; '- 1
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $88                               ; Note length: 8
     .byte $00                               ; Rest
     .byte $98                               ; Note length: 24
@@ -8550,7 +9343,7 @@ MSCRIPT_TOWER_SQ2:                          ; [$9f67]
     .byte $84                               ; Note length: 4
     .byte $33                               ; D#4
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
-    .byte $04                               ;  '- Reduce volume by 4
+    .byte $04                               ; '- Reduce volume by 4
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_RESTART_CHANNEL        ; Op: Restart channel
     .byte MSCRIPT_OP_END                    ; Op: End
@@ -8561,7 +9354,7 @@ MSCRIPT_TOWER_SQ2:                          ; [$9f67]
 ;
 MSCRIPT_TOWER_TRI:                          ; [$9ffa]
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $88                               ; Note length: 8
     .byte $18                               ; C4
     .byte $00                               ; Rest
@@ -8598,7 +9391,7 @@ MSCRIPT_TOWER_TRI:                          ; [$9ffa]
     .byte $0c                               ; C3
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $88                               ; Note length: 8
     .byte $14                               ; G#3
     .byte $14                               ; G#3
@@ -8699,7 +9492,7 @@ MSCRIPT_TOWER_TRI:                          ; [$9ffa]
     .byte $00                               ; Rest
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $90                               ; Note length: 16
     .byte $13                               ; G3
     .byte $88                               ; Note length: 8
@@ -8720,7 +9513,7 @@ MSCRIPT_TOWER_TRI:                          ; [$9ffa]
     .byte $13                               ; G3
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $90                               ; Note length: 16
     .byte $13                               ; G3
     .byte $88                               ; Note length: 8
@@ -8750,42 +9543,179 @@ MSCRIPT_TOWER_TRI:                          ; [$9ffa]
 ;
 MSCRIPT_TOWER_NOISE:                        ; [$a0b1]
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $04                               ;  '- 4 iterations
-    .byte $88,$21,$31,$31,$21,$31,$31,$21   ; [$a0b3] byte
-    .byte $31,$21,$31,$31,$21,$31,$31,$21   ; [$a0bb] byte
-    .byte $31                               ; [$a0c3] byte
-
+    .byte $04                               ; '- 4 iterations
+    .byte $88                               ; Note length: 8
+    .byte $21                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $21                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $21                               ; A9
+    .byte $31                               ; A9
+    .byte $21                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $21                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $21                               ; A9
+    .byte $31                               ; A9
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
-    .byte $88,$21,$21,$21,$21,$21,$00,$31   ; [$a0c7] byte
-    .byte $31,$31,$31,$31,$31,$21,$00,$00   ; [$a0cf] byte
-    .byte $21,$11,$11,$11,$00,$85,$31,$31   ; [$a0d7] byte
-    .byte $86,$31,$88,$31,$31,$31,$31,$21   ; [$a0df] byte
-    .byte $00,$21,$00,$21,$21,$31,$00,$31   ; [$a0e7] byte
-    .byte $00,$31,$31,$21,$00,$31,$00,$31   ; [$a0ef] byte
-    .byte $31,$31,$31,$21,$21,$31,$00,$31   ; [$a0f7] byte
-    .byte $00,$31,$00,$31,$00,$85,$31,$31   ; [$a0ff] byte
-    .byte $86,$31,$88,$31,$31,$21,$21,$31   ; [$a107] byte
-    .byte $00,$31,$31,$31,$31,$21,$31,$31   ; [$a10f] byte
-    .byte $31,$31,$31,$31,$31,$21,$31,$31   ; [$a117] byte
-    .byte $31,$a0,$00,$88,$21,$21,$21,$21   ; [$a11f] byte
-    .byte $85,$31,$31,$86,$31,$88,$31,$31   ; [$a127] byte
-    .byte $85,$31,$31,$86,$31,$88,$21,$21   ; [$a12f] byte
+    .byte $02                               ; '- 2 iterations
+    .byte $88                               ; Note length: 8
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $21                               ; A9
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $21                               ; A9
+    .byte $11                               ; A9
+    .byte $11                               ; A9
+    .byte $11                               ; A9
+    .byte $00                               ; Rest
+    .byte $85                               ; Note length: 5
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $88                               ; Note length: 8
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $21                               ; A9
+    .byte $00                               ; Rest
+    .byte $21                               ; A9
+    .byte $00                               ; Rest
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $21                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $85                               ; Note length: 5
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $88                               ; Note length: 8
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $21                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $21                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $a0                               ; Note length: 32
+    .byte $00                               ; Rest
+    .byte $88                               ; Note length: 8
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $85                               ; Note length: 5
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $88                               ; Note length: 8
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $85                               ; Note length: 5
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $88                               ; Note length: 8
+    .byte $21                               ; A9
+    .byte $21                               ; A9
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
-    .byte $88,$31,$00,$00,$31,$00,$00,$31   ; [$a13a] byte
-    .byte $00,$31,$00,$00,$31,$00,$00,$31   ; [$a142] byte
-    .byte $31                               ; [$a14a] byte
-
+    .byte $02                               ; '- 2 iterations
+    .byte $88                               ; Note length: 8
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
-    .byte $88,$31,$11,$11,$31,$11,$11,$31   ; [$a14e] byte
-    .byte $11,$31,$11,$11,$31,$11,$11,$31   ; [$a156] byte
-    .byte $31                               ; [$a15e] byte
-
+    .byte $02                               ; '- 2 iterations
+    .byte $88                               ; Note length: 8
+    .byte $31                               ; A9
+    .byte $11                               ; A9
+    .byte $11                               ; A9
+    .byte $31                               ; A9
+    .byte $11                               ; A9
+    .byte $11                               ; A9
+    .byte $31                               ; A9
+    .byte $11                               ; A9
+    .byte $31                               ; A9
+    .byte $11                               ; A9
+    .byte $11                               ; A9
+    .byte $31                               ; A9
+    .byte $11                               ; A9
+    .byte $11                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_RESTART_CHANNEL        ; Op: Restart channel
     .byte MSCRIPT_OP_END                    ; Op: End
@@ -8805,12 +9735,12 @@ MSCRIPT_TOWER_NOISE:                        ; [$a0b1]
 ;
 MSCRIPT_EOLIS_SQ1:                          ; [$a163]
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
-    .byte $02                               ;  '- Reduce volume by 2
+    .byte $02                               ; '- Reduce volume by 2
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
-    .byte $90                               ;  '- Duty cycle 2     Constant
+    .byte $90                               ; '- Duty cycle 2     Constant
                                             ; volume/envelope
     .byte MSCRIPT_OP_SET_SQ_ENVELOPE_MODE   ; Op: Set envelope mode
-    .byte $01                               ;  '- Mode 1: Curve but held
+    .byte $01                               ; '- Mode 1: Curve but held
     .byte $e0                               ; Note length: 96
     .byte $00                               ; Rest
     .byte $00                               ; Rest
@@ -8823,7 +9753,7 @@ MSCRIPT_EOLIS_SQ1:                          ; [$a163]
     .byte $36                               ; F#4
     .byte $38                               ; G#4
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $98                               ; Note length: 24
     .byte $39                               ; A4
     .byte $8c                               ; Note length: 12
@@ -8879,7 +9809,7 @@ MSCRIPT_EOLIS_SQ1:                          ; [$a163]
     .byte $00                               ; Rest
     .byte $38                               ; G#4
     .byte MSCRIPT_OP_NEXT_LOOP_IF_N_ITERS   ; Op: Next loop if looped N times
-    .byte $01                               ;  '- 1 loop
+    .byte $01                               ; '- 1 loop
     .byte $8c                               ; Note length: 12
     .byte $3c                               ; C5
     .byte $38                               ; G#4
@@ -8891,7 +9821,7 @@ MSCRIPT_EOLIS_SQ1:                          ; [$a163]
     .byte $38                               ; G#4
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_NEXT_LOOP_IF_N_ITERS   ; Op: Next loop if looped N times
-    .byte $02                               ;  '- 2 loops
+    .byte $02                               ; '- 2 loops
     .byte $8c                               ; Note length: 12
     .byte $3c                               ; C5
     .byte $38                               ; G#4
@@ -8910,7 +9840,7 @@ MSCRIPT_EOLIS_SQ1:                          ; [$a163]
     .byte $2b                               ; G3
     .byte $00                               ; Rest
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $b0                               ; Note length: 48
     .byte $40                               ; E5
     .byte $98                               ; Note length: 24
@@ -8940,7 +9870,7 @@ MSCRIPT_EOLIS_SQ1:                          ; [$a163]
     .byte $00                               ; Rest
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $b0                               ; Note length: 48
     .byte $00                               ; Rest
     .byte $8c                               ; Note length: 12
@@ -8996,9 +9926,9 @@ MSCRIPT_EOLIS_SQ1:                          ; [$a163]
 ;
 MSCRIPT_EOLIS_SQ2:                          ; [$a21b]
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
-    .byte $02                               ;  '- Reduce volume by 2
+    .byte $02                               ; '- Reduce volume by 2
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
-    .byte $90                               ;  '- Duty cycle 2     Constant
+    .byte $90                               ; '- Duty cycle 2     Constant
                                             ; volume/envelope
     .byte $e0                               ; Note length: 96
     .byte $00                               ; Rest
@@ -9012,7 +9942,7 @@ MSCRIPT_EOLIS_SQ2:                          ; [$a21b]
     .byte $33                               ; D#4
     .byte $32                               ; D4
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $98                               ; Note length: 24
     .byte $30                               ; C4
     .byte $8c                               ; Note length: 12
@@ -9068,7 +9998,7 @@ MSCRIPT_EOLIS_SQ2:                          ; [$a21b]
     .byte $00                               ; Rest
     .byte $30                               ; C4
     .byte MSCRIPT_OP_NEXT_LOOP_IF_N_ITERS   ; Op: Next loop if looped N times
-    .byte $01                               ;  '- 1 loop
+    .byte $01                               ; '- 1 loop
     .byte $8c                               ; Note length: 12
     .byte $33                               ; D#4
     .byte $30                               ; C4
@@ -9080,7 +10010,7 @@ MSCRIPT_EOLIS_SQ2:                          ; [$a21b]
     .byte $32                               ; D4
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_NEXT_LOOP_IF_N_ITERS   ; Op: Next loop if looped N times
-    .byte $02                               ;  '- 2 loops
+    .byte $02                               ; '- 2 loops
     .byte $8c                               ; Note length: 12
     .byte $33                               ; D#4
     .byte $30                               ; C4
@@ -9099,7 +10029,7 @@ MSCRIPT_EOLIS_SQ2:                          ; [$a21b]
     .byte $26                               ; D3
     .byte $00                               ; Rest
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $b0                               ; Note length: 48
     .byte $3c                               ; C5
     .byte $98                               ; Note length: 24
@@ -9129,7 +10059,7 @@ MSCRIPT_EOLIS_SQ2:                          ; [$a21b]
     .byte $00                               ; Rest
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $b0                               ; Note length: 48
     .byte $00                               ; Rest
     .byte $8c                               ; Note length: 12
@@ -9218,7 +10148,7 @@ MSCRIPT_EOLIS_TRI:                          ; [$a2d1]
     .byte $17                               ; B3
     .byte $10                               ; E3
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $98                               ; Note length: 24
     .byte $15                               ; A3
     .byte $8c                               ; Note length: 12
@@ -9278,7 +10208,7 @@ MSCRIPT_EOLIS_TRI:                          ; [$a2d1]
     .byte $00                               ; Rest
     .byte $0f                               ; D#3
     .byte MSCRIPT_OP_NEXT_LOOP_IF_N_ITERS   ; Op: Next loop if looped N times
-    .byte $01                               ;  '- 1 loop
+    .byte $01                               ; '- 1 loop
     .byte $8c                               ; Note length: 12
     .byte $14                               ; G#3
     .byte $20                               ; G#4
@@ -9290,7 +10220,7 @@ MSCRIPT_EOLIS_TRI:                          ; [$a2d1]
     .byte $14                               ; G#3
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_NEXT_LOOP_IF_N_ITERS   ; Op: Next loop if looped N times
-    .byte $02                               ;  '- 2 loops
+    .byte $02                               ; '- 2 loops
     .byte $8c                               ; Note length: 12
     .byte $14                               ; G#3
     .byte $20                               ; G#4
@@ -9309,7 +10239,7 @@ MSCRIPT_EOLIS_TRI:                          ; [$a2d1]
     .byte $13                               ; G3
     .byte $00                               ; Rest
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $8c                               ; Note length: 12
     .byte $15                               ; A3
     .byte $00                               ; Rest
@@ -9346,7 +10276,7 @@ MSCRIPT_EOLIS_TRI:                          ; [$a2d1]
     .byte $1a                               ; D4
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $8c                               ; Note length: 12
     .byte $1c                               ; E4
     .byte $10                               ; E3
@@ -9421,57 +10351,236 @@ MSCRIPT_EOLIS_TRI:                          ; [$a2d1]
 ;     MSCRIPTS_EOLIS [$PRG5::8f31]
 ;
 MSCRIPT_EOLIS_NOISE:                        ; [$a3b8]
-    .byte $8c,$3c,$3c,$30,$3c,$3c,$30,$3c   ; [$a3b8] byte
-    .byte $3c,$3c,$3c,$30,$3c,$3c,$30,$3c   ; [$a3c0] byte
-    .byte $3c,$3c,$3c,$30,$3c,$3c,$30,$3c   ; [$a3c8] byte
-    .byte $3c,$30,$30,$30,$30,$00,$3c,$3c   ; [$a3d0] byte
-    .byte $3c                               ; [$a3d8] byte
-
+    .byte $8c                               ; Note length: 12
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $30                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $30                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $30                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $30                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $30                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $30                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $30                               ; A9
+    .byte $30                               ; A9
+    .byte $30                               ; A9
+    .byte $30                               ; A9
+    .byte $00                               ; Rest
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
-    .byte $8c,$3c,$3c,$30,$3c,$3c,$3c,$30   ; [$a3db] byte
-    .byte $3c,$3c,$3c,$30,$3c,$3c,$3c,$30   ; [$a3e3] byte
-    .byte $3c,$3c,$3c,$30,$3c,$3c,$3c,$30   ; [$a3eb] byte
-    .byte $3c,$3c,$3c,$30,$3c,$3c,$3c,$30   ; [$a3f3] byte
-    .byte $3c,$3c,$3c,$30,$3c,$3c,$3c,$30   ; [$a3fb] byte
-    .byte $3c,$3c,$3c,$30,$3c,$3c,$30,$30   ; [$a403] byte
-    .byte $30,$3c,$3c,$30,$3c,$3c,$30,$3c   ; [$a40b] byte
-    .byte $3c                               ; [$a413] byte
-
+    .byte $02                               ; '- 2 iterations
+    .byte $8c                               ; Note length: 12
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $30                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $30                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $30                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $30                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $30                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $30                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $30                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $30                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $30                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $30                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $30                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $30                               ; A9
+    .byte $30                               ; A9
+    .byte $30                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $30                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $30                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
     .byte MSCRIPT_OP_NEXT_LOOP_IF_N_ITERS   ; Op: Next loop if looped N times
-    .byte $01                               ;  '- 1 loop
-    .byte $8c,$3c,$3c,$30,$3c,$3c,$30,$3c   ; [$a416] byte
-    .byte $3c                               ; [$a41e] byte
-
+    .byte $01                               ; '- 1 loop
+    .byte $8c                               ; Note length: 12
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $30                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $30                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_NEXT_LOOP_IF_N_ITERS   ; Op: Next loop if looped N times
-    .byte $02                               ;  '- 2 loops
-    .byte $8c,$3c,$3c,$30,$3c,$30,$3c,$3c   ; [$a422] byte
-    .byte $3c,$30,$30,$30,$30,$00,$30,$30   ; [$a42a] byte
-    .byte $00                               ; [$a432] byte
-
+    .byte $02                               ; '- 2 loops
+    .byte $8c                               ; Note length: 12
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $30                               ; A9
+    .byte $3c                               ; A9
+    .byte $30                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $30                               ; A9
+    .byte $30                               ; A9
+    .byte $30                               ; A9
+    .byte $30                               ; A9
+    .byte $00                               ; Rest
+    .byte $30                               ; A9
+    .byte $30                               ; A9
+    .byte $00                               ; Rest
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
-    .byte $8c,$3c,$3c,$30,$3c,$3c,$30,$00   ; [$a435] byte
-    .byte $3c,$3c,$3c,$30,$3c,$3c,$30,$00   ; [$a43d] byte
-    .byte $3c,$3c,$3c,$30,$3c,$3c,$30,$00   ; [$a445] byte
-    .byte $3c,$3c,$3c,$30,$3c,$3c,$30,$30   ; [$a44d] byte
-    .byte $30                               ; [$a455] byte
-
+    .byte $02                               ; '- 2 iterations
+    .byte $8c                               ; Note length: 12
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $30                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $30                               ; A9
+    .byte $00                               ; Rest
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $30                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $30                               ; A9
+    .byte $00                               ; Rest
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $30                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $30                               ; A9
+    .byte $00                               ; Rest
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $30                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $30                               ; A9
+    .byte $30                               ; A9
+    .byte $30                               ; A9
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
-    .byte $8c,$3c,$3c,$3c,$3c,$3c,$30,$3c   ; [$a459] byte
-    .byte $3c,$3c,$3c,$3c,$3c,$3c,$30,$30   ; [$a461] byte
-    .byte $30,$3c,$3c,$3c,$3c,$3c,$30,$3c   ; [$a469] byte
-    .byte $3c,$3c,$30,$3c,$3c,$3c,$3c,$86   ; [$a471] byte
-    .byte $3c,$3c,$8c,$30                   ; [$a479] byte
-
+    .byte $02                               ; '- 2 iterations
+    .byte $8c                               ; Note length: 12
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $30                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $30                               ; A9
+    .byte $30                               ; A9
+    .byte $30                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $30                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $30                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $8c                               ; Note length: 12
+    .byte $30                               ; A9
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
-    .byte $3c,$00,$30,$3c,$3c,$30,$3c,$3c   ; [$a47e] byte
-    .byte $3c,$00,$30,$3c,$3c,$30,$3c,$3c   ; [$a486] byte
-    .byte $3c,$00,$30,$3c,$3c,$30,$3c,$3c   ; [$a48e] byte
-    .byte $3c,$3c,$30,$3c,$3c,$30,$30,$30   ; [$a496] byte
+    .byte $3c                               ; A9
+    .byte $00                               ; Rest
+    .byte $30                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $30                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $00                               ; Rest
+    .byte $30                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $30                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $00                               ; Rest
+    .byte $30                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $30                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $30                               ; A9
+    .byte $3c                               ; A9
+    .byte $3c                               ; A9
+    .byte $30                               ; A9
+    .byte $30                               ; A9
+    .byte $30                               ; A9
     .byte MSCRIPT_OP_RESTART_CHANNEL        ; Op: Restart channel
     .byte MSCRIPT_OP_END                    ; Op: End
     .byte MSCRIPT_OP_END                    ; Op: End
@@ -9490,14 +10599,14 @@ MSCRIPT_EOLIS_NOISE:                        ; [$a3b8]
 ;
 MSCRIPT_MANTRA_SQ1:                         ; [$a4a1]
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
-    .byte $04                               ;  '- Reduce volume by 4
+    .byte $04                               ; '- Reduce volume by 4
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
-    .byte $90                               ;  '- Duty cycle 2     Constant
+    .byte $90                               ; '- Duty cycle 2     Constant
                                             ; volume/envelope
     .byte MSCRIPT_OP_SET_SQ_ENVELOPE_MODE   ; Op: Set envelope mode
-    .byte $02                               ;  '- Mode 2: Pluck
+    .byte $02                               ; '- Mode 2: Pluck
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $a0                               ; Note length: 32
     .byte $34                               ; E4
     .byte $90                               ; Note length: 16
@@ -9534,7 +10643,7 @@ MSCRIPT_MANTRA_SQ1:                         ; [$a4a1]
     .byte $36                               ; F#4
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $a0                               ; Note length: 32
     .byte $34                               ; E4
     .byte $90                               ; Note length: 16
@@ -9562,7 +10671,7 @@ MSCRIPT_MANTRA_SQ1:                         ; [$a4a1]
     .byte $39                               ; A4
     .byte $37                               ; G4
     .byte MSCRIPT_OP_NEXT_LOOP_IF_N_ITERS   ; Op: Next loop if looped N times
-    .byte $01                               ;  '- 1 loop
+    .byte $01                               ; '- 1 loop
     .byte $b0                               ; Note length: 48
     .byte $39                               ; A4
     .byte $90                               ; Note length: 16
@@ -9573,7 +10682,7 @@ MSCRIPT_MANTRA_SQ1:                         ; [$a4a1]
     .byte $36                               ; F#4
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_NEXT_LOOP_IF_N_ITERS   ; Op: Next loop if looped N times
-    .byte $02                               ;  '- 2 loops
+    .byte $02                               ; '- 2 loops
     .byte $90                               ; Note length: 16
     .byte $39                               ; A4
     .byte $37                               ; G4
@@ -9640,20 +10749,20 @@ MSCRIPT_MANTRA_SQ1:                         ; [$a4a1]
 ;
 MSCRIPT_MANTRA_SQ2:                         ; [$a530]
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
-    .byte $06                               ;  '- Reduce volume by 6
+    .byte $06                               ; '- Reduce volume by 6
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
-    .byte $90                               ;  '- Duty cycle 2     Constant
+    .byte $90                               ; '- Duty cycle 2     Constant
                                             ; volume/envelope
     .byte MSCRIPT_OP_SET_SQ_ENVELOPE_MODE   ; Op: Set envelope mode
-    .byte $02                               ;  '- Mode 2: Pluck
+    .byte $02                               ; '- Mode 2: Pluck
     .byte MSCRIPT_OP_SET_NOTE_DURATION      ; Op: Set note duration
-    .byte $80                               ;  '- 128 ticks
+    .byte $80                               ; '- 128 ticks
     .byte $00                               ; Rest
     .byte $00                               ; Rest
     .byte $00                               ; Rest
     .byte $00                               ; Rest
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $a0                               ; Note length: 32
     .byte $2b                               ; G3
     .byte $90                               ; Note length: 16
@@ -9786,7 +10895,7 @@ MSCRIPT_MANTRA_SQ2:                         ; [$a530]
 ;
 MSCRIPT_MANTRA_TRI:                         ; [$a5bb]
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $90                               ; Note length: 16
     .byte $1c                               ; E4
     .byte $28                               ; E5
@@ -9822,7 +10931,7 @@ MSCRIPT_MANTRA_TRI:                         ; [$a5bb]
     .byte $23                               ; B4
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $90                               ; Note length: 16
     .byte $10                               ; E3
     .byte $1c                               ; E4
@@ -9849,7 +10958,7 @@ MSCRIPT_MANTRA_TRI:                         ; [$a5bb]
     .byte $13                               ; G3
     .byte $0c                               ; C3
     .byte MSCRIPT_OP_NEXT_LOOP_IF_N_ITERS   ; Op: Next loop if looped N times
-    .byte $01                               ;  '- 1 loop
+    .byte $01                               ; '- 1 loop
     .byte $90                               ; Note length: 16
     .byte $12                               ; F#3
     .byte $1e                               ; F#4
@@ -9861,7 +10970,7 @@ MSCRIPT_MANTRA_TRI:                         ; [$a5bb]
     .byte $17                               ; B3
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_NEXT_LOOP_IF_N_ITERS   ; Op: Next loop if looped N times
-    .byte $02                               ;  '- 2 loops
+    .byte $02                               ; '- 2 loops
     .byte $90                               ; Note length: 16
     .byte $12                               ; F#3
     .byte $19                               ; C#4
@@ -9969,20 +11078,20 @@ MSCRIPT_MANTRA_NOISE:                       ; [$a65c]
 ;
 MSCRIPT_MASCON_VICTIM_SQ1:                  ; [$a65e]
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
-    .byte $02                               ;  '- Reduce volume by 2
+    .byte $02                               ; '- Reduce volume by 2
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
-    .byte $50                               ;  '- Duty cycle 1     Constant
+    .byte $50                               ; '- Duty cycle 1     Constant
                                             ; volume/envelope
     .byte MSCRIPT_OP_SET_SQ_ENVELOPE_MODE   ; Op: Set envelope mode
-    .byte $00                               ;  '- Mode 0: Linear decay
+    .byte $00                               ; '- Mode 0: Linear decay
     .byte MSCRIPT_OP_SET_NOTE_DURATION      ; Op: Set note duration
-    .byte $a0                               ;  '- 160 ticks
+    .byte $a0                               ; '- 160 ticks
     .byte $00                               ; Rest
     .byte $00                               ; Rest
     .byte $00                               ; Rest
     .byte $00                               ; Rest
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $03                               ;  '- 3 iterations
+    .byte $03                               ; '- 3 iterations
     .byte $8a                               ; Note length: 10
     .byte $00                               ; Rest
     .byte $00                               ; Rest
@@ -10058,18 +11167,18 @@ MSCRIPT_MASCON_VICTIM_SQ1:                  ; [$a65e]
 ;
 MSCRIPT_MASCON_VICTIM_SQ2:                  ; [$a6b0]
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
-    .byte $02                               ;  '- Reduce volume by 2
+    .byte $02                               ; '- Reduce volume by 2
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
-    .byte $90                               ;  '- Duty cycle 2     Constant
+    .byte $90                               ; '- Duty cycle 2     Constant
                                             ; volume/envelope
     .byte MSCRIPT_OP_SET_NOTE_DURATION      ; Op: Set note duration
-    .byte $a0                               ;  '- 160 ticks
+    .byte $a0                               ; '- 160 ticks
     .byte $00                               ; Rest
     .byte $00                               ; Rest
     .byte $00                               ; Rest
     .byte $00                               ; Rest
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $03                               ;  '- 3 iterations
+    .byte $03                               ; '- 3 iterations
     .byte $8a                               ; Note length: 10
     .byte $00                               ; Rest
     .byte $00                               ; Rest
@@ -10145,7 +11254,7 @@ MSCRIPT_MASCON_VICTIM_SQ2:                  ; [$a6b0]
 ;
 MSCRIPT_MASCON_VICTIM_TRI:                  ; [$a700]
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $8a                               ; Note length: 10
     .byte $1f                               ; G4
     .byte $00                               ; Rest
@@ -10213,7 +11322,7 @@ MSCRIPT_MASCON_VICTIM_TRI:                  ; [$a700]
     .byte $1e                               ; F#4
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $8a                               ; Note length: 10
     .byte $13                               ; G3
     .byte $1f                               ; G4
@@ -10289,14 +11398,48 @@ MSCRIPT_MASCON_VICTIM_TRI:                  ; [$a700]
 ;
 MSCRIPT_MASCON_VICTIM_NOISE:                ; [$a78a]
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $08                               ;  '- 8 iterations
-    .byte $8a,$31,$31,$31,$31,$31,$31,$31   ; [$a78c] byte
-    .byte $31,$31,$31,$31,$31,$31,$31,$85   ; [$a794] byte
-    .byte $31,$31,$31,$31,$8a,$31,$31,$31   ; [$a79c] byte
-    .byte $31,$31,$31,$31,$31,$31,$31,$31   ; [$a7a4] byte
-    .byte $31,$85,$31,$31,$31,$31,$8a,$31   ; [$a7ac] byte
-    .byte $31                               ; [$a7b4] byte
-
+    .byte $08                               ; '- 8 iterations
+    .byte $8a                               ; Note length: 10
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $85                               ; Note length: 5
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $8a                               ; Note length: 10
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $85                               ; Note length: 5
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $8a                               ; Note length: 10
+    .byte $31                               ; A9
+    .byte $31                               ; A9
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_RESTART_CHANNEL        ; Op: Restart channel
     .byte MSCRIPT_OP_END                    ; Op: End
@@ -10316,14 +11459,14 @@ MSCRIPT_MASCON_VICTIM_NOISE:                ; [$a78a]
 ;
 MSCRIPT_BOSS_SQ1:                           ; [$a7b9]
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
-    .byte $02                               ;  '- Reduce volume by 2
+    .byte $02                               ; '- Reduce volume by 2
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
-    .byte $90                               ;  '- Duty cycle 2     Constant
+    .byte $90                               ; '- Duty cycle 2     Constant
                                             ; volume/envelope
     .byte MSCRIPT_OP_SET_SQ_ENVELOPE_MODE   ; Op: Set envelope mode
-    .byte $01                               ;  '- Mode 1: Curve but held
+    .byte $01                               ; '- Mode 1: Curve but held
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $8f                               ; Note length: 15
     .byte $34                               ; E4
     .byte $28                               ; E3
@@ -10416,15 +11559,15 @@ MSCRIPT_BOSS_SQ1:                           ; [$a7b9]
 ;
 MSCRIPT_BOSS_SQ2:                           ; [$a816]
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
-    .byte $04                               ;  '- Reduce volume by 4
+    .byte $04                               ; '- Reduce volume by 4
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
-    .byte $90                               ;  '- Duty cycle 2     Constant
+    .byte $90                               ; '- Duty cycle 2     Constant
                                             ; volume/envelope
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
-    .byte $17                               ;  '- Duty cycle 0     Constant
+    .byte $17                               ; '- Duty cycle 0     Constant
                                             ; volume/envelope
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $88                               ; Note length: 8
     .byte $00                               ; Rest
     .byte $8f                               ; Note length: 15
@@ -10518,9 +11661,9 @@ MSCRIPT_BOSS_SQ2:                           ; [$a816]
 ;
 MSCRIPT_BOSS_TRI:                           ; [$a874]
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte MSCRIPT_OP_SET_CHANNEL_TRANSPOSE  ; Op: Set channel transpose
-    .byte $fd                               ;  '- Down 3 semitones
+    .byte $fd                               ; '- Down 3 semitones
     .byte $8a                               ; Note length: 10
     .byte $13                               ; G3
     .byte $14                               ; G#3
@@ -10571,7 +11714,7 @@ MSCRIPT_BOSS_TRI:                           ; [$a874]
     .byte $16                               ; A#3
     .byte $15                               ; A3
     .byte MSCRIPT_OP_SET_CHANNEL_TRANSPOSE  ; Op: Set channel transpose
-    .byte $00                               ;  '- Reset
+    .byte $00                               ; '- Reset
     .byte $88                               ; Note length: 8
     .byte $0f                               ; D#3
     .byte $87                               ; Note length: 7
@@ -10671,22 +11814,22 @@ MSCRIPT_BOSS_NOISE:                         ; [$a8f8]
 ;
 MSCRIPT_HOURGLASS_SQ1:                      ; [$a8fa]
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
-    .byte $02                               ;  '- Reduce volume by 2
+    .byte $02                               ; '- Reduce volume by 2
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
-    .byte $50                               ;  '- Duty cycle 1     Constant
+    .byte $50                               ; '- Duty cycle 1     Constant
                                             ; volume/envelope
     .byte MSCRIPT_OP_SET_SQ_ENVELOPE_MODE   ; Op: Set envelope mode
-    .byte $01                               ;  '- Mode 1: Curve but held
+    .byte $01                               ; '- Mode 1: Curve but held
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte MSCRIPT_OP_SET_NOTE_DURATION      ; Op: Set note duration
-    .byte $80                               ;  '- 128 ticks
+    .byte $80                               ; '- 128 ticks
     .byte $00                               ; Rest
     .byte $c0                               ; Note length: 64
     .byte $00                               ; Rest
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $03                               ;  '- 3 iterations
+    .byte $03                               ; '- 3 iterations
     .byte $84                               ; Note length: 4
     .byte $1f                               ; G2
     .byte $24                               ; C3
@@ -10746,23 +11889,23 @@ MSCRIPT_HOURGLASS_SQ1:                      ; [$a8fa]
 ;
 MSCRIPT_HOURGLASS_SQ2:                      ; [$a93e]
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
-    .byte $02                               ;  '- Reduce volume by 2
+    .byte $02                               ; '- Reduce volume by 2
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
-    .byte $90                               ;  '- Duty cycle 2     Constant
+    .byte $90                               ; '- Duty cycle 2     Constant
                                             ; volume/envelope
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
-    .byte $13                               ;  '- Duty cycle 0     Constant
+    .byte $13                               ; '- Duty cycle 0     Constant
                                             ; volume/envelope
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte MSCRIPT_OP_SET_NOTE_DURATION      ; Op: Set note duration
-    .byte $80                               ;  '- 128 ticks
+    .byte $80                               ; '- 128 ticks
     .byte $00                               ; Rest
     .byte $c0                               ; Note length: 64
     .byte $00                               ; Rest
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $03                               ;  '- 3 iterations
+    .byte $03                               ; '- 3 iterations
     .byte $84                               ; Note length: 4
     .byte $00                               ; Rest
     .byte $1f                               ; G2
@@ -10822,7 +11965,7 @@ MSCRIPT_HOURGLASS_SQ2:                      ; [$a93e]
 ;
 MSCRIPT_HOURGLASS_TRI:                      ; [$a982]
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $84                               ; Note length: 4
     .byte $0e                               ; D3
     .byte $00                               ; Rest
@@ -10874,7 +12017,7 @@ MSCRIPT_HOURGLASS_TRI:                      ; [$a982]
     .byte $00                               ; Rest
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $84                               ; Note length: 4
     .byte $0e                               ; D3
     .byte $00                               ; Rest
@@ -10982,26 +12125,108 @@ MSCRIPT_HOURGLASS_TRI:                      ; [$a982]
 ;
 MSCRIPT_HOURGLASS_NOISE:                    ; [$aa1c]
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $03                               ;  '- 3 iterations
-    .byte $84,$31,$00,$00,$00,$31,$00,$00   ; [$aa1e] byte
-    .byte $00,$31,$00,$00,$00,$31,$00,$00   ; [$aa26] byte
-    .byte $00,$31,$00,$00,$00,$31,$00,$00   ; [$aa2e] byte
-    .byte $00,$31,$00,$00,$00,$31,$00,$00   ; [$aa36] byte
-    .byte $00,$31,$00,$00,$00,$31,$00,$00   ; [$aa3e] byte
-    .byte $00,$31,$00,$00,$00,$31,$00,$00   ; [$aa46] byte
-    .byte $00                               ; [$aa4e] byte
-
+    .byte $03                               ; '- 3 iterations
+    .byte $84                               ; Note length: 4
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
-    .byte $84,$31,$00,$31,$00,$31,$00,$31   ; [$aa52] byte
-    .byte $00,$31,$00,$31,$00,$31,$00,$31   ; [$aa5a] byte
-    .byte $00,$31,$00,$31,$00,$31,$00,$31   ; [$aa62] byte
-    .byte $00,$31,$00,$31,$00,$31,$00,$31   ; [$aa6a] byte
-    .byte $00,$31,$00,$31,$00,$31,$00,$31   ; [$aa72] byte
-    .byte $00,$31,$00,$31,$00,$31,$00,$31   ; [$aa7a] byte
-    .byte $00                               ; [$aa82] byte
-
+    .byte $02                               ; '- 2 iterations
+    .byte $84                               ; Note length: 4
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_RESTART_CHANNEL        ; Op: Restart channel
     .byte MSCRIPT_OP_END                    ; Op: End
@@ -11021,18 +12246,18 @@ MSCRIPT_HOURGLASS_NOISE:                    ; [$aa1c]
 ;
 MSCRIPT_ENDING_SQ1:                         ; [$aa87]
     .byte MSCRIPT_OP_SET_GLOBAL_TRANSPOSE   ; Op: Set global transpose
-    .byte $ff                               ;  '- Down 1 semitone
+    .byte $ff                               ; '- Down 1 semitone
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
-    .byte $00                               ;  '- Reduce volume by 0
+    .byte $00                               ; '- Reduce volume by 0
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
-    .byte $d0                               ;  '- Duty cycle 3     Constant
+    .byte $d0                               ; '- Duty cycle 3     Constant
                                             ; volume/envelope
     .byte MSCRIPT_OP_SET_SQ_ENVELOPE_MODE   ; Op: Set envelope mode
-    .byte $01                               ;  '- Mode 1: Curve but held
+    .byte $01                               ; '- Mode 1: Curve but held
     .byte MSCRIPT_OP_SET_SQ_PITCH_EFFECT_DEPTH ; Op: Set SQ2 envelope depth
-    .byte $02                               ;  '- 2
+    .byte $02                               ; '- 2
     .byte MSCRIPT_OP_SET_CHANNEL_TRANSPOSE  ; Op: Set channel transpose
-    .byte $f4                               ;  '- Down 1 octave
+    .byte $f4                               ; '- Down 1 octave
     .byte $86                               ; Note length: 6
     .byte $1f                               ; F#2
     .byte $21                               ; G#2
@@ -11051,10 +12276,10 @@ MSCRIPT_ENDING_SQ1:                         ; [$aa87]
     .byte $35                               ; E4
     .byte $36                               ; F4
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
-    .byte $90                               ;  '- Duty cycle 2     Constant
+    .byte $90                               ; '- Duty cycle 2     Constant
                                             ; volume/envelope
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $b0                               ; Note length: 48
     .byte $37                               ; F#4
     .byte $3c                               ; B4
@@ -11075,7 +12300,7 @@ MSCRIPT_ENDING_SQ1:                         ; [$aa87]
     .byte $37                               ; F#4
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $a4                               ; Note length: 36
     .byte $43                               ; F#5
     .byte $8c                               ; Note length: 12
@@ -11101,7 +12326,7 @@ MSCRIPT_ENDING_SQ1:                         ; [$aa87]
     .byte $bc                               ; Note length: 60
     .byte $37                               ; F#4
     .byte MSCRIPT_OP_NEXT_LOOP_IF_N_ITERS   ; Op: Next loop if looped N times
-    .byte $01                               ;  '- 1 loop
+    .byte $01                               ; '- 1 loop
     .byte $86                               ; Note length: 6
     .byte $37                               ; F#4
     .byte $39                               ; G#4
@@ -11113,7 +12338,7 @@ MSCRIPT_ENDING_SQ1:                         ; [$aa87]
     .byte $42                               ; F5
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_NEXT_LOOP_IF_N_ITERS   ; Op: Next loop if looped N times
-    .byte $02                               ;  '- 2 loops
+    .byte $02                               ; '- 2 loops
     .byte $86                               ; Note length: 6
     .byte $3c                               ; B4
     .byte $3b                               ; A#4
@@ -11181,7 +12406,7 @@ MSCRIPT_ENDING_SQ1:                         ; [$aa87]
     .byte $3c                               ; B4
     .byte $3a                               ; A4
     .byte MSCRIPT_OP_SET_NOTE_DURATION      ; Op: Set note duration
-    .byte $cc                               ;  '- 204 ticks
+    .byte $cc                               ; '- 204 ticks
     .byte $3c                               ; B4
     .byte $86                               ; Note length: 6
     .byte $3f                               ; D5
@@ -11221,18 +12446,18 @@ MSCRIPT_ENDING_SQ1:                         ; [$aa87]
 ;
 MSCRIPT_ENDING_SQ2:                         ; [$ab47]
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
-    .byte $04                               ;  '- Reduce volume by 4
+    .byte $04                               ; '- Reduce volume by 4
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
-    .byte $d0                               ;  '- Duty cycle 3     Constant
+    .byte $d0                               ; '- Duty cycle 3     Constant
                                             ; volume/envelope
     .byte MSCRIPT_OP_SET_SQ_ENVELOPE_MODE   ; Op: Set envelope mode
-    .byte $00                               ;  '- Mode 0: Linear decay
+    .byte $00                               ; '- Mode 0: Linear decay
     .byte MSCRIPT_OP_SET_SQ_PITCH_EFFECT_DEPTH ; Op: Set SQ2 envelope depth
-    .byte $00                               ;  '- 0
+    .byte $00                               ; '- 0
     .byte MSCRIPT_OP_SET_CHANNEL_TRANSPOSE  ; Op: Set channel transpose
-    .byte $f4                               ;  '- Down 1 octave
+    .byte $f4                               ; '- Down 1 octave
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
-    .byte $13                               ;  '- Duty cycle 0     Constant
+    .byte $13                               ; '- Duty cycle 0     Constant
                                             ; volume/envelope
     .byte $98                               ; Note length: 24
     .byte $00                               ; Rest
@@ -11250,12 +12475,12 @@ MSCRIPT_ENDING_SQ2:                         ; [$ab47]
     .byte $3e                               ; D5
     .byte $3f                               ; D#5
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
-    .byte $50                               ;  '- Duty cycle 1     Constant
+    .byte $50                               ; '- Duty cycle 1     Constant
                                             ; volume/envelope
     .byte MSCRIPT_OP_SET_SQ_ENVELOPE_MODE   ; Op: Set envelope mode
-    .byte $01                               ;  '- Mode 1: Curve but held
+    .byte $01                               ; '- Mode 1: Curve but held
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $86                               ; Note length: 6
     .byte $40                               ; E5
     .byte $40                               ; E5
@@ -11323,7 +12548,7 @@ MSCRIPT_ENDING_SQ2:                         ; [$ab47]
     .byte $3b                               ; B4
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $86                               ; Note length: 6
     .byte $40                               ; E5
     .byte $43                               ; G5
@@ -11374,7 +12599,7 @@ MSCRIPT_ENDING_SQ2:                         ; [$ab47]
     .byte $37                               ; G4
     .byte $32                               ; D4
     .byte MSCRIPT_OP_NEXT_LOOP_IF_N_ITERS   ; Op: Next loop if looped N times
-    .byte $01                               ;  '- 1 loop
+    .byte $01                               ; '- 1 loop
     .byte $86                               ; Note length: 6
     .byte $37                               ; G4
     .byte $3c                               ; C5
@@ -11394,7 +12619,7 @@ MSCRIPT_ENDING_SQ2:                         ; [$ab47]
     .byte $4b                               ; D#6
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_NEXT_LOOP_IF_N_ITERS   ; Op: Next loop if looped N times
-    .byte $02                               ;  '- 2 loops
+    .byte $02                               ; '- 2 loops
     .byte $86                               ; Note length: 6
     .byte $37                               ; G4
     .byte $3c                               ; C5
@@ -11413,7 +12638,7 @@ MSCRIPT_ENDING_SQ2:                         ; [$ab47]
     .byte $47                               ; B5
     .byte $48                               ; C6
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $86                               ; Note length: 6
     .byte $38                               ; G#4
     .byte $3c                               ; C5
@@ -11464,7 +12689,7 @@ MSCRIPT_ENDING_SQ2:                         ; [$ab47]
     .byte $3a                               ; A#4
     .byte $3e                               ; D5
     .byte MSCRIPT_OP_NEXT_LOOP_IF_N_ITERS   ; Op: Next loop if looped N times
-    .byte $01                               ;  '- 1 loop
+    .byte $01                               ; '- 1 loop
     .byte $8c                               ; Note length: 12
     .byte $3f                               ; D#5
     .byte $86                               ; Note length: 6
@@ -11484,7 +12709,7 @@ MSCRIPT_ENDING_SQ2:                         ; [$ab47]
     .byte $33                               ; D#4
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_NEXT_LOOP_IF_N_ITERS   ; Op: Next loop if looped N times
-    .byte $02                               ;  '- 2 loops
+    .byte $02                               ; '- 2 loops
     .byte $86                               ; Note length: 6
     .byte $3f                               ; D#5
     .byte $44                               ; G#5
@@ -11568,7 +12793,7 @@ MSCRIPT_ENDING_SQ2:                         ; [$ab47]
 ;
 MSCRIPT_ENDING_TRI:                         ; [$ac99]
     .byte MSCRIPT_OP_SET_CHANNEL_TRANSPOSE  ; Op: Set channel transpose
-    .byte $e8                               ;  '- Down 2 octaves
+    .byte $e8                               ; '- Down 2 octaves
     .byte $b0                               ; Note length: 48
     .byte $00                               ; Rest
     .byte $86                               ; Note length: 6
@@ -11581,7 +12806,7 @@ MSCRIPT_ENDING_TRI:                         ; [$ac99]
     .byte $45                               ; A7
     .byte $47                               ; B7
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $86                               ; Note length: 6
     .byte $30                               ; C6
     .byte $30                               ; C6
@@ -11649,7 +12874,7 @@ MSCRIPT_ENDING_TRI:                         ; [$ac99]
     .byte $2b                               ; G5
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $86                               ; Note length: 6
     .byte $30                               ; C6
     .byte $30                               ; C6
@@ -11897,71 +13122,327 @@ MSCRIPT_ENDING_TRI:                         ; [$ac99]
 ;     MSCRIPTS_ENDING [$PRG5::8f59]
 ;
 MSCRIPT_ENDING_NOISE:                       ; [$addd]
-    .byte $8c,$21,$86,$31,$31,$8c,$21,$86   ; [$addd] byte
-    .byte $31,$31,$21,$21,$21,$21,$21,$21   ; [$ade5] byte
-    .byte $21,$21                           ; [$aded] byte
-
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $21                               ; A9
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
-    .byte $86,$31,$00,$31,$31,$8c,$21,$86   ; [$adf1] byte
-    .byte $31,$31,$31,$00,$31,$31,$8c,$21   ; [$adf9] byte
-    .byte $86,$31,$31,$31,$00,$31,$31,$8c   ; [$ae01] byte
-    .byte $21,$86,$31,$31,$31,$00,$31,$31   ; [$ae09] byte
-    .byte $8c,$21,$86,$31,$31,$31,$00,$31   ; [$ae11] byte
-    .byte $31,$8c,$21,$86,$31,$31,$31,$00   ; [$ae19] byte
-    .byte $31,$31,$8c,$21,$21,$21,$21,$21   ; [$ae21] byte
-    .byte $21,$86,$31,$00,$8c,$21,$21,$86   ; [$ae29] byte
-    .byte $21,$21                           ; [$ae31] byte
-
+    .byte $02                               ; '- 2 iterations
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $21                               ; A9
+    .byte $21                               ; A9
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
-    .byte $86,$31,$00,$31,$31,$8c,$21,$86   ; [$ae36] byte
-    .byte $31,$31,$31,$00,$31,$31,$8c,$21   ; [$ae3e] byte
-    .byte $86,$31,$31,$31,$00,$31,$31,$8c   ; [$ae46] byte
-    .byte $21,$86,$31,$31,$31,$00,$31,$31   ; [$ae4e] byte
-    .byte $8c,$21,$86,$31,$31,$31,$00,$31   ; [$ae56] byte
-    .byte $31,$8c,$21,$86,$31,$31,$31,$00   ; [$ae5e] byte
-    .byte $31,$31,$8c,$21,$86,$31,$31,$31   ; [$ae66] byte
-    .byte $00,$31,$31,$8c,$21,$86,$31,$31   ; [$ae6e] byte
-    .byte $31,$00,$31,$31,$21,$21,$21,$31   ; [$ae76] byte
+    .byte $02                               ; '- 2 iterations
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $31                               ; A9
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
-    .byte $86,$31,$00,$31,$31,$8c,$21,$86   ; [$ae81] byte
-    .byte $31,$31,$31,$00,$31,$31,$8c,$21   ; [$ae89] byte
-    .byte $86,$31,$31,$31,$00,$31,$31,$8c   ; [$ae91] byte
-    .byte $21,$86,$31,$31,$31,$00,$31,$31   ; [$ae99] byte
-    .byte $8c,$21,$86,$31,$31               ; [$aea1] byte
-
+    .byte $02                               ; '- 2 iterations
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $31                               ; A9
     .byte MSCRIPT_OP_NEXT_LOOP_IF_N_ITERS   ; Op: Next loop if looped N times
-    .byte $01                               ;  '- 1 loop
-    .byte $86,$31,$00,$31,$31,$8c,$21,$86   ; [$aea8] byte
-    .byte $31,$31,$31,$00,$31,$31,$8c,$21   ; [$aeb0] byte
-    .byte $86,$31,$31,$31,$00,$31,$31,$8c   ; [$aeb8] byte
-    .byte $21,$86,$31,$31,$31,$00,$8c,$21   ; [$aec0] byte
-    .byte $86,$21,$21,$21,$31               ; [$aec8] byte
-
+    .byte $01                               ; '- 1 loop
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $31                               ; A9
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_NEXT_LOOP_IF_N_ITERS   ; Op: Next loop if looped N times
-    .byte $02                               ;  '- 2 loops
-    .byte $8c,$21,$21,$21,$21,$86,$31,$00   ; [$aed0] byte
-    .byte $8c,$21,$21,$86,$21,$21,$8c,$21   ; [$aed8] byte
-    .byte $21,$21,$21,$00,$21,$21,$21       ; [$aee0] byte
-
+    .byte $02                               ; '- 2 loops
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $8c                               ; Note length: 12
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $00                               ; Rest
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $21                               ; A9
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
-    .byte $86,$31,$00,$31,$31,$31,$00,$31   ; [$aee9] byte
-    .byte $31,$31,$00,$31,$31,$31,$00,$31   ; [$aef1] byte
-    .byte $31                               ; [$aef9] byte
-
+    .byte $02                               ; '- 2 iterations
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
-    .byte $86,$31,$00,$31,$31,$31,$00,$31   ; [$aefb] byte
-    .byte $31,$31,$00,$31,$31,$86,$21,$00   ; [$af03] byte
-    .byte $21,$21,$88,$21,$00,$84,$21,$21   ; [$af0b] byte
-    .byte $21,$21,$88,$21,$21,$21,$21,$98   ; [$af13] byte
-    .byte $21,$88,$00                       ; [$af1b] byte
-
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $21                               ; A9
+    .byte $00                               ; Rest
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $88                               ; Note length: 8
+    .byte $21                               ; A9
+    .byte $00                               ; Rest
+    .byte $84                               ; Note length: 4
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $88                               ; Note length: 8
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $98                               ; Note length: 24
+    .byte $21                               ; A9
+    .byte $88                               ; Note length: 8
+    .byte $00                               ; Rest
     .byte MSCRIPT_OP_END                    ; Op: End
     .byte MSCRIPT_OP_END                    ; Op: End
 
@@ -11979,16 +13460,16 @@ MSCRIPT_ENDING_NOISE:                       ; [$addd]
 ;
 MSCRIPT_KINGS_ROOM_SQ1:                     ; [$af20]
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
-    .byte $00                               ;  '- Reduce volume by 0
+    .byte $00                               ; '- Reduce volume by 0
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
-    .byte $b0                               ;  '- Duty cycle 2     Constant
+    .byte $b0                               ; '- Duty cycle 2     Constant
                                             ; volume/envelope
     .byte MSCRIPT_OP_SET_SQ_ENVELOPE_MODE   ; Op: Set envelope mode
-    .byte $01                               ;  '- Mode 1: Curve but held
+    .byte $01                               ; '- Mode 1: Curve but held
     .byte MSCRIPT_OP_SET_CHANNEL_TRANSPOSE  ; Op: Set channel transpose
-    .byte $f4                               ;  '- Down 1 octave
+    .byte $f4                               ; '- Down 1 octave
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $b0                               ; Note length: 48
     .byte $30                               ; C4
     .byte $2b                               ; G3
@@ -12027,16 +13508,16 @@ MSCRIPT_KINGS_ROOM_SQ1:                     ; [$af20]
 ;
 MSCRIPT_KINGS_ROOM_SQ2:                     ; [$af49]
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
-    .byte $02                               ;  '- Reduce volume by 2
+    .byte $02                               ; '- Reduce volume by 2
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
-    .byte $b0                               ;  '- Duty cycle 2     Constant
+    .byte $b0                               ; '- Duty cycle 2     Constant
                                             ; volume/envelope
     .byte MSCRIPT_OP_SET_CHANNEL_TRANSPOSE  ; Op: Set channel transpose
-    .byte $f4                               ;  '- Down 1 octave
+    .byte $f4                               ; '- Down 1 octave
     .byte MSCRIPT_OP_SET_SQ_ENVELOPE_MODE   ; Op: Set envelope mode
-    .byte $01                               ;  '- Mode 1: Curve but held
+    .byte $01                               ; '- Mode 1: Curve but held
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $b0                               ; Note length: 48
     .byte $28                               ; E3
     .byte $28                               ; E3
@@ -12075,9 +13556,9 @@ MSCRIPT_KINGS_ROOM_SQ2:                     ; [$af49]
 ;
 MSCRIPT_KINGS_ROOM_TRI:                     ; [$af72]
     .byte MSCRIPT_OP_SET_CHANNEL_TRANSPOSE  ; Op: Set channel transpose
-    .byte $f4                               ;  '- Down 1 octave
+    .byte $f4                               ; '- Down 1 octave
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $90                               ; Note length: 16
     .byte $18                               ; C4
     .byte $18                               ; C4
@@ -12152,16 +13633,16 @@ MSCRIPT_KINGS_ROOM_NOISE:                   ; [$afaa]
 ;
 MSCRIPT_TEMPLE_SQ1:                         ; [$afac]
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
-    .byte $02                               ;  '- Reduce volume by 2
+    .byte $02                               ; '- Reduce volume by 2
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
-    .byte $b0                               ;  '- Duty cycle 2     Constant
+    .byte $b0                               ; '- Duty cycle 2     Constant
                                             ; volume/envelope
     .byte MSCRIPT_OP_SET_SQ_ENVELOPE_MODE   ; Op: Set envelope mode
-    .byte $01                               ;  '- Mode 1: Curve but held
+    .byte $01                               ; '- Mode 1: Curve but held
     .byte MSCRIPT_OP_SET_CHANNEL_TRANSPOSE  ; Op: Set channel transpose
-    .byte $f4                               ;  '- Down 1 octave
+    .byte $f4                               ; '- Down 1 octave
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $ac                               ; Note length: 44
     .byte $00                               ; Rest
     .byte $32                               ; D4
@@ -12250,41 +13731,41 @@ MSCRIPT_TEMPLE_SQ1:                         ; [$afac]
 ;
 MSCRIPT_TEMPLE_SQ2:                         ; [$b007]
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
-    .byte $02                               ;  '- Reduce volume by 2
+    .byte $02                               ; '- Reduce volume by 2
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
-    .byte $b0                               ;  '- Duty cycle 2     Constant
+    .byte $b0                               ; '- Duty cycle 2     Constant
                                             ; volume/envelope
     .byte MSCRIPT_OP_SET_SQ_ENVELOPE_MODE   ; Op: Set envelope mode
-    .byte $01                               ;  '- Mode 1: Curve but held
+    .byte $01                               ; '- Mode 1: Curve but held
     .byte MSCRIPT_OP_SET_CHANNEL_TRANSPOSE  ; Op: Set channel transpose
-    .byte $f4                               ;  '- Down 1 octave
+    .byte $f4                               ; '- Down 1 octave
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte MSCRIPT_OP_SET_NOTE_DURATION      ; Op: Set note duration
-    .byte $b0                               ;  '- 176 ticks
+    .byte $b0                               ; '- 176 ticks
     .byte $2f                               ; B3
     .byte MSCRIPT_OP_SET_NOTE_DURATION      ; Op: Set note duration
-    .byte $84                               ;  '- 132 ticks
+    .byte $84                               ; '- 132 ticks
     .byte $30                               ; C4
     .byte $ac                               ; Note length: 44
     .byte $30                               ; C4
     .byte MSCRIPT_OP_SET_NOTE_DURATION      ; Op: Set note duration
-    .byte $b0                               ;  '- 176 ticks
+    .byte $b0                               ; '- 176 ticks
     .byte $32                               ; D4
     .byte $d8                               ; Note length: 88
     .byte $34                               ; E4
     .byte $34                               ; E4
     .byte MSCRIPT_OP_SET_NOTE_DURATION      ; Op: Set note duration
-    .byte $84                               ;  '- 132 ticks
+    .byte $84                               ; '- 132 ticks
     .byte $30                               ; C4
     .byte $96                               ; Note length: 22
     .byte $32                               ; D4
     .byte $30                               ; C4
     .byte MSCRIPT_OP_SET_NOTE_DURATION      ; Op: Set note duration
-    .byte $b0                               ;  '- 176 ticks
+    .byte $b0                               ; '- 176 ticks
     .byte $2f                               ; B3
     .byte MSCRIPT_OP_SET_NOTE_DURATION      ; Op: Set note duration
-    .byte $84                               ;  '- 132 ticks
+    .byte $84                               ; '- 132 ticks
     .byte $30                               ; C4
     .byte $ac                               ; Note length: 44
     .byte $30                               ; C4
@@ -12316,19 +13797,19 @@ MSCRIPT_TEMPLE_SQ2:                         ; [$b007]
 ;
 MSCRIPT_TEMPLE_TRI:                         ; [$b042]
     .byte MSCRIPT_OP_SET_CHANNEL_TRANSPOSE  ; Op: Set channel transpose
-    .byte $e8                               ;  '- Down 2 octaves
+    .byte $e8                               ; '- Down 2 octaves
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte MSCRIPT_OP_SET_NOTE_DURATION      ; Op: Set note duration
-    .byte $84                               ;  '- 132 ticks
+    .byte $84                               ; '- 132 ticks
     .byte $1f                               ; G4
     .byte $ac                               ; Note length: 44
     .byte $1f                               ; G4
     .byte MSCRIPT_OP_SET_NOTE_DURATION      ; Op: Set note duration
-    .byte $b0                               ;  '- 176 ticks
+    .byte $b0                               ; '- 176 ticks
     .byte $21                               ; A4
     .byte MSCRIPT_OP_SET_NOTE_DURATION      ; Op: Set note duration
-    .byte $84                               ;  '- 132 ticks
+    .byte $84                               ; '- 132 ticks
     .byte $23                               ; B4
     .byte $ac                               ; Note length: 44
     .byte $23                               ; B4
@@ -12338,12 +13819,12 @@ MSCRIPT_TEMPLE_TRI:                         ; [$b042]
     .byte $26                               ; D5
     .byte $26                               ; D5
     .byte MSCRIPT_OP_SET_NOTE_DURATION      ; Op: Set note duration
-    .byte $84                               ;  '- 132 ticks
+    .byte $84                               ; '- 132 ticks
     .byte $1f                               ; G4
     .byte $ac                               ; Note length: 44
     .byte $1f                               ; G4
     .byte MSCRIPT_OP_SET_NOTE_DURATION      ; Op: Set note duration
-    .byte $b0                               ;  '- 176 ticks
+    .byte $b0                               ; '- 176 ticks
     .byte $21                               ; A4
     .byte $d8                               ; Note length: 88
     .byte $23                               ; B4
@@ -12386,14 +13867,14 @@ MSCRIPT_TEMPLE_NOISE:                       ; [$b073]
 ;
 MSCRIPT_SHOP_SQ1:                           ; [$b075]
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
-    .byte $02                               ;  '- Reduce volume by 2
+    .byte $02                               ; '- Reduce volume by 2
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
-    .byte $90                               ;  '- Duty cycle 2     Constant
+    .byte $90                               ; '- Duty cycle 2     Constant
                                             ; volume/envelope
     .byte MSCRIPT_OP_SET_SQ_ENVELOPE_MODE   ; Op: Set envelope mode
-    .byte $01                               ;  '- Mode 1: Curve but held
+    .byte $01                               ; '- Mode 1: Curve but held
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $8e                               ; Note length: 14
     .byte $26                               ; D3
     .byte $00                               ; Rest
@@ -12429,7 +13910,7 @@ MSCRIPT_SHOP_SQ1:                           ; [$b075]
     .byte $00                               ; Rest
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $8e                               ; Note length: 14
     .byte $2b                               ; G3
     .byte $00                               ; Rest
@@ -12460,14 +13941,14 @@ MSCRIPT_SHOP_SQ1:                           ; [$b075]
 ;
 MSCRIPT_SHOP_SQ2:                           ; [$b0b8]
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
-    .byte $02                               ;  '- Reduce volume by 2
+    .byte $02                               ; '- Reduce volume by 2
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
-    .byte $90                               ;  '- Duty cycle 2     Constant
+    .byte $90                               ; '- Duty cycle 2     Constant
                                             ; volume/envelope
     .byte MSCRIPT_OP_SET_SQ_ENVELOPE_MODE   ; Op: Set envelope mode
-    .byte $01                               ;  '- Mode 1: Curve but held
+    .byte $01                               ; '- Mode 1: Curve but held
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $8e                               ; Note length: 14
     .byte $1f                               ; G2
     .byte $00                               ; Rest
@@ -12503,7 +13984,7 @@ MSCRIPT_SHOP_SQ2:                           ; [$b0b8]
     .byte $00                               ; Rest
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $8e                               ; Note length: 14
     .byte $24                               ; C3
     .byte $00                               ; Rest
@@ -12534,9 +14015,9 @@ MSCRIPT_SHOP_SQ2:                           ; [$b0b8]
 ;
 MSCRIPT_SHOP_TRI:                           ; [$b0fb]
     .byte MSCRIPT_OP_SET_CHANNEL_TRANSPOSE  ; Op: Set channel transpose
-    .byte $f4                               ;  '- Down 1 octave
+    .byte $f4                               ; '- Down 1 octave
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $8e                               ; Note length: 14
     .byte $35                               ; F6
     .byte $00                               ; Rest
@@ -12572,7 +14053,7 @@ MSCRIPT_SHOP_TRI:                           ; [$b0fb]
     .byte $00                               ; Rest
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $8e                               ; Note length: 14
     .byte $26                               ; D5
     .byte $00                               ; Rest
@@ -12626,16 +14107,16 @@ MSCRIPT_SHOP_NOISE:                         ; [$b142]
 ;
 MSCRIPT_EVIL_FORTRESS_SQ1:                  ; [$b144]
     .byte MSCRIPT_OP_SET_GLOBAL_TRANSPOSE   ; Op: Set global transpose
-    .byte $f4                               ;  '- Down 1 octave
+    .byte $f4                               ; '- Down 1 octave
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
-    .byte $02                               ;  '- Reduce volume by 2
+    .byte $02                               ; '- Reduce volume by 2
     .byte MSCRIPT_OP_SET_SQ_ENVELOPE_MODE   ; Op: Set envelope mode
-    .byte $00                               ;  '- Mode 0: Linear decay
+    .byte $00                               ; '- Mode 0: Linear decay
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
-    .byte $d0                               ;  '- Duty cycle 3     Constant
+    .byte $d0                               ; '- Duty cycle 3     Constant
                                             ; volume/envelope
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $88                               ; Note length: 8
     .byte $00                               ; Rest
     .byte $3c                               ; C4
@@ -12655,7 +14136,7 @@ MSCRIPT_EVIL_FORTRESS_SQ1:                  ; [$b144]
     .byte $00                               ; Rest
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $88                               ; Note length: 8
     .byte $00                               ; Rest
     .byte $3c                               ; C4
@@ -12676,7 +14157,7 @@ MSCRIPT_EVIL_FORTRESS_SQ1:                  ; [$b144]
     .byte $00                               ; Rest
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $88                               ; Note length: 8
     .byte $39                               ; A3
     .byte $39                               ; A3
@@ -12738,7 +14219,7 @@ MSCRIPT_EVIL_FORTRESS_SQ1:                  ; [$b144]
     .byte $00                               ; Rest
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $98                               ; Note length: 24
     .byte $35                               ; F3
     .byte $39                               ; A3
@@ -12769,14 +14250,14 @@ MSCRIPT_EVIL_FORTRESS_SQ1:                  ; [$b144]
 ;
 MSCRIPT_EVIL_FORTRESS_SQ2:                  ; [$b1cc]
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
-    .byte $04                               ;  '- Reduce volume by 4
+    .byte $04                               ; '- Reduce volume by 4
     .byte MSCRIPT_OP_SET_SQ_ENVELOPE_MODE   ; Op: Set envelope mode
-    .byte $00                               ;  '- Mode 0: Linear decay
+    .byte $00                               ; '- Mode 0: Linear decay
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
-    .byte $90                               ;  '- Duty cycle 2     Constant
+    .byte $90                               ; '- Duty cycle 2     Constant
                                             ; volume/envelope
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $88                               ; Note length: 8
     .byte $00                               ; Rest
     .byte $37                               ; G4
@@ -12796,7 +14277,7 @@ MSCRIPT_EVIL_FORTRESS_SQ2:                  ; [$b1cc]
     .byte $00                               ; Rest
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $88                               ; Note length: 8
     .byte $00                               ; Rest
     .byte $37                               ; G4
@@ -12817,7 +14298,7 @@ MSCRIPT_EVIL_FORTRESS_SQ2:                  ; [$b1cc]
     .byte $00                               ; Rest
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $88                               ; Note length: 8
     .byte $35                               ; F4
     .byte $35                               ; F4
@@ -12947,7 +14428,7 @@ MSCRIPT_EVIL_FORTRESS_SQ2:                  ; [$b1cc]
 ;
 MSCRIPT_EVIL_FORTRESS_TRI:                  ; [$b277]
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $88                               ; Note length: 8
     .byte $18                               ; C4
     .byte $00                               ; Rest
@@ -12984,7 +14465,7 @@ MSCRIPT_EVIL_FORTRESS_TRI:                  ; [$b277]
     .byte $0c                               ; C3
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $88                               ; Note length: 8
     .byte $13                               ; G3
     .byte $13                               ; G3
@@ -13072,7 +14553,7 @@ MSCRIPT_EVIL_FORTRESS_TRI:                  ; [$b277]
     .byte $12                               ; F#3
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $90                               ; Note length: 16
     .byte $13                               ; G3
     .byte $88                               ; Note length: 8
@@ -13093,7 +14574,7 @@ MSCRIPT_EVIL_FORTRESS_TRI:                  ; [$b277]
     .byte $13                               ; G3
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
+    .byte $02                               ; '- 2 iterations
     .byte $90                               ; Note length: 16
     .byte $13                               ; G3
     .byte $88                               ; Note length: 8
@@ -13123,42 +14604,179 @@ MSCRIPT_EVIL_FORTRESS_TRI:                  ; [$b277]
 ;
 MSCRIPT_EVIL_FORTRESS_NOISE:                ; [$b321]
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $04                               ;  '- 4 iterations
-    .byte $88,$21,$31,$31,$21,$31,$31,$21   ; [$b323] byte
-    .byte $31,$21,$31,$31,$21,$31,$31,$21   ; [$b32b] byte
-    .byte $31                               ; [$b333] byte
-
+    .byte $04                               ; '- 4 iterations
+    .byte $88                               ; Note length: 8
+    .byte $21                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $21                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $21                               ; A9
+    .byte $31                               ; A9
+    .byte $21                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $21                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $21                               ; A9
+    .byte $31                               ; A9
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
-    .byte $88,$21,$21,$21,$21,$21,$00,$31   ; [$b337] byte
-    .byte $31,$31,$31,$31,$31,$21,$00,$00   ; [$b33f] byte
-    .byte $21,$11,$11,$11,$00,$85,$31,$31   ; [$b347] byte
-    .byte $86,$31,$88,$31,$31,$31,$31,$21   ; [$b34f] byte
-    .byte $00,$21,$00,$21,$21,$31,$00,$31   ; [$b357] byte
-    .byte $00,$31,$31,$21,$00,$31,$00,$31   ; [$b35f] byte
-    .byte $31,$31,$31,$21,$21,$31,$00,$31   ; [$b367] byte
-    .byte $00,$31,$00,$31,$00,$85,$31,$31   ; [$b36f] byte
-    .byte $86,$31,$88,$31,$31,$21,$21,$31   ; [$b377] byte
-    .byte $00,$31,$31,$31,$31,$21,$31,$31   ; [$b37f] byte
-    .byte $31,$31,$31,$31,$31,$21,$31,$31   ; [$b387] byte
-    .byte $31,$a0,$00,$88,$21,$21,$21,$21   ; [$b38f] byte
-    .byte $85,$31,$31,$86,$31,$88,$31,$31   ; [$b397] byte
-    .byte $85,$31,$31,$86,$31,$88,$21,$21   ; [$b39f] byte
+    .byte $02                               ; '- 2 iterations
+    .byte $88                               ; Note length: 8
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $21                               ; A9
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $21                               ; A9
+    .byte $11                               ; A9
+    .byte $11                               ; A9
+    .byte $11                               ; A9
+    .byte $00                               ; Rest
+    .byte $85                               ; Note length: 5
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $88                               ; Note length: 8
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $21                               ; A9
+    .byte $00                               ; Rest
+    .byte $21                               ; A9
+    .byte $00                               ; Rest
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $21                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $85                               ; Note length: 5
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $88                               ; Note length: 8
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $21                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $21                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $a0                               ; Note length: 32
+    .byte $00                               ; Rest
+    .byte $88                               ; Note length: 8
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $21                               ; A9
+    .byte $85                               ; Note length: 5
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $88                               ; Note length: 8
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $85                               ; Note length: 5
+    .byte $31                               ; A9
+    .byte $31                               ; A9
+    .byte $86                               ; Note length: 6
+    .byte $31                               ; A9
+    .byte $88                               ; Note length: 8
+    .byte $21                               ; A9
+    .byte $21                               ; A9
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
-    .byte $88,$31,$00,$00,$31,$00,$00,$31   ; [$b3aa] byte
-    .byte $00,$31,$00,$00,$31,$00,$00,$31   ; [$b3b2] byte
-    .byte $31                               ; [$b3ba] byte
-
+    .byte $02                               ; '- 2 iterations
+    .byte $88                               ; Note length: 8
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $00                               ; Rest
+    .byte $00                               ; Rest
+    .byte $31                               ; A9
+    .byte $31                               ; A9
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
-    .byte $02                               ;  '- 2 iterations
-    .byte $88,$31,$11,$11,$31,$11,$11,$31   ; [$b3be] byte
-    .byte $11,$31,$11,$11,$31,$11,$11,$31   ; [$b3c6] byte
-    .byte $31                               ; [$b3ce] byte
-
+    .byte $02                               ; '- 2 iterations
+    .byte $88                               ; Note length: 8
+    .byte $31                               ; A9
+    .byte $11                               ; A9
+    .byte $11                               ; A9
+    .byte $31                               ; A9
+    .byte $11                               ; A9
+    .byte $11                               ; A9
+    .byte $31                               ; A9
+    .byte $11                               ; A9
+    .byte $31                               ; A9
+    .byte $11                               ; A9
+    .byte $11                               ; A9
+    .byte $31                               ; A9
+    .byte $11                               ; A9
+    .byte $11                               ; A9
+    .byte $31                               ; A9
+    .byte $31                               ; A9
     .byte MSCRIPT_OP_END_LOOP               ; Op: End loop
     .byte MSCRIPT_OP_RESTART_CHANNEL        ; Op: Restart channel
     .byte MSCRIPT_OP_END                    ; Op: End

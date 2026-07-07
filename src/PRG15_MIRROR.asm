@@ -1,7 +1,7 @@
 ;============================================================================
 ; Faxanadu (U).nes
 ;
-; PRG15_MIRROR ($c000 - $ffff)
+; PRG15_MIRROR ($c000 - $ffdf)
 ;============================================================================
 
     .segment "PRG15_MIRROR"
@@ -49,7 +49,7 @@ UI_SetHUDPPUAttributes:                     ; [$c000]
     LDX a:UI_AttributeDataIndex             ; X = HUD attribute data index,
                                             ; computed when setting up the
                                             ; screen.
-    LDA HUD_ATTRIBUTE_DATA_BY_INDEX,X       ; Load the value for the
+    LDA a:HUD_ATTRIBUTE_DATA_BY_INDEX,X     ; Load the value for the
                                             ; attribute data.
 
 
@@ -140,7 +140,7 @@ DEADCODE_FUN_PRG15_MIRROR__c033:            ; [$c033]
 
   @LAB_PRG15_MIRROR__c04a:                  ; [$c04a]
     LDA (Temp_Addr_L),Y
-    STA PPUBuffer,X
+    STA a:PPUBuffer,X
     INX
     INY
     DEC Temp_00
@@ -392,7 +392,7 @@ Player_ReduceMP:                            ; [$c0c3]
     LDX a:SelectedMagic                     ; Load the selected magic spell.
     LDA a:Player_MP                         ; Load the player's total MP.
     SEC
-    SBC MAGIC_COSTS,X                       ; Look up the cost of this spell.
+    SBC a:MAGIC_COSTS,X                     ; Look up the cost of this spell.
     BCC @_notEnoughMP                       ; If there's not enough MP for
                                             ; the spell, then jump.
 
@@ -551,11 +551,11 @@ Screen_ClearSprites:                        ; [$c130]
 
   @_clearSpritesLoop:                       ; [$c132]
     LDA #$ff
-    STA CurrentSprites_Entities,X           ; Set sprite to 0xFF (cleared).
+    STA a:CurrentSprites_Entities,X         ; Set sprite to 0xFF (cleared).
     LDA #$00
-    STA CurrentSprites_HP,X                 ; Set sprite hit points to 0.
-    STA CurrentSprites_HitCounter,X         ; Set sprite hit counter to 0.
-    STA CurrentSprites_Behaviors,X          ; Set sprite subtype to 0.
+    STA a:CurrentSprites_HP,X               ; Set sprite hit points to 0.
+    STA a:CurrentSprites_HitCounter,X       ; Set sprite hit counter to 0.
+    STA a:CurrentSprites_Behaviors,X        ; Set sprite subtype to 0.
     DEX                                     ; X--
     BPL @_clearSpritesLoop                  ; If we're not done, loop.
 
@@ -624,10 +624,10 @@ Screen_LoadAllScreenInfo:                   ; [$c154]
     ; Set the starting address of the screen data.
     ;
     TAY                                     ; Y = A
-    LDA AREA_SPRITE_ADDRESSES,Y             ; Load the upper byte of the
+    LDA a:AREA_SPRITE_ADDRESSES,Y           ; Load the upper byte of the
                                             ; address.
     STA Temp_Addr_L                         ; Store for reading.
-    LDA AREA_SPRITE_ADDRESSES+1,Y           ; Load the lower byte of thea
+    LDA a:AREA_SPRITE_ADDRESSES+1,Y         ; Load the lower byte of thea
                                             ; ddress.
     STA Temp_Addr_U                         ; Store it.
 
@@ -1067,7 +1067,7 @@ Sprites_PopulateNextAvailableSprite:        ; [$c205]
 
   @_loop:                                   ; [$c207]
     STX a:CurrentSpriteIndex                ; Set it
-    LDA CurrentSprites_Entities,X           ; Load the sprite entity at this
+    LDA a:CurrentSprites_Entities,X         ; Load the sprite entity at this
                                             ; index.
     CMP #$ff                                ; Is it 0xFF (unset)?
     BNE @_prepareNextIter                   ; If not, jump to prepare for
@@ -1078,11 +1078,11 @@ Sprites_PopulateNextAvailableSprite:        ; [$c205]
     ; This sprite index is unset. Populate it.
     ;
     LDA #$00                                ; 0 = unset
-    STA CurrentSprites_Phases,X             ; Clear the sprite phase.
-    STA CurrentSprites_Flags,X              ; Clear the sprite flags.
+    STA a:CurrentSprites_Phases,X           ; Clear the sprite phase.
+    STA a:CurrentSprites_Flags,X            ; Clear the sprite flags.
     LDA #$ff                                ; 0xFF = unset
-    STA CurrentSprites_HitByMagicBehavior,X ; Clear the hit by magic
-                                            ; behavior.
+    STA a:CurrentSprites_HitByMagicBehavior,X ; Clear the hit by magic
+                                              ; behavior.
 
 
     ;
@@ -1094,13 +1094,13 @@ Sprites_PopulateNextAvailableSprite:        ; [$c205]
     LDA a:CurrentSprite_YPos                ; Load the Y position.
     STA CurrentSprites_YPos,X               ; Set for the sprite index.
     LDA a:CurrentSprite_Entity              ; Load the sprite entity.
-    STA CurrentSprites_Entities,X           ; Set it.
+    STA a:CurrentSprites_Entities,X         ; Set it.
     TAY                                     ; Y = A (entity)
-    LDA SPRITE_ENTITIES_HITBOX_TYPES,Y      ; Load the hitbox type for the
+    LDA a:SPRITE_ENTITIES_HITBOX_TYPES,Y    ; Load the hitbox type for the
                                             ; entity.
-    STA CurrentSprites_HitBoxTypes,X        ; Set it.
-    LDA SPRITE_ENTITIES_HP,Y                ; Load the HP for the entity.
-    STA CurrentSprites_HP,X                 ; Set it.
+    STA a:CurrentSprites_HitBoxTypes,X      ; Set it.
+    LDA a:SPRITE_ENTITIES_HP,Y              ; Load the HP for the entity.
+    STA a:CurrentSprites_HP,X               ; Set it.
 
 
     ;
@@ -1109,14 +1109,14 @@ Sprites_PopulateNextAvailableSprite:        ; [$c205]
     TYA                                     ; A = Y (entity)
     ASL A                                   ; Convert to a word boundary.
     TAY                                     ; Y = A
-    LDA SPRITE_BSCRIPTS,Y                   ; Load the lower byte of the
+    LDA a:SPRITE_BSCRIPTS,Y                 ; Load the lower byte of the
                                             ; behavior script for the entity.
-    STA CurrentSprites_BehaviorAddrs_L,X    ; Set the lower byte of the
+    STA a:CurrentSprites_BehaviorAddrs_L,X  ; Set the lower byte of the
                                             ; address.
-    LDA SPRITE_BSCRIPTS+1,Y                 ; Load the upper byte.
-    STA CurrentSprites_BehaviorAddrs_U,X    ; Set the upper byte.
+    LDA a:SPRITE_BSCRIPTS+1,Y               ; Load the upper byte.
+    STA a:CurrentSprites_BehaviorAddrs_U,X  ; Set the upper byte.
     LDA #$ff                                ; A = 0xFF (unset)
-    STA CurrentSprites_Behaviors,X          ; Clear the current behavior
+    STA a:CurrentSprites_Behaviors,X        ; Clear the current behavior
                                             ; state.
     JMP Sprites_LoadSpriteValue             ; Load the value for the sprite
                                             ; and return.
@@ -1214,7 +1214,7 @@ Sprites_LoadSpriteValue:                    ; [$c25b]
     LDY #$00                                ; Y = 0
     LDA (Screen_ExtraInfoAddr),Y            ; A = Extra information for the
                                             ; sprite.
-    STA CurrentSprites_Values,X             ; Store in
+    STA a:CurrentSprites_Values,X           ; Store in
                                             ; CurrentSprites_Values.
     CMP #$ff                                ; Is it 0xFF (unset)?
     BEQ @_restoreBankAndReturn              ; If so, we're done. Jump.
@@ -1274,7 +1274,7 @@ Sprites_StoreBankForCurrentSprite:          ; [$c27c]
     ; Load the image for the bank.
     ;
   @_loadBank:                               ; [$c286]
-    LDA SPRITE_IMAGE_BANKS,Y                ; Load the address for the sprite
+    LDA a:SPRITE_IMAGE_BANKS,Y              ; Load the address for the sprite
                                             ; entity.
     STA a:CurrentSprite_TilesBank           ; Store as the bank for this
                                             ; sprite.
@@ -1356,7 +1356,7 @@ GameLoop_LoadSpriteImages:                  ; [$c28d]
     STX a:CurrentSpriteIndex                ; Store it as the
                                             ; currently-processed sprite
                                             ; index.
-    LDA CurrentSprites_Entities,X           ; Load the associated sprite
+    LDA a:CurrentSprites_Entities,X         ; Load the associated sprite
                                             ; entity ID.
     CMP #$ff                                ; Is it 0xFF (unset)?
     BEQ @_nextLoop                          ; If so, jump and prepare for the
@@ -1415,7 +1415,7 @@ GameLoop_LoadSpriteImages:                  ; [$c28d]
   @_loadSpriteInfo:                         ; [$c2c9]
     LDX a:CurrentSpriteIndex                ; X = current sprite index
     LDA CurrentSprite_StartPPUTileOffset    ; A = Start PPU tile offset
-    STA CurrentSprites_PPUOffsets,X         ; Set this in the PPU tile
+    STA a:CurrentSprites_PPUOffsets,X       ; Set this in the PPU tile
                                             ; offsets for this sprite.
 
 
@@ -1435,7 +1435,7 @@ GameLoop_LoadSpriteImages:                  ; [$c28d]
     ; It's off-screen. Unset it.
     ;
     LDA #$ff                                ; Else, it's off the screen.
-    STA CurrentSprites_Entities,X           ; Unset the entity.
+    STA a:CurrentSprites_Entities,X         ; Unset the entity.
 
 
     ;
@@ -1564,10 +1564,10 @@ CastMagic_RunUpdateSpellHandler:            ; [$c2e9]
     ASL A                                   ; Convert to a word boundary for
                                             ; the lookup table.
     TAY                                     ; Y = A
-    LDA BYTE_bb28,Y                         ; Load the lower byte of the
-                                            ; finish handler.
+    LDA a:CAST_MAGIC_UPDATE_FINISH_HANDLERS+1,Y ; Load the lower byte of the
+                                                ; finish handler.
     PHA                                     ; Push to the stack.
-    LDA BYTE_bb27,Y                         ; Load the upper byte.
+    LDA a:CAST_MAGIC_UPDATE_FINISH_HANDLERS,Y ; Load the upper byte.
     PHA                                     ; Push.
 
   @_return:                                 ; [$c314]
@@ -1763,7 +1763,7 @@ CastMagic_CalculateVisibility:              ; [$c315]
 CastMagic_SetAppearance:                    ; [$c37d]
     LDY a:CastMagic_Type                    ; Y = cast magic type
     CLC
-    ADC SPRITE_MAGIC_IMAGE_ADDRS_U,Y        ; Add the value from the lookup
+    ADC a:SPRITE_MAGIC_IMAGE_ADDRS_U,Y      ; Add the value from the lookup
                                             ; table.
     JMP Sprite_SetAppearanceAddrFromOffset  ; Set the sprite appearance.
 
@@ -2188,97 +2188,219 @@ CastMagic_FinishHandler_HitWallEffect:      ; [$c403]
     JMP CastMagic_SetAppearance             ; Draw the bottom explosion
                                             ; sprite at that position.
 
+
 ;============================================================================
-; TODO: Document CastMagic_FinishHandler_TilteAfterFirstHit
+; Draw the Tilte explosion sprites after hitting an enemy.
+;
+; There are 4 sprites for the explosion, each moving in a
+; diagonal direction outward from the impact point.
+;
+; This is computed by looping through each of the sprites
+; and then calculating new X and Y positions for each, plus
+; the appropriate tile appearance offset. XOR masks are used
+; to turn the magic counter into a positive or negative
+; number (depending on which piece of the explosion this is)
+; in order to move that part in the correct direction.
 ;
 ; INPUTS:
-;     None.
+;     CastMagic_Counter:
+;         The lifetime counter for the explosion.
+;
+;     CastMagic_XPos_Full:
+;         The center X position for the explosion.
+;
+;     CastMagic_YPos_Full:
+;         The center Y position for the explosion.
+;
+;     MAGICHITHANDLER_TILTE_X_XORS:
+;         The XOR table for generating positive/negative X
+;         deltas for each part of the explosion.
+;
+;     MAGICHITHANDLER_TILTE_Y_XORS:
+;         The XOR table for generating positive/negative Y
+;         deltas for each part of the explosion.
+;
+;     MAGICHITHANDLER_TILTE_APPEARANCE_OFFSETS:
+;         The appearance offsets for each part of the
+;         explosion.
 ;
 ; OUTPUTS:
-;     TODO
+;     Arg_DrawSprite_PosX:
+;     Arg_DrawSprite_PosY:
+;     Temp_00:
+;         Clobbered.
+;
+; CALLS:
+;     CastMagic_SetAppearance
 ;
 ; XREFS:
 ;     CAST_MAGIC_UPDATE_FINISH_HANDLERS [$PRG14::bb3d]
 ;============================================================================
 CastMagic_FinishHandler_TilteAfterFirstHit: ; [$c42c]
-    LDA #$00
-    STA CurrentSprite_FlipMask
-    LDX #$03
+    ;
+    ; Clear the flip mask for the sprite.
+    ;
+    LDA #$00                                ; A = 0.
+    STA CurrentSprite_FlipMask              ; Set as the flip mask (cleared).
 
+
+    ;
+    ; Prepare our loop. This will loop 4 times (3 -> 0, inclusive),
+    ; calculating X and Y positions and an appearance offset for the
+    ; sprite based on CastMagic_Counter (which will go from 1
+    ; through 15).
+    ;
+    ; The loop counter corresponds to the corner of the explosion
+    ; being processed:
+    ;
+    ; 0 = Top-left
+    ; 1 = Top-right
+    ; 2 = Bottom-left
+    ; 3 = Bottom-right
+    ;
+    LDX #$03                                ; X = 3 (loop counter).
+
+
+    ;
+    ; Begin calculating a distance from the center based on the
+    ; counter value.
+    ;
+    ; This will multiply the counter by 2 and then calculate a
+    ; positive or negative value for X based on which corner
+    ; of the explosion is being processed.
+    ;
   @_loop:                                   ; [$c432]
-    LDA a:CastMagic_Counter
-    ASL A
-    PHA
-    STA Temp_00
-    EOR MAGICHITHANDLER_c42c_ARRAY1,X
-    BPL @LAB_PRG15_MIRROR__c442
-    STA Temp_00
-    INC Temp_00
+    LDA a:CastMagic_Counter                 ; Load the magic counter.
+    ASL A                                   ; Multiply by 2.
+    PHA                                     ; Push the result to the stack.
 
-  @LAB_PRG15_MIRROR__c442:                  ; [$c442]
-    LDA a:CastMagic_XPos_Full
-    CLC
-    ADC Temp_00
-    STA Arg_DrawSprite_PosX
-    PLA
-    STA Temp_00
-    EOR $c470,X
-    BPL @LAB_PRG15_MIRROR__c456
-    STA Temp_00
-    INC Temp_00
 
-  @LAB_PRG15_MIRROR__c456:                  ; [$c456]
-    LDA a:CastMagic_YPos_Full
+    ;
+    ; Calculate the X position of the sprite.
+    ;
+    STA Temp_00                             ; And store it for temporary
+                                            ; usage.
+    EOR a:MAGICHITHANDLER_TILTE_X_XORS,X    ; XOR with the index in our
+                                            ; lookup table based on the loop
+                                            ; counter.
+    BPL @_calcFinalXPosition                ; If the result is a positive
+                                            ; value, jump.
+    STA Temp_00                             ; Else, store our XOR'd result in
+                                            ; our temp variable.
+    INC Temp_00                             ; And increment it.
+
+
+    ;
+    ; Add our calculated position to the current X position,
+    ; producing a final result. This will be set as the
+    ; destination for drawing.
+    ;
+  @_calcFinalXPosition:                     ; [$c442]
+    LDA a:CastMagic_XPos_Full               ; Load the block X position of
+                                            ; the magic sprite.
     CLC
-    ADC Temp_00
-    STA Arg_DrawSprite_PosY
-    TXA
-    PHA
-    LDA $c474,X
-    JSR CastMagic_SetAppearance
-    PLA
-    TAX
-    DEX
-    BPL @_loop
+    ADC Temp_00                             ; Add our temp value.
+    STA Arg_DrawSprite_PosX                 ; Set as the X position argument.
+
+
+    ;
+    ; Calculate the Y position of the sprite.
+    ;
+    PLA                                     ; Pop the previously-calculated
+                                            ; magic counter * 2 result.
+    STA Temp_00                             ; Store it back in our temp
+                                            ; variable.
+    EOR a:MAGICHITHANDLER_TILTE_Y_XORS,X    ; XOR with the index in our
+                                            ; lookup table based on the loop
+                                            ; counter.
+    BPL @_calcFinalYPosition                ; If the result is a positive
+                                            ; value, jump.
+    STA Temp_00                             ; Else, store our XOR'd result in
+                                            ; our temp variable.
+    INC Temp_00                             ; And increment it.
+
+  @_calcFinalYPosition:                     ; [$c456]
+    LDA a:CastMagic_YPos_Full               ; Load the Y position of the
+                                            ; magic sprite.
+    CLC
+    ADC Temp_00                             ; Add the temp variable.
+    STA Arg_DrawSprite_PosY                 ; Store as the Y position
+                                            ; argument.
+
+
+    ;
+    ; Calculate the sprite tile offset.
+    ;
+    TXA                                     ; A = loop counter value.
+    PHA                                     ; Push it to the stack.
+    LDA a:MAGICHITHANDLER_TILTE_APPEARANCE_OFFSETS,X ; Load the offset based
+                                                     ; on the counter.
+
+
+    ;
+    ; Draw the tile for this part of the explosion.
+    ;
+    JSR CastMagic_SetAppearance             ; Set the appearance of the
+                                            ; sprite.
+    PLA                                     ; Pop our loop counter.
+    TAX                                     ; Assign back to X.
+    DEX                                     ; Decrement the loop counter.
+    BPL @_loop                              ; If >= 0, loop.
     RTS
 
-MAGICHITHANDLER_c42c_ARRAY1:                ; [$c46c]
-    .byte $ff                               ; [0]:
-    .byte $00                               ; [1]:
+
+;============================================================================
+; Table of XORs for creating X deltas for parts of the Tilte explosion.
+;
+; XREFS:
+;     CastMagic_FinishHandler_TilteAfterFirstHit
+;============================================================================
 
 ;
 ; XREFS:
 ;     CastMagic_FinishHandler_TilteAfterFirstHit
 ;
-MAGICHITHANDLER_c42c_ARRAY1_2_:             ; [$c46e]
-    .byte $ff                               ; [2]:
+MAGICHITHANDLER_TILTE_X_XORS:               ; [$c46c]
+    .byte $ff                               ; [0]: Top-left
+    .byte $00                               ; [1]: Top-right
+    .byte $ff                               ; [2]: Bottom-left
+    .byte $00                               ; [3]: Bottom-right
+
+
+;============================================================================
+; Table of XORs for creating X deltas for parts of the Tilte explosion.
+;
+; XREFS:
+;     CastMagic_FinishHandler_TilteAfterFirstHit
+;============================================================================
 
 ;
 ; XREFS:
 ;     CastMagic_FinishHandler_TilteAfterFirstHit
 ;
-MAGICHITHANDLER_c42c_ARRAY1_3_:             ; [$c46f]
-    .byte $00                               ; [3]:
-    .byte $ff                               ; [0]:
-    .byte $ff                               ; [1]:
-    .byte $00                               ; [2]:
+MAGICHITHANDLER_TILTE_Y_XORS:               ; [$c470]
+    .byte $ff                               ; [0]: Top-left
+    .byte $ff                               ; [1]: Top-right
+    .byte $00                               ; [2]: Bottom-left
+    .byte $00                               ; [3]: Bottom-right
+
+
+;============================================================================
+; Table of appearance offsets for parts of the Tilte explosion.
+;
+; XREFS:
+;     CastMagic_FinishHandler_TilteAfterFirstHit
+;============================================================================
 
 ;
 ; XREFS:
 ;     CastMagic_FinishHandler_TilteAfterFirstHit
 ;
-BYTE_ARRAY_PRG15_MIRROR__c470_3_:           ; [$c473]
-    .byte $00                               ; [3]:
-    .byte $00                               ; [0]:
-    .byte $02                               ; [1]:
-    .byte $01                               ; [2]:
-
-;
-; XREFS:
-;     CastMagic_FinishHandler_TilteAfterFirstHit
-;
-BYTE_ARRAY_PRG15_MIRROR__c474_3_:           ; [$c477]
-    .byte $03                               ; [3]:
+MAGICHITHANDLER_TILTE_APPEARANCE_OFFSETS:   ; [$c474]
+    .byte $00                               ; [0]: Top-left
+    .byte $02                               ; [1]: Top-right
+    .byte $01                               ; [2]: Bottom-left
+    .byte $03                               ; [3]: Bottom-right
 
 
 ;============================================================================
@@ -2355,10 +2477,10 @@ GameLoop_CheckUseCurrentItem:               ; [$c478]
     ;
     ; Look up this item in the jump table and run it.
     ;
-    LDA USE_ITEM_JUMP_TABLE+1,Y             ; Load the lower byte of the item
+    LDA a:USE_ITEM_JUMP_TABLE+1,Y           ; Load the lower byte of the item
                                             ; handler address.
     PHA                                     ; Push it.
-    LDA USE_ITEM_JUMP_TABLE,Y               ; Load the upper byte.
+    LDA a:USE_ITEM_JUMP_TABLE,Y             ; Load the upper byte.
     PHA                                     ; Push it.
 
     ;
@@ -2804,7 +2926,7 @@ Player_UseWingBoots:                        ; [$c579]
     LSR A                                   ; Divide by 4.
     LSR A
     TAX                                     ; X = A (index)
-    LDA TITLE_TO_WINGBOOTS_DURATION,X       ; Look up in the duration table.
+    LDA a:TITLE_TO_WINGBOOTS_DURATION,X     ; Look up in the duration table.
     STA a:DurationWingBoots                 ; Set that as the starting
                                             ; duration.
     JSR UI_DrawTimeValue                    ; Draw the time on the HUD.
@@ -3185,7 +3307,7 @@ Player_UseMattock:                          ; [$c616]
   @LAB_PRG15_MIRROR__c61f:                  ; [$c61f]
     LDA Player_PosX_Block                   ; Get the player's X position.
     CLC
-    ADC USE_MATTOCK_BLOCK_DISTANCES,Y       ; Add the block distance for the
+    ADC a:USE_MATTOCK_BLOCK_DISTANCES,Y     ; Add the block distance for the
                                             ; facing direction.
     CMP #$f0                                ; Is the player too near to the
                                             ; right edge of the screen?
@@ -3218,9 +3340,9 @@ Player_UseMattock:                          ; [$c616]
     ASL A                                   ; Convert to a 4 byte index.
     ASL A
     TAY                                     ; Y = index
-    LDA ScreenBuffer,X                      ; Load the value from the screen
+    LDA a:ScreenBuffer,X                    ; Load the value from the screen
                                             ; buffer.
-    CMP USE_MATTOCK_BLOCK_TRANSITIONS,Y     ; Is this block already cleared
+    CMP a:USE_MATTOCK_BLOCK_TRANSITIONS,Y   ; Is this block already cleared
                                             ; by the Mattock?
     BEQ @_useMattock                        ; If not, use the Mattock to
                                             ; clear them.
@@ -3295,9 +3417,9 @@ Player_UseMattock:                          ; [$c616]
     PHA                                     ; Push to the stack.
     TXA                                     ; A = X
     PHA                                     ; Push to the stack.
-    LDA USE_MATTOCK_BLOCK_TRANSITIONS,Y     ; Load the block for this
+    LDA a:USE_MATTOCK_BLOCK_TRANSITIONS,Y   ; Load the block for this
                                             ; position.
-    STA ScreenBuffer,X                      ; And store it in the screen
+    STA a:ScreenBuffer,X                    ; And store it in the screen
                                             ; buffer.
     JSR Area_SetBlocks                      ; Update the level data.
 
@@ -3310,7 +3432,7 @@ Player_UseMattock:                          ; [$c616]
     ADC #$10                                ; A += 32
     TAX                                     ; X = A
     LDA a:Arg_BlockAttributesIndex          ; Load a value.
-    STA ScreenBuffer,X                      ; And write it to the screen
+    STA a:ScreenBuffer,X                    ; And write it to the screen
                                             ; buffer.
     JSR Area_SetBlocks                      ; Upate the level data.
 
@@ -3641,7 +3763,7 @@ Player_PickUpBattleSuit:                    ; [$c6ea]
     ;
   @_addItem:                                ; [$c700]
     LDA #$03                                ; 0x03 == Battle Suit
-    STA ArmorInventory,X                    ; Set in the inventory slot
+    STA a:ArmorInventory,X                  ; Set in the inventory slot
 
 
     ;
@@ -3715,7 +3837,7 @@ Player_PickUpBattleHelmet:                  ; [$c70a]
     ;
   @_addItem:                                ; [$c720]
     LDA #$03                                ; 0x03 == Battle Helmet.
-    STA ShieldInventory,X                   ; Set in the inventory slot.
+    STA a:ShieldInventory,X                 ; Set in the inventory slot.
 
 
     ;
@@ -3798,7 +3920,7 @@ Player_PickUpDragonSlayer:                  ; [$c72a]
     ;
   @_addItem:                                ; [$c740]
     LDA #$03                                ; 0x03 == Dragon Slayer
-    STA WeaponInventory,X                   ; Set in the inventory slot.
+    STA a:WeaponInventory,X                 ; Set in the inventory slot.
 
 
     ;
@@ -4743,7 +4865,7 @@ Player_PickUpItem:                          ; [$c8cd]
     ; There's room. Set the item in the inventory and increment
     ; the item counter.
     ;
-    STA ItemInventory,X                     ; Store the item in the next
+    STA a:ItemInventory,X                   ; Store the item in the next
                                             ; available slot.
     INX                                     ; Set the next available slot.
     STX a:NumberOfItems
@@ -4808,7 +4930,7 @@ UI_ClearSelectedItemPic:                    ; [$c8dc]
     LDA #$00                                ; A = 0
 
   @_horizLoop:                              ; [$c8f3]
-    STA PPUBuffer,X                         ; Write a 0 to the PPU buffer.
+    STA a:PPUBuffer,X                       ; Write a 0 to the PPU buffer.
     INX                                     ; X++
     DEY                                     ; Y--
     BNE @_horizLoop                         ; If not 0, loop.
@@ -4939,13 +5061,13 @@ Game_Init:                                  ; [$c913]
     STA Temp_00,X                           ; Clear memory at address X.
 
   @_clearState:                             ; [$c93f]
-    STA Temp_0200,X                         ; Clear memory at $0200 + X
-    STA CurrentSprites_InternalBehaviorStates_4_,X ; Clear memory at $0300 +
-                                                   ; X
-    STA FirstColumnInRightScreen_10_,X      ; Clear memory at $0400 + X
-    STA PPUBuffer,X                         ; Clear memory at $0500 + X
-    STA ScreenBuffer,X                      ; Clear memory at $0600 + X
-    STA SPRITE_0_RANGE_1_START,X            ; Clear memory at $0700 + X
+    STA a:Temp_0200,X                       ; Clear memory at $0200 + X
+    STA a:CurrentSprites_InternalBehaviorStates_4_,X ; Clear memory at $0300
+                                                     ; + X
+    STA a:FirstColumnInRightScreen_10_,X    ; Clear memory at $0400 + X
+    STA a:PPUBuffer,X                       ; Clear memory at $0500 + X
+    STA a:ScreenBuffer,X                    ; Clear memory at $0600 + X
+    STA a:SPRITE_0_RANGE_1_START,X          ; Clear memory at $0700 + X
     INX                                     ; X++
     BNE @_loop                              ; If X != 0, loop.
     JSR Game_InitMMCAndBank                 ; Initialize the MMC1 chip and
@@ -5546,7 +5668,7 @@ Input_HandleOnInterrupt:                    ; [$ca35]
 GetRandom:                                  ; [$ca6e]
     LDX Random_Offset                       ; Load the current offset into
                                             ; the bank.
-    LDA Sprites_UpdateAll,X                 ; Load the byte value at that
+    LDA a:Sprites_UpdateAll,X               ; Load the byte value at that
                                             ; offset.
     EOR Joy1_ButtonMask                     ; XOR with the controler 1 button
                                             ; mask.
@@ -5686,21 +5808,44 @@ PPU_SetAddr:                                ; [$cab5]
     STX a:PPUADDR                           ; Set the lower byte.
     RTS
 
+
 ;============================================================================
-; TODO: Document PPU_InitAttributeAndNameTables
+; Initialize the attribute and name tables for the PPU.
+;
+; This will write the following:
+;
+; * Name table 0: 8 bytes of 0x20
+; * Attribute table 0: 320 bytes of 0x55
+; * Attribute table 1: 320 bytes of 0x55
 ;
 ; INPUTS:
 ;     None.
 ;
 ; OUTPUTS:
-;     TODO
+;     PPUDATA:
+;         PPU state will be set.
+;
+;     Temp_PPU_NameTableValue:
+;         Clobbered.
+;
+; CALLS:
+;     PPU_SetAddr
+;     PPU_WriteRowsWithInitial
 ;
 ; XREFS:
 ;     Game_InitScreenAndMusic
 ;============================================================================
 PPU_InitAttributeAndNameTables:             ; [$cabc]
-    LDA #$20
-    STA Temp_PPU_NameTableValue
+    ;
+    ; Store a value to write in name table 0.
+    ;
+    ; There's no good reason this is stored in its own variable and then
+    ; almost immediately accessed, except that this code likely contained
+    ; other possible values to include here based on other state. Any such
+    ; code no longer exists.
+    ;
+    LDA #$20                                ; A = 0x20 (value to write).
+    STA Temp_PPU_NameTableValue             ; Store it temporarily.
 
 
     ;
@@ -5708,13 +5853,15 @@ PPU_InitAttributeAndNameTables:             ; [$cabc]
     ;
     ; Write 32 to 8 bytes.
     ;
-    LDA #$20
-    LDX #$00
-    JSR PPU_SetAddr
-    LDY #$08
-    LDX #$00
-    LDA Temp_PPU_NameTableValue
-    JSR PPU_FillGrid
+    LDA #$20                                ; Upper byte of table address.
+    LDX #$00                                ; Lower byte of table address.
+    JSR PPU_SetAddr                         ; Set that as the address to
+                                            ; write to.
+    LDY #$08                                ; 8 full rows.
+    LDX #$00                                ; 0 starting columns before full
+                                            ; rows.
+    LDA Temp_PPU_NameTableValue             ; Value to write (from above).
+    JSR PPU_WriteRowsWithInitial            ; Write to name table 0.
 
 
     ;
@@ -5723,13 +5870,14 @@ PPU_InitAttributeAndNameTables:             ; [$cabc]
     ; Write 64 entries of byte 0x55 to the table. This is color bit 01
     ; for each quadrant of each sprite.
     ;
-    LDA #$23
-    LDX #$c0
-    JSR PPU_SetAddr
-    LDX #$40
-    LDY #$01
-    LDA #$55
-    JSR PPU_FillGrid
+    LDA #$23                                ; Upper byte of table address.
+    LDX #$c0                                ; Lower byte of table address.
+    JSR PPU_SetAddr                         ; Set as the address to write to.
+    LDX #$40                                ; Write 64 initial bytes.
+    LDY #$01                                ; Plus 1 full row-length of
+                                            ; columns (256 bytes).
+    LDA #$55                                ; Value to write.
+    JSR PPU_WriteRowsWithInitial            ; Write to attribute table 0.
 
 
     ;
@@ -5737,51 +5885,49 @@ PPU_InitAttributeAndNameTables:             ; [$cabc]
     ;
     ; Write 64 entries here with the same information.
     ;
-    LDA #$27
-    LDX #$c0
-    JSR PPU_SetAddr
-    LDX #$40
-    LDY #$01
+    LDA #$27                                ; Upper byte of table address.
+    LDX #$c0                                ; Lower byte of table address.
+    JSR PPU_SetAddr                         ; Set as the address to write to.
+    LDX #$40                                ; Write 64 initial bytes.
+    LDY #$01                                ; Plus 1 full row-length of
+                                            ; columns (256 bytes).
     LDA #$55
 
     ;
     ; v-- Fall through --v
+    ; Value to write.
     ;
 
 
 ;============================================================================
-; Fills a grid in the PPU with a value.
+; Write a value repeatedly to the PPU.
 ;
 ; This writes a value to the PPU up to X times, and then
 ; again 256 * Y times.
-;
-; This seems a bit strange, but in practice it's never
-; really used this way. Always 256 columns for every row,
-; or only ever one row.
 ;
 ; INPUTS:
 ;     A:
 ;         The value to write.
 ;
 ;     X:
-;         Initial number of columns for the first row
-;         (256 columns per row after).
+;         Initial number of bytes to write.
 ;
 ;     Y:
-;         The number of rows.
+;         The number of full rows' worth of columns to fill after
+;         the initial column span (256 * Y).
 ;
 ; OUTPUTS:
 ;     PPUDATA:
 ;         Updated with the new written data.
 ;
 ; XREFS:
-;     PPU_FillGrid
 ;     PPU_InitAttributeAndNameTables
+;     PPU_WriteRowsWithInitial
 ;============================================================================
-PPU_FillGrid:                               ; [$caed]
+PPU_WriteRowsWithInitial:                   ; [$caed]
     STA a:PPUDATA                           ; Write the value to PPUDATA.
     DEX                                     ; X--
-    BNE PPU_FillGrid                        ; If X > 0, loop.
+    BNE PPU_WriteRowsWithInitial            ; If X > 0, loop.
 
 
     ;
@@ -5790,7 +5936,7 @@ PPU_FillGrid:                               ; [$caed]
     ; It appears it should write 256 more times on this iteration.
     ;
     DEY                                     ; Y--
-    BNE PPU_FillGrid                        ; If Y > 0, loop
+    BNE PPU_WriteRowsWithInitial            ; If Y > 0, loop
     RTS
 
 
@@ -6127,7 +6273,7 @@ Screen_ResetSpritesForNonGame:              ; [$cb4f]
 ;     Sprites_Sprite0Mode:
 ;         The mode used for sprite 0 defaults.
 ;
-;     SPRITES_START_XY:
+;     SPRITE0_START_Y:
 ;         The X, Y positions for sprite 0, based on the
 ;         defaults mode.
 ;
@@ -6200,7 +6346,7 @@ Sprites_Reset:                              ; [$cb53]
     ; When 0, this will be the location of the "P" symbol for the
     ; HP bar.
     ;
-    LDA SPRITES_START_XY,Y                  ; Load the Y for the sprite.
+    LDA a:SPRITE0_START_Y,Y                 ; Load the Y for the sprite.
     STA a:SPRITE_0_RANGE_1_START            ; Store for sprite 0's Y.
     LDA #$7f                                ; 0x7F == tile ID
     STA a:SPRITE0_TILE                      ; Store for sprite 0's tile ID.
@@ -6208,7 +6354,7 @@ Sprites_Reset:                              ; [$cb53]
                                             ; background
     STA a:SPRITE0_ATTRS                     ; Store for sprite 0's
                                             ; attributes.
-    LDA $cb98,Y                             ; Load the X for the sprite.
+    LDA a:SPRITE0_START_X,Y                 ; Load the X for the sprite.
     STA a:SPRITE0_X                         ; Store for sprite 0's X.
     LDY #$04                                ; Y = 4 (loop counter).
 
@@ -6221,7 +6367,7 @@ Sprites_Reset:                              ; [$cb53]
                                             ; slots).
 
   @_fillSpriteSlotsLoop:                    ; [$cb84]
-    STA SPRITE_0_RANGE_1_START,Y            ; Set it for this sprite slot's
+    STA a:SPRITE_0_RANGE_1_START,Y          ; Set it for this sprite slot's
                                             ; Y.
     INY                                     ; Increment slot byte by 4.
     INY
@@ -6241,9 +6387,17 @@ Sprites_Reset:                              ; [$cb53]
 
 
 ;============================================================================
-; Start X/Y locations for the default sprite 0.
+; Start Y locations for the default sprite 0.
+;
+; XREFS:
+;     Sprites_Reset
 ;============================================================================
-SPRITES_START_XY:                           ; [$cb96]
+
+;
+; XREFS:
+;     Sprites_Reset
+;
+SPRITE0_START_Y:                            ; [$cb96]
     .byte $17                               ; [0]:
                                             ; SPRITE_0_RANGE_1_START
                                             ; when
@@ -6254,12 +6408,26 @@ SPRITES_START_XY:                           ; [$cb96]
                                             ; when
                                             ; Sprites_Sprite0Mode
                                             ; == 0xFF
-    .byte $08                               ; [2]:
+
+
+;============================================================================
+; Start X locations for the default sprite 0.
+;
+; XREFS:
+;     Sprites_Reset
+;============================================================================
+
+;
+; XREFS:
+;     Sprites_Reset
+;
+SPRITE0_START_X:                            ; [$cb98]
+    .byte $08                               ; [0]:
                                             ; SPRITE0_X
                                             ; when
                                             ; Sprites_Sprite0Mode
                                             ; == 0
-    .byte $00                               ; [3]:
+    .byte $00                               ; [1]:
                                             ; SPRITE0_X
                                             ; when
                                             ; Sprites_Sprite0Mode
@@ -6322,15 +6490,15 @@ Sprites_FlipRanges:                         ; [$cba8]
                                             ; counter)
 
   @_loop:                                   ; [$cbac]
-    LDA SPRITE_0_RANGE_1_START,X            ; Load the sprite Y from this
+    LDA a:SPRITE_0_RANGE_1_START,X          ; Load the sprite Y from this
                                             ; offset in range 1.
     PHA                                     ; Push it to the stack.
-    LDA SPRITE_0_RANGE_1_START,Y            ; Load the sprite Y from this
+    LDA a:SPRITE_0_RANGE_1_START,Y          ; Load the sprite Y from this
                                             ; offset in range 2.
-    STA SPRITE_0_RANGE_1_START,X            ; Copy to range 1.
+    STA a:SPRITE_0_RANGE_1_START,X          ; Copy to range 1.
     PLA                                     ; Pop the previous Y from the
                                             ; stack.
-    STA SPRITE_0_RANGE_1_START,Y            ; Copy it to range 2.
+    STA a:SPRITE_0_RANGE_1_START,Y          ; Copy it to range 2.
     INX                                     ; X++ (sprite data offset)
     INY                                     ; Y++ (loop counter)
     BNE @_loop                              ; If not wrapped to 0, loop.
@@ -6385,7 +6553,7 @@ Game_InitMMCAndBank:                        ; [$cbbf]
 ;============================================================================
 MMC1_Init:                                  ; [$cbd0]
     LDA #$ff
-    STA a:MMC1_SERIAL
+    STA a:$ffff
     LDA #$0e                                ; Horizontal Mirroring Regular
                                             ; Mirroring Swap ROM bank at
                                             ; 0x8000 Swap 8K of VROM at PPU
@@ -6442,7 +6610,7 @@ MMC1_Init:                                  ; [$cbd0]
 ;         Flag used to manage/reinitialize MMC1 state.
 ;
 ; XREFS:
-;     Area_LoadScrollDataRight
+;     Area_LoadScrollData
 ;     Game_EnterAreaHandler
 ;     Game_EnterBuilding
 ;     Game_ExitBuilding
@@ -6475,7 +6643,7 @@ MMC1_SaveROMBankAndUpdateTo:                ; [$cc15]
 ;
 ; XREFS:
 ;     Area_LoadBlockProperties
-;     Area_LoadScrollDataRight
+;     Area_LoadScrollData
 ;     Area_LoadTiles
 ;     Area_SetBlocks
 ;     Area_SetStateFromDoorDestination
@@ -6489,6 +6657,7 @@ MMC1_SaveROMBankAndUpdateTo:                ; [$cc15]
 ;     IScripts_DrawPortraitTileToPPU
 ;     IScripts_LoadPortraitTilesAddress
 ;     MMC1_LoadBankAndJump
+;     MMC1_PopBank
 ;     MMC1_RestorePrevROMBank
 ;     MMC1_UpdatePRGBankToStackA
 ;     Messages_Load
@@ -6537,15 +6706,15 @@ MMC1_UpdateROMBank:                         ; [$cc1a]
     ; Write 5 LSBs of A to $FFFF, one bit per write (MMC1 serial protocol):
     ;
     TXA                                     ; ROM_PAGE_SELECT parameter in X
-    STA a:MMC1_SERIAL
+    STA a:$ffff
     LSR A
-    STA a:MMC1_SERIAL
+    STA a:$ffff
     LSR A
-    STA a:MMC1_SERIAL
+    STA a:$ffff
     LSR A
-    STA a:MMC1_SERIAL
+    STA a:$ffff
     LSR A
-    STA a:MMC1_SERIAL
+    STA a:$ffff
 
 
     ;
@@ -6565,7 +6734,7 @@ MMC1_UpdateROMBank:                         ; [$cc1a]
     ; Slow path. Re-initialize the MMC1.
     ;
     LDA #$ff
-    STA a:MMC1_SERIAL                       ; Reset the MMC1
+    STA a:$ffff                             ; Reset the MMC1
                                             ; shifter/controler.
     LDA #$0e                                ; Horizontal Mirroring Regular
                                             ; Mirroring Swap ROM bank at
@@ -6680,7 +6849,7 @@ MMC1_EnsurePRG:                             ; [$cc85]
     ; Reset MMC1.
     ;
     LDA #$ff
-    STA a:MMC1_SERIAL
+    STA a:$ffff
     LDA #$0e                                ; Horizontal Mirroring Regular
                                             ; Mirroring Swap ROM bank at
                                             ; 0x8000 Swap 8K of VROM at PPU
@@ -6733,15 +6902,15 @@ MMC1_EnsurePRG:                             ; [$cc85]
     ;
   @_fastPath:                               ; [$ccd2]
     TXA
-    STA a:MMC1_SERIAL
+    STA a:$ffff
     LSR A
-    STA a:MMC1_SERIAL
+    STA a:$ffff
     LSR A
-    STA a:MMC1_SERIAL
+    STA a:$ffff
     LSR A
-    STA a:MMC1_SERIAL
+    STA a:$ffff
     LSR A
-    STA a:MMC1_SERIAL
+    STA a:$ffff
     RTS
 
 
@@ -6762,7 +6931,7 @@ MMC1_EnsurePRG:                             ; [$cc85]
 ;     MMC1_UpdateROMBank
 ;
 ; XREFS:
-;     Area_LoadScrollDataRight
+;     Area_LoadScrollData
 ;     Game_EnterAreaHandler
 ;     Game_EnterBuilding
 ;     Game_ExitBuilding
@@ -6772,14 +6941,59 @@ MMC1_EnsurePRG:                             ; [$cc85]
 MMC1_RestorePrevROMBank:                    ; [$cce7]
     LDX SavedPRGBank
     JMP MMC1_UpdateROMBank
+
+
 ;============================================================================
-; TODO: Document PPUBuffer_DrawCommand_RemoveVerticalLines
+; Remove vertical lines from buffered tiles.
+;
+; This PPUBuffer draw command will read 16 bytes from the PPU
+; buffer and progressively remove vertical lines for them. It's
+; used for the player death animation.
+;
+; This takes the following input from the PPU buffer:
+;
+; 1. The animation phase.
+; 2. The upper address of tiles within the PPU.
+; 3. The lower address of tiles within the PPU.
+;
+; Starting at this address, this will take each of the 16 tiles
+; in order and apply a mask to AND out pixels from the tile,
+; applying a dissolving animation (using the masking table at
+; PPUBUFFER_DRAWCOMMAND_REMOVE_VERT_LINES_MASKS.
 ;
 ; INPUTS:
-;     None.
+;     PPUBuffer:
+;         The PPU buffer to read arguments from.
+;
+;     PPUBuffer_ReadOffset:
+;         The offset within the PPU buffer to read from.
+;
+;     PPUADDR:
+;         The PPU address to read and write.
+;
+;     PPUDATA:
+;         The PPU data to read and write.
+;
+;     PPUBUFFER_DRAWCOMMAND_REMOVE_VERT_LINES_MASKS:
+;         The masking table for line removal.
 ;
 ; OUTPUTS:
-;     A
+;     PPUBuffer_ReadOffset:
+;         The updated offset within the PPU buffer.
+;
+;     PPUADDR:
+;         The written PPU address.
+;
+;     PPUDATA:
+;         The written PPU data.
+;
+;     Temp_06:
+;     Temp_07:
+;     Temp_08:
+;         Clobbered.
+;
+; TEMP VARIABLES:
+;     Temp_06
 ;
 ; XREFS:
 ;     PPUBUFFER_DRAW_COMMANDS
@@ -6791,7 +7005,7 @@ PPUBuffer_DrawCommand_RemoveVerticalLines:  ; [$ccec]
     ;
     LDX PPUBuffer_ReadOffset                ; Load our current PPU buffer
                                             ; offset into X.
-    LDA PPUBuffer,X                         ; Load the first address byte
+    LDA a:PPUBuffer,X                       ; Load the first address byte
                                             ; from the buffer into A.
     INX                                     ; Increment buffer offset (X = X
                                             ; + 1).
@@ -6802,7 +7016,7 @@ PPUBuffer_DrawCommand_RemoveVerticalLines:  ; [$ccec]
     ;
     ; Read the upper address from the buffer and set in PPUADDR.
     ;
-    LDA PPUBuffer,X                         ; Load the next byte from the
+    LDA a:PPUBuffer,X                       ; Load the next byte from the
                                             ; buffer into A.
     INX                                     ; Increment buffer offset.
     TAY                                     ; Y = lower byte.
@@ -6813,7 +7027,7 @@ PPUBuffer_DrawCommand_RemoveVerticalLines:  ; [$ccec]
     ;
     ; Read the lower address from the buffer and set in PPUADDR.
     ;
-    LDA PPUBuffer,X
+    LDA a:PPUBuffer,X
     INX
     STX PPUBuffer_ReadOffset                ; Set the new offset.
     TAX
@@ -6864,7 +7078,7 @@ PPUBuffer_DrawCommand_RemoveVerticalLines:  ; [$ccec]
     ; lookup table. This will be the replacement for the data we
     ; loaded.
     ;
-    AND PPUBUFFER_DRAWCOMMAND_0xFA_MASKS,X
+    AND a:PPUBUFFER_DRAWCOMMAND_REMOVE_VERT_LINES_MASKS,X
     STA a:PPUDATA                           ; Set as the new PPU data.
 
 
@@ -6888,7 +7102,7 @@ PPUBuffer_DrawCommand_RemoveVerticalLines:  ; [$ccec]
 ; XREFS:
 ;     PPUBuffer_DrawCommand_RemoveVerticalLines
 ;
-PPUBUFFER_DRAWCOMMAND_0xFA_MASKS:           ; [$cd33]
+PPUBUFFER_DRAWCOMMAND_REMOVE_VERT_LINES_MASKS: ; [$cd33]
     .byte $fe                               ; [0]:
     .byte $df                               ; [1]:
     .byte $f7                               ; [2]:
@@ -6944,13 +7158,13 @@ PPUBuffer_DrawCommand_RotateTilesRight1Pixel: ; [$cd3b]
     ;
     LDX PPUBuffer_ReadOffset                ; Load our current PPU buffer
                                             ; offset.
-    LDA PPUBuffer,X                         ; Load the first address byte
+    LDA a:PPUBuffer,X                       ; Load the first address byte
                                             ; from the buffer.
     INX
     TAY                                     ; Y = byte 1
     STY a:PPUADDR                           ; Set as the upper byte of the
                                             ; PPU address.
-    LDA PPUBuffer,X                         ; Load the next address byte.
+    LDA a:PPUBuffer,X                       ; Load the next address byte.
     INX
     STX PPUBuffer_ReadOffset                ; Update the offset to skip these
                                             ; bytes.
@@ -7145,7 +7359,7 @@ CurrentSprite_LoadTilesInfo:                ; [$cd78]
     ;
     LDA a:CurrentSprite_Entity              ; Load the current sprite ID
     TAY
-    LDA SPRITES_PPU_TILE_COUNTS,Y           ; Get the number of tiles needed
+    LDA a:SPRITES_PPU_TILE_COUNTS,Y         ; Get the number of tiles needed
     STA CurrentSprite_LoadTileCount         ; Store that for the render
 
 
@@ -7276,7 +7490,7 @@ Sprites_LoadImageForCurrentSprite:          ; [$cdb5]
 
   @_copySpriteImage:                        ; [$cdea]
     LDA (CurrentSprite_LoadTileAddr),Y      ; Load a byte from the tile.
-    STA PPUBuffer,X                         ; Write to the PPU buffer at X.
+    STA a:PPUBuffer,X                       ; Write to the PPU buffer at X.
     INX                                     ; X++ (write offset)
     INY                                     ; Y++ (loop counter)
     CPY #$10                                ; Is X < 16?
@@ -7613,10 +7827,10 @@ Area_LoadTiles:                             ; [$ceb8]
                                             ; offset)
     TAY                                     ; Set Y = word offset into the
                                             ; pointer table
-    LDA TILE_INDEX_TO_ADDR,Y                ; Read the low byte from the
+    LDA a:TILE_INDEX_TO_ADDR,Y              ; Read the low byte from the
                                             ; table
     STA Area_TilesReadAddress               ; Save low byte to TilesAddress
-    LDA TILE_INDEX_TO_ADDR+1,Y              ; Read the high byte from the
+    LDA a:TILE_INDEX_TO_ADDR+1,Y            ; Read the high byte from the
                                             ; table
     STA Area_TilesReadAddress+1             ; Set high byte to TilesAddress
 
@@ -7636,7 +7850,7 @@ Area_LoadTiles:                             ; [$ceb8]
     ; Upper byte will be 0x18 or 0x1A.
     ;
     LDY Area_TilesIndex                     ; Load the tiles index.
-    LDA TILE_INDEX_TO_PPU_ADDR_UPPER,Y      ; Convert to a PPU address via
+    LDA a:TILE_INDEX_TO_PPU_ADDR_UPPER,Y    ; Convert to a PPU address via
                                             ; lookup table (0x18 or 0x1A).
     STA a:PPUADDR                           ; Write as the upper byte.
     LDA #$00                                ; 0x00 = Lower byte (start of
@@ -7654,7 +7868,7 @@ Area_LoadTiles:                             ; [$ceb8]
     ;
     STA Temp_08                             ; Set lower byte of the remaining
                                             ; tile count to 0.
-    LDA TILE_INDEX_TO_NUM_CHR_PAGES,Y       ; Load the number of pages to
+    LDA a:TILE_INDEX_TO_NUM_CHR_PAGES,Y     ; Load the number of pages to
                                             ; load.
     STA Temp_09                             ; Set as the upper byte.
 
@@ -7721,11 +7935,9 @@ Area_LoadTiles:                             ; [$ceb8]
 
 
 ;============================================================================
-; Offsets of the tiles in the bank
+; Offsets of the tiles into bank 4.
 ;
 ; Index into the table are based on Area_TilesIndex.
-;
-; TODO
 ;
 ; XREFS:
 ;     Area_LoadTiles
@@ -7737,7 +7949,7 @@ Area_LoadTiles:                             ; [$ceb8]
 ;
 TILE_INDEX_TO_ADDR:                         ; [$cf07]
     pointer AREA_TILESETS_EOLIS             ; [0]: Eolis
-    pointer AREA_TILESETS_BRANCHES          ; [1]: Branches
+    pointer AREA_TILESETS_BRANCH            ; [1]: Branch
     pointer AREA_TILESETS_TRUNK             ; [2]: Trunk
     pointer AREA_TILESETS_MIST              ; [3]: Mist
     pointer AREA_TILESETS_DARTMOOR_EVIL_LAIR ; [4]: Dartmoor Castle Evil Lair
@@ -7837,7 +8049,7 @@ PPU_SetVRAMIncrementAdd1Across:             ; [$cf2b]
 
 
 ;============================================================================
-; MAYBE DEADCODE: Clear the PPU buffer.
+; DEADCODE: Clear the PPU buffer.
 ;
 ; Both the offset and upper bounds will be reset back to 0.
 ;
@@ -7983,7 +8195,7 @@ PPUBuffer_Draw:                             ; [$cf3c]
                                             ; = 2 $FD = 3 $FC = 4 $FB = 5 $FA
                                             ; = 6
     SEC
-    SBC PPUBuffer,X                         ; Get the value from the buffer
+    SBC a:PPUBuffer,X                       ; Get the value from the buffer
                                             ; at this offset.
     CMP #$07                                ; Check if it's a command code.
     BCS @_beginDraw                         ; If not, draw normally.
@@ -7997,10 +8209,10 @@ PPUBuffer_Draw:                             ; [$cf3c]
     INC PPUBuffer_ReadOffset                ; Consume the byte in the buffer.
     ASL A
     TAY                                     ; Begin looking up in the table.
-    LDA PPUBUFFER_DRAW_COMMANDS+1,Y         ; High byte of the command
+    LDA a:PPUBUFFER_DRAW_COMMANDS+1,Y       ; High byte of the command
                                             ; address.
     PHA                                     ; Push to the stack.
-    LDA PPUBUFFER_DRAW_COMMANDS,Y           ; Low byte of the command
+    LDA a:PPUBUFFER_DRAW_COMMANDS,Y         ; Low byte of the command
                                             ; address.
     PHA                                     ; Push to the stack.
     RTS                                     ; Return. The next address
@@ -8041,7 +8253,7 @@ PPUBuffer_Draw:                             ; [$cf3c]
     LDA PPU_ControlFlags                    ; A = PPU control flags.
     AND #$fb                                ; Set to Add 1 Across.
     TAY                                     ; Y = Resulting flags.
-    LDA PPUBuffer,X                         ; Load the byte from the buffer.
+    LDA a:PPUBuffer,X                       ; Load the byte from the buffer.
     BPL @_processData                       ; If bit 7 is set, jump.
     AND #$7f                                ; Else, set VBLank Disable.
     INY                                     ; And Inc Add 32 Down.
@@ -8058,17 +8270,17 @@ PPUBuffer_Draw:                             ; [$cf3c]
     ; Mask out bit 7 (our flag above). This will be our
     ; data length counter.
     ;
-    LDA PPUBuffer,X                         ; A = value from the buffer
+    LDA a:PPUBuffer,X                       ; A = value from the buffer
     AND #$7f                                ; Mask out control bit 7.
     TAY                                     ; Y = A (save until we load the
                                             ; address)
     INX                                     ; Set to the next byte.
-    LDA PPUBuffer,X                         ; Load the upper PPU byte address
+    LDA a:PPUBuffer,X                       ; Load the upper PPU byte address
                                             ; from the buffer.
     STA a:PPUADDR                           ; Set as the upper byte in
                                             ; PPUADDR.
     INX                                     ; X = X + 1
-    LDA PPUBuffer,X                         ; Load the lower PPU byte address
+    LDA a:PPUBuffer,X                       ; Load the lower PPU byte address
                                             ; from the buffer.
     STA a:PPUADDR                           ; Set as the lower byte in
                                             ; PPUADDR.
@@ -8084,7 +8296,7 @@ PPUBuffer_Draw:                             ; [$cf3c]
     ; Begin writing <length> bytes from the buffer to the PPU.
     ;
   @_loopData:                               ; [$cf97]
-    LDA PPUBuffer,X                         ; Load the byte to draw at our
+    LDA a:PPUBuffer,X                       ; Load the byte to draw at our
                                             ; current offset.
     INX                                     ; Increment the offset.
     STA a:PPUDATA                           ; Set the byte in our PPUDATA.
@@ -8109,7 +8321,7 @@ PPUBuffer_Draw:                             ; [$cf3c]
                                             ; entries for this operation.
     BEQ @_finishLoop                        ; If we can't do any more, we're
                                             ; done.
-    LDY PPUBuffer,X                         ; Load the next byte to process
+    LDY a:PPUBuffer,X                       ; Load the next byte to process
                                             ; from the buffer.
     DEY
     CPY #$f9                                ; Check if it's a command byte.
@@ -8288,8 +8500,8 @@ PPUBuffer_HasCapacity:                      ; [$cfd0]
 ;     TextBox_FillBackground
 ;     UI_DrawString
 ;     Area_SetBlocks_SetAttributes
-;     Area_SetBlocks_WriteBlockData12
-;     Area_SetBlocks_WriteBlockData34
+;     Area_SetBlocks_WriteBlockDataColumn1
+;     Area_SetBlocks_WriteBlockDataColumn2
 ;     DEADCODE_FUN_PRG15_MIRROR__c033
 ;     IScripts_DrawPortraitTileToPPU
 ;     PPUBuffer_WriteValueMany
@@ -8301,7 +8513,7 @@ PPUBuffer_HasCapacity:                      ; [$cfd0]
 ;     TextBox_WriteChar
 ;     UI_ClearSelectedItemPic
 ;     UI_DrawDigitsZeroPadded
-;     UI_DrawManaOrHPBar
+;     UI_SetHUDBarValue
 ;============================================================================
 PPUBuffer_QueueCommandOrLength:             ; [$cfdc]
     ;
@@ -8321,14 +8533,14 @@ PPUBuffer_QueueCommandOrLength:             ; [$cfdc]
     PLA
     LDX PPUBuffer_WriteOffset               ; Load the upper bounds of the
                                             ; buffer.
-    STA PPUBuffer,X                         ; Store the provided value (A)
+    STA a:PPUBuffer,X                       ; Store the provided value (A)
                                             ; there.
     INX
     LDA PPU_TargetAddr_U                    ; Load the upper address byte.
-    STA PPUBuffer,X                         ; Write it to the buffer.
+    STA a:PPUBuffer,X                       ; Write it to the buffer.
     INX
     LDA PPU_TargetAddr                      ; Load the lower address byte.
-    STA PPUBuffer,X                         ; Write it to the buffer.
+    STA a:PPUBuffer,X                       ; Write it to the buffer.
     INX
     RTS
 
@@ -8457,7 +8669,7 @@ PPUBuffer_DrawCommand_WritePalette:         ; [$d016]
     LDY #$20                                ; Y = 32 (loop counter).
 
   @_paletteLoop:                            ; [$d022]
-    LDA Screen_PaletteData_Tiles,X          ; A = Palette byte at the index.
+    LDA a:Screen_PaletteData_Tiles,X        ; A = Palette byte at the index.
     STA a:PPUDATA                           ; Write to the PPU.
     INX                                     ; Increment the PPU address.
     DEY                                     ; Y-- (loop counter).
@@ -8538,7 +8750,7 @@ Screen_LoadUIPalette:                       ; [$d03b]
     ;
     ; Set the attribute data index for the HUD.
     ;
-    LDA BYTE_81f0,Y                         ; Load the HUD attribute data for
+    LDA a:BYTE_81f0,Y                       ; Load the HUD attribute data for
                                             ; this index.
     STA a:UI_AttributeDataIndex             ; Set it for the HUD/textboxes.
 
@@ -8699,7 +8911,7 @@ Screen_SetPaletteData:                      ; [$d074]
 
   @_loadPaletteLoop:                        ; [$d081]
     LDA (Temp_08),Y                         ; Load the byte to copy.
-    STA Screen_PaletteData_Tiles,X          ; Store as the palette data at
+    STA a:Screen_PaletteData_Tiles,X        ; Store as the palette data at
                                             ; the index.
     DEX                                     ; X-- (destination index)
     DEY                                     ; Y-- (loop counter)
@@ -8751,7 +8963,7 @@ Screen_SetPaletteData:                      ; [$d074]
 PPUBuffer_WritePalette:                     ; [$d090]
     LDA #$00                                ; A = 0
     LDX PPUBuffer_WriteOffset               ; X = upper bounds of the buffer
-    STA PPUBuffer,X                         ; Store the 0 in the buffer at
+    STA a:PPUBuffer,X                       ; Store the 0 in the buffer at
                                             ; the upper bounds.
     INX                                     ; Increment the upper bounds.
     STX PPUBuffer_WriteOffset
@@ -8892,7 +9104,7 @@ Screen_SetFadeOutPalette:                   ; [$d0ad]
     LDA (Temp_08),Y                         ; Load the palette data at Y.
     SEC                                     ; Set C = 1 so SBC won't subtract
                                             ; C.
-    SBC FADE_OUT_DELTA_TABLE,X              ; Subtract the value form the
+    SBC a:FADE_OUT_DELTA_TABLE,X            ; Subtract the value form the
                                             ; lookup table at the transition
                                             ; index.
     BCS @_setPaletteData                    ; If > 0, jump to use this value
@@ -8906,7 +9118,7 @@ Screen_SetFadeOutPalette:                   ; [$d0ad]
     LDA #$0f                                ; Set palette = 15.
 
   @_setPaletteData:                         ; [$d0d2]
-    STA Screen_PaletteData_Tiles,Y          ; Set the palette data to A at
+    STA a:Screen_PaletteData_Tiles,Y        ; Set the palette data to A at
                                             ; index Y.
     DEY                                     ; Y--
     BPL @_loop                              ; If >= 0, loop.
@@ -9052,8 +9264,8 @@ Area_ScrollScreenRight:                     ; [$d0f6]
     STA PPU_ScrollY
     STA PPU_ScrollX
     STA PPU_ScrollScreen
-    STA Screen_LoadBlocksStage
-    STA Screen_NeighborBlocksLoadedByDirection
+    STA Screen_NextScrollDataHandlerIndex
+    STA Screen_ScrollHandlersPending
     STA Screen_ScrollHorizBlocksLoaded
     STA Screen_MaybeUnused_0075
     STA Screen_ScrollHorizAttrsLoaded
@@ -9062,7 +9274,7 @@ Area_ScrollScreenRight:                     ; [$d0f6]
     INX
     STX PPU_ScrollScreen
     LDX #$01
-    JSR Area_LoadScrollDataRight
+    JSR Area_LoadScrollData
 
   @_loop:                                   ; [$d11c]
     JSR Screen_HandleScroll
@@ -9072,7 +9284,7 @@ Area_ScrollScreenRight:                     ; [$d0f6]
     RTS
 
 ;============================================================================
-; TODO: Document Area_LoadScrollDataRight
+; TODO: Document Area_LoadScrollData
 ;
 ; INPUTS:
 ;     X
@@ -9084,7 +9296,7 @@ Area_ScrollScreenRight:                     ; [$d0f6]
 ;     Area_ScrollScreenRight
 ;     Area_ScrollTo
 ;============================================================================
-Area_LoadScrollDataRight:                   ; [$d127]
+Area_LoadScrollData:                        ; [$d127]
     STX Screen_ScrollDirection
     LDA PPU_ScrollScreen
     STA PPU_ScrollScreenHoriz
@@ -9111,7 +9323,7 @@ Area_LoadScrollDataRight:                   ; [$d127]
 
   @_loadScrollData:                         ; [$d153]
     LDA (Temp_Addr_L),Y
-    STA Area_ScreenToTheLeft,Y
+    STA a:Area_ScreenToTheLeft,Y
     INY
     CPY #$04
     BCC @_loadScrollData
@@ -9131,8 +9343,8 @@ Area_LoadScrollDataRight:                   ; [$d127]
     LDY #$00
 
   @_copyLastColumnLeftScreenLoop:           ; [$d170]
-    LDA ScreenBuffer,X
-    STA LastColumnLeftScreen,Y
+    LDA a:ScreenBuffer,X
+    STA a:LastColumnLeftScreen,Y
     TXA
     CLC
     ADC #$10
@@ -9151,8 +9363,8 @@ Area_LoadScrollDataRight:                   ; [$d127]
     LDY #$00
 
   @_copyRowScreenAboveLoop:                 ; [$d189]
-    LDA ScreenBuffer,X
-    STA FirstColumnInRightScreen,Y
+    LDA a:ScreenBuffer,X
+    STA a:FirstColumnInRightScreen,Y
     TXA
     CLC
     ADC #$10
@@ -9170,8 +9382,8 @@ Area_LoadScrollDataRight:                   ; [$d127]
     LDX #$f0                                ; X = 240
 
   @_copyRowScreenBelowLoop:                 ; [$d1a0]
-    LDA $05d0,X
-    STA $0316,X
+    LDA a:$05d0,X
+    STA a:$0316,X
     INX                                     ; X++
     BNE @_copyRowScreenBelowLoop
 
@@ -9184,8 +9396,8 @@ Area_LoadScrollDataRight:                   ; [$d127]
     LDX #$f0
 
   @LAB_PRG15_MIRROR__d1b0:                  ; [$d1b0]
-    LDA $0510,X
-    STA $0326,X
+    LDA a:$0510,X
+    STA a:$0326,X
     INX
     BNE @LAB_PRG15_MIRROR__d1b0
 
@@ -9204,7 +9416,7 @@ Area_LoadScrollDataRight:                   ; [$d127]
     STA Screen_ScrollPlayerTransitionCounter
     LDA Player_PosY
     STA Maybe_PlayerY_ForScroll
-    LDA SCREEN_MAYBE_PLAYERX_FOR_SCROLL_MODE,X
+    LDA a:SCREEN_MAYBE_PLAYERX_FOR_SCROLL_MODE,X
     STA Maybe_PlayerX_ForScroll
     RTS
 
@@ -9215,13 +9427,13 @@ Area_LoadScrollDataRight:                   ; [$d127]
     STA Maybe_PlayerX_ForScroll
     LDA #$00
     STA Screen_ScrollPlayerTransitionCounter
-    LDA SCREEN_MAYBE_PLAYERX_FOR_SCROLL_MODE_2_,X
+    LDA a:SCREEN_MAYBE_PLAYERX_FOR_SCROLL_MODE_2_,X
     STA Maybe_PlayerY_ForScroll
     RTS
 
 ;
 ; XREFS:
-;     Area_LoadScrollDataRight
+;     Area_LoadScrollData
 ;
 SCREEN_MAYBE_PLAYERX_FOR_SCROLL_MODE:       ; [$d1e7]
     .byte $00                               ; [0]:
@@ -9229,7 +9441,7 @@ SCREEN_MAYBE_PLAYERX_FOR_SCROLL_MODE:       ; [$d1e7]
 
 ;
 ; XREFS:
-;     Area_LoadScrollDataRight
+;     Area_LoadScrollData
 ;
 SCREEN_MAYBE_PLAYERX_FOR_SCROLL_MODE_2_:    ; [$d1e9]
     .byte $00                               ; [2]:
@@ -9261,7 +9473,7 @@ ScreenBuffer_Clear:                         ; [$d1eb]
     ; Begin writing empty blocks.
     ;
   @_loop:                                   ; [$d1ef]
-    STA ScreenBuffer,X                      ; Write 0 to the screen buffer.
+    STA a:ScreenBuffer,X                    ; Write 0 to the screen buffer.
     INX                                     ; X = X + 1
     BNE @_loop                              ; If X hasn't wrapped back to 0,
                                             ; loop.
@@ -9313,7 +9525,7 @@ ScreenBuffer_Clear:                         ; [$d1eb]
 ;     ScreenBuffer_Clear
 ;
 ; XREFS:
-;     Area_LoadScrollDataRight
+;     Area_LoadScrollData
 ;============================================================================
 Area_LoadBlocks:                            ; [$d1f6]
     CMP #$ff                                ; Check if the screen index is
@@ -9392,10 +9604,10 @@ Area_LoadBlocks:                            ; [$d1f6]
     ;
     LDA Temp_LoadedBlocksCount              ; Else, load our blocks count.
     CLC
-    ADC BLOCK_DATA_OFFSETS_FOR_BIT_VALUES,X ; Add that to the value for this
-                                            ; bit in the lookup table.
+    ADC a:BLOCK_DATA_OFFSETS_FOR_BIT_VALUES,X ; Add that to the value for
+                                              ; this bit in the lookup table.
     TAX                                     ; Set as X
-    LDA ScreenBuffer,X                      ; Load the block value from the
+    LDA a:ScreenBuffer,X                    ; Load the block value from the
                                             ; screen buffer at the offset for
                                             ; this bit value.
     JMP @_storeBlock                        ; Proceed to store the block.
@@ -9434,7 +9646,7 @@ Area_LoadBlocks:                            ; [$d1f6]
   @_storeBlock:                             ; [$d244]
     LDX Temp_LoadedBlocksCount              ; X = loaded block count, as our
                                             ; new offset
-    STA ScreenBuffer,X                      ; Store the byte in the screen
+    STA a:ScreenBuffer,X                    ; Store the byte in the screen
                                             ; buffer at that offset.
     INC Temp_LoadedBlocksCount              ; Increment our block count.
     BNE @_nextBlock                         ; If we haven't loaded 256
@@ -9454,7 +9666,7 @@ Area_LoadBlocks:                            ; [$d1f6]
     ; Fill the last line.
     ;
   @_fillLastLine:                           ; [$d251]
-    STA ScreenBuffer,X                      ; Store in the screen buffer.
+    STA a:ScreenBuffer,X                    ; Store in the screen buffer.
     INX                                     ; X++
     BNE @_fillLastLine                      ; If we haven't hit 16 blocks
                                             ; (value 256 and wrapped around),
@@ -9621,7 +9833,7 @@ Area_LoadBlockProperties:                   ; [$d276]
     ;
     ORA Temp_00                             ; OR it to the lower nibble we
                                             ; saved.
-    STA BlockProperties,X                   ; Store it.
+    STA a:BlockProperties,X                 ; Store it.
 
 
     ;
@@ -10074,7 +10286,7 @@ Screen_LoadBlocksDown:                      ; [$d3a6]
 Screen_LoadBlockDataVert:                   ; [$d3ba]
     LDA Screen_ScrollVertLoadCounter
     CLC
-    ADC $d4cb,X
+    ADC a:BYTE_ARRAY_PRG15_MIRROR__d4cb,X
     STA Temp_00
     LDA PPU_ScrollScreenVert
     ADC #$00
@@ -10116,10 +10328,10 @@ Screen_LoadBlockDataVert:                   ; [$d3ba]
     LSR A
     LSR A
     TAY
-    LDA CurrentArea_BlockData1CurAddr,Y
-    STA DataArray,X
-    LDA CurrentArea_BlockData2CurAddr,Y
-    STA DataArray_1_,X
+    LDA a:CurrentArea_BlockData1CurAddr,Y
+    STA a:DataArray,X
+    LDA a:CurrentArea_BlockData2CurAddr,Y
+    STA a:DataArray_1_,X
     INX
     INX
     LDY Temp_06
@@ -10148,7 +10360,7 @@ Screen_LoadBlockDataVert:                   ; [$d3ba]
     ORA Screen_ScrollVertBlocks_PPUTileMapAddr_U
     STA Screen_ScrollVertBlocks_PPUTileMapAddr_U
     LDA #$01
-    STA Screen_NeighborBlocksLoadedByDirection
+    STA Screen_ScrollHandlersPending
     RTS
 
   @LAB_PRG15_MIRROR__d445:                  ; [$d445]
@@ -10162,7 +10374,7 @@ Screen_LoadBlockDataVert:                   ; [$d3ba]
     LDA #$00
 
   @LAB_PRG15_MIRROR__d452:                  ; [$d452]
-    STA $0192,Y
+    STA a:Screen_ScrollVert_ZeroData,Y
     INY
     BNE @LAB_PRG15_MIRROR__d452
 
@@ -10177,14 +10389,14 @@ Screen_LoadBlockDataVert:                   ; [$d3ba]
     ORA Temp_01
     TAY
     LDA Temp_00
-    AND BLOCK_ATTRS_BITMASKS,Y
+    AND a:BLOCK_ATTRS_BITMASKS,Y
     PHA
     LDA Temp_06
     LSR A
     TAY
     PLA
-    ORA Screen_ScrollVertPPUAttrData,Y
-    STA Screen_ScrollVertPPUAttrData,Y
+    ORA a:Screen_ScrollVertPPUAttrData,Y
+    STA a:Screen_ScrollVertPPUAttrData,Y
     LDY Temp_06
     INY
     CPY #$10
@@ -10215,18 +10427,18 @@ Screen_LoadBlockDataVert:                   ; [$d3ba]
     ASL A
     ORA #$23
     STA Screen_ScrollVertBlocks_PPUAttrAddr_U
-    LDA SET_BLOCKS_TILEMAP_OFFSETS_L,X
+    LDA a:SET_BLOCKS_TILEMAP_OFFSETS_L,X
     STA Temp_08
-    LDA SET_BLOCKS_TILEMAP_OFFSETS_U,X
+    LDA a:SET_BLOCKS_TILEMAP_OFFSETS_U,X
     STA Temp_09
     LDX #$00
 
   @LAB_PRG15_MIRROR__d4b4:                  ; [$d4b4]
     LDA (Temp_08),Y
     AND Temp_06
-    ORA Screen_ScrollVertPPUAttrData,X
+    ORA a:Screen_ScrollVertPPUAttrData,X
     STA (Temp_08),Y
-    STA Screen_ScrollVertPPUAttrData,X
+    STA a:Screen_ScrollVertPPUAttrData,X
     INY
     INX
     CPX #$08
@@ -10234,13 +10446,13 @@ Screen_LoadBlockDataVert:                   ; [$d3ba]
     LDA #$01
     STA Screen_MaybeUnused_0075
     RTS
-    .byte $00                               ; [0]:
 
 ;
 ; XREFS:
 ;     Screen_LoadBlockDataVert
 ;
-BYTE_ARRAY_PRG15_MIRROR__d4cb_1_:           ; [$d4cc]
+BYTE_ARRAY_PRG15_MIRROR__d4cb:              ; [$d4cb]
+    .byte $00                               ; [0]:
     .byte $00                               ; [1]:
     .byte $00,$08                           ; [$d4cd] byte
 
@@ -10391,7 +10603,6 @@ Screen_LoadDataLeft:                        ; [$d4f0]
                                             ; starting at 6)?
     BEQ Screen_LoadBlocksHoriz              ; If so, load tiles.
     RTS                                     ; Else, return.
-
 ;============================================================================
 ; TODO: Document Screen_LoadBlocksHoriz
 ;
@@ -10407,29 +10618,78 @@ Screen_LoadDataLeft:                        ; [$d4f0]
 ;     Screen_LoadDataRight
 ;============================================================================
 Screen_LoadBlocksHoriz:                     ; [$d503]
-    LDA Screen_ScrollHorizLoadCounter
+    ;
+    ; Store a copy of the load counter, and set carry if scrolling
+    ; right.
+    ;
+    ; This will add from
+    ; SCREEN_SCROLL_HORIZ_COUNTER_INCS, but this won't
+    ; measurably change the value. It adds 0 when scrolling left
+    ; (no-op) and 0xFF when scrolling right (no change, but sets
+    ; carry).
+    ;
+    LDA Screen_ScrollHorizLoadCounter       ; Load the scrolling counter.
     CLC
-    ADC SCROLL_HORIZ_END_POS,X
-    STA Temp_00
-    LDA PPU_ScrollScreenHoriz
-    ADC BYTE_ARRAY_PRG15_MIRROR__d61b,X
-    STA Screen_Maybe_ScrollHorizDirection
-    LDA Area_CurrentScreen
-    STA MaybeUnused_006d
-    LDA Temp_00
-    LSR A
-    LSR A
-    LSR A
-    LSR A
-    STA Screen_ScrollHorizLoadOffset
-    LDA #$00
-    STA Temp_08
-    LDA #$06
-    STA Temp_09
-    LDA Screen_ScrollLoadMode
-    BNE @_loadPPUData
+    ADC a:SCREEN_SCROLL_HORIZ_COUNTER_INCS,X ; Add a value to increment by.
+                                             ; This won't effectively change
+                                             ; the value, but will set carry
+                                             ; if scrolling right.
+    STA Temp_00                             ; Store the load counter in temp.
 
 
+    ;
+    ; Update the horizontal screen scroll amount.
+    ;
+    ; This will add any carry to it from the counter. It also
+    ; appears to add from a table, but the table is all 0 values,
+    ; so that does nothing special.
+    ;
+    LDA PPU_ScrollScreenHoriz               ; Load the PPU horizontal screen
+                                            ; offset.
+    ADC a:SCREEN_SCROLL_HORIZ_DELTAS,X      ; Add carry (no value from the
+                                            ; table -- all empty).
+    STA Screen_Maybe_ScrollHorizDirection   ; Store it.
+    LDA Area_CurrentScreen                  ; Load the current screen.
+    STA MaybeUnused_006d                    ; DEADCODE: Store it (but this is
+                                            ; never used).
+
+
+    ;
+    ; Load the scroll counter value, divide by 16, and set as
+    ; the load offset.
+    ;
+    LDA Temp_00                             ; Load the counter value.
+    LSR A                                   ; Divide by 16.
+    LSR A
+    LSR A
+    LSR A
+    STA Screen_ScrollHorizLoadOffset        ; Store as the new horizontal
+                                            ; load offset.
+
+
+    ;
+    ; Set an address to read block data from.
+    ;
+    ; This will be $600.
+    ;
+    LDA #$00                                ; Lower byte == 0.
+    STA Temp_08                             ; Store it.
+    LDA #$06                                ; Upper byte == 6.
+    STA Temp_09                             ; Store it.
+
+
+    ;
+    ; Choose the operation based on the current load mode:
+    ;
+    ;   0x00: Load block data.
+    ;   0x01: Draw to the screen.
+    ;
+    LDA Screen_ScrollLoadMode               ; Check the load/draw mode.
+    BNE @_drawBlocks                        ; If 0, jump to draw.
+
+
+    ;
+    ; We're in the block loading mode.
     ;
     ; Load 30 blocks to render in the next draw phase.
     ;
@@ -10443,7 +10703,7 @@ Screen_LoadBlocksHoriz:                     ; [$d503]
     ;
   @_loadBlocksLoop:                         ; [$d52c]
     LDY Screen_ScrollHorizLoadOffset        ; Y = Load offset.
-    LDA (Temp_08),Y                         ; A = Loaded block data at Y.
+    LDA (Temp_08),Y                         ; A = Block data at $600 + Y.
 
 
     ;
@@ -10464,18 +10724,28 @@ Screen_LoadBlocksHoriz:                     ; [$d503]
     ; Convert the block counter to a tile width and use it
     ; to determine which part of the block data to load.
     ;
-    ; If the load counter
+    ; Every 8 ticks of the counter, blocks will load. This
+    ; will convert to a value of 0 or 8, and then divide by
+    ; 4 to convert to a block loading index of 0 or 2.
+    ;
+    ; That will be our offset into the loaded block data.
+    ;
+    ; We'll either be working off of block data lists (1, 2)
+    ; or (3, 4). This loads a column of tiles in the block
+    ; at a time.
     ;
     LDA Screen_ScrollHorizLoadCounter       ; A = Horizontal load counter.
     AND #$08                                ; Every 8...
     LSR A                                   ; Divide by 4 (convert to 0 or
                                             ; 2).
     LSR A
-    TAY
-    LDA CurrentArea_BlockData1CurAddr,Y     ; A = Block data 1 or 3.
-    STA Temp_0200,X                         ; Store it temporarily.
-    LDA CurrentArea_BlockData2CurAddr,Y     ; A = Block data 2 or 4.
-    STA Temp_0201,X                         ; Store it temporarily.
+    TAY                                     ; Y = result.
+    LDA a:CurrentArea_BlockData1CurAddr,Y   ; A = Block data 1 (top-left) or
+                                            ; 3 (top-right).
+    STA a:Temp_0200,X                       ; Queue for loading into the PPU.
+    LDA a:CurrentArea_BlockData2CurAddr,Y   ; A = Block data 2 (bottom-left)
+                                            ; or 4 (bottom-right).
+    STA a:Temp_0201,X                       ; Queue for loading into the PPU.
     LDA Temp_08                             ; Load the dest screen buffer
                                             ; address.
     CLC
@@ -10523,12 +10793,12 @@ Screen_LoadBlocksHoriz:                     ; [$d503]
     ; This isn't used for any data management purposes. It
     ; may be to delay some aspect of screen scrolling.
     ;
-  @_loadPPUData:                            ; [$d587]
+  @_drawBlocks:                             ; [$d587]
     LDY #$f8                                ; Y = 0xF8 (loop counter)
     LDA #$00                                ; A = 0 (value to write)
 
   @_clearLoop:                              ; [$d58b]
-    STA Screen_ScrollHoriz_ZeroData,Y       ; Write a 0 to this empty block.
+    STA a:Screen_ScrollHoriz_ZeroData,Y     ; Write a 0 to this empty block.
     INY                                     ; Y++
     BNE @_clearLoop                         ; If != 0, loop.
 
@@ -10583,7 +10853,7 @@ Screen_LoadBlocksHoriz:                     ; [$d503]
     ; Mask 2 bits of the block attributes based on that index.
     ;
     LDA Temp_00                             ; A = Loaded block attribute
-    AND BLOCK_ATTRS_BITMASKS,Y              ; AND with the bitmask based on
+    AND a:BLOCK_ATTRS_BITMASKS,Y            ; AND with the bitmask based on
                                             ; our computed index.
     PHA                                     ; Push the result to the stack.
 
@@ -10604,8 +10874,8 @@ Screen_LoadBlocksHoriz:                     ; [$d503]
     ;
     PLA                                     ; Pop the masked block attribute
                                             ; from stack.
-    ORA Screen_ScrollHorizPPUAttrData,Y     ; OR with the data already set.
-    STA Screen_ScrollHorizPPUAttrData,Y     ; And store it.
+    ORA a:Screen_ScrollHorizPPUAttrData,Y   ; OR with the data already set.
+    STA a:Screen_ScrollHorizPPUAttrData,Y   ; And store it.
 
 
     ;
@@ -10663,9 +10933,9 @@ Screen_LoadBlocksHoriz:                     ; [$d503]
     ORA #$23
     STA Screen_ScrollHorizBlocks_PPUAttrAddr_U ; Set as the upper byte of the
                                                ; PPU attr address.
-    LDA SET_BLOCKS_TILEMAP_OFFSETS_L,X
+    LDA a:SET_BLOCKS_TILEMAP_OFFSETS_L,X
     STA Temp_08
-    LDA SET_BLOCKS_TILEMAP_OFFSETS_U,X
+    LDA a:SET_BLOCKS_TILEMAP_OFFSETS_U,X
     STA Temp_09
 
 
@@ -10682,9 +10952,9 @@ Screen_LoadBlocksHoriz:                     ; [$d503]
                                             ; buffer write offset at Y.
     AND Temp_06                             ; AND with the bitmask computed
                                             ; above.
-    ORA Screen_ScrollHorizPPUAttrData,X     ; OR with the existing PPU
+    ORA a:Screen_ScrollHorizPPUAttrData,X   ; OR with the existing PPU
                                             ; attribute data
-    STA Screen_ScrollHorizPPUAttrData,X     ; And store it.
+    STA a:Screen_ScrollHorizPPUAttrData,X   ; And store it.
     STA (Temp_08),Y                         ; Store it back in the screen
                                             ; buffer at write offset Y.
     INX                                     ; X++ (loop counter)
@@ -10719,30 +10989,89 @@ Screen_LoadBlocksHoriz:                     ; [$d503]
     STA Screen_ScrollHorizAttrsLoaded       ; Set attribute data loaded.
     RTS
 
+
+;============================================================================
+; A table mapping horizontal scroll directions to counter increments.
+;
+; When scrolling left, there's no increment.
+;
+; When scrolling right, it increments a full 0xFF, keeping
+; the value the same but setting the carry flag.
+;
+; XREFS:
+;     Screen_LoadBlocksHoriz
+;============================================================================
+
 ;
 ; XREFS:
 ;     Screen_LoadBlocksHoriz
 ;
-SCROLL_HORIZ_END_POS:                       ; [$d619]
+SCREEN_SCROLL_HORIZ_COUNTER_INCS:           ; [$d619]
     .byte $00                               ; [0]:
     .byte $ff                               ; [1]:
 
+
+;============================================================================
+; A table of deltas to add to the horizontal scroll offset.
+;
+; NOTE: All values are 0. This may be a remnant of an earlier
+;       design. Changing values here largely seems to do
+;       nothing, but if you set to 0xFF you'll end up with
+;       some incorrect screens loaded.
+;
+; XREFS:
+;     Screen_LoadBlocksHoriz
+;============================================================================
+
 ;
 ; XREFS:
 ;     Screen_LoadBlocksHoriz
 ;
-BYTE_ARRAY_PRG15_MIRROR__d61b:              ; [$d61b]
+SCREEN_SCROLL_HORIZ_DELTAS:                 ; [$d61b]
     .byte $00                               ; [0]:
     .byte $00                               ; [1]:
 
+
 ;============================================================================
-; TODO: Document Screen_RunWriteScrollDataHandler
+; Run a handler used for the next stage of screen scroll.
+;
+; This will check which handlers have been scheduled to run
+; during screen scroll and run the handlers in the order
+; found.
+;
+; Handlers are built to write a single row or column of
+; tiles or set a row or column of PPU attributes during
+; screen scroll.
+;
+; This is designed to store state from one call to another.
+; Once a handler is found to run, state will be stored on
+; the index of the next handler to check against the next
+; time this is called. That reduces how many iterations are
+; required during screen scroll.
+;
+; Callers set flags in a mapping table
+; (Screen_ScrollHandlersPending) to mark which they need to
+; run for this operation. Only these will be considered.
 ;
 ; INPUTS:
-;     None.
+;     Screen_ScrollHandlersPending:
+;         The table of scroll handlers the callers have
+;         requested to run for the scrolling process.
+;
+;     Screen_NextScrollDataHandlerIndex:
+;         The index of the next scroll handler in the
+;         table to begin checking in the loop.
+;
+;     SCREEN_WRITESCROLL_HANDLERS_U:
+;     SCREEN_WRITESCROLL_HANDLERS_L:
+;         The table of available scroll handlers.
 ;
 ; OUTPUTS:
-;     TODO
+;     Temp_06:
+;         Clobbered.
+;
+; CALLS:
+;     The resulting handler.
 ;
 ; XREFS:
 ;     Area_ScrollScreenRight
@@ -10750,67 +11079,160 @@ BYTE_ARRAY_PRG15_MIRROR__d61b:              ; [$d61b]
 ;     Screen_UpdateForScroll
 ;============================================================================
 Screen_RunWriteScrollDataHandler:           ; [$d61d]
-    LDA #$03
-    STA Temp_06
-    LDX Screen_LoadBlocksStage
+    ;
+    ; Begin looking through our handler tables from last handler run
+    ; to last in the table.
+    ;
+    ; This will start at Screen_NextScrollDataHandlerIndex
+    ; (which may have been set from a last call to this function)
+    ; and begin checking the table from that point, wrapping the
+    ; index back around to 0 as it gets to the end of the table if
+    ; necessary.
+    ;
+    ; Up to 4 entries will be checked.
+    ;
+    ; If starting from index 0, this will end up running tile
+    ; handlers before attribute handlers, if both are requested
+    ; during a screen scroll.
+    ;
+    LDA #$03                                ; 3 = Last entry in handler
+                                            ; table.
+    STA Temp_06                             ; Set as our lookup index.
+    LDX Screen_NextScrollDataHandlerIndex   ; Load the handler scheduled to
+                                            ; check next during this process.
 
   @_loop:                                   ; [$d623]
-    LDA Screen_NeighborBlocksLoadedByDirection,X
-    BNE @LAB_PRG15_MIRROR__d631
-    INX
-    TXA
-    AND #$03
-    TAX
-    DEC Temp_06
-    BPL @_loop
+    LDA Screen_ScrollHandlersPending,X      ; Check if this handler needs to
+                                            ; be run.
+    BNE @_runHandler                        ; If so, run the handler.
+
+
+    ;
+    ; Check the next entry in the tables.
+    ;
+    INX                                     ; X++ (handler index).
+    TXA                                     ; A = incremented handler index.
+    AND #$03                                ; Cap to a valid entry in the
+                                            ; tables (wrapping if needed).
+    TAX                                     ; X = resulting index.
+    DEC Temp_06                             ; Decrement our lookup index.
+    BPL @_loop                              ; If >= 0, loop.
     RTS
 
-  @LAB_PRG15_MIRROR__d631:                  ; [$d631]
-    LDA #$00
-    STA Screen_NeighborBlocksLoadedByDirection,X
-    STX Temp_06
-    INX
-    TXA
-    AND #$03
-    TAX
-    STX Screen_LoadBlocksStage
-    LDA Temp_06
-    AND #$03
-    TAX
-    LDA SCREEN_WRITESCROLL_HANDLERS_U,X
-    PHA
-    LDA SCREEN_WRITESCROLL_HANDLERS_L,X
-    PHA
-    RTS
+
+    ;
+    ; The handler needs to be run. Clear the pending state and
+    ; queue running the handler.
+    ;
+  @_runHandler:                             ; [$d631]
+    LDA #$00                                ; A = 0 (clear the pending
+                                            ; state).
+    STA Screen_ScrollHandlersPending,X      ; Clear the pending flag.
+    STX Temp_06                             ; Store the handler index.
+
+
+    ;
+    ; Set the next handler in the table to check the next time
+    ; this is called, so we don't have to loop through the
+    ; whole table.
+    ;
+    INX                                     ; X++ (next index).
+    TXA                                     ; A = resulting index.
+    AND #$03                                ; Cap to a valid entry in the
+                                            ; tables.
+    TAX                                     ; X = A (resulting capped handler
+                                            ; index).
+    STX Screen_NextScrollDataHandlerIndex   ; Store as the currently-running
+                                            ; handler index.
+
+
+    ;
+    ; Load the index of the current handler to run.
+    ;
+    LDA Temp_06                             ; Load the handler index.
+    AND #$03                                ; Cap to a valid entry in the
+                                            ; table.
+    TAX                                     ; X = resulting index.
+
+
+    ;
+    ; Load the address of the handler and put it on the stack
+    ; to run it.
+    ;
+    LDA a:SCREEN_WRITESCROLL_HANDLERS_U,X   ; Load the upper byte of the
+                                            ; handler address.
+    PHA                                     ; Push to the stack.
+    LDA a:SCREEN_WRITESCROLL_HANDLERS_L,X   ; Load the lower byte of the
+                                            ; handler address.
+    PHA                                     ; Push to the stack.
+    RTS                                     ; And run it.
+
+
+;============================================================================
+; Lower byte address table for screen scroll handlers.
+;
+; These cover both the block tile writes and the PPU attributes
+; writes.
+;
+; XREFS:
+;     Screen_RunWriteScrollDataHandler
+;============================================================================
 
 ;
 ; XREFS:
 ;     Screen_RunWriteScrollDataHandler
 ;
 SCREEN_WRITESCROLL_HANDLERS_L:              ; [$d64c]
-    .byte <(Screen_WriteScrollVertPPUTileData-1) ; [0]:
-    .byte <(Screen_WriteScrollHorizPPUTileData-1) ; [1]:
-    .byte <(Screen_WriteScrollVertPPUAttrData-1) ; [2]:
-    .byte <(Screen_WriteScrollHorizPPUAttrData-1) ; [3]:
+    .byte <(Screen_WriteBlockTilesRowToPPU-1) ; [0]:
+    .byte <(Screen_WriteBlockTilesColumnToPPU-1) ; [1]:
+    .byte <(Screen_WriteBlockAttrsRowToPPU-1) ; [2]:
+    .byte <(Screen_WriteBlockAttrsColumnToPPU-1) ; [3]:
+
+
+;============================================================================
+; Upper byte address table for screen scroll handlers.
+;
+; These cover both the block tile writes and the PPU attributes
+; writes.
+;
+; XREFS:
+;     Screen_RunWriteScrollDataHandler
+;============================================================================
 
 ;
 ; XREFS:
 ;     Screen_RunWriteScrollDataHandler
 ;
 SCREEN_WRITESCROLL_HANDLERS_U:              ; [$d650]
-    .byte >(Screen_WriteScrollVertPPUTileData-1) ; [0]:
-    .byte >(Screen_WriteScrollHorizPPUTileData-1) ; [1]:
-    .byte >(Screen_WriteScrollVertPPUAttrData-1) ; [2]:
-    .byte >(Screen_WriteScrollHorizPPUAttrData-1) ; [3]:
+    .byte >(Screen_WriteBlockTilesRowToPPU-1) ; [0]:
+    .byte >(Screen_WriteBlockTilesColumnToPPU-1) ; [1]:
+    .byte >(Screen_WriteBlockAttrsRowToPPU-1) ; [2]:
+    .byte >(Screen_WriteBlockAttrsColumnToPPU-1) ; [3]:
+
 
 ;============================================================================
-; TODO: Document Screen_WriteScrollVertPPUTileData
+; Write a row of block tiles to the PPU.
+;
+; This will take the queued row of blocks starting at
+; DataArray and begin writing them to the PPU, one at a
+; time, progressing across the screen.
 ;
 ; INPUTS:
-;     None.
+;     PPU_ControlFlags:
+;         The current saved PPU control flags.
+;
+;     Screen_ScrollVertBlocks_PPUTileMapAddr_U:
+;     Screen_ScrollVertBlocks_PPUTileMapAddr_L:
+;         The tilemap address to place the block tiles in.
+;
+;     DataArray:
+;         The queued row of tiles to write.
 ;
 ; OUTPUTS:
-;     TODO
+;     PPUADDR:
+;     PPUCTRL:
+;     PPUDATA:
+;         The written PPU state.
 ;
 ; XREFS:
 ;     SCREEN_WRITESCROLL_HANDLERS_L
@@ -10818,32 +11240,67 @@ SCREEN_WRITESCROLL_HANDLERS_U:              ; [$d650]
 ;     SCREEN_WRITESCROLL_HANDLERS_U
 ;     [$PRG15_MIRROR::d650]
 ;============================================================================
-Screen_WriteScrollVertPPUTileData:          ; [$d654]
-    LDA PPU_ControlFlags
-    AND #$fb
-    STA a:PPUCTRL
-    LDA Screen_ScrollVertBlocks_PPUTileMapAddr_U
-    STA a:PPUADDR
-    LDA Screen_ScrollVertBlocks_PPUTileMapAddr_L
-    STA a:PPUADDR
-    LDX #$00
+Screen_WriteBlockTilesRowToPPU:             ; [$d654]
+    ;
+    ; Tell the PPU we want to write 1 byte at a time, going across.
+    ;
+    LDA PPU_ControlFlags                    ; Load the current PPU control
+                                            ; flags.
+    AND #$fb                                ; Switch to add 1, going across.
+    STA a:PPUCTRL                           ; Write it to the PPU.
+
+
+    ;
+    ; Set the address in the PPU where tiles should be written to.
+    ;
+    LDA Screen_ScrollVertBlocks_PPUTileMapAddr_U ; Load the upper byte of the
+                                                 ; tilemap address to write
+                                                 ; to.
+    STA a:PPUADDR                           ; Write as the upper byte for the
+                                            ; data.
+    LDA Screen_ScrollVertBlocks_PPUTileMapAddr_L ; Load the lower byte.
+    STA a:PPUADDR                           ; Write as the lower byte.
+
+
+    ;
+    ; Begin our tile write loop.
+    ;
+    ; This will write up to 32 tiles (width of the screen).
+    ;
+    LDX #$00                                ; X = 0 (loop counter).
 
   @_loop:                                   ; [$d667]
-    LDA DataArray,X
-    STA a:PPUDATA
-    INX
-    CPX #$20
-    BCC @_loop
+    LDA a:DataArray,X                       ; Load a tile from the queue.
+    STA a:PPUDATA                           ; Write it to the PPU.
+    INX                                     ; X++ (loop counter).
+    CPX #$20                                ; Are we under 32 columns?
+    BCC @_loop                              ; If so, loop.
     RTS
 
+
 ;============================================================================
-; TODO: Document Screen_WriteScrollHorizPPUTileData
+; Write a column of block tiles to the PPU.
+;
+; This will take the queued column of blocks starting at
+; Temp_0200 and begin writing them to the PPU, 2 tiles
+; at a time, progressing down the screen.
 ;
 ; INPUTS:
-;     None.
+;     PPU_ControlFlags:
+;         The current saved PPU control flags.
+;
+;     Screen_ScrollHorizBlocks_PPUTileMapAddr_U:
+;     Screen_ScrollHorizBlocks_PPUTileMapAddr_L:
+;         The tilemap address to place the block tiles in.
+;
+;     Temp_0200:
+;         The queued column of tiles to write.
 ;
 ; OUTPUTS:
-;     A
+;     PPUADDR:
+;     PPUCTRL:
+;     PPUDATA:
+;         The written PPU state.
 ;
 ; XREFS:
 ;     SCREEN_WRITESCROLL_HANDLERS_L
@@ -10851,35 +11308,74 @@ Screen_WriteScrollVertPPUTileData:          ; [$d654]
 ;     SCREEN_WRITESCROLL_HANDLERS_U
 ;     [$PRG15_MIRROR::d651]
 ;============================================================================
-Screen_WriteScrollHorizPPUTileData:         ; [$d673]
-    LDA PPU_ControlFlags
-    ORA #$04
-    STA a:PPUCTRL
-    LDA Screen_ScrollHorizBlocks_PPUTileMapAddr_U
-    STA a:PPUADDR
-    LDA Screen_ScrollHorizBlocks_PPUTileMapAddr_L
-    STA a:PPUADDR
-    LDX #$00
+Screen_WriteBlockTilesColumnToPPU:          ; [$d673]
+    ;
+    ; Tell the PPU we want to write 32 bytes at a time, going down.
+    ;
+    LDA PPU_ControlFlags                    ; Load the current PPU control
+                                            ; flags.
+    ORA #$04                                ; Switch to add 32, going down.
+    STA a:PPUCTRL                           ; Write it to the PPU.
+
+
+    ;
+    ; Set the address in the PPU where tiles should be written to.
+    ;
+    LDA Screen_ScrollHorizBlocks_PPUTileMapAddr_U ; Load the upper byte of
+                                                  ; the tilemap address to
+                                                  ; write to.
+    STA a:PPUADDR                           ; Write as the upper byte for the
+                                            ; data.
+    LDA Screen_ScrollHorizBlocks_PPUTileMapAddr_L ; Load the lower byte.
+    STA a:PPUADDR                           ; Write as the lower byte.
+
+
+    ;
+    ; Begin our tile write loop.
+    ;
+    ; This will write up to 26 tiles (height of the screen).
+    ;
+    LDX #$00                                ; X = 0 (loop counter).
 
   @_loop:                                   ; [$d686]
-    LDA Temp_0200,X
-    STA a:PPUDATA
-    INX
-    CPX #$1a
-    BCC @_loop
-    LDA PPU_ControlFlags
-    AND #$fb
-    STA a:PPUCTRL
+    LDA a:Temp_0200,X                       ; Load a tile from the block
+                                            ; queue.
+    STA a:PPUDATA                           ; Write it to the PPU.
+    INX                                     ; X++ (loop counter).
+    CPX #$1a                                ; Are we under 26 rows?
+    BCC @_loop                              ; If so, loop.
+
+
+    ;
+    ; Restore the PPU control flags.
+    ;
+    LDA PPU_ControlFlags                    ; Load the current PPU control
+                                            ; flags.
+    AND #$fb                                ; Switch back to add 1, going
+                                            ; across.
+    STA a:PPUCTRL                           ; Write it to the PPU.
     RTS
 
+
 ;============================================================================
-; TODO: Document Screen_WriteScrollVertPPUAttrData
+; Write a row of attributes to the PPU.
+;
+; This will take the queued row of attributes starting at
+; DataArray and begin writing them to the PPU, one at a
+; time, progressing across the screen.
 ;
 ; INPUTS:
-;     None.
+;     Screen_ScrollVertBlocks_PPUAttrAddr_U:
+;     Screen_ScrollVertBlocks_PPUAttrAddr_L:
+;         The attribute address to write to in the PPU.
+;
+;     Screen_ScrollVertPPUAttrData:
+;         The row of attributes to write.
 ;
 ; OUTPUTS:
-;     A
+;     PPUADDR:
+;     PPUDATA:
+;         The written PPU state.
 ;
 ; XREFS:
 ;     SCREEN_WRITESCROLL_HANDLERS_L
@@ -10887,29 +11383,56 @@ Screen_WriteScrollHorizPPUTileData:         ; [$d673]
 ;     SCREEN_WRITESCROLL_HANDLERS_U
 ;     [$PRG15_MIRROR::d652]
 ;============================================================================
-Screen_WriteScrollVertPPUAttrData:          ; [$d699]
-    LDA Screen_ScrollVertBlocks_PPUAttrAddr_U
-    STA a:PPUADDR
-    LDA Screen_ScrollVertBlocks_PPUAttrAddr_L
-    STA a:PPUADDR
-    LDX #$00
+Screen_WriteBlockAttrsRowToPPU:             ; [$d699]
+    ;
+    ; Set the address in the PPU where attributes should be
+    ; written to.
+    ;
+    LDA Screen_ScrollVertBlocks_PPUAttrAddr_U ; Load the upper byte of the
+                                              ; attribute address to write
+                                              ; to.
+    STA a:PPUADDR                           ; Write as the upper byte for the
+                                            ; attributes.
+    LDA Screen_ScrollVertBlocks_PPUAttrAddr_L ; Load the lower byte.
+    STA a:PPUADDR                           ; Write as the lower byte.
+
+
+    ;
+    ; Begin our attribute write loop.
+    ;
+    ; This will write up to 8 attributes in a single row.
+    ;
+    LDX #$00                                ; X = 0 (loop counter).
 
   @_loop:                                   ; [$d6a5]
-    LDA Screen_ScrollVertPPUAttrData,X
-    STA a:PPUDATA
-    INX
-    CPX #$08
-    BCC @_loop
+    LDA a:Screen_ScrollVertPPUAttrData,X    ; Load the attribute to write.
+    STA a:PPUDATA                           ; Write it to the PPU.
+    INX                                     ; X++ (loop counter).
+    CPX #$08                                ; Are we under 8 attribute
+                                            ; columns?
+    BCC @_loop                              ; If so, loop.
     RTS
 
+
 ;============================================================================
-; TODO: Document Screen_WriteScrollHorizPPUAttrData
+; Write a column of attributes to the PPU.
+;
+; This will take the queued column of attributes starting
+; at and begin writing them to the PPU, one at a time,
+; progressing down the screen.
 ;
 ; INPUTS:
-;     None.
+;     Screen_ScrollVertBlocks_PPUAttrAddr_U:
+;     Screen_ScrollVertBlocks_PPUAttrAddr_L:
+;         The attribute address to write to in the PPU.
+;
+;     Screen_ScrollHorizPPUAttrData:
+;         The column of attributes to write.
 ;
 ; OUTPUTS:
-;     A
+;     PPUADDR:
+;     PPUDATA:
+;         The written PPU state.
 ;
 ; XREFS:
 ;     SCREEN_WRITESCROLL_HANDLERS_L
@@ -10917,24 +11440,38 @@ Screen_WriteScrollVertPPUAttrData:          ; [$d699]
 ;     SCREEN_WRITESCROLL_HANDLERS_U
 ;     [$PRG15_MIRROR::d653]
 ;============================================================================
-Screen_WriteScrollHorizPPUAttrData:         ; [$d6b1]
-    LDX #$00
+Screen_WriteBlockAttrsColumnToPPU:          ; [$d6b1]
+    ;
+    ; Begin our attribute write loop.
+    ;
+    ; This will write up to 7 attributes one row at a time along
+    ; the same column.
+    ;
+    ; The first row of attributes in the PPU is skipped, since it's
+    ; not part Of screen data.
+    ;
+    LDX #$00                                ; X = 0 (loop counter).
 
   @_loop:                                   ; [$d6b3]
-    LDA Screen_ScrollHorizBlocks_PPUAttrAddr_U
-    STA a:PPUADDR
-    TXA
-    ASL A
+    LDA Screen_ScrollHorizBlocks_PPUAttrAddr_U ; Load the upper byte of the
+                                               ; attribute address to write
+                                               ; to.
+    STA a:PPUADDR                           ; Write as the upper byte for the
+                                            ; attributes.
+    TXA                                     ; A = loop counter.
+    ASL A                                   ; Multiply by 8 (attributes per
+                                            ; row) to get the target row.
     ASL A
     ASL A
     CLC
-    ADC Screen_ScrollHorizBlocks_PPUAttrAddr_L
-    STA a:PPUADDR
-    LDA Screen_ScrollHorizPPUAttrData,X
-    STA a:PPUDATA
-    INX
-    CPX #$07
-    BCC @_loop
+    ADC Screen_ScrollHorizBlocks_PPUAttrAddr_L ; Add the lower byte of the
+                                               ; PPU address to write to.
+    STA a:PPUADDR                           ; Write it.
+    LDA a:Screen_ScrollHorizPPUAttrData,X   ; Load the attribute to write.
+    STA a:PPUDATA                           ; Write it.
+    INX                                     ; X++ (loop counter).
+    CPX #$07                                ; Are we under 7 attribute rows?
+    BCC @_loop                              ; If so, loop.
     RTS
 
 
@@ -10986,7 +11523,7 @@ Area_HandleBreakableFloor:                  ; [$d6ce]
                                             ; for)
 
   @_checkBlockLoop:                         ; [$d6d4]
-    CMP BREAKABLE_FLOOR_TRANSITIONS,X       ; Does the block match the table
+    CMP a:BREAKABLE_FLOOR_TRANSITIONS,X     ; Does the block match the table
                                             ; at this index?
     BEQ @_finishLoop                        ; If so, jump.
     INX                                     ; Else, X++
@@ -10999,12 +11536,12 @@ Area_HandleBreakableFloor:                  ; [$d6ce]
                                             ; set)
 
   @_updateBlocks:                           ; [$d6e1]
-    LDA BREAKABLE_FLOOR_TRANSITIONS,X       ; Load the block to set to.
+    LDA a:BREAKABLE_FLOOR_TRANSITIONS,X     ; Load the block to set to.
     STA a:Arg_BlockAttributesIndex          ; DEADCODE: This is overridden in
                                             ; Area_SetBlocks
     LDX Temp_00                             ; X = Block position (stored
                                             ; earlier)
-    STA ScreenBuffer,X                      ; Store in the screen buffer as
+    STA a:ScreenBuffer,X                    ; Store in the screen buffer as
                                             ; the new block.
     JMP Area_SetBlocks                      ; And set it for the area data.
 
@@ -11109,7 +11646,7 @@ Game_OpenPathToMascon:                      ; [$d6f5]
     LDX PathToMascon_FountainCoverPos       ; X = Block position (in $YX
                                             ; form).
     LDA a:MASCON_FOUNTAIN_BLOCK_1_AIR       ; A = Block ID to place.
-    STA ScreenBuffer,X                      ; Store it in the screen buffer
+    STA a:ScreenBuffer,X                    ; Store it in the screen buffer
                                             ; at the target location.
     JSR Area_SetBlocks                      ; Update the block on the screen.
 
@@ -11124,7 +11661,7 @@ Game_OpenPathToMascon:                      ; [$d6f5]
                                             ; 1).
     TAX                                     ; X = A
     LDA a:MASCON_FOUNTAIN_BLOCK_2_AIR       ; A = Block ID to place.
-    STA ScreenBuffer,X                      ; Store it in the screen buffer
+    STA a:ScreenBuffer,X                    ; Store it in the screen buffer
                                             ; at the target location.
     JSR Area_SetBlocks                      ; Update the block on the screen.
 
@@ -11135,8 +11672,8 @@ Game_OpenPathToMascon:                      ; [$d6f5]
     PLA                                     ; Pull A from the stack (original
                                             ; block position)
     TAX                                     ; X = A
-    LDA GAME_LADDER_TO_MASCON_BLOCK_OFFSETS,X ; A = Block position offset,
-                                              ; based on the arguments.
+    LDA a:GAME_LADDER_TO_MASCON_BLOCK_OFFSETS,X ; A = Block position offset,
+                                                ; based on the arguments.
     CLC
     ADC PathToMascon_FountainCoverPos       ; A += Target block position.
     TAX                                     ; X = A
@@ -11147,7 +11684,7 @@ Game_OpenPathToMascon:                      ; [$d6f5]
     ; Place the top stone covering.
     ;
     LDA a:MASCON_FOUNTAIN_BLOCK_1_STONE     ; A = Stone block.
-    STA ScreenBuffer,X                      ; Place it in the screen buffer
+    STA a:ScreenBuffer,X                    ; Place it in the screen buffer
                                             ; at the offset.
     JSR Area_SetBlocks                      ; Update the block on the screen.
 
@@ -11160,7 +11697,7 @@ Game_OpenPathToMascon:                      ; [$d6f5]
     ADC #$10                                ; A += 16 (next row).
     TAX                                     ; X = A
     LDA a:MASCON_FOUNTAIN_BLOCK_2_STONE     ; A = Stone block.
-    STA ScreenBuffer,X                      ; Place it in the screen buffer.
+    STA a:ScreenBuffer,X                    ; Place it in the screen buffer.
     JSR Area_SetBlocks                      ; Update the block on the screen.
 
 
@@ -11201,7 +11738,7 @@ Game_OpenPathToMascon:                      ; [$d6f5]
     LDX PathToMascon_FountainCoverPos       ; X = Fountain cover block
                                             ; position.
     LDA a:MASCON_FOUNTAIN_BLOCK_1_AIR       ; A = Air block.
-    STA ScreenBuffer,X                      ; Set in the screen buffer at the
+    STA a:ScreenBuffer,X                    ; Set in the screen buffer at the
                                             ; cover position.
     JSR Area_SetBlocks                      ; Update the block on the screen.
 
@@ -11215,7 +11752,7 @@ Game_OpenPathToMascon:                      ; [$d6f5]
     ADC #$10                                ; A += 16 (next row).
     TAX                                     ; X = A
     LDA a:MASCON_FOUNTAIN_BLOCK_2_AIR       ; A = Air block.
-    STA ScreenBuffer,X                      ; Set in the screen buffer at the
+    STA a:ScreenBuffer,X                    ; Set in the screen buffer at the
                                             ; cover position.
     JSR Area_SetBlocks                      ; Update the block on the screen.
 
@@ -11380,7 +11917,7 @@ Game_DropLadderToMascon:                    ; [$d76e]
     ;
     LDX PathToMascon_LadderPos              ; X = Next ladder block position.
     LDA a:DROP_LADDER_TO_MASCON_LADDER_BLOCK ; A = Ladder block.
-    STA ScreenBuffer,X                      ; Store in the screen buffer at
+    STA a:ScreenBuffer,X                    ; Store in the screen buffer at
                                             ; X.
     JSR Area_SetBlocks                      ; Update blocks on the screen.
 
@@ -11432,7 +11969,7 @@ SpriteBehavior_EnemyUnused18_SomethingSetBlocks: ; [$d7b0]
     PHA
     LDX a:Something_UnusedSprite_ScreenBufferOffset
     LDA a:Something_UnusedSprite_BlockOffset
-    STA ScreenBuffer,X
+    STA a:ScreenBuffer,X
     JSR Area_SetBlocks
     PLA
     TAY
@@ -11440,15 +11977,16 @@ SpriteBehavior_EnemyUnused18_SomethingSetBlocks: ; [$d7b0]
     TAX
     RTS
 
+
 ;============================================================================
-; TODO: Document Area_SetBlocks
+; Put blocks on the screen.
 ;
 ; INPUTS:
-;     A
-;     X
+;     A:
+;         The 0-based index into the block data.
 ;
-; OUTPUTS:
-;     A
+;     X:
+;         The 0-based index of the block position to write.
 ;
 ; XREFS:
 ;     Area_HandleBreakableFloor
@@ -11458,39 +11996,76 @@ SpriteBehavior_EnemyUnused18_SomethingSetBlocks: ; [$d7b0]
 ;     SpriteBehavior_EnemyUnused18_SomethingSetBlocks
 ;============================================================================
 Area_SetBlocks:                             ; [$d7c5]
-    STA a:Arg_BlockAttributesIndex
-    STX Temp_00
-    TXA
-    PHA
-    LDA a:CurrentROMBank
-    PHA
-    LDX #$03
-    JSR MMC1_UpdateROMBank
-    LDA Temp_00
-    PHA
-    TAX
-    JSR Area_SetPPUAddrForBlockIndex
-    JSR Area_SetBlocks_WriteBlockData12
-    LDA a:PPU_TargetAddr
+    STA a:Arg_BlockAttributesIndex          ; Set the index of the block
+                                            ; attribute to load.
+    STX Temp_00                             ; Store the destination index of
+                                            ; the block to write.
+    TXA                                     ; A = X (write index).
+    PHA                                     ; Push it to the stack.
+
+
+    ;
+    ; Switch to the area metadata bank.
+    ;
+    LDA a:CurrentROMBank                    ; Load the current ROM bank.
+    PHA                                     ; Push it to the stack.
+    LDX #$03                                ; Bank 3 = Area metadata.
+    JSR MMC1_UpdateROMBank                  ; Switch to it.
+
+
+    ;
+    ; Restore our state for the block writes.
+    ;
+    LDA Temp_00                             ; Load the destination index.
+    PHA                                     ; Push it to the stack.
+
+
+    ;
+    ; Set the PPU address for the block.
+    ;
+    TAX                                     ; X = Loaded destination index.
+    JSR Area_SetPPUAddrForBlockIndex        ; Set the PPU address for this
+                                            ; block.
+    JSR Area_SetBlocks_WriteBlockDataColumn1 ; Write column 1 of the block's
+                                             ; tiles.
+    LDA a:PPU_TargetAddr                    ; Load the PPU target address we
+                                            ; set before.
     CLC
-    ADC #$20
-    STA a:PPU_TargetAddr
-    LDA a:PPU_TargetAddr_U
-    ADC #$00
-    STA a:PPU_TargetAddr_U
-    JSR Area_SetBlocks_WriteBlockData34
-    PLA
-    JSR Area_SetBlocks_SetAttributes
-    PLA
+    ADC #$20                                ; Increment by 32 bytes (2
+                                            ; tiles).
+    STA a:PPU_TargetAddr                    ; Set as the new lower byte of
+                                            ; the PPU address.
+    LDA a:PPU_TargetAddr_U                  ; Load the upper byte.
+    ADC #$00                                ; Add carry, if the lower byte
+                                            ; wrapped.
+    STA a:PPU_TargetAddr_U                  ; Set as the new upper byte.
+    JSR Area_SetBlocks_WriteBlockDataColumn2 ; Write column 2 of the block's
+                                             ; tiles.
+
+
+    ;
+    ; Begin updating the PPU attributes.
+    ;
+    PLA                                     ; Pop the write index from the
+                                            ; stack.
+    JSR Area_SetBlocks_SetAttributes        ; Write the PPU attributes for
+                                            ; the block.
+
+
+    ;
+    ; Switch back to the previous bank.
+    ;
+    PLA                                     ; Pop the previous bank.
     TAX
-    JSR MMC1_UpdateROMBank
-    PLA
-    TAX
-    RTS
+    JSR MMC1_UpdateROMBank                  ; Switch back to that bank.
+    PLA                                     ; Pop the write index from the
+                                            ; stack.
+    TAX                                     ; Set it back on X.
+    RTS                                     ; Return it.
 
 
 ;============================================================================
-; Write two blocks from area data 1 and 2 to the PPU buffer.
+; Write the first column of tiles of a block to the PPU buffer.
 ;
 ; This will load two tiles from the area data from
 ; CurrentArea_BlockData1StartAddr and
@@ -11503,13 +12078,14 @@ Area_SetBlocks:                             ; [$d7c5]
 ;         The offset within the PPU buffer to write to.
 ;
 ;     CurrentArea_BlockData1StartAddr:
-;         The block data used for the first block.
+;         The block data used for the top-left tile.
 ;
 ;     CurrentArea_BlockData2StartAddr:
-;         The block data used for the second block.
+;         The block data used for the bottom-left tile.
 ;
 ;     Arg_BlockAttributesIndex:
-;         The offset within the area block data to read from.
+;         The caller-provided offset within the area block
+;         data to read from.
 ;
 ; OUTPUTS:
 ;     PPUBuffer:
@@ -11524,7 +12100,7 @@ Area_SetBlocks:                             ; [$d7c5]
 ; XREFS:
 ;     Area_SetBlocks
 ;============================================================================
-Area_SetBlocks_WriteBlockData12:            ; [$d7ff]
+Area_SetBlocks_WriteBlockDataColumn1:       ; [$d7ff]
     ;
     ; Set the tile length to 2.
     ;
@@ -11533,25 +12109,23 @@ Area_SetBlocks_WriteBlockData12:            ; [$d7ff]
 
 
     ;
-    ; Load the first block and write to the PPU.
+    ; Load the first block's tile and write to the PPU.
     ;
-    LDY a:Arg_BlockAttributesIndex          ; Load the block position within
-                                            ; the level.
-    LDA (CurrentArea_BlockData1StartAddr),Y ; Load the block at that
-                                            ; position.
-    STA PPUBuffer,X                         ; Store it the PPU buffer.
+    LDY a:Arg_BlockAttributesIndex          ; Load the requested block index
+                                            ; within the area data.
+    LDA (CurrentArea_BlockData1StartAddr),Y ; Load the top-left tile for the
+                                            ; block.
+    STA a:PPUBuffer,X                       ; Store it the PPU buffer.
 
 
     ;
-    ; Load the second block and write to the PPU.
+    ; Load the second block's tile and write to the PPU.
     ;
-    INX                                     ; X++
-    LDA (CurrentArea_BlockData2StartAddr),Y ; Load the block position within
-                                            ; the level.
-    STA PPUBuffer,X                         ; Load the block at that
-                                            ; position.Store it the PPU
-                                            ; buffer.
-    INX                                     ; X++
+    INX                                     ; X++ (PPU buffer offset).
+    LDA (CurrentArea_BlockData2StartAddr),Y ; Load the bottom-left tile for
+                                            ; the block.
+    STA a:PPUBuffer,X                       ; Store it the PPU buffer.
+    INX                                     ; X++ (PPU buffer offset).
 
 
     ;
@@ -11563,7 +12137,7 @@ Area_SetBlocks_WriteBlockData12:            ; [$d7ff]
 
 
 ;============================================================================
-; Write two blocks from area data 3 and 4 to the PPU buffer.
+; Write the second column of tiles of a block to the PPU buffer.
 ;
 ; This will load two tiles from the area data from
 ; CurrentArea_BlockData3StartAddr and
@@ -11576,13 +12150,14 @@ Area_SetBlocks_WriteBlockData12:            ; [$d7ff]
 ;         The offset within the PPU buffer to write to.
 ;
 ;     CurrentArea_BlockData3StartAddr:
-;         The block data used for the first block.
+;         The block data used for the top-right tile.
 ;
 ;     CurrentArea_BlockData4StartAddr:
-;         The block data used for the second block.
+;         The block data used for the bottom-right tile.
 ;
 ;     Arg_BlockAttributesIndex:
-;         The offset within the area block data to read from.
+;         The caller-provided offset within the area block
+;         data to read from.
 ;
 ; OUTPUTS:
 ;     PPUBuffer:
@@ -11597,44 +12172,83 @@ Area_SetBlocks_WriteBlockData12:            ; [$d7ff]
 ; XREFS:
 ;     Area_SetBlocks
 ;============================================================================
-Area_SetBlocks_WriteBlockData34:            ; [$d816]
+Area_SetBlocks_WriteBlockDataColumn2:       ; [$d816]
     ;
     ; Set the tile length to 2.
     ;
     LDA #$02
-    JSR PPUBuffer_QueueCommandOrLength
+    JSR PPUBuffer_QueueCommandOrLength      ; Write length of 2.
 
 
     ;
     ; Load the first block and write to the PPU.
     ;
-    LDY a:Arg_BlockAttributesIndex
-    LDA (CurrentArea_BlockData3StartAddr),Y
-    STA PPUBuffer,X
+    LDY a:Arg_BlockAttributesIndex          ; Load the requested block index
+                                            ; within the area data.
+    LDA (CurrentArea_BlockData3StartAddr),Y ; Load the top-right tile for the
+                                            ; block.
+    STA a:PPUBuffer,X                       ; Store it the PPU buffer.
 
 
     ;
     ; Load the second block and write to the PPU.
     ;
-    INX
-    LDA (CurrentArea_BlockData4StartAddr),Y
-    STA PPUBuffer,X
-    INX
+    INX                                     ; X++ (PPU buffer offset).
+    LDA (CurrentArea_BlockData4StartAddr),Y ; Load the bottom-right tile for
+                                            ; the block.
+    STA a:PPUBuffer,X                       ; Store it the PPU buffer.
+    INX                                     ; X++ (PPU buffer offset).
 
 
     ;
     ; Set the new upper bounds of the buffer.
     ;
-    STX PPUBuffer_WriteOffset
+    STX PPUBuffer_WriteOffset               ; Set X as the new upper bounds
+                                            ; of the PPU buffer.
     RTS
+
+
 ;============================================================================
-; TODO: Document Area_SetBlocks_SetAttributes
+; Set the attributes for a block.
 ;
 ; INPUTS:
-;     A
+;     A:
+;         The block position index.
+;
+;     PPU_ScrollScreen
+;         The current scroll screen.
+;
+;     SET_BLOCKS_TILEMAP_OFFSETS_U:
+;     SET_BLOCKS_TILEMAP_OFFSETS_L:
+;         A mapping table for computing offsets into
+;         a PPU screen tilemap address from a scroll
+;         screen index.
+;
+;     SET_BLOCKS_SCREEN_TILEMAP_ADDRS_U:
+;     SET_BLOCKS_SCREEN_TILEMAP_ADDRS_U:
+;         A mapping table for PPU start addresses for
+;         updating blocks.
+;
+;     SET_BLOCKS_TILE_CORNER_MASK_INVERT:
+;         A mapping table for masking all but a corner's
+;         bits.
+;
+;     SET_BLOCKS_TILE_CORNER_MASK:
+;         A mapping table for masking a corner's bits.
 ;
 ; OUTPUTS:
-;     TODO
+;     PPUBuffer:
+;     PPUBuffer_WriteOffset:
+;     PPU_TargetAddr:
+;     PPU_TargetAddr+1:
+;         The updated PPU buffer state.
+;
+;     Temp_00:
+;     Temp_06:
+;         Clobbered.
+;
+; CALLS:
+;     PPUBuffer_QueueCommandOrLength
 ;
 ; XREFS:
 ;     Area_SetBlocks
@@ -11715,7 +12329,7 @@ Area_SetBlocks_SetAttributes:               ; [$d82d]
                                             ; index.
     LDX Temp_06                             ; X = corner (0..3 value from
                                             ; above).
-    AND SET_BLOCKS_TILE_CORNER_MASK,X       ; A = block attributes for the
+    AND a:SET_BLOCKS_TILE_CORNER_MASK,X     ; A = block attributes for the
                                             ; given corner.
     PHA                                     ; Push it to the stack.
 
@@ -11739,17 +12353,17 @@ Area_SetBlocks_SetAttributes:               ; [$d82d]
     ;
     ;       This is code that could be optimized away.
     ;
-    LDA SET_BLOCKS_TILEMAP_OFFSETS_L,X      ; A = lower byte of PPU address
+    LDA a:SET_BLOCKS_TILEMAP_OFFSETS_L,X    ; A = lower byte of PPU address
     STA Temp_Addr_L                         ; Store it.
-    LDA SET_BLOCKS_TILEMAP_OFFSETS_U,X      ; A = upper byte of PPU address
+    LDA a:SET_BLOCKS_TILEMAP_OFFSETS_U,X    ; A = upper byte of PPU address
     STA Temp_Addr_U                         ; Store it.
 
 
     ;
     ; Compute the upper starting byte for the PPU address.
     ;
-    LDA SET_BLOCKS_SCREEN_TILEMAP_ADDRS_U,X ; A = tilemap address for the
-                                            ; screen.
+    LDA a:SET_BLOCKS_SCREEN_TILEMAP_ADDRS_U,X ; A = tilemap address for the
+                                              ; screen.
     STA a:PPU_TargetAddr_U                  ; Store as the upper byte of the
                                             ; tilemap address.
 
@@ -11762,8 +12376,9 @@ Area_SetBlocks_SetAttributes:               ; [$d82d]
                                             ; address computed above.
     LDA (Temp_Addr_L),Y                     ; Load the data for this block.
     LDX Temp_06                             ; X = corner value (0..3)
-    AND SET_BLOCKS_TILE_CORNER_MASK_INVERT,X ; Invert the corner mask (keep
-                                             ; all non-updated corner data).
+    AND a:SET_BLOCKS_TILE_CORNER_MASK_INVERT,X ; Invert the corner mask (keep
+                                               ; all non-updated corner
+                                               ; data).
     STA Temp_06                             ; Store as the new value.
     PLA                                     ; Pull the updated block
                                             ; attributes for the corner.
@@ -11799,10 +12414,18 @@ Area_SetBlocks_SetAttributes:               ; [$d82d]
     JSR PPUBuffer_QueueCommandOrLength      ; Queue 1 byte.
     PLA                                     ; Pull the attribute data to
                                             ; write from stack.
-    STA PPUBuffer,X                         ; Store it in the buffer at X.
+    STA a:PPUBuffer,X                       ; Store it in the buffer at X.
     INX                                     ; X++ (new offset)
     STX PPUBuffer_WriteOffset               ; Store it.
     RTS
+
+
+;============================================================================
+; A mapping table for masking a corner's bits.
+;
+; XREFS:
+;     Area_SetBlocks_SetAttributes
+;============================================================================
 
 ;
 ; XREFS:
@@ -11813,6 +12436,14 @@ SET_BLOCKS_TILE_CORNER_MASK:                ; [$d8a4]
     .byte $0c                               ; [1]:
     .byte $30                               ; [2]:
     .byte $c0                               ; [3]:
+
+
+;============================================================================
+; A mapping table for masking all but a corner's bits.
+;
+; XREFS:
+;     Area_SetBlocks_SetAttributes
+;============================================================================
 
 ;
 ; XREFS:
@@ -11837,48 +12468,70 @@ SET_BLOCKS_TILE_CORNER_MASK_INVERT:         ; [$d8a8]
 ;============================================================================
 Area_SetPPUAddrForBlockIndex:               ; [$d8ac]
     ;
-    ; Build an address based on the X, Y position.
+    ; Build an address based on the block index.
     ;
-    ; X = X * 2
-    ; Y = Y * 4
+    ; The upper byte will always be 0. The lower byte will be
+    ; the lower nibble * 2.
     ;
-    LDA #$00
-    STA a:PPU_TargetAddr_U
-    TXA
-    AND #$0f
-    ASL A
-    STA a:PPU_TargetAddr
-    TXA
-    AND #$f0
-    ASL A
+    LDA #$00                                ; 0 = Upper byte of address.
+    STA a:PPU_TargetAddr_U                  ; Set as the PPU target address.
+
+
+    ;
+    ; Compute the lower byte of the target PPU address based off
+    ; the block index.
+    ;
+    ; This will be the lower nibble * 2.
+    ;
+    TXA                                     ; A = Block index.
+    AND #$0f                                ; Keep the lower nibble.
+    ASL A                                   ; Multiply by 2.
+    STA a:PPU_TargetAddr                    ; Set as the lower byte of the
+                                            ; PPU target address.
+
+
+    ;
+    ; Compute the upper byte of the target PPU address.
+    ;
+    TXA                                     ; A = Block index.
+    AND #$f0                                ; Keep the upper nibble.
+    ASL A                                   ; Multiply by 2.
     ROL a:PPU_TargetAddr_U
     ASL A
     ROL a:PPU_TargetAddr_U
     CLC
-    ADC a:PPU_TargetAddr
-    STA a:PPU_TargetAddr
-    LDA PPU_ScrollScreen
-    AND #$01
-    TAY
-    LDA a:PPU_TargetAddr_U
-    ORA BYTE_ARRAY_PRG15_MIRROR__d8ea,Y
-    STA a:PPU_TargetAddr_U
-    LDA a:PPU_TargetAddr
+    ADC a:PPU_TargetAddr                    ; Add the lower byte of the PPU
+                                            ; target address.
+    STA a:PPU_TargetAddr                    ; Store as the lower byte of the
+                                            ; PPU target address.
+    LDA PPU_ScrollScreen                    ; Load the scroll screen.
+    AND #$01                                ; Convert to a 0 = Left, 1 =
+                                            ; Right value.
+    TAY                                     ; Y = result.
+    LDA a:PPU_TargetAddr_U                  ; Load the upper byte of the PPU
+                                            ; target address.
+    ORA a:AREA_SETPPUADDRFORBLOCK_U_BITS,Y  ; Apply bits to the value of the
+                                            ; upper byte of the address.
+    STA a:PPU_TargetAddr_U                  ; Store as the new upper byte of
+                                            ; the adress.
+    LDA a:PPU_TargetAddr                    ; Load the lower byte of the
+                                            ; address.
     CLC
-    ADC #$80
-    STA a:PPU_TargetAddr
-    LDA a:PPU_TargetAddr_U
-    ADC #$00
-    STA a:PPU_TargetAddr_U
+    ADC #$80                                ; Add 0x80 to it.
+    STA a:PPU_TargetAddr                    ; Store as the new lower byte.
+    LDA a:PPU_TargetAddr_U                  ; Load the upper byte.
+    ADC #$00                                ; Add carry, if the lower byte
+                                            ; wrapped.
+    STA a:PPU_TargetAddr_U                  ; Store as the new upper byte.
     RTS
 
 ;
 ; XREFS:
 ;     Area_SetPPUAddrForBlockIndex
 ;
-BYTE_ARRAY_PRG15_MIRROR__d8ea:              ; [$d8ea]
-    .byte $20                               ; [0]:
-    .byte $24                               ; [1]:
+AREA_SETPPUADDRFORBLOCK_U_BITS:             ; [$d8ea]
+    .byte $20                               ; [0]: Scroll screen 0
+    .byte $24                               ; [1]: Scroll screen 1
 
 
 ;============================================================================
@@ -12271,7 +12924,7 @@ Player_DrawDeathAnimation:                  ; [$d9d6]
     LDX PPUBuffer_WriteOffset               ; X = PPU buffer upper bounds.
     LDA #$fa                                ; A = 0xFA (Remove Vertical Lines
                                             ; draw command).
-    STA PPUBuffer,X                         ; Set that as the command to
+    STA a:PPUBuffer,X                       ; Set that as the command to
                                             ; execute.
 
 
@@ -12280,7 +12933,7 @@ Player_DrawDeathAnimation:                  ; [$d9d6]
     ;
     INX                                     ; X++
     LDA a:Player_DeathAnimationPhase        ; Load the animation phase.
-    STA PPUBuffer,X                         ; Set that as the phase
+    STA a:PPUBuffer,X                       ; Set that as the phase
                                             ; parameter.
 
 
@@ -12289,7 +12942,7 @@ Player_DrawDeathAnimation:                  ; [$d9d6]
     ;
     INX                                     ; X++
     LDA #$00
-    STA PPUBuffer,X                         ; Set 0 as the upper address.
+    STA a:PPUBuffer,X                       ; Set 0 as the upper address.
 
 
     ;
@@ -12297,8 +12950,8 @@ Player_DrawDeathAnimation:                  ; [$d9d6]
     ;
     INX                                     ; X++
     LDY a:Player_DeathAnimationCounter      ; Load the animation counter.
-    LDA DEATH_ANIMATION_DRAW_ADDR_LOWER,Y   ; Load the lower address for Y.
-    STA PPUBuffer,X                         ; Set it as the lower address.
+    LDA a:DEATH_ANIMATION_DRAW_ADDR_LOWER,Y ; Load the lower address for Y.
+    STA a:PPUBuffer,X                       ; Set it as the lower address.
 
 
     ;
@@ -12511,14 +13164,40 @@ Game_InitStateForStartScreen:               ; [$da6a]
     JSR Game_InitStateForSpawn              ; Initiate the spawn state.
     JMP Game_ShowStartScreen                ; Show the start screen.
 
+
 ;============================================================================
-; TODO: Document Game_InitStateForSpawn
+; Initialize state when spawning the player.
+;
+; This will clear the player's death, magic, and other
+; states, set up the screen for drawing, load sprites,
+; and get the game ready to play again.
 ;
 ; INPUTS:
 ;     None.
 ;
 ; OUTPUTS:
-;     TODO
+;     PlayerIsDead:
+;         Set to alive.
+;
+;     Screen_ReadyState:
+;     Maybe_Game_Ready:
+;         Set to ready.
+;
+;     PPU_ScrollScreen:
+;         Set to screen 0.
+;
+;     PPU_ScrollX:
+;         Set to 0 (no scrolling offset).
+;
+;     PPUBuffer_WriteOffset
+;     PPUBuffer_ReadOffset:
+;         Cleared.
+;
+; CALLS:
+;     PPU_WaitUntilFlushed
+;     Player_ClearVisibleMagic
+;     Player_SetInitialState
+;     Sprites_LoadCommon
 ;
 ; XREFS:
 ;     Game_InitStateForStartScreen
@@ -12710,7 +13389,7 @@ Game_SetupNewArea:                          ; [$dacd]
 Game_SetupAndLoadOutsideArea:               ; [$dadc]
     JSR PPU_WaitUntilFlushed                ; Wait until the PPU is flushed.
     LDX a:Area_Region                       ; Load the region.
-    LDA DOOR_OUTSIDE_REGION_INDEXES,X       ; Load the area of the game to
+    LDA a:DOOR_OUTSIDE_REGION_INDEXES,X     ; Load the area of the game to
                                             ; place the player for this
                                             ; region.
     STA Area_CurrentArea                    ; Store as the new area.
@@ -12726,10 +13405,13 @@ Game_SetupAndLoadOutsideArea:               ; [$dadc]
 ; DEADCODE
 ;
 ; Would assign the area based on transitioning from another.
+;
+; This isn't even a complete function. It runs right into the
+; data table below.
 ;============================================================================
 FUN_PRG15_MIRROR__daf6:                     ; [$daf6]
     LDX a:Area_Region
-    LDA DOOR_OUTSIDE_REGION_INDEXES,X
+    LDA a:DOOR_OUTSIDE_REGION_INDEXES,X
     STA Area_CurrentArea
 
 ;
@@ -13243,14 +13925,75 @@ Game_DrawScreenInFrozenState:               ; [$dc46]
     LDA #$00                                ; A = 0
     STA a:Sprites_UpdatesPaused             ; Clear the paused state.
     JMP MMC1_UpdatePRGBankToStackA          ; Restore the previous bank.
+
+
 ;============================================================================
-; TODO: Document Game_LoadAreaTable
+; Load the addresses of the area's metadata.
+;
+; This will load all the following information:
+;
+; * The address of the screen blocks data.
+; * The address of the metadata table.
+; * The address of the block properties.
+; * The address of the blocks.
+; * The address of the scrolling data.
+; * The address of the door locations.
+; * The address of the door destinations.
 ;
 ; INPUTS:
-;     A
+;     A:
+;         The offset into the current bank's area blocks
+;         data.
+;
+;     Area_CurrentArea:
+;         The current area.
+;
+;     CurrentROMBank:
+;         The current ROM bank.
 ;
 ; OUTPUTS:
-;     TODO
+;     Area_ScreenBlocksOffset:
+;     Area_ScreenBlocksOffset+1:
+;         The offset to the blocks data for the current
+;         area.
+;
+;     CurrentArea_BlockAttributesAddr:
+;         The address of the block attributes.
+;
+;     CurrentArea_BlockData1StartAddr:
+;         The address of the start of the block list #1.
+;
+;     CurrentArea_BlockData2StartAddr:
+;         The address of the start of the block list #2.
+;
+;     CurrentArea_BlockData3StartAddr:
+;         The address of the start of the block list #3.
+;
+;     CurrentArea_BlockData4StartAddr:
+;         The address of the start of the block list #4.
+;
+;     CurrentArea_BlockPropertiesAddr:
+;     CurrentArea_BlockPropertiesAddr+1:
+;         The address of the block properties.
+;
+;     CurrentArea_DoorLocationsAddr:
+;     CurrentArea_DoorLocationsAddr+1:
+;         The address of the door locations.
+;
+;     CurrentArea_DoorDestinationsAddr:
+;     CurrentArea_DoorDestinationsAddr+1:
+;         The address of the door destinations.
+;
+;     CurrentArea_ScrollingDataAddr:
+;     ScrollingData_U:
+;         The address of the scrolling data.
+;
+;     CurrentArea_TableAddr:
+;     CurrentArea_TableAddr+1:
+;         The address of the metadata table.
+;
+; CALLS:
+;     MMC1_UpdateROMBank
 ;
 ; XREFS:
 ;     Game_EnterAreaHandler
@@ -13261,27 +14004,38 @@ Game_DrawScreenInFrozenState:               ; [$dc46]
 ;============================================================================
 Game_LoadAreaTable:                         ; [$dc78]
     ;
-    ; XXX Set the address for the area in the areas table.
+    ; Set the address for the area in the areas table.
     ;
-    ASL A
-    TAY
-    LDA ROMBankStart,Y
-    STA Area_ScreenBlocksOffset
-    LDA ROMBankStart+1,Y
+    ; This will convert the offset to an address within the
+    ; current areas bank by taking the given offset, multiplying
+    ; by 2, and then using it as an index into the current bank
+    ; to load 2 bytes.
+    ;
+    ; These 2 bytes form an upper and lower byte offset into
+    ; bank 3.
+    ;
+    ASL A                                   ; Normalize the offset to a word
+                                            ; boundary.
+    TAY                                     ; Set as Y.
+    LDA a:ROMBankStart,Y                    ; Load as the lower byte in the
+                                            ; current bank.
+    STA Area_ScreenBlocksOffset             ; Store that for lookup.
+    LDA a:ROMBankStart+1,Y                  ; Load the next byte as the upper
+                                            ; byte in the current bank.
     CLC
-    ADC #$80
-    STA Area_ScreenBlocksOffset_U
+    ADC #$80                                ; Add 0x80, converting to an
+                                            ; absolute address.
+    STA Area_ScreenBlocksOffset_U           ; Store it.
 
 
     ;
     ; Save the current ROM bank and switch to bank 3, where the
     ; areas table lives.
     ;
-    LDA a:CurrentROMBank
-    PHA
-    LDX #$03
-    JSR MMC1_UpdateROMBank
-    LDA a:ROMBankStart
+    LDA a:CurrentROMBank                    ; Load the current bank.
+    PHA                                     ; Push it to the stack.
+    LDX #$03                                ; X = bank 3 (area metadata).
+    JSR MMC1_UpdateROMBank                  ; Switch to it.
 
 
     ;
@@ -13290,95 +14044,147 @@ Game_LoadAreaTable:                         ; [$dc78]
     ;
     ; This will be AREAS_TABLE_PTR in Bank 3.
     ;
-    STA Temp_Addr_L
-    LDA a:AREAS_TABLE_PTR+1
+    LDA a:AREAS_TABLE_PTR                   ; A = first byte from the bank.
+    STA Temp_Addr_L                         ; Store it temporarily as a lower
+                                            ; byte.
+    LDA a:AREAS_TABLE_PTR+1                 ; Load the next byte.
     CLC
-    ADC #$80
-    STA Temp_Addr_U
-    LDA Area_CurrentArea
-    ASL A
-    TAY
-    LDA (Temp_Addr_L),Y
-    STA CurrentArea_TableAddr
-    INY
-    LDA (Temp_Addr_L),Y
+    ADC #$80                                ; Add 0x80 (making it an absolute
+                                            ; address).
+    STA Temp_Addr_U                         ; Store it temporarily as an
+                                            ; upper byte.
+
+
+    ;
+    ; Load the address of the current area's metadata table.
+    ;
+    LDA Area_CurrentArea                    ; A = Current area.
+    ASL A                                   ; Normalize to a word boundary.
+    TAY                                     ; Y = result.
+    LDA (Temp_Addr_L),Y                     ; Load this offset from the area
+                                            ; metadata table.
+    STA CurrentArea_TableAddr               ; Store as the lower byte of the
+                                            ; current area's metadata table
+                                            ; address.
+    INY                                     ; Y++ (upper byte index).
+    LDA (Temp_Addr_L),Y                     ; Load that offset.
     CLC
-    ADC #$80
-    STA CurrentArea_TableAddr_U
-    LDY #$00
-    LDA (CurrentArea_TableAddr),Y
-    STA Temp_Addr_L
-    INY
-    LDA (CurrentArea_TableAddr),Y
+    ADC #$80                                ; Add 0x80 to the address, making
+                                            ; it an absolute address.
+    STA CurrentArea_TableAddr_U             ; Store as the upper byte of the
+                                            ; current area's metadata table
+                                            ; address.
+
+
+    ;
+    ; Load the address of the block attributes pointer (not the
+    ; block attributes data) from the metadata table. We'll read
+    ; the first entry to get that address.
+    ;
+    LDY #$00                                ; Y = 0.
+    LDA (CurrentArea_TableAddr),Y           ; Load the first byte from the
+                                            ; current area's metadata table.
+    STA Temp_Addr_L                         ; Store temporarily as the lower
+                                            ; byte of an address.
+    INY                                     ; Y++
+    LDA (CurrentArea_TableAddr),Y           ; Load the upper byte.
     CLC
-    ADC #$80
-    STA Temp_Addr_U
+    ADC #$80                                ; Normalize to an absolute
+                                            ; address.
+    STA Temp_Addr_U                         ; Store it.
 
 
     ;
     ; Store the addresses of the block attributes and 4 groups of
-    ; block data in addresses {@address 007E}.
+    ; block data in addresses {@address 007E}. This is done with
+    ; a simple load loop, which corresponds to the order in which
+    ; the data is represented in RAM.
     ;
-    LDY #$00
-    LDX #$05
+    LDY #$00                                ; Y = 0.
+    LDX #$05                                ; X = 5.
 
-  @LAB_PRG15_MIRROR__dcbf:                  ; [$dcbf]
-    LDA (Temp_Addr_L),Y
-    STA CurrentArea_BlockAttributesAddr,Y
-    INY
-    LDA (Temp_Addr_L),Y
+  @_loadBlockInfoLoop:                      ; [$dcbf]
+    LDA (Temp_Addr_L),Y                     ; Load the lower byte of the
+                                            ; address at the current index.
+    STA a:CurrentArea_BlockAttributesAddr,Y ; Store it in RAM at the current
+                                            ; index.
+    INY                                     ; Y++ (upper byte).
+    LDA (Temp_Addr_L),Y                     ; Load the upper byte.
     CLC
-    ADC #$80
-    STA CurrentArea_BlockAttributesAddr,Y
-    INY
-    DEX
-    BNE @LAB_PRG15_MIRROR__dcbf
-    LDY #$02
+    ADC #$80                                ; Normalize to an absolute
+                                            ; address.
+    STA a:CurrentArea_BlockAttributesAddr,Y ; Store it in RAM.
+    INY                                     ; Y++ (next entry).
+    DEX                                     ; X-- (loop counter).
+    BNE @_loadBlockInfoLoop                 ; If > 0, loop.
 
 
     ;
-    ; Load the block properties, scrolling data, door locations,
-    ; and door destinations addresses.
+    ; Load the block properties (entry 2).
     ;
-    LDA (CurrentArea_TableAddr),Y
-    STA CurrentArea_BlockPropertiesAddr
-    INY
-    LDA (CurrentArea_TableAddr),Y
+    LDY #$02                                ; Y = 2 (entry index).
+    LDA (CurrentArea_TableAddr),Y           ; Load the lower byte of the data
+                                            ; address.
+    STA CurrentArea_BlockPropertiesAddr     ; Store it.
+    INY                                     ; Y++ (upper byte).
+    LDA (CurrentArea_TableAddr),Y           ; Load the upper byte.
     CLC
-    ADC #$80
-    STA CurrentArea_BlockPropertiesAddr_U
-    LDY #$04
-    LDA (CurrentArea_TableAddr),Y
-    STA CurrentArea_ScrollingDataAddr
-    INY
-    LDA (CurrentArea_TableAddr),Y
+    ADC #$80                                ; Normalize to an absolute
+                                            ; address.
+    STA CurrentArea_BlockPropertiesAddr_U   ; Store it.
+
+
+    ;
+    ; Load the scrolling data (entry 4).
+    ;
+    LDY #$04                                ; Y = 4 (entry index).
+    LDA (CurrentArea_TableAddr),Y           ; Load the lower byte of the data
+                                            ; address.
+    STA CurrentArea_ScrollingDataAddr       ; Store it.
+    INY                                     ; Y++ (upper byte).
+    LDA (CurrentArea_TableAddr),Y           ; Load the upper byte.
     CLC
-    ADC #$80
-    STA ScrollingData_U
-    LDY #$06
-    LDA (CurrentArea_TableAddr),Y
-    STA CurrentArea_DoorLocationsAddr
-    INY
-    LDA (CurrentArea_TableAddr),Y
+    ADC #$80                                ; Normalize to an absolute
+                                            ; address.
+    STA ScrollingData_U                     ; Store it.
+
+
+    ;
+    ; Load the door locations (entry 6).
+    ;
+    LDY #$06                                ; Y = 6 (entry index).
+    LDA (CurrentArea_TableAddr),Y           ; Load the lower byte of the data
+                                            ; address.
+    STA CurrentArea_DoorLocationsAddr       ; Store it.
+    INY                                     ; Y++ (upper byte).
+    LDA (CurrentArea_TableAddr),Y           ; Load the upper byte.
     CLC
-    ADC #$80
-    STA CurrentArea_DoorLocationsAddr_U
-    LDY #$08
-    LDA (CurrentArea_TableAddr),Y
-    STA CurrentArea_DoorDestinationsAddr
-    INY
-    LDA (CurrentArea_TableAddr),Y
+    ADC #$80                                ; Normalize to an absolute
+                                            ; address.
+    STA CurrentArea_DoorLocationsAddr_U     ; Store it.
+
+
+    ;
+    ; Load the door destinations (entry 8).
+    ;
+    LDY #$08                                ; Y = 8 (entry index).
+    LDA (CurrentArea_TableAddr),Y           ; Load the lower byte of the data
+                                            ; address.
+    STA CurrentArea_DoorDestinationsAddr    ; Store it.
+    INY                                     ; Y++ (upper byte).
+    LDA (CurrentArea_TableAddr),Y           ; Load the upper byte.
     CLC
-    ADC #$80
-    STA CurrentArea_DoorDestinationsAddr_U
+    ADC #$80                                ; Normalize to an absolute
+                                            ; address.
+    STA CurrentArea_DoorDestinationsAddr_U  ; Store it.
 
 
     ;
     ; Switch back to the previous bank.
     ;
-    PLA
-    TAX
-    JSR MMC1_UpdateROMBank
+    PLA                                     ; Restore the previous bank.
+    TAX                                     ; X = result.
+    JSR MMC1_UpdateROMBank                  ; Switch to the bank.
     RTS
 
 
@@ -13460,7 +14266,7 @@ Game_UpdateForScroll:                       ; [$dd0f]
 ;============================================================================
 Screen_SetupNew:                            ; [$dd13]
     JSR Player_DrawSpriteImmediately        ; Draw the player sprite.
-    JSR Sprites_LoadCommon
+    JSR Sprites_LoadCommon                  ; Load all common sprites.
     LDA Area_LoadingScreenIndex
     STA Area_CurrentScreen
     JSR Area_ScrollScreenRight
@@ -13468,9 +14274,14 @@ Screen_SetupNew:                            ; [$dd13]
     LDA Screen_DestPaletteOrIndex
     STA a:Screen_PaletteIndex
     JSR Screen_LoadUIPalette
+
+
+    ;
+    ; Reset the screen scrolls.
+    ;
     LDA #$00
-    STA PPU_ScrollScreenHoriz
-    STA PPU_ScrollScreenVert
+    STA PPU_ScrollScreenHoriz               ; Clear the horizontal scroll.
+    STA PPU_ScrollScreenVert                ; Clear the vertical scroll.
     STA Screen_Maybe_ScrollXCounter
     STA Player_Something_ScrollPosY
     LDA Screen_StartPosYX
@@ -13655,22 +14466,22 @@ Game_SpawnInTemple:                         ; [$dd61]
     ;
     LDX a:TempleSpawnPoint                  ; X = index of the temple spawn
                                             ; point.
-    LDA START_SCREEN_FOR_TEMPLE_SPAWN,X     ; Set the current screen for
+    LDA a:START_SCREEN_FOR_TEMPLE_SPAWN,X   ; Set the current screen for
                                             ; outside the temple.
     STA Area_CurrentScreen
-    LDA START_MAYBE_NEXT_AREA_FOR_TEMPLE_SPAWN,X
+    LDA a:START_MAYBE_NEXT_AREA_FOR_TEMPLE_SPAWN,X
     STA a:Area_Region
-    LDA START_PLAYERPOSX_FULL_FOR_TEMPLE_SPAWN,X
+    LDA a:START_PLAYERPOSX_FULL_FOR_TEMPLE_SPAWN,X
     STA Player_PosX_Block
-    LDA MAYBE_START_PLAYERPOSY_FOR_TEMPLE_SPAWN,X
+    LDA a:MAYBE_START_PLAYERPOSY_FOR_TEMPLE_SPAWN,X
     STA Player_PosY
-    LDA DEST_SCREEN_FOR_TEMPLE_SPAWN,X
+    LDA a:DEST_SCREEN_FOR_TEMPLE_SPAWN,X
     STA a:Area_DestScreen
-    LDY CURRENT_REGION_FOR_TEMPLE_SPAWN,X
+    LDY a:CURRENT_REGION_FOR_TEMPLE_SPAWN,X
     STY Area_CurrentArea
-    LDA AREA_PALETTE_INDEXES,Y
+    LDA a:AREA_PALETTE_INDEXES,Y
     STA a:Screen_PaletteIndex
-    LDA AREA_TO_MUSIC_TABLE,Y
+    LDA a:AREA_TO_MUSIC_TABLE,Y
     STA a:Area_Music_Outside
     LDA #$12
     STA Screen_DestPaletteOrIndex
@@ -13985,14 +14796,14 @@ Game_EnterBuilding:                         ; [$de06]
     LDX #$04
     STX Area_CurrentArea                    ; Set the current area to 4
                                             ; (inside buildings)
-    LDA AREA_TO_SCREEN_DATA_BANKS,X         ; Load the bank for this area.
+    LDA a:AREA_TO_SCREEN_DATA_BANKS,X       ; Load the bank for this area.
     STA CurrentArea_ROMBank                 ; Store as the current area ROM
                                             ; bank.
     LDX CurrentArea_ROMBank
     JSR MMC1_SaveROMBankAndUpdateTo         ; Push the current bank and
                                             ; switch to the new one.
     LDX Area_CurrentArea                    ; Load the current area again.
-    LDA AREA_TO_BANK_OFFSET,X               ; Get the index into the screen
+    LDA a:AREA_TO_BANK_OFFSET,X             ; Get the index into the screen
                                             ; data table in this bank.
     JSR Game_LoadAreaTable                  ; Load the area table for the
                                             ; screen.
@@ -14041,16 +14852,16 @@ Game_ExitBuilding:                          ; [$de66]
     STA Music_Current
     LDX a:Area_SavedArea
     STX Area_CurrentArea
-    LDA AREA_TO_SCREEN_DATA_BANKS,X
+    LDA a:AREA_TO_SCREEN_DATA_BANKS,X
     STA CurrentArea_ROMBank
     LDX CurrentArea_ROMBank
     JSR MMC1_SaveROMBankAndUpdateTo
     LDX Area_CurrentArea
-    LDA AREA_TO_BANK_OFFSET,X
+    LDA a:AREA_TO_BANK_OFFSET,X
     JSR Game_LoadAreaTable
     JSR MMC1_RestorePrevROMBank
     LDX Area_CurrentArea
-    LDA CURRENT_AREA_TO_TILES_INDEX_TABLE,X
+    LDA a:AREA_TO_TILES_INDEXES,X
     STA Area_TilesIndex
     JSR Area_LoadTiles
     LDA a:Area_SavedScreen
@@ -14077,7 +14888,7 @@ Game_ExitBuilding:                          ; [$de66]
 ;     AREA_TO_BANK_OFFSET:
 ;         Mapping of areas to sprite banks.
 ;
-;     CURRENT_AREA_TO_TILES_INDEX_TABLE:
+;     AREA_TO_TILES_INDEXES:
 ;         Mapping of areas to tile indexes.
 ;
 ;     AREA_TO_MUSIC_TABLE:
@@ -14152,7 +14963,7 @@ Game_LoadFirstLevel:                        ; [$dea7]
     ; The bank containing the properties for the area will
     ; be loaded temporarily while fetching the block properties.
     ;
-    LDA AREA_TO_SCREEN_DATA_BANKS,X         ; A = PRG bank for the area.
+    LDA a:AREA_TO_SCREEN_DATA_BANKS,X       ; A = PRG bank for the area.
     STA CurrentArea_ROMBank                 ; Store as the current bank.
     LDX CurrentArea_ROMBank                 ; X = current bank.
     JSR MMC1_SaveROMBankAndUpdateTo         ; Push the current bank and
@@ -14168,7 +14979,7 @@ Game_LoadFirstLevel:                        ; [$dea7]
     ;       but it means that any shuffling around of banks will do
     ;       the wrong thing if not starting with area 0, bank 0.
     ;
-    LDA AREA_TO_BANK_OFFSET,X               ; A = sprite bank for the area.
+    LDA a:AREA_TO_BANK_OFFSET,X             ; A = sprite bank for the area.
     JSR Game_LoadAreaTable                  ; Load the area information.
     JSR MMC1_RestorePrevROMBank             ; Restore the previous bank.
 
@@ -14186,7 +14997,7 @@ Game_LoadFirstLevel:                        ; [$dea7]
     ; Load the tiles and images for the area.
     ;
     LDX Area_CurrentArea                    ; X = current area.
-    LDA CURRENT_AREA_TO_TILES_INDEX_TABLE,X ; A = tiles index.
+    LDA a:AREA_TO_TILES_INDEXES,X           ; A = tiles index.
     STA Area_TilesIndex                     ; Store that.
     JSR Area_LoadTiles                      ; Load the tileset pages for that
                                             ; index.
@@ -14199,7 +15010,7 @@ Game_LoadFirstLevel:                        ; [$dea7]
     JSR Screen_LoadSpritePalette            ; Load the palette for that
                                             ; index.
     LDX Area_CurrentArea                    ; X = current area.
-    LDA AREA_PALETTE_INDEXES,X              ; Load the palette.
+    LDA a:AREA_PALETTE_INDEXES,X            ; Load the palette.
     STA Screen_DestPaletteOrIndex           ; And store it as the current one
                                             ; for the area.
 
@@ -14207,7 +15018,7 @@ Game_LoadFirstLevel:                        ; [$dea7]
     ;
     ; Load the music for this area.
     ;
-    LDA AREA_TO_MUSIC_TABLE,X               ; Load the music for the area.
+    LDA a:AREA_TO_MUSIC_TABLE,X             ; Load the music for the area.
     STA Music_Current                       ; And store it as the current
                                             ; music.
     STA a:Areas_DefaultMusic                ; And as the default for the
@@ -14235,7 +15046,7 @@ Game_LoadFirstLevel:                        ; [$dea7]
 ;     AREA_TO_BANK_OFFSET:
 ;         Mapping of areas to sprite banks.
 ;
-;     CURRENT_AREA_TO_TILES_INDEX_TABLE:
+;     AREA_TO_TILES_INDEXES:
 ;         Mapping of areas to tile indexes.
 ;
 ;     AREA_TO_MUSIC_TABLE:
@@ -14279,7 +15090,7 @@ Game_LoadCurrentArea:                       ; [$def5]
     ; Load the bank for this area.
     ;
     LDX Area_CurrentArea                    ; X = current area.
-    LDA AREA_TO_SCREEN_DATA_BANKS,X         ; Load the ROM bank for the area.
+    LDA a:AREA_TO_SCREEN_DATA_BANKS,X       ; Load the ROM bank for the area.
     STA CurrentArea_ROMBank                 ; Store that as the current bank.
     LDX CurrentArea_ROMBank                 ; X = current bank.
     JSR MMC1_SaveROMBankAndUpdateTo         ; Save the current bank and
@@ -14290,7 +15101,7 @@ Game_LoadCurrentArea:                       ; [$def5]
     ; Load the bank for the sprites for this area.
     ;
     LDX Area_CurrentArea                    ; X = current area.
-    LDA AREA_TO_BANK_OFFSET,X               ; A = bank for the sprites.
+    LDA a:AREA_TO_BANK_OFFSET,X             ; A = bank for the sprites.
 
 
     ;
@@ -14307,7 +15118,7 @@ Game_LoadCurrentArea:                       ; [$def5]
     ; Load the tiles for the area.
     ;
     LDX Area_CurrentArea                    ; X = current area.
-    LDA CURRENT_AREA_TO_TILES_INDEX_TABLE,X ; A = tiles index for the area.
+    LDA a:AREA_TO_TILES_INDEXES,X           ; A = tiles index for the area.
     STA Area_TilesIndex                     ; Store as the current tiles
                                             ; index.
     JSR Area_LoadTiles                      ; Load all tileset images for
@@ -14320,14 +15131,14 @@ Game_LoadCurrentArea:                       ; [$def5]
     LDA #$00
     JSR Screen_LoadSpritePalette            ; Load palette 0.
     LDX Area_CurrentArea                    ; X = current area.
-    LDA AREA_PALETTE_INDEXES,X              ; Load the palette for the area.
+    LDA a:AREA_PALETTE_INDEXES,X            ; Load the palette for the area.
     STA Screen_DestPaletteOrIndex           ; Store as the current palette.
 
 
     ;
     ; Load the music for the area.
     ;
-    LDA AREA_TO_MUSIC_TABLE,X               ; Load the music for the area.
+    LDA a:AREA_TO_MUSIC_TABLE,X             ; Load the music for the area.
     STA Music_Current                       ; Set as the current music.
     STA a:Areas_DefaultMusic                ; Store as the default.
     JMP Screen_Load                         ; Load this screen.
@@ -14403,7 +15214,8 @@ AREA_TO_BANK_OFFSET_4_:                     ; [$df40]
 
 
 ;============================================================================
-; Pointers into 0xCF07 addressed by chunk ID
+; A mapping of area indexes to indexes into
+; TILE_INDEX_TO_ADDR.
 ;
 ; XREFS:
 ;     Game_EnterAreaHandler
@@ -14419,15 +15231,15 @@ AREA_TO_BANK_OFFSET_4_:                     ; [$df40]
 ;     Game_LoadCurrentArea
 ;     Game_LoadFirstLevel
 ;
-CURRENT_AREA_TO_TILES_INDEX_TABLE:          ; [$df44]
+AREA_TO_TILES_INDEXES:                      ; [$df44]
     .byte $00                               ; [0]: Eolis
-    .byte $02                               ; [1]: First town
-    .byte $03                               ; [2]:
-    .byte $05                               ; [3]:
-    .byte $06                               ; [4]:
-    .byte $01                               ; [5]:
-    .byte $04                               ; [6]:
-    .byte $04                               ; [7]: Final boss room
+    .byte $02                               ; [1]: Trunk
+    .byte $03                               ; [2]: Mist
+    .byte $05                               ; [3]: Towns
+    .byte $06                               ; [4]: Buildings
+    .byte $01                               ; [5]: Branch
+    .byte $04                               ; [6]: Dartmoor
+    .byte $04                               ; [7]: Zenis / Evil Fortress
 
 
 ;============================================================================
@@ -14447,14 +15259,30 @@ CURRENT_AREA_TO_TILES_INDEX_TABLE:          ; [$df44]
 ;
 AREA_PALETTE_INDEXES:                       ; [$df4c]
     .byte PALETTE_EOLIS                     ; [0]: Eolis
-    .byte PALETTE_OUTSIDE                   ; [1]:
-    .byte PALETTE_MIST                      ; [2]:
-    .byte PALETTE_TOWN                      ; [3]:
-    .byte PALETTE_TOWN                      ; [4]:
-    .byte PALETTE_BRANCH                    ; [5]:
-    .byte PALETTE_DARTMOOR                  ; [6]:
-    .byte PALETTE_EVIL_FORTRESS             ; [7]:
+    .byte PALETTE_OUTSIDE                   ; [1]: Trunk
+    .byte PALETTE_MIST                      ; [2]: Mist
+    .byte PALETTE_TOWN                      ; [3]: Towns
+    .byte PALETTE_TOWN                      ; [4]: Buildings
+    .byte PALETTE_BRANCH                    ; [5]: Branch
+    .byte PALETTE_DARTMOOR                  ; [6]: Dartmoor
+    .byte PALETTE_EVIL_FORTRESS             ; [7]: Zenis / Evil Fortress
+
+
+;============================================================================
+; MOD NOTES: 8 bytes of unused data.
+;============================================================================
     .byte $00,$00,$00,$00,$00,$00,$00,$00   ; [$df54] undefined
+
+
+;============================================================================
+; Mapping of areas to music indexes.
+;
+; XREFS:
+;     Game_EnterAreaHandler
+;     Game_LoadCurrentArea
+;     Game_LoadFirstLevel
+;     Game_SpawnInTemple
+;============================================================================
 
 ;
 ; XREFS:
@@ -14465,48 +15293,129 @@ AREA_PALETTE_INDEXES:                       ; [$df4c]
 ;
 AREA_TO_MUSIC_TABLE:                        ; [$df5c]
     .byte MUSIC_EOLIS                       ; [0]: Eolis
-    .byte MUSIC_APOLUNE                     ; [1]: Apolune
-    .byte MUSIC_FOREPAW                     ; [2]: Forepaw
-    .byte MUSIC_MASCON_VICTIM               ; [3]: Mascon
-    .byte MUSIC_MASCON_VICTIM               ; [4]: Victim
-    .byte MUSIC_CONFLATE                    ; [5]: Conflate
-    .byte MUSIC_DAYBREAK                    ; [6]: Daybreak
-    .byte MUSIC_EVIL_FORTRESS               ; [7]: Evil Fortress
+    .byte MUSIC_APOLUNE                     ; [1]: Trunk
+    .byte MUSIC_FOREPAW                     ; [2]: Mist
+    .byte MUSIC_MASCON_VICTIM               ; [3]: Towns
+    .byte MUSIC_MASCON_VICTIM               ; [4]: Buildings
+    .byte MUSIC_CONFLATE                    ; [5]: Branch
+    .byte MUSIC_DAYBREAK                    ; [6]: Dartmoor
+    .byte MUSIC_EVIL_FORTRESS               ; [7]: Zenith / Evil Fortress
+
 
 ;============================================================================
-; TODO: Document Game_EnterAreaHandler
+; Handle entering a new area.
+;
+; This will load the data for the area, including the metadata
+; pointers, music, tiles, and palette.
 ;
 ; INPUTS:
-;     None.
+;     Area_CurrentArea:
+;         The area being entered.
+;
+;     Area_LoadingScreenIndex:
+;         The index of the screen to enter.
+;
+;     AREA_TO_BANK_OFFSET:
+;         The mapping of area to bank offset.
+;
+;     AREA_TO_SCREEN_DATA_BANKS:
+;         The mapping of area to screen data banks.
+;
+;     AREA_TO_TILES_INDEXES:
+;         The mapping of area to tile indexes.
 ;
 ; OUTPUTS:
-;     TODO
+;     Area_CurrentScreen:
+;         The new screen index.
+;
+;     Area_TilesIndex:
+;         The new index for tile data.
+;
+;     Areas_DefaultMusic:
+;         The new default music to play on building exit.
+;
+;     CurrentArea_ROMBank:
+;         The ROM bank for the current area.
+;
+;     Music_Current:
+;         The new current music to play.
+;
+; CALLS:
+;     Area_LoadTiles
+;     Game_LoadAreaTable
+;     Screen_Load
+;     Screen_LoadSpritePalette
+;     MMC1_RestorePrevROMBank
+;     MMC1_SaveROMBankAndUpdateTo
 ;
 ; XREFS:
 ;     Game_SetupNewArea
 ;============================================================================
 Game_EnterAreaHandler:                      ; [$df64]
-    LDX Area_CurrentArea
-    LDA AREA_TO_SCREEN_DATA_BANKS,X
-    STA CurrentArea_ROMBank
-    LDX CurrentArea_ROMBank
-    JSR MMC1_SaveROMBankAndUpdateTo
-    LDX Area_CurrentArea
-    LDA AREA_TO_BANK_OFFSET,X
-    JSR Game_LoadAreaTable
-    JSR MMC1_RestorePrevROMBank
-    LDA Area_LoadingScreenIndex
-    STA Area_CurrentScreen
-    LDX Area_CurrentArea
-    LDA AREA_TO_MUSIC_TABLE,X
-    STA Music_Current
-    STA a:Areas_DefaultMusic
-    LDA CURRENT_AREA_TO_TILES_INDEX_TABLE,X
-    STA Area_TilesIndex
-    JSR Area_LoadTiles
+    ;
+    ; Load the bank containing the screen data for this area.
+    ;
+    LDX Area_CurrentArea                    ; Load the current area.
+    LDA a:AREA_TO_SCREEN_DATA_BANKS,X       ; Get the bank for the area's
+                                            ; screen data.
+    STA CurrentArea_ROMBank                 ; Store as the new area bank.
+    LDX CurrentArea_ROMBank                 ; Load that area bank back into
+                                            ; X.
+    JSR MMC1_SaveROMBankAndUpdateTo         ; Push the bank to the stack and
+                                            ; switch to it.
+
+
+    ;
+    ; Load the area table.
+    ;
+    LDX Area_CurrentArea                    ; Load the current area.
+    LDA a:AREA_TO_BANK_OFFSET,X             ; Load the starting pointer index
+                                            ; in the loaded bank.
+    JSR Game_LoadAreaTable                  ; Load the area table at that
+                                            ; index.
+    JSR MMC1_RestorePrevROMBank             ; Pop the previous bank.
+
+
+    ;
+    ; Set the current screen to the target.
+    ;
+    LDA Area_LoadingScreenIndex             ; Load the target screen index.
+    STA Area_CurrentScreen                  ; Set as the current screen.
+
+
+    ;
+    ; Load the music for the area.
+    ;
+    LDX Area_CurrentArea                    ; Load the current area.
+    LDA a:AREA_TO_MUSIC_TABLE,X             ; Load the index of the music for
+                                            ; this area.
+    STA Music_Current                       ; Store as the new current music.
+    STA a:Areas_DefaultMusic                ; Store as the default music for
+                                            ; this area.
+
+
+    ;
+    ; Load the tiles for the area.
+    ;
+    LDA a:AREA_TO_TILES_INDEXES,X           ; Load the index for the tile
+                                            ; data for this area.
+    STA Area_TilesIndex                     ; Store as the current tiles
+                                            ; index.
+    JSR Area_LoadTiles                      ; Load the tiles for the area
+                                            ; into CHR RAM.
+
+
+    ;
+    ; Load the sprite palette.
+    ;
     LDA #$00
-    JSR Screen_LoadSpritePalette
-    JMP Screen_Load
+    JSR Screen_LoadSpritePalette            ; Populate the sprite palette.
+
+
+    ;
+    ; Load the screen state.
+    ;
+    JMP Screen_Load                         ; Load the screen data.
 
 
 ;============================================================================
@@ -14702,7 +15611,7 @@ Fog_UpdateTiles:                            ; [$dfde]
     ;
     LDA #$fc                                ; 0xFC == Rotate Tiles Right draw
                                             ; command.
-    STA PPUBuffer,X                         ; Set as the command.
+    STA a:PPUBuffer,X                       ; Set as the command.
 
 
     ;
@@ -14711,7 +15620,7 @@ Fog_UpdateTiles:                            ; [$dfde]
     INX                                     ; X++
     LDA #$18                                ; 0x18 == Upper byte of the
                                             ; sprite tile address.
-    STA PPUBuffer,X                         ; Set it as the upper byte for
+    STA a:PPUBuffer,X                       ; Set it as the upper byte for
                                             ; the draw command.
 
 
@@ -14730,7 +15639,7 @@ Fog_UpdateTiles:                            ; [$dfde]
     ASL A
     ASL A
     ASL A
-    STA PPUBuffer,X                         ; Set as the lower byte for the
+    STA a:PPUBuffer,X                       ; Set as the lower byte for the
                                             ; draw command.
 
 
@@ -14767,7 +15676,7 @@ Fog_UpdateTiles:                            ; [$dfde]
     AND #$03                                ; And convert to an index in the
                                             ; lookup table.
     TAX                                     ; X = A
-    LDA FOG_START_TILE_INDEXES,X            ; Load a starting fog generator
+    LDA a:FOG_START_TILE_INDEXES,X          ; Load a starting fog generator
                                             ; value at that index.
     STA Fog_TileIndex                       ; And set it.
 
@@ -14985,7 +15894,7 @@ Game_MovePlayerOnScrollLeft:                ; [$e052]
     ;
     LDA Screen_ScrollPlayerTransitionCounter ; Load the transition counter.
     CMP #$04                                ; Is it >= 4?
-    BCS @LAB_PRG15_MIRROR__e065             ; If so, jump.
+    BCS @_updateScrollX                     ; If so, jump.
     LDA Player_PosX_Block                   ; Load the player X position.
     SEC
     SBC #$04                                ; Subtract 4.
@@ -14999,7 +15908,7 @@ Game_MovePlayerOnScrollLeft:                ; [$e052]
     ; Update Maybe_PlayerX_ForScroll based on the
     ; player's X position.
     ;
-  @LAB_PRG15_MIRROR__e065:                  ; [$e065]
+  @_updateScrollX:                          ; [$e065]
     LDA Player_PosX_Block
     STA Maybe_PlayerX_ForScroll
     RTS
@@ -15249,7 +16158,7 @@ RETURN_E0C9:                                ; [$e0c9]
 ;
 ; CALLS:
 ;     Player_CheckHandleAttack
-;     Player_CheckHandleClimb
+;     Player_CheckHandleVertMovement
 ;     Player_CheckHandleJump
 ;     Player_HandleIFrames
 ;     Player_CheckHandleEnterDoor
@@ -15264,7 +16173,7 @@ RETURN_E0C9:                                ; [$e0c9]
 GameLoop_UpdatePlayer:                      ; [$e0ca]
     JSR Player_CheckHandleAttack            ; Check if the player has
                                             ; attacked and handle it.
-    JSR Player_CheckHandleClimb
+    JSR Player_CheckHandleVertMovement
     JSR Player_CheckHandleJump              ; Check if the player has jumped
                                             ; and handle it.
     JSR Player_HandleIFrames                ; Handle any pending iframes.
@@ -15372,14 +16281,47 @@ Player_HandleIFrames:                       ; [$e0e8]
     STA Player_StatusFlag                   ; Save them.
     RTS
 
+
 ;============================================================================
-; TODO: Document Player_CheckHandleAttack
+; Check if the player is attacking and handle it.
+;
+; If the player is not yet attacking, and is triggering
+; an attack ("B" button hit) while in a position to attack
+; (not climbing), this will begin the attack phase.
+;
+; If the player is attacking, this will manage the current
+; animation frame based on the attack phase (defined as
+; PLAYER_ATTACK_ANIMATION_PHASES).
 ;
 ; INPUTS:
-;     None.
+;     Joy1_ChangedButtonMask:
+;         The controller 1 button mask.
+;
+;     Player_Flags:
+;         The player's current flags.
+;
+;     Player_StatusFlag:
+;         The player's status flags.
+;
+;     PLAYER_ATTACK_ANIMATION_PHASES:
+;         The table of animation phases to timer lengths.
 ;
 ; OUTPUTS:
-;     TODO
+;     Player_AttackPhaseTimer:
+;         The timer for the current attack phase.
+;
+;     Player_AttackPhaseAnimFrame:
+;         The current animation frame for the phase.
+;
+;     Player_Flags:
+;         Player flags with the attacking bit set/cleared.
+;
+;     Player_StatusFlag:
+;         Player stauts flags with the attacking bit
+;         set/cleared.
+;
+; CALLS:
+;     Player_IsClimbing
 ;
 ; XREFS:
 ;     GameLoop_UpdatePlayer
@@ -15441,15 +16383,15 @@ Player_CheckHandleAttack:                   ; [$e103]
     ; Clear the phase state.
     ;
     LDA #$00
-    STA PlayerHitsPhaseTimer                ; Set phase timer to 0.
-    STA PlayerHitsPhaseCounter              ; Set phase counter to 0.
+    STA Player_AttackPhaseTimer             ; Set phase timer to 0.
+    STA Player_AttackPhaseAnimFrame         ; Set phase counter to 0.
 
   @_updateHitPhase:                         ; [$e132]
-    INC PlayerHitsPhaseTimer                ; Increment the current phase
+    INC Player_AttackPhaseTimer             ; Increment the current phase
                                             ; timer.
-    LDA PlayerHitsPhaseTimer                ; A = updated phase timer.
-    LDX PlayerHitsPhaseCounter              ; X = phase counter.
-    CMP PLAYER_HIT_PHASES,X                 ; Check against the phase lookup
+    LDA Player_AttackPhaseTimer             ; A = updated phase timer.
+    LDX Player_AttackPhaseAnimFrame         ; X = phase counter.
+    CMP a:PLAYER_ATTACK_ANIMATION_PHASES,X  ; Check against the phase lookup
                                             ; table.
     BCC @_return                            ; If we're not transitioning to
                                             ; the next phase count, return.
@@ -15460,13 +16402,13 @@ Player_CheckHandleAttack:                   ; [$e103]
     ; reset the timer.
     ;
     LDA #$00
-    STA PlayerHitsPhaseTimer                ; Reset the current phase's timer
+    STA Player_AttackPhaseTimer             ; Reset the current phase's timer
                                             ; to 0.
     INX                                     ; Phase counter++
     CPX #$03                                ; Is it >= 3 (end of phases)?
     BCS @_finishAttacking                   ; If so, finish the attacking
                                             ; state.
-    STX PlayerHitsPhaseCounter              ; Else, increment the phase
+    STX Player_AttackPhaseAnimFrame         ; Else, increment the phase
                                             ; counter for the next frame.
 
   @_return:                                 ; [$e148]
@@ -15484,11 +16426,19 @@ Player_CheckHandleAttack:                   ; [$e103]
 RETURN_E14F:                                ; [$e14f]
     RTS
 
+
+;============================================================================
+; Mapping of player phase indexes to total animation frames.
+;
+; XREFS:
+;     Player_CheckHandleAttack
+;============================================================================
+
 ;
 ; XREFS:
 ;     Player_CheckHandleAttack
 ;
-PLAYER_HIT_PHASES:                          ; [$e150]
+PLAYER_ATTACK_ANIMATION_PHASES:             ; [$e150]
     .byte $08                               ; [0]: 8 frames thrusting out
                                             ; weapon
     .byte $03                               ; [1]: 3 frames of waiting
@@ -15580,7 +16530,6 @@ Player_KnockbackHoriz:                      ; [$e16b]
     AND #$40                                ; Is the player facing right?
     BNE Player_TryMoveRight                 ; If so, move right.
     JMP Player_TryMoveLeft
-
 ;============================================================================
 ; TODO: Document Player_CheckHandleJump
 ;
@@ -15594,14 +16543,28 @@ Player_KnockbackHoriz:                      ; [$e16b]
 ;     GameLoop_UpdatePlayer
 ;============================================================================
 Player_CheckHandleJump:                     ; [$e174]
-    LDA Screen_ScrollDirection
-    BPL RETURN_E14F
-    LDA Player_StatusFlag
-    AND #$02
-    BNE Player_HandleKnockback
-    LDA Player_StatusFlag
-    BMI @_playerCanFly
-    LDA Player_Flags
+    ;
+    ; Check if the screen is scrolling. If so, bail.
+    ;
+    LDA Screen_ScrollDirection              ; Load the scroll direction.
+    BPL RETURN_E14F                         ; If set, return.
+
+
+    ;
+    ; Check if knockback is active. Handle that if so.
+    ;
+    LDA Player_StatusFlag                   ; Load the player's status flag.
+    AND #$02                                ; Check for knockback.
+    BNE Player_HandleKnockback              ; If knockback is set, handle
+                                            ; that and return.
+
+
+    ;
+    ; Check if the player's flying.
+    ;
+    LDA Player_StatusFlag                   ; Load the player's status flag.
+    BMI @_playerCanFly                      ; If the player is flying,
+    LDA Player_Flags                        ; Load the player's flags.
     AND #$05
     BEQ @_playerCanFly
     LDA Player_Flags
@@ -16065,64 +17028,158 @@ Player_UpdatePosFromKnockback:              ; [$e288]
     STA Player_MoveAcceleration_U           ; Set upper to 8.
     RTS
 
+
 ;============================================================================
-; TODO: Document Player_UpdateAcceleration
+; Update the player's acceleration.
+;
+; This will determine if the player can accelerate and, if
+; so, update the acceleration value based on their
+; title/rank.
+;
+; If the player's in a knockback state, acceleration will
+; stop and the position will be updated.
+;
+; If the player pressed Up or Down, or is in front of a
+; climbable block, acceleration will reset.
+;
+; If the player's hit max acceleration (384), acceleration
+; will not increase.
+;
+; Otherwise, acceleration will be updated based on their
+; rank/title. Values are in 4 groups of 4 ranks each,
+; meaning every 4 ranks, their acceleration will increase.
 ;
 ; INPUTS:
-;     None.
+;     Player_Flags:
+;         The player's current flags.
+;
+;     Player_StatusFlag:
+;         The player's current status flags.
+;
+;     PlayerTitle:
+;         The player's current title/rank.
+;
+;     Joy1_ButtonMask:
+;         Controller 1's button mask.
+;
+;     Player_MoveAcceleration:
+;         The current move acceleration.
+;
+;     PLAYER_ACCELERATION_DELTA_BY_RANK_GROUP:
+;         The table of acceleration values by rank group.
 ;
 ; OUTPUTS:
-;     A
+;     Player_MoveAcceleration:
+;         The updated move acceleration.
+;
+; CALLS:
+;     Player_SetStandardAcceleration
+;     Player_UpdatePosFromKnockback
 ;
 ; XREFS:
 ;     Player_TryMoveLeft
 ;     Player_TryMoveRight
 ;============================================================================
 Player_UpdateAcceleration:                  ; [$e291]
-    LDA Player_StatusFlag
-    AND #$02
-    BNE Player_UpdatePosFromKnockback
-    LDA Joy1_ButtonMask
-    AND #$0c
-    BEQ @LAB_PRG15_MIRROR__e2a3
-    LDA Player_Flags
-    AND #$08
-    BNE Player_SetStandardAcceleration
+    ;
+    ; First, check if the player is in a knockback state. If so,
+    ; instead of accelerating, set their position from knockback.
+    ;
+    LDA Player_StatusFlag                   ; Load the player's status flags.
+    AND #$02                                ; Keep the knockback bit.
+    BNE Player_UpdatePosFromKnockback       ; If set, update the position
+                                            ; from knockback and return.
 
-  @LAB_PRG15_MIRROR__e2a3:                  ; [$e2a3]
-    LDA Player_MoveAcceleration
-    CMP #$80
-    LDA Player_MoveAcceleration_U
-    SBC #$01
-    BCS @_return
-    LDA a:PlayerTitle
+
+    ;
+    ; The player is not in a knockback state, so proceed with
+    ; acceleration.
+    ;
+    LDA Joy1_ButtonMask                     ; Load the pressed buttons.
+    AND #$0c                                ; Check if Up or Down is pressed.
+    BEQ @_updateAcceleration                ; If not, jump to update
+                                            ; acceleration.
+    LDA Player_Flags                        ; Load the player's flags.
+    AND #$08                                ; Check if the player can
+                                            ; currently climb.
+    BNE Player_SetStandardAcceleration      ; If so, switch to standard
+                                            ; acceleration and return.
+
+
+    ;
+    ; The player is moving and can accelerate. Calculate the
+    ; acceleration.
+    ;
+    ; First, check if the acceleration >= 384, which I believe
+    ; represents max acceleration.
+    ;
+  @_updateAcceleration:                     ; [$e2a3]
+    LDA Player_MoveAcceleration             ; Load the lower byte of the
+                                            ; current acceleration.
+    CMP #$80                                ; If >= 128, C=1. Else, C=0.
+    LDA Player_MoveAcceleration_U           ; And load the upper byte.
+    SBC #$01                                ; If >= 128 above, subtract (1 +
+                                            ; C). That equals 1 if C=0, 2 if
+                                            ; C=1.
+    BCS @_return                            ; If acceleration >= 384 (-128
+                                            ; unsigned), return.
+
+
+    ;
+    ; Max acceleration wasn't hit, so calculate acceleration.
+    ;
+    ; This will be done based on the player's title and how much
+    ; they've moved.
+    ;
+    ; Every 4 ranks, acceleration will change, so we'll take the
+    ; current one and divide by 4 to get that grouping.
+    ;
+    LDA a:PlayerTitle                       ; Load the player's title.
+    LSR A                                   ; Divide by 4 (acceleration
+                                            ; changes every 4 ranks).
     LSR A
-    LSR A
-    AND #$03
-    TAX
-    LDA Player_MoveAcceleration
+    AND #$03                                ; Cap to the size of the lookup
+                                            ; table.
+    TAX                                     ; X = resulting table index.
+    LDA Player_MoveAcceleration             ; A = Current acceleration (lower
+                                            ; byte).
     CLC
-    ADC BYTE_ARRAY_PRG15_MIRROR__e2c4,X
-    STA Player_MoveAcceleration
-    LDA Player_MoveAcceleration_U
-    ADC #$00
-    STA Player_MoveAcceleration_U
+    ADC a:PLAYER_ACCELERATION_DELTA_BY_RANK_GROUP,X ; Add acceleration for
+                                                    ; the current rank.
+    STA Player_MoveAcceleration             ; Store as the new lower byte
+                                            ; value.
+    LDA Player_MoveAcceleration_U           ; Load the upper byte.
+    ADC #$00                                ; Increment if lower byte
+                                            ; wrapped.
+    STA Player_MoveAcceleration_U           ; Store it.
 
   @_return:                                 ; [$e2c3]
     RTS
+
+
+;============================================================================
+; Mapping table of rank groups to acceleration deltas.
+;
+; Each entry is indexed by a 4-span of ranks, mapping to
+; a value that should be added to the player's acceleration
+; every update tick.
+;
+;
+; XREFS:
+;     Player_UpdateAcceleration
+;============================================================================
 
 ;
 ; XREFS:
 ;     Player_UpdateAcceleration
 ;
-BYTE_ARRAY_PRG15_MIRROR__e2c4:              ; [$e2c4]
-    .byte $02                               ; [0]:
-    .byte $04                               ; [1]:
-    .byte $06                               ; [2]:
-    .byte $08                               ; [3]:
-
+PLAYER_ACCELERATION_DELTA_BY_RANK_GROUP:    ; [$e2c4]
+    .byte $02                               ; [0]: Novice - Aspirant
+    .byte $04                               ; [1]: Adept - Warrior
+    .byte $06                               ; [2]: Swordman - Myrmidon
+    .byte $08                               ; [3]: Champion - Lord
 ;============================================================================
-; TODO: Document Player_CheckHandleClimb
+; TODO: Document Player_CheckHandleVertMovement
 ;
 ; INPUTS:
 ;     None.
@@ -16133,42 +17190,93 @@ BYTE_ARRAY_PRG15_MIRROR__e2c4:              ; [$e2c4]
 ; XREFS:
 ;     GameLoop_UpdatePlayer
 ;============================================================================
-Player_CheckHandleClimb:                    ; [$e2c8]
+Player_CheckHandleVertMovement:             ; [$e2c8]
+    ;
+    ; First, check if the Wing Boots are active or the A
+    ; button is pressed.
+    ;
     LDA Player_StatusFlag                   ; A = Player status flags.
-    BPL @LAB_PRG15_MIRROR__e2d6
-    LDA Joy1_ButtonMask
-    BPL @LAB_PRG15_MIRROR__e2d6
-    JSR Player_CheckIfOnLadder
-    JMP @LAB_PRG15_MIRROR__e2f4
+    BPL @_checkClimbLadder                  ; If Wing Boots are not active,
+                                            ; jump.
+    LDA Joy1_ButtonMask                     ; A = Controller 1 button mask.
+    BPL @_checkClimbLadder                  ; If A is not pressed, jump.
 
-  @LAB_PRG15_MIRROR__e2d6:                  ; [$e2d6]
-    JSR Player_CheckIfOnLadder
-    LDA Player_Flags
-    AND #$08
-    BEQ @LAB_PRG15_MIRROR__e2fe
-    LDA Joy1_ButtonMask
-    AND #$0c
-    BEQ @LAB_PRG15_MIRROR__e2fe
-    LDA Player_Flags
-    ORA #$10
-    STA Player_Flags
-    LDA Player_PosX_Block
-    AND #$0f
-    BEQ @LAB_PRG15_MIRROR__e2f4
-    JMP Player_CheckHandleClimbMaybeSide
 
-  @LAB_PRG15_MIRROR__e2f4:                  ; [$e2f4]
-    LDA Joy1_ButtonMask
+    ;
+    ; Wing Boots are active and the A button is pressed.
+    ;
+    JSR Player_CheckIfOnLadder              ; Set state based on whether the
+                                            ; user's in front of a
+                                            ; ladder/climbable block.
+    JMP @_checkClimbUpDown
+
+  @_checkClimbLadder:                       ; [$e2d6]
+    JSR Player_CheckIfOnLadder              ; Set state based on whether the
+                                            ; user's in front of a
+                                            ; ladder/climbable block.
+    LDA Player_Flags                        ; Load the player's flags.
+    AND #$08                                ; Is the Can Climb flag set?
+    BEQ @_checkClimbSide                    ; If not, jump to check climbing
+                                            ; to the side.
+    LDA Joy1_ButtonMask                     ; Load the controller 1 button
+                                            ; mask.
+    AND #$0c                                ; Check if Up or Down is pressed.
+    BEQ @_checkClimbSide                    ; If not, check climbing to the
+                                            ; side.
+
+
+    ;
+    ; The player is climbing. Set the state.
+    ;
+    LDA Player_Flags                        ; Load the player's flags.
+    ORA #$10                                ; Set the climbing bit.
+    STA Player_Flags                        ; Save it.
+
+
+    ;
+    ; Check if the player is evenly on a ladder (aligned with the
+    ; sides of the ladder, and not in-between ladders or falling
+    ; off).
+    ;
+    ; If evenly on a ladder, they'll climb up or down. If not,
+    ; they'll be re-aligned first, or will fall off, depending
+    ; on direction and nearby blocks.
+    ;
+    LDA Player_PosX_Block                   ; Load the block X position the
+                                            ; player is on.
+    AND #$0f                                ; Round it.
+    BEQ @_checkClimbUpDown                  ; If the player's evenly on the
+                                            ; ladder, jump.
+
+
+    ;
+    ; The player is not evenly on the ladder.
+    ;
+    JMP Player_HandleVertLadderOrJump       ; Handle ladder movement.
+
+
+    ;
+    ; Check if the player is climbing up a ladder.
+    ;
+  @_checkClimbUpDown:                       ; [$e2f4]
+    LDA Joy1_ButtonMask                     ; Load the Controller 1 button
+                                            ; mask.
+    LSR A                                   ; Shift the "Down" bit into bit
+                                            ; 0.
     LSR A
     LSR A
-    LSR A
-    BCS Player_CheckHandleClimbDown
-    LSR A
-    BCS Player_CheckHandleClimbUp
+    BCS Player_CheckHandleClimbDown         ; If set, climb down.
 
-  @LAB_PRG15_MIRROR__e2fe:                  ; [$e2fe]
-    JMP Player_CheckHandleClimbMaybeSide
 
+    ;
+    ; Check if the player is climbing down.
+    ;
+    LSR A                                   ; Else, shift "Up" into bit 0.
+    BCS Player_CheckHandleClimbUp           ; If set, climb up.
+
+  @_checkClimbSide:                         ; [$e2fe]
+    JMP Player_HandleVertLadderOrJump       ; Else, handle general ladder
+                                            ; movement.
 ;============================================================================
 ; TODO: Document Player_CheckHandleClimbUp
 ;
@@ -16179,52 +17287,106 @@ Player_CheckHandleClimb:                    ; [$e2c8]
 ;     TODO
 ;
 ; XREFS:
-;     Player_CheckHandleClimb
+;     Player_CheckHandleVertMovement
 ;============================================================================
 Player_CheckHandleClimbUp:                  ; [$e301]
-    LDA Player_Flags
-    AND #$da
-    STA Player_Flags
-    LDX #$02
-    JSR Player_CheckIfPassable
-    BNE @LAB_PRG15_MIRROR__e343
-    INC Player_MovementTick
-    LDA Player_StatusFlag
-    BPL @LAB_PRG15_MIRROR__e31e
-    LDA Player_PosY
-    SEC
-    SBC #$01
-    STA Player_PosY
-    JMP @LAB_PRG15_MIRROR__e32b
+    ;
+    ; Clear the flags for jumping, falling, and moving.
+    ;
+    LDA Player_Flags                        ; Load the player's flags.
+    AND #$da                                ; Clear the Jumping, Falling Off,
+                                            ; and Moving flags.
+    STA Player_Flags                        ; Save it.
 
-  @LAB_PRG15_MIRROR__e31e:                  ; [$e31e]
-    LDA BYTE_00a0
+
+    ;
+    ; Check if the player is able to climb up a block.
+    ;
+    LDX #$02                                ; X = 2 (Up direction).
+    JSR Player_CheckIfPassable              ; Check if the block up is
+                                            ; passable.
+    BNE @_return                            ; If not, return.
+    INC Player_MovementTick                 ; Increment the movement tick.
+    LDA Player_StatusFlag                   ; Load the player's status flags.
+    BPL @_wingBootsActive                   ; If Wing Boots are active, jump.
+
+
+    ;
+    ; Wing Boots are not active, and the block is climbable,
+    ; so move the player up 1.
+    ;
+    LDA Player_PosY                         ; Load the player's Y position.
+    SEC
+    SBC #$01                                ; Subtract 1.
+    STA Player_PosY                         ; Save it.
+    JMP @_checkScreenEdge
+
+
+    ;
+    ; Wing Boots are active.
+    ;
+  @_wingBootsActive:                        ; [$e31e]
+    LDA Player_ClimbFlySpeedModifier
     SEC
     SBC #$a0
-    STA BYTE_00a0
-    LDA Player_PosY
-    SBC #$00
-    STA Player_PosY
+    STA Player_ClimbFlySpeedModifier
+    LDA Player_PosY                         ; Load the player's Y position.
+    SBC #$00                                ; Subtract carry from above
+                                            ; calculation, if set.
+    STA Player_PosY                         ; Save it.
 
-  @LAB_PRG15_MIRROR__e32b:                  ; [$e32b]
-    BCS @LAB_PRG15_MIRROR__e343
-    LDY #$02
-    JSR Screen_IsEdge
-    BCS @LAB_PRG15_MIRROR__e344
-    LDA Area_ScreenAbove
-    STA Area_CurrentScreen
-    LDX #$02
-    JSR Area_ScrollTo
-    DEC Player_Something_ScrollPosY
-    LDA #$c0
-    STA Player_PosY
 
-  @LAB_PRG15_MIRROR__e343:                  ; [$e343]
+    ;
+    ; Check the screen edge for wrapping.
+    ;
+    ; If subtracting 1 from the player's Y position did not wrap
+    ; to negative, then there's no reason to check the edge, in
+    ; which case we can bail early.
+    ;
+  @_checkScreenEdge:                        ; [$e32b]
+    BCS @_return                            ; If subtraction above did not
+                                            ; wrap, return.
+    LDY #$02                                ; Y = 2 (Up direction).
+    JSR Screen_IsEdge                       ; Check if there's a screen above
+                                            ; or if this is the edge.
+    BCS @_atEdge                            ; If at the edge, jump.
+
+
+    ;
+    ; There's a screen above.
+    ;
+    LDA Area_ScreenAbove                    ; Load the index of the screen
+                                            ; above.
+    STA Area_CurrentScreen                  ; Set as the new current screen.
+
+
+    ;
+    ; Scroll up.
+    ;
+    LDX #$02                                ; X = 2 (Up direction).
+    JSR Area_ScrollTo                       ; Scroll up.
+    DEC Player_Something_ScrollPosY         ; Decrement the scrolling Y
+                                            ; position by 1.
+
+
+    ;
+    ; Move the player to the bottom of the new screen.
+    ;
+    LDA #$c0                                ; Set the player's Y position to
+                                            ; the bottom of the screen.
+    STA Player_PosY                         ; Save it.
+
+  @_return:                                 ; [$e343]
     RTS
 
-  @LAB_PRG15_MIRROR__e344:                  ; [$e344]
-    LDA #$00
-    STA Player_PosY
+
+    ;
+    ; The player's at the screen edge and can't go up, so cap
+    ; the Y position to 0 so it doesn't wrap.
+    ;
+  @_atEdge:                                 ; [$e344]
+    LDA #$00                                ; A = 0.
+    STA Player_PosY                         ; Set as the Y position.
     RTS
 
 ;============================================================================
@@ -16237,7 +17399,7 @@ Player_CheckHandleClimbUp:                  ; [$e301]
 ;     TODO
 ;
 ; XREFS:
-;     Player_CheckHandleClimb
+;     Player_CheckHandleVertMovement
 ;============================================================================
 Player_CheckHandleClimbDown:                ; [$e349]
     LDA Player_Flags
@@ -16249,20 +17411,20 @@ Player_CheckHandleClimbDown:                ; [$e349]
     INC Player_MovementTick
     LDA Player_StatusFlag
     BPL @LAB_PRG15_MIRROR__e36c
-    LDA BYTE_00a0
+    LDA Player_ClimbFlySpeedModifier
     CLC
     ADC #$80
-    STA BYTE_00a0
+    STA Player_ClimbFlySpeedModifier
     LDA Player_PosY
     ADC #$01
     STA Player_PosY
     JMP Player_MoveDownScreen
 
   @LAB_PRG15_MIRROR__e36c:                  ; [$e36c]
-    LDA BYTE_00a0
+    LDA Player_ClimbFlySpeedModifier
     CLC
     ADC #$c0
-    STA BYTE_00a0
+    STA Player_ClimbFlySpeedModifier
     LDA Player_PosY
     ADC #$00
     STA Player_PosY
@@ -16320,162 +17482,317 @@ Player_SetPosAtBottomEdge:                  ; [$e394]
     STA Player_PosY                         ; Set player Y position to 0xC0
                                             ; (192).
     RTS
-
 ;============================================================================
-; TODO: Document Player_CheckHandleClimbMaybeSide
+; TODO: Document Player_HandleVertLadderOrJump
 ;
 ; INPUTS:
-;     X
+;     None.
 ;
 ; OUTPUTS:
 ;     TODO
 ;
 ; XREFS:
-;     Player_CheckHandleClimb
+;     Player_CheckHandleVertMovement
 ;============================================================================
-Player_CheckHandleClimbMaybeSide:           ; [$e399]
-    LDA Something_Player_ClimbLadderCheckPos
-    CMP #$20
-    BCC @LAB_PRG15_MIRROR__e3a5
+Player_HandleVertLadderOrJump:              ; [$e399]
+    ;
+    ; Check if there's a jump curve, and if it's in bounds.
+    ;
+    LDA Player_JumpCurveIndex               ; Load the jump curve index.
+    CMP #$20                                ; Is it within bounds of the jump
+                                            ; curve?
+    BCC @_checkJumping                      ; If so, check the jumping state.
 
 
     ;
-    ; Clear the player's Jumping state.
+    ; The jump curve is not in bounds. Clear the player's
+    ; jumping state.
     ;
     LDA Player_Flags                        ; Load the player's flags.
     AND #$fe                                ; Clear the Jumping bit.
     STA Player_Flags                        ; Save it back.
 
-  @LAB_PRG15_MIRROR__e3a5:                  ; [$e3a5]
-    LDA Player_Flags
-    LSR A
-    BCC @LAB_PRG15_MIRROR__e3ad
-    JMP Player_StayOnLadderAndContinue
 
-  @LAB_PRG15_MIRROR__e3ad:                  ; [$e3ad]
-    LDA #$03
-    JSR Player_CheckIfPassable
-    BEQ @LAB_PRG15_MIRROR__e3b7
-    JMP Player_StayOnLadderAndContinue
+    ;
+    ; Check the jumping state.
+    ;
+    ; If jumping, continue processing the jump.
+    ;
+    ; If not jumping, handle ladder movement.
+    ;
+  @_checkJumping:                           ; [$e3a5]
+    LDA Player_Flags                        ; Load the player's flags.
+    LSR A                                   ; Shift the Jumping bit into bit
+                                            ; 0.
+    BCC @_checkDownPassable                 ; If not jumping, check if the
+                                            ; block below is passable.
 
-  @LAB_PRG15_MIRROR__e3b7:                  ; [$e3b7]
-    JSR Area_CheckCanClimbAdjacent
-    LDA Blocks_Result
-    BEQ @LAB_PRG15_MIRROR__e3cd
-    LDA Maybe_ClimbLadderOffset
+
+    ;
+    ; The player is jumping. Stay on the ladder.
+    ;
+    JMP Player_GrabClimbLadderOrJump        ; Else, stay on the ladder.
+
+
+    ;
+    ; BUG: This checks if a block in the Down direction is passable,
+    ;      but sets the wrong variable. It sets A instead of X. So
+    ;      instead, this ends up checking whatever X might be set to
+    ;      at this moment.
+    ;
+    ;      Due to the way Player_CheckIfPassable
+    ;      works, this
+    ;      will check the block below unless X just happens to be 0,
+    ;      1, or 2. Which is what "A" was going for above, checking
+    ;      the Down direction. So most likely, this will check Down,
+    ;      but it can mess up depending on what's in the X register.
+    ;
+  @_checkDownPassable:                      ; [$e3ad]
+    LDA #$03                                ; Should be LDX -- Fail to set
+                                            ; the direction to Up.
+    JSR Player_CheckIfPassable              ; Check if the block in whatever
+                                            ; direction might be in X is
+                                            ; passable.
+    BEQ @_checkAdjacent                     ; If it's passable, jump.
+
+
+    ;
+    ; The block below is impassable (well, in theory.. the bug).
+    ;
+    ; Stay on the ladder and continue.
+    ;
+    JMP Player_GrabClimbLadderOrJump
+
+
+    ;
+    ; Check if the player is moving left or right at the bottom of
+    ; the screen and has a solid block in the direction they're
+    ; moving. If so, keep the player firmly in place
+    ;
+    ; NOTE:
+    ; has a solid block off-screen. If so, a counter
+    ; will start
+    ;
+    ; NOTE: I'm
+    ;
+  @_checkAdjacent:                          ; [$e3b7]
+    JSR Area_CheckClimbAdjacentImpassable   ; Check if attempting to climb
+                                            ; left/right to an impassable
+                                            ; block.
+    LDA Blocks_Result                       ; Check the result.
+    BEQ @_checkWingBoots                    ; If passable, check if Wing
+                                            ; Boots are active.
+
+
+    ;
+    ; The player tried climbing left or right, and the block there
+    ; was impassable.
+    ;
+    ; This code is going to try to check what I think is a hang
+    ; time to go from climbing to falling, but in practice, I'm
+    ; not sure this is ever used.
+    ;
+    ; Seems we'd get here if moving left or right into an
+    ; impassable block at the bottom of the screen, but I can't
+    ; make this happen. I think other code paths get to that case
+    ; first.
+    ;
+    LDA Player_ClimbLadderHangTime
     CMP #$08
-    BCS @LAB_PRG15_MIRROR__e3c9
-    INC Maybe_ClimbLadderOffset
-    JMP Player_ContinueHandleClimbOrJump
+    BCS @_resetHangTime
+    INC Player_ClimbLadderHangTime
+    JMP Player_UpdateClimbOrJump
 
-  @LAB_PRG15_MIRROR__e3c9:                  ; [$e3c9]
+  @_resetHangTime:                          ; [$e3c9]
     LDA #$00
-    STA Maybe_ClimbLadderOffset
+    STA Player_ClimbLadderHangTime
 
-  @LAB_PRG15_MIRROR__e3cd:                  ; [$e3cd]
-    LDA Player_StatusFlag
-    BPL @LAB_PRG15_MIRROR__e3d1
 
-  @LAB_PRG15_MIRROR__e3d1:                  ; [$e3d1]
-    LDA Player_Flags
-    ORA #$04
-    STA Player_Flags
-    LDA Player_Flags
-    AND #$08
-    BNE Player_StayOnLadderAndContinue
+    ;
+    ; DEADCODE: This checks if Wing Boots are active, and then
+    ;           jumps to the very next line. It effectively does
+    ;           nothing.
+    ;
+  @_checkWingBoots:                         ; [$e3cd]
     LDA Player_StatusFlag
-    BPL @LAB_PRG15_MIRROR__e3f5
-    LDA Joy1_ButtonMask
-    BPL @LAB_PRG15_MIRROR__e3f5
-    LDA BYTE_00a0
+    BPL @_setFalling
+
+
+    ;
+    ; Mark the player as falling off the ladder.
+    ;
+  @_setFalling:                             ; [$e3d1]
+    LDA Player_Flags                        ; Load the player's flags.
+    ORA #$04                                ; Set the Falling bit.
+    STA Player_Flags                        ; Save it.
+    LDA Player_Flags                        ; Load the player's flags again.
+    AND #$08                                ; Check if the Can Climb bit is
+                                            ; set.
+    BNE Player_GrabClimbLadderOrJump        ; If so, stay on the ladder.
+
+
+    ;
+    ; The player can no longer climb.
+    ;
+    ; Update the Y position based on whether Wing Boots are
+    ; being used or not.
+    ;
+    LDA Player_StatusFlag                   ; Load the player's status flag.
+    BPL @_climbDown                         ; If Wing Boots are inactive,
+                                            ; jump to climb down.
+    LDA Joy1_ButtonMask                     ; Load the controller 1 button
+                                            ; mask.
+    BPL @_climbDown                         ; If the A button isn't pressed,
+                                            ; jump to climb down.
+
+
+    ;
+    ; Wing Boots are active, and "A" is pressed.
+    ;
+    ;
+    ; DEADCODE: This next block doesn't do anything anymore. It
+    ;           loads the modifier, adds 0, and saves it back. It
+    ;           was probably used at one point to do the same kind
+    ;           of work that Player_CheckHandleClimbUp
+    ;           does.
+    ;
+    LDA Player_ClimbFlySpeedModifier
     CLC
     ADC #$00
-    STA BYTE_00a0
-    LDA Player_PosY
-    ADC #$01
-    STA Player_PosY
-    JMP Area_ScrollScreenDown
+    STA Player_ClimbFlySpeedModifier
 
-  @LAB_PRG15_MIRROR__e3f5:                  ; [$e3f5]
-    LDA Player_PosY
+
+    ;
+    ; Increase the Y position by 1.
+    ;
+    LDA Player_PosY                         ; Load the player's Y position.
+    ADC #$01                                ; Add 1.
+    STA Player_PosY                         ; Save it.
+    JMP @_checkScrollScreenDown             ; Check if the screen should now
+                                            ; scroll down.
+
+
+    ;
+    ; Move the player down 8 pixels.
+    ;
+  @_climbDown:                              ; [$e3f5]
+    LDA Player_PosY                         ; Load the player's Y position.
     CLC
-    ADC #$08
-    STA Player_PosY
+    ADC #$08                                ; Add 8.
+    STA Player_PosY                         ; Save it.
+
+
+    ;
+    ; Check if the screen should scroll down.
+    ;
+  @_checkScrollScreenDown:                  ; [$e3fc]
+    CMP #$c1                                ; Check if the player's hit the
+                                            ; bottom of the screen.
+    BCC @_checkCapFall                      ; If not, check whether the
+                                            ; player's fell on a block.
+
+
+    ;
+    ; The player hit the bottom of the screen.
+    ;
+    ; Check if there's a screen below.
+    ;
+    LDY #$03                                ; Y = 3 (Down direction).
+    JSR Screen_IsEdge                       ; Check if there's a screen or
+                                            ; edge there.
+    BCC @_scrollScreenDown                  ; If there's a screen, handle
+                                            ; scrolling down.
+
+
+    ;
+    ; There's no screen below. Cap the player's position to the
+    ; bottom of the screen.
+    ;
+    LDA #$c0                                ; A = 192 (last Y position on the
+                                            ; screen).
+    STA Player_PosY                         ; Set that as the player's Y
+                                            ; position.
+    JMP @_clearFalling                      ; Clear the falling flag.
+
+
+    ;
+    ; Begin scrolling the screen down.
+    ;
+  @_scrollScreenDown:                       ; [$e40e]
+    LDA Area_ScreenBelow                    ; Load the screen below.
+    STA Area_CurrentScreen                  ; Store as the new current
+                                            ; screen.
+    LDX #$03                                ; X = 3 (Down direction).
+    JSR Area_ScrollTo                       ; Scroll there.
+    INC Player_Something_ScrollPosY         ; Increment the scroll Y
+                                            ; position.
+    LDA #$00                                ; A = 0 (new player position, top
+                                            ; of screen).
+    STA Player_PosY                         ; Set as the player's new Y
+                                            ; position.
+    RTS
+
+
+    ;
+    ; Check if the block below is passable. If not, cap the Y
+    ; position so the player doesn't fall through it.
+    ;
+  @_checkCapFall:                           ; [$e41e]
+    LDX #$03                                ; X = 3 (Down direction).
+    JSR Player_CheckIfPassable              ; Check if there's a passable
+                                            ; block there.
+    BEQ @_return                            ; If so, return.
+
+
+    ;
+    ; It's not passable, so we can cap now.
+    ;
+    LDA Player_PosY                         ; Load the player's Y position.
+    AND #$f0                                ; Round to the top of the block.
+    STA Player_PosY                         ; Save it.
+
+  @_return:                                 ; [$e42b]
+    RTS
+
+
+    ;
+    ; Clear the falling state.
+    ;
+  @_clearFalling:                           ; [$e42c]
+    LDA Player_Flags                        ; Load the player's flags.
+    AND #$fb                                ; Clear the falling bit.
+    STA Player_Flags                        ; Store it.
+    RTS
+
 
 ;============================================================================
-; TODO: Document Area_ScrollScreenDown
+; Clear the player's Jumping and Holding to Climb flags.
 ;
 ; INPUTS:
-;     A
+;     Player_Flags:
+;         The player's current flags.
 ;
 ; OUTPUTS:
-;     TODO
+;     Player_Flags:
+;         The flags with Jumping and Holding To Climb cleared.
 ;
 ; XREFS:
-;     Player_CheckHandleClimbMaybeSide
-;============================================================================
-Area_ScrollScreenDown:                      ; [$e3fc]
-    CMP #$c1
-    BCC @LAB_PRG15_MIRROR__e41e
-    LDY #$03
-    JSR Screen_IsEdge
-    BCC @LAB_PRG15_MIRROR__e40e
-    LDA #$c0
-    STA Player_PosY
-    JMP @LAB_PRG15_MIRROR__e42c
-
-  @LAB_PRG15_MIRROR__e40e:                  ; [$e40e]
-    LDA Area_ScreenBelow
-    STA Area_CurrentScreen
-    LDX #$03
-    JSR Area_ScrollTo
-    INC Player_Something_ScrollPosY
-    LDA #$00
-    STA Player_PosY
-    RTS
-
-  @LAB_PRG15_MIRROR__e41e:                  ; [$e41e]
-    LDX #$03
-    JSR Player_CheckIfPassable
-    BEQ @LAB_PRG15_MIRROR__e42b
-    LDA Player_PosY
-    AND #$f0
-    STA Player_PosY
-
-  @LAB_PRG15_MIRROR__e42b:                  ; [$e42b]
-    RTS
-
-  @LAB_PRG15_MIRROR__e42c:                  ; [$e42c]
-    LDA Player_Flags
-    AND #$fb
-    STA Player_Flags
-    RTS
-
-;============================================================================
-; TODO: Document Player_ClearJumpingAndHoldingToClimb
-;
-; INPUTS:
-;     None.
-;
-; OUTPUTS:
-;     TODO
-;
-; XREFS:
-;     Player_ContinueHandleClimbOrJump
+;     Player_UpdateClimbOrJump
 ;============================================================================
 Player_ClearJumpingAndHoldingToClimb:       ; [$e433]
-    LDA Player_Flags
-    AND #$fc
-    STA Player_Flags
+    LDA Player_Flags                        ; Load the player flags.
+    AND #$fc                                ; Clear the Jumping and Holding
+                                            ; To Climb flags.
+    STA Player_Flags                        ; Save it.
 
     ;
     ; XREFS:
-    ;     Player_ContinueHandleClimbOrJump
+    ;     Player_UpdateClimbOrJump
     ;
 RETURN_E439:                                ; [$e439]
     RTS
 ;============================================================================
-; TODO: Document Player_StayOnLadderAndContinue
+; TODO: Document Player_GrabClimbLadderOrJump
 ;
 ; INPUTS:
 ;     None.
@@ -16484,23 +17801,28 @@ RETURN_E439:                                ; [$e439]
 ;     TODO
 ;
 ; XREFS:
-;     Player_CheckHandleClimbMaybeSide
+;     Player_HandleVertLadderOrJump
 ;============================================================================
-Player_StayOnLadderAndContinue:             ; [$e43a]
+Player_GrabClimbLadderOrJump:               ; [$e43a]
     ;
     ; Clear the Falling Off state.
     ;
     LDA Player_Flags                        ; Load the player's flags.
     AND #$fb                                ; Clear the Falling Off flag.
     STA Player_Flags                        ; Save it back.
+
+
+    ;
+    ; Reset the hang time.
+    ;
     LDA #$00
-    STA Maybe_ClimbLadderOffset
+    STA Player_ClimbLadderHangTime
 
     ;
     ; v-- Fall through --v
     ;
 ;============================================================================
-; TODO: Document Player_ContinueHandleClimbOrJump
+; TODO: Document Player_UpdateClimbOrJump
 ;
 ; INPUTS:
 ;     None.
@@ -16509,9 +17831,9 @@ Player_StayOnLadderAndContinue:             ; [$e43a]
 ;     TODO
 ;
 ; XREFS:
-;     Player_CheckHandleClimbMaybeSide
+;     Player_HandleVertLadderOrJump
 ;============================================================================
-Player_ContinueHandleClimbOrJump:           ; [$e444]
+Player_UpdateClimbOrJump:                   ; [$e444]
     ;
     ; Check if the player is jumping.
     ;
@@ -16529,130 +17851,214 @@ Player_ContinueHandleClimbOrJump:           ; [$e444]
     BPL Player_ClearJumpingAndHoldingToClimb ; If the player is holding down
                                              ; A, then check grabbing for a
                                              ; ladder and return.
+
+
+    ;
+    ; Check if the player is climbing. If so, return.
+    ;
     JSR Player_IsClimbing
     BCS RETURN_E439
+
+
+    ;
+    ; Check if the block above is passable. If not, return.
+    ;
     LDX #$02
     JSR Player_CheckIfPassable
-    BNE RETURN_E4B6
-    LDA Player_Flags
-    ORA #$03
-    STA Player_Flags
+    BNE @_return
+
+
+    ;
+    ; Set the Jumping and Holding To Climb flags.
+    ;
+    LDA Player_Flags                        ; Load the player's flags.
+    ORA #$03                                ; Set the Jumping and Holding To
+                                            ; Climb flags.
+    STA Player_Flags                        ; Save it.
     LDA #$00
-    STA Something_Player_ClimbLadderCheckPos
+    STA Player_JumpCurveIndex
 
   @_isJumping:                              ; [$e463]
-    LDX Something_Player_ClimbLadderCheckPos
-    CPX #$10
-    BCC @LAB_PRG15_MIRROR__e46b
-    BCS @LAB_PRG15_MIRROR__e4a2
+    LDX Player_JumpCurveIndex               ; Load the jump timer.
+    CPX #$10                                ; Check if we're in a rising (<
+                                            ; 16) or falling (>= 16) state.
+    BCC @_jumpRising                        ; Jump if rising.
+    BCS @_jumpFalling                       ; Jump if falling.
 
-  @LAB_PRG15_MIRROR__e46b:                  ; [$e46b]
-    LDA Player_PosY
+
+    ;
+    ; Reduce the player's Y position based on the current position
+    ; in the jump curve.
+    ;
+  @_jumpRising:                             ; [$e46b]
+    LDA Player_PosY                         ; Load the player's Y position.
     SEC
-    SBC BYTE_ARRAY_PRG15_MIRROR__e4d6,X
-    STA Player_PosY
-    BCS @LAB_PRG15_MIRROR__e481
-    LDY #$02
-    JSR Screen_IsEdge
-    BCC Area_ScrollScreenUp
-    LDA #$00
-    JMP @LAB_PRG15_MIRROR__e49a
+    SBC a:PLAYER_JUMP_CURVE,X               ; Subtract the delta from the
+                                            ; jump curve table.
+    STA Player_PosY                         ; Store as the new Y position.
+    BCS @_checkBlockAbove                   ; If Y >= 0, jump.
 
-  @LAB_PRG15_MIRROR__e481:                  ; [$e481]
-    LDX #$02
-    JSR Player_CheckIfPassable
-    BEQ Area_Something_IncDAT00a6
-    LDX Something_Player_ClimbLadderCheckPos
-    LDA Player_PosY
-    AND #$0f
-    TAX
-    LDA Player_PosY
-    AND #$f0
-    CPX #$00
-    BEQ @LAB_PRG15_MIRROR__e49a
+
+    ;
+    ; The Y position wrapped around. Check if we should switch
+    ; screens to the screen above.
+    ;
+    LDY #$02                                ; Y = 2 (Up direction).
+    JSR Screen_IsEdge                       ; Check if there's an edge above.
+    BCC @_scrollScreenUp                    ; If not, scroll the screen up.
+
+
+    ;
+    ; We're not switching screens, so cap at Y=0.
+    ;
+    LDA #$00                                ; A = 0 (new player Y position).
+    JMP @_setJumpCurveMidpoint              ; Jump to set the position and
+                                            ; wrap up.
+
+
+    ;
+    ; Check if there's an impassable block above the player. If not,
+    ; the player's Y position will be capped below the block.
+    ;
+  @_checkBlockAbove:                        ; [$e481]
+    LDX #$02                                ; X = 2 (Up direction).
+    JSR Player_CheckIfPassable              ; Check if the block there is
+                                            ; passable.
+    BEQ @_continueJumpCurve                 ; If impassable, continue the
+                                            ; jump.
+
+
+    ;
+    ; The player hit against an impassable block. That means
+    ; they've hit the top of the jump curve and can't go any
+    ; higher.
+    ;
+    ; This will set the jump curve to the midpoint so they'll
+    ; begin to fall, and cap the player's Y so they're just
+    ; below the block they hit. Unless they hit the top of
+    ; the screen, in which case they'll just be capped there.
+    ;
+    LDX Player_JumpCurveIndex               ; X = Jump curve index.
+    LDA Player_PosY                         ; A = Current player Y position.
+    AND #$0f                                ; Cap it to <= the midpoint of
+                                            ; the curve.
+    TAX                                     ; X = result.
+    LDA Player_PosY                         ; A = Current player Y position.
+    AND #$f0                                ; Cap it to a rounded block
+                                            ; position.
+    CPX #$00                                ; Is it 0?
+    BEQ @_setJumpCurveMidpoint              ; If so, jump to avoid updating
+                                            ; the Y position.
     CLC
-    ADC #$10
+    ADC #$10                                ; Shift down one block (below the
+                                            ; obstacle hit).
 
-  @LAB_PRG15_MIRROR__e49a:                  ; [$e49a]
-    STA Player_PosY
-    LDA #$0f
-    STA Something_Player_ClimbLadderCheckPos
-    BNE Area_Something_IncDAT00a6
 
-  @LAB_PRG15_MIRROR__e4a2:                  ; [$e4a2]
-    LDA Player_PosY
+    ;
+    ; Set the jump curve index to 0xF, one just before the
+    ; midpoint, to begin the process of putting the player
+    ; into a downward arc.
+    ;
+    ; Just before the midpoint is used because after this,
+    ; the index will advance by one.
+    ;
+  @_setJumpCurveMidpoint:                   ; [$e49a]
+    STA Player_PosY                         ; Set the new player Y position.
+    LDA #$0f                                ; 0xF == Jump curve midpoint (-
+                                            ; 1).
+    STA Player_JumpCurveIndex               ; Set to the midpoint to begin
+                                            ; falling.
+    BNE @_continueJumpCurve                 ; Continue the jump curve,
+                                            ; advancing the index.
+
+
+    ;
+    ; Increase the player's Y position based on the current position
+    ; in the jump curve.
+    ;
+  @_jumpFalling:                            ; [$e4a2]
+    LDA Player_PosY                         ; Load the player's Y position.
     CLC
-    ADC BYTE_ARRAY_PRG15_MIRROR__e4d6,X
-    STA Player_PosY
-    LDX #$03
-    JSR Player_CheckIfPassable
-    BNE Maybe_SetPlayerForScrollUp
+    ADC a:PLAYER_JUMP_CURVE,X               ; Add the delta from the jump
+                                            ; curve table.
+    STA Player_PosY                         ; Store as the new Y position.
+    LDX #$03                                ; Y = 2 (Down direction).
+    JSR Player_CheckIfPassable              ; Check if the block there is
+                                            ; passable.
+    BNE @_setLandedOnBlock                  ; If impassable, land the player.
+
 
     ;
-    ; XREFS:
-    ;     Player_ContinueHandleClimbOrJump
+    ; Increase the index into the jump curve table.
     ;
-Area_Something_IncDAT00a6:                  ; [$e4b1]
-    LDX Something_Player_ClimbLadderCheckPos
-    INX
-    STX Something_Player_ClimbLadderCheckPos
+  @_continueJumpCurve:                      ; [$e4b1]
+    LDX Player_JumpCurveIndex               ; Load the current jump timer.
+    INX                                     ; Increase by 1.
+    STX Player_JumpCurveIndex               ; Save it.
 
-    ;
-    ; XREFS:
-    ;     Player_ContinueHandleClimbOrJump
-    ;
-RETURN_E4B6:                                ; [$e4b6]
+  @_return:                                 ; [$e4b6]
     RTS
 
-;============================================================================
-; TODO: Document Area_ScrollScreenUp
-;
-; INPUTS:
-;     None.
-;
-; OUTPUTS:
-;     TODO
-;
-; XREFS:
-;     Player_ContinueHandleClimbOrJump
-;============================================================================
-Area_ScrollScreenUp:                        ; [$e4b7]
-    LDA Area_ScreenAbove
-    STA Area_CurrentScreen
-    LDX #$02
-    JSR Area_ScrollTo
+
+    ;
+    ; Scroll to the screen above.
+    ;
+  @_scrollScreenUp:                         ; [$e4b7]
+    LDA Area_ScreenAbove                    ; Load the screen above.
+    STA Area_CurrentScreen                  ; Set as the new screen.
+    LDX #$02                                ; X = 2 (Up direction).
+    JSR Area_ScrollTo                       ; Scroll the screen up.
     DEC Player_Something_ScrollPosY
-    LDA #$c0
-    STA Player_PosY
-    JMP Maybe_SetPlayerForScrollUp
 
-;============================================================================
-; TODO: Document Maybe_SetPlayerForScrollUp
-;
-; INPUTS:
-;     None.
-;
-; OUTPUTS:
-;     TODO
-;
-; XREFS:
-;     Area_ScrollScreenUp
-;============================================================================
-Maybe_SetPlayerForScrollUp:                 ; [$e4c9]
-    LDA Player_PosY
-    AND #$f0
-    STA Player_PosY
-    LDA Player_Flags
-    AND #$fe
-    STA Player_Flags
+
+    ;
+    ; Place the player at the bottom of the screen and clear the
+    ; jump state.
+    ;
+    LDA #$c0                                ; Y = 0xC0 (first valid Y
+                                            ; position at the bottom of a
+                                            ; screen).
+    STA Player_PosY                         ; Set as the player's Y position.
+    JMP @_setLandedOnBlock                  ; Mark the player as landed.
+
+
+    ;
+    ; Cap the player's Y position to the nearest rounded block
+    ; position.
+    ;
+  @_setLandedOnBlock:                       ; [$e4c9]
+    LDA Player_PosY                         ; Load the player's Y position.
+    AND #$f0                                ; Cap it to a rounded block
+                                            ; position.
+    STA Player_PosY                         ; Set as the new Y position.
+
+
+    ;
+    ; Clear the Jumping flag.
+    ;
+    LDA Player_Flags                        ; Load the player's flags.
+    AND #$fe                                ; Clear the jumping flag.
+    STA Player_Flags                        ; Set the flags.
     RTS
 
+
+;============================================================================
+; A table mapping the jump curve.
+;
+; This maps a position into the jump curve
+; (Player_JumpCurveIndex) to a Y delta to apply to the
+; player's Y position.
 ;
 ; XREFS:
-;     Player_ContinueHandleClimbOrJump
+;     Player_UpdateClimbOrJump
+;============================================================================
+
 ;
-BYTE_ARRAY_PRG15_MIRROR__e4d6:              ; [$e4d6]
-    .byte $08                               ; [0]:
+; XREFS:
+;     Player_UpdateClimbOrJump
+;
+PLAYER_JUMP_CURVE:                          ; [$e4d6]
+    .byte $08                               ; [0]: Start of the jump.
     .byte $04                               ; [1]:
     .byte $04                               ; [2]:
     .byte $04                               ; [3]:
@@ -16668,7 +18074,7 @@ BYTE_ARRAY_PRG15_MIRROR__e4d6:              ; [$e4d6]
     .byte $00                               ; [13]:
     .byte $00                               ; [14]:
     .byte $00                               ; [15]:
-    .byte $00                               ; [16]:
+    .byte $00                               ; [16]: Midpoint of the jump.
     .byte $00                               ; [17]:
     .byte $00                               ; [18]:
     .byte $00                               ; [19]:
@@ -16683,10 +18089,9 @@ BYTE_ARRAY_PRG15_MIRROR__e4d6:              ; [$e4d6]
     .byte $04                               ; [28]:
     .byte $04                               ; [29]:
     .byte $04                               ; [30]:
-    .byte $08                               ; [31]:
-
+    .byte $08                               ; [31]: End of the jump.
 ;============================================================================
-; TODO: Document Area_CheckCanClimbAdjacent
+; TODO: Document Area_CheckClimbAdjacentImpassable
 ;
 ; INPUTS:
 ;     None.
@@ -16695,53 +18100,125 @@ BYTE_ARRAY_PRG15_MIRROR__e4d6:              ; [$e4d6]
 ;     TODO
 ;
 ; XREFS:
-;     Player_CheckHandleClimbMaybeSide
+;     Player_HandleVertLadderOrJump
 ;============================================================================
-Area_CheckCanClimbAdjacent:                 ; [$e4f6]
-    LDX #$00
+Area_CheckClimbAdjacentImpassable:          ; [$e4f6]
+    ;
+    ; Check if Left or Right is pressed.
+    ;
+    LDX #$00                                ; X = 0 (mapping table index).
     LDA Joy1_ChangedButtonMask              ; Load the controller 1 button
                                             ; mask.
     AND #$03                                ; If Left or Right pressed?
     BEQ @_returnFalse                       ; If not, jump to return a false
                                             ; result.
     AND #$01                                ; Keep the Right Button bit.
-    BEQ @LAB_PRG15_MIRROR__e503
-    INX
+    BEQ @_buildArgs
+    INX                                     ; X = 1 (mapping table index).
 
-  @LAB_PRG15_MIRROR__e503:                  ; [$e503]
-    LDA Player_PosX_Block
+
+    ;
+    ; Determine an argument value for the X position to check.
+    ;
+    ; If pressing Left, this will be the player's rounded X
+    ; block position.
+    ;
+    ; If pressing Right, this will be the next block to the
+    ; right.
+    ;
+  @_buildArgs:                              ; [$e503]
+    LDA Player_PosX_Block                   ; Load the player's X block
+                                            ; position.
     CLC
-    ADC BYTE_PRG15_MIRROR__e524,X
-    STA Arg_PixelPosX
-    LDA Player_PosY
+    ADC a:CLIMB_ADJACENT_DIRECTION_TO_OFFSET,X ; Add the offset based on the
+                                               ; direction. No offset for
+                                               ; Left, one block over for
+                                               ; Right.
+    STA Arg_PixelPosX                       ; Store as the X position
+                                            ; argument.
+
+
+    ;
+    ; Determine an argument for the Y position to check.
+    ;
+    ; This will be 2 blocks below the player's Y position, so
+    ; the block under the player.
+    ;
+    LDA Player_PosY                         ; Load the player's Y position.
     CLC
-    ADC #$20
-    STA Arg_PixelPosY
-    CMP #$f0
-    BCC @_returnFalse
-    JSR Area_ConvertPixelsToBlockPos
-    JSR ScreenBuffer_IsBlockImpassable
-    STA Blocks_Result
+    ADC #$20                                ; Add 32 (2 blocks down).
+    STA Arg_PixelPosY                       ; Store as the Y position
+                                            ; argument.
+
+
+    ;
+    ; Only perform the check if the result is the second row of
+    ; blocks off-screen.
+    ;
+    ; NOTE: Which should not be possible. Let's break this down:
+    ;
+    ; 1. The last viable Y player position is 0xC0. Which, normalized
+    ;    with the + 0x20, is 0xE0.
+    ;
+    ; 2. Sticking the player's head just below the boundary of the
+    ;    screen would be 0xD0, or 0xF0 normalized.
+    ;
+    ;    This is where the player would need to be, but...
+    ;
+    ; 3. The user would have already hit a screen transition
+    ;    in this case, or been capped at the boundary of the screen.
+    ;
+    ; So unless there's a particular case somewhere that allows the
+    ; player to move under the screen (some kind of easter egg? Some
+    ; kind of mechanic I can't think of?), this should never be able
+    ; to pass the check.
+    ;
+    ; This makes me think that this boundary value was to turn off
+    ; this logic as other climbing code was written.
+    ;
+    CMP #$f0                                ; Is it < 0xF0?
+    BCC @_returnFalse                       ; If so, return false.
+
+
+    ;
+    ; The player's within the sufficient bounds for a block check.
+    ; Get the block and return the passable/impassable flag.
+    ;
+    JSR Area_ConvertPixelsToBlockPos        ; Convert the argument X/Y
+                                            ; position to a block position.
+    JSR ScreenBuffer_IsBlockImpassable      ; Check if the block there is
+                                            ; impassable.
+    STA Blocks_Result                       ; Store it as the result to
+                                            ; return.
     RTS
 
   @_returnFalse:                            ; [$e51f]
     LDA #$00                                ; A = 0 (false).
-    STA Blocks_Result                       ; Store it as the result.
+    STA Blocks_Result                       ; Store it as the result to
+                                            ; return.
     RTS
 
+
+;============================================================================
+; Mapping of directions to block X offsets to check for adjacent climbing.
 ;
 ; XREFS:
-;     Area_CheckCanClimbAdjacent
-;
-BYTE_PRG15_MIRROR__e524:                    ; [$e524]
-    .byte $00                               ; [$e524] byte
+;     Area_CheckClimbAdjacentImpassable
+;============================================================================
 
 ;
 ; XREFS:
-;     Area_CheckCanClimbAdjacent
+;     Area_CheckClimbAdjacentImpassable
 ;
-BYTE_PRG15_MIRROR__e525:                    ; [$e525]
-    .byte $0f                               ; [$e525] byte
+CLIMB_ADJACENT_DIRECTION_TO_OFFSET:         ; [$e524]
+    .byte $00                               ; [0]: Left
+
+;
+; XREFS:
+;     Area_CheckClimbAdjacentImpassable
+;
+CLIMB_ADJACENT_DIRECTION_TO_OFFSET_1_:      ; [$e525]
+    .byte $0f                               ; [1]: Right
 
 ;============================================================================
 ; TODO: Document Player_CheckHandleEnterDoor
@@ -16787,14 +18264,14 @@ Player_CheckHandleEnterDoor:                ; [$e526]
 
   @_paletteCheckLoop:                       ; [$e54c]
     LDA Screen_DestPaletteOrIndex
-    CMP @_return+1,X
+    CMP a:Palette_ARRAY_PRG15_MIRROR__e569,X
     BEQ @_setupArea
     DEX
     BPL @_paletteCheckLoop
     BMI @_enterScreen
 
   @_setupArea:                              ; [$e558]
-    LDA $e570,X
+    LDA a:Music_ARRAY_PRG15_MIRROR__e570,X
     CMP a:Areas_DefaultMusic
     BEQ @_enterScreen
     STA Music_Current
@@ -16813,44 +18290,35 @@ Player_CheckHandleEnterDoor:                ; [$e526]
 ; These two tables work together, along with a loop, to
 ; match up palettes to the music that should play when
 ; switching screens.
+;
+; XREFS:
+;     Player_CheckHandleEnterDoor
 ;============================================================================
+
+;
+; XREFS:
+;     Player_CheckHandleEnterDoor
+;
+Palette_ARRAY_PRG15_MIRROR__e569:           ; [$e569]
     .byte PALETTE_OUTSIDE                   ; [0]:
     .byte PALETTE_TOWER                     ; [1]:
     .byte PALETTE_MIST                      ; [2]:
     .byte PALETTE_SUFFER                    ; [3]:
     .byte PALETTE_DARTMOOR                  ; [4]:
-
-;
-; XREFS:
-;     Player_CheckHandleEnterDoor
-;
-Palette_ARRAY_PRG15_MIRROR__e569_5_:        ; [$e56e]
     .byte PALETTE_FRATERNAL                 ; [5]:
+    .byte PALETTE_KING_GRIEVES_ROOM         ; [6]:
 
 ;
 ; XREFS:
 ;     Player_CheckHandleEnterDoor
 ;
-Palette_ARRAY_PRG15_MIRROR__e569_6_:        ; [$e56f]
-    .byte PALETTE_KING_GRIEVES_ROOM         ; [6]:
+Music_ARRAY_PRG15_MIRROR__e570:             ; [$e570]
     .byte MUSIC_APOLUNE                     ; [0]:
     .byte MUSIC_MAYBE_TOWER                 ; [1]:
     .byte MUSIC_FOREPAW                     ; [2]:
     .byte MUSIC_MAYBE_TOWER                 ; [3]:
     .byte MUSIC_DAYBREAK                    ; [4]:
-
-;
-; XREFS:
-;     Player_CheckHandleEnterDoor
-;
-Music_ARRAY_PRG15_MIRROR__e570_5_:          ; [$e575]
     .byte MUSIC_MAYBE_TOWER                 ; [5]:
-
-;
-; XREFS:
-;     Player_CheckHandleEnterDoor
-;
-Music_ARRAY_PRG15_MIRROR__e570_6_:          ; [$e576]
     .byte MUSIC_MAYBE_TOWER                 ; [6]:
 
 ;============================================================================
@@ -16871,15 +18339,15 @@ Player_EnterDoorToInside:                   ; [$e577]
     LDA Screen_DestPaletteOrIndex
     STA Area_LoadingScreenIndex
     TAX
-    LDA BUILDING_PALETTES,X
+    LDA a:BUILDING_PALETTES,X
     STA Screen_DestPaletteOrIndex
-    LDA BUILDING_MAYBE_TILES_INDEXES,X
+    LDA a:BUILDING_MAYBE_TILES_INDEXES,X
     STA a:Building_TilesIndex
-    LDA BUILDING_START_POSITIONS,X
+    LDA a:BUILDING_START_POSITIONS,X
     STA Screen_StartPosYX
     LDA a:Areas_DefaultMusic
     STA a:Area_Music_Outside
-    LDA BUILDING_MUSIC,X
+    LDA a:BUILDING_MUSIC,X
     STA a:Areas_DefaultMusic
     LDA Area_CurrentArea
 
@@ -16923,7 +18391,7 @@ Player_EnterDoorToOutside:                  ; [$e5b2]
     ;
     ; Check if the door is locked.
     ;
-    LDA DOOR_LOOKUP_REQUIREMENTS,Y
+    LDA a:DOOR_LOOKUP_REQUIREMENTS,Y
     STA a:CurrentDoor_KeyRequirement
     JSR Game_RunDoorRequirementHandler
     PLA
@@ -16935,9 +18403,9 @@ Player_EnterDoorToOutside:                  ; [$e5b2]
     ;
     ; This door is not locked.
     ;
-    LDA MAYBE_REGION_TRANSITION_MAP,Y
+    LDA a:MAYBE_REGION_TRANSITION_MAP,Y
     STA a:Area_Region
-    LDA MAYBE_SCREEN_TRANSITION_MAP,Y
+    LDA a:MAYBE_SCREEN_TRANSITION_MAP,Y
     STA Area_LoadingScreenIndex
     JSR Screen_FadeToBlack
     JMP Game_SetupAndLoadOutsideArea
@@ -17095,15 +18563,15 @@ BUILDING_START_POSITIONS:                   ; [$e61d]
 ;         0 if it has a neighboring screen.
 ;
 ; XREFS:
-;     Area_ScrollScreenDown
 ;     Player_CheckHandleClimbUp
-;     Player_ContinueHandleClimbOrJump
+;     Player_HandleVertLadderOrJump
 ;     Player_MoveDownScreen
 ;     Player_TryMoveLeft
 ;     Player_TryMoveRight
+;     Player_UpdateClimbOrJump
 ;============================================================================
 Screen_IsEdge:                              ; [$e627]
-    LDA Area_ScreenToTheLeft,Y              ; Load the screen ID at the given
+    LDA a:Area_ScreenToTheLeft,Y            ; Load the screen ID at the given
                                             ; neighbor.
     CMP #$ff                                ; If 0xFF, C = 1. Else, C = 0
     RTS
@@ -17127,11 +18595,11 @@ Area_CanMoveUp:                             ; [$e62d]
     LSR A
     LSR A
     TAX
-    LDY FirstColumnInRightScreen,X
+    LDY a:FirstColumnInRightScreen,X
     JSR Area_IsBlockImpassable
     STA Blocks_Result
     INX
-    LDY FirstColumnInRightScreen,X
+    LDY a:FirstColumnInRightScreen,X
     JSR Area_IsBlockImpassable
     ORA Blocks_Result
     STA Blocks_Result
@@ -17139,7 +18607,7 @@ Area_CanMoveUp:                             ; [$e62d]
     AND #$0f
     BEQ @LAB_PRG15_MIRROR__e658
     INX
-    LDY FirstColumnInRightScreen,X
+    LDY a:FirstColumnInRightScreen,X
     JSR Area_IsBlockImpassable
     ORA Blocks_Result
     STA Blocks_Result
@@ -17235,11 +18703,11 @@ Area_CanPlayerMoveLeft:                     ; [$e691]
     LSR A
     LSR A
     TAX
-    LDY LastColumnLeftScreen,X
+    LDY a:LastColumnLeftScreen,X
     JSR Area_IsBlockImpassable
     STA Blocks_Result
     INX
-    LDY LastColumnLeftScreen,X
+    LDY a:LastColumnLeftScreen,X
     JSR Area_IsBlockImpassable
     ORA Blocks_Result
     STA Blocks_Result
@@ -17247,7 +18715,7 @@ Area_CanPlayerMoveLeft:                     ; [$e691]
     AND #$0f
     BEQ @LAB_PRG15_MIRROR__e6c5
     INX
-    LDY LastColumnLeftScreen,X
+    LDY a:LastColumnLeftScreen,X
     JSR Area_IsBlockImpassable
     ORA Blocks_Result
     STA Blocks_Result
@@ -17266,13 +18734,12 @@ Area_CanPlayerMoveLeft:                     ; [$e691]
 ;     Z
 ;
 ; XREFS:
-;     Area_ScrollScreenDown
 ;     Player_CheckHandleClimbDown
-;     Player_CheckHandleClimbMaybeSide
 ;     Player_CheckHandleClimbUp
-;     Player_ContinueHandleClimbOrJump
+;     Player_HandleVertLadderOrJump
 ;     Player_TryMoveLeft
 ;     Player_TryMoveRight
+;     Player_UpdateClimbOrJump
 ;============================================================================
 Player_CheckIfPassable:                     ; [$e6c8]
     TXA
@@ -17293,14 +18760,14 @@ Player_CheckIfPassable:                     ; [$e6c8]
     LSR A
     LSR A
     TAX
-    LDY FirstRowBelowScreen,X
+    LDY a:FirstRowBelowScreen,X
     JSR Area_IsBlockImpassable
     STA Blocks_Result
     LDA Player_PosX_Block
     AND #$0f
     BEQ @_returnResult
     INX
-    LDY FirstRowBelowScreen,X
+    LDY a:FirstRowBelowScreen,X
     JSR Area_IsBlockImpassable
     ORA Blocks_Result
     STA Blocks_Result
@@ -17370,14 +18837,14 @@ Area_CanPlayerMoveUp:                       ; [$e724]
     LSR A
     LSR A
     TAX
-    LDY LastRowAboveScreen,X
+    LDY a:LastRowAboveScreen,X
     JSR Area_IsBlockImpassable
     STA Blocks_Result
     LDA Player_PosX_Block
     AND #$0f
     BEQ @_returnResult
     INX
-    LDY LastRowAboveScreen,X
+    LDY a:LastRowAboveScreen,X
     JSR Area_IsBlockImpassable
     ORA Blocks_Result
     STA Blocks_Result
@@ -17395,7 +18862,7 @@ Area_CanPlayerMoveUp:                       ; [$e724]
 ;     TODO
 ;
 ; XREFS:
-;     Player_CheckHandleClimb
+;     Player_CheckHandleVertMovement
 ;============================================================================
 Player_CheckIfOnLadder:                     ; [$e752]
     ;
@@ -17418,7 +18885,7 @@ Player_CheckIfOnLadder:                     ; [$e752]
     ; Check if the block at this position is climbable.
     ;
     JSR Area_ConvertPixelsToBlockPos        ; Convert to a block position.
-    LDY ScreenBuffer,X                      ; Load the block at that
+    LDY a:ScreenBuffer,X                    ; Load the block at that
                                             ; position.
     JSR Area_GetBlockProperty               ; Load the block property for
                                             ; that block.
@@ -17436,7 +18903,7 @@ Player_CheckIfOnLadder:                     ; [$e752]
     CMP #$08
     BNE @_checkBlockBelow
     INX
-    LDY ScreenBuffer,X
+    LDY a:ScreenBuffer,X
     JSR Area_GetBlockProperty
     STA Blocks_Result
     JSR Area_IsBlockClimbable
@@ -17452,7 +18919,7 @@ Player_CheckIfOnLadder:                     ; [$e752]
     ADC #$1f
     STA Arg_PixelPosY
     JSR Area_ConvertPixelsToBlockPos
-    LDY ScreenBuffer,X
+    LDY a:ScreenBuffer,X
     JSR Area_GetBlockProperty
     STA Blocks_Result
     JSR Area_IsBlockClimbable
@@ -17462,7 +18929,7 @@ Player_CheckIfOnLadder:                     ; [$e752]
     CMP #$08
     BNE @_resetCanClimb
     INX
-    LDY ScreenBuffer,X
+    LDY a:ScreenBuffer,X
     JSR Area_GetBlockProperty
     STA Blocks_Result
 
@@ -17564,7 +19031,7 @@ Area_SetStateFromDoorDestination:           ; [$e7c5]
     ; Load the block at this position from the screen and
     ; check what it is.
     ;
-    LDY ScreenBuffer,X                      ; Load the block from the screen
+    LDY a:ScreenBuffer,X                    ; Load the block from the screen
                                             ; buffer.
     JSR Area_GetBlockProperty               ; Get the block property.
     CMP #$03                                ; Is it a door?
@@ -17588,7 +19055,7 @@ Area_SetStateFromDoorDestination:           ; [$e7c5]
     ; We normalized to the next overlapped block. Now check
     ; to see if it's a door.
     ;
-    LDY ScreenBuffer,X                      ; Load the block at that
+    LDY a:ScreenBuffer,X                    ; Load the block at that
                                             ; position.
     JSR Area_GetBlockProperty               ; Load the block property.
     CMP #$03                                ; Is it a door?
@@ -17821,7 +19288,7 @@ Area_SetStateFromDoorDestination:           ; [$e7c5]
 ;     Sprites_MoveRight__86c6
 ;     Area_CanMoveImmediatelyRight
 ;     Area_CanPlayerMoveAtY
-;     Area_CheckCanClimbAdjacent
+;     Area_CheckClimbAdjacentImpassable
 ;     Area_SetStateFromDoorDestination
 ;     CastMagic_CalculateVisibility
 ;     Player_CheckIfOnLadder
@@ -17870,10 +19337,10 @@ Area_ConvertPixelsToBlockPos:               ; [$e86c]
 ;     Sprites_MoveRight__86c6
 ;     Area_CanMoveImmediatelyRight
 ;     Area_CanPlayerMoveAtY
-;     Area_CheckCanClimbAdjacent
+;     Area_CheckClimbAdjacentImpassable
 ;============================================================================
 ScreenBuffer_IsBlockImpassable:             ; [$e87c]
-    LDY ScreenBuffer,X                      ; Load the block at the given
+    LDY a:ScreenBuffer,X                    ; Load the block at the given
                                             ; index, and fall through.
 
     ;
@@ -17935,7 +19402,7 @@ Area_IsBlockImpassable:                     ; [$e87f]
 ;============================================================================
 Area_GetFromImpassableMap:                  ; [$e882]
     TAY                                     ; Y = A
-    LDA BLOCK_PROPERTY_IMPASSABLE_MAP,Y     ; A = Impassable flag for the
+    LDA a:BLOCK_PROPERTY_IMPASSABLE_MAP,Y   ; A = Impassable flag for the
                                             ; block property type.
     RTS                                     ; And return it.
 
@@ -17964,7 +19431,7 @@ Area_GetFromImpassableMap:                  ; [$e882]
 ;     Sprites_CheckPlacementInvalidAtY
 ;============================================================================
 Area_IsBlockImpassableOrLadder:             ; [$e887]
-    LDY ScreenBuffer,X                      ; Load the block property offset
+    LDY a:ScreenBuffer,X                    ; Load the block property offset
                                             ; from the screen buffer at X.
     JSR Area_GetBlockProperty               ; Load the block property.
     CMP #$02                                ; Is it a ladder?
@@ -18004,7 +19471,7 @@ Area_StoreBlockIsAir:                       ; [$e894]
     ;
     ; Load the block property at this screen buffer offset.
     ;
-    LDY ScreenBuffer,X                      ; Y = block property at screen
+    LDY a:ScreenBuffer,X                    ; Y = block property at screen
                                             ; buffer X
     JSR Area_GetBlockProperty               ; Load the block property.
     STA Blocks_Result                       ; Store that in a temporary
@@ -18127,7 +19594,7 @@ Area_IsBlockClimbable:                      ; [$e8b2]
 ;     Player_CheckSwitchScreen
 ;============================================================================
 ScreenBuffer_LoadBlockProperty:             ; [$e8c3]
-    LDY ScreenBuffer,X                      ; Load the block property index
+    LDY a:ScreenBuffer,X                    ; Load the block property index
                                             ; from the screen buffer.
 
     ;
@@ -18177,7 +19644,7 @@ Area_GetBlockProperty:                      ; [$e8c6]
     ; Load the block property at the index, moving the data in
     ; the upper nibble to the lower nibble.
     ;
-    LDA BlockProperties,Y                   ; Load the block property at the
+    LDA a:BlockProperties,Y                 ; Load the block property at the
                                             ; index.
     LSR A                                   ; Shift to the lower nibble.
     LSR A
@@ -18190,7 +19657,7 @@ Area_GetBlockProperty:                      ; [$e8c6]
     ; Load the block property, masking out the upper nibble.
     ;
   @_isEven:                                 ; [$e8d3]
-    LDA BlockProperties,Y                   ; Load the block property at the
+    LDA a:BlockProperties,Y                 ; Load the block property at the
                                             ; index.
     AND #$0f                                ; Mask out the upper nibble,
                                             ; giving just the lower.
@@ -18255,15 +19722,15 @@ BLOCK_PROPERTY_IMPASSABLE_MAP:              ; [$e8d9]
 ;         The player movement tick, reset to 0.
 ;
 ; CALLS:
-;     Area_LoadScrollDataRight
+;     Area_LoadScrollData
 ;
 ; XREFS:
-;     Area_ScrollScreenDown
-;     Area_ScrollScreenUp
 ;     Player_CheckHandleClimbUp
+;     Player_HandleVertLadderOrJump
 ;     Player_MoveDownScreen
 ;     Player_TryMoveLeft
 ;     Player_TryMoveRight
+;     Player_UpdateClimbOrJump
 ;============================================================================
 Area_ScrollTo:                              ; [$e8e9]
     LDA a:CurrentScreen_SpecialEventID      ; Load the current screen's event
@@ -18293,7 +19760,7 @@ Area_ScrollTo:                              ; [$e8e9]
     LDA #$ff                                ; A = 0xFF (unset)
     STA a:CastMagic_Type                    ; Set as the magic type on
                                             ; screen.
-    JMP Area_LoadScrollDataRight            ; Now scroll to the room.
+    JMP Area_LoadScrollData                 ; Now scroll to the room.
 
 
 ;============================================================================
@@ -18375,12 +19842,13 @@ Player_CheckOnBreakableBlock:               ; [$e905]
     TAX                                     ; X = facing value.
     LDA Player_PosX_Block                   ; A = Player X position.
     CLC
-    ADC @_CHECK_BREAKABLE_BLOCK_X_OFFSETS,X ; Load a block offset to round to
-                                            ; the nearest overlapping blocks.
+    ADC a:@_CHECK_BREAKABLE_BLOCK_X_OFFSETS,X ; Load a block offset to round
+                                              ; to the nearest overlapping
+                                              ; blocks.
     STA Arg_PixelPosX                       ; Store as the X position to
                                             ; check.
     JSR Area_ConvertPixelsToBlockPos        ; Convert it to a block position.
-    LDY ScreenBuffer,X                      ; Load the block value from the
+    LDY a:ScreenBuffer,X                    ; Load the block value from the
                                             ; screen.
     STY Blocks_Result                       ; Store as the block result.
     JSR Area_GetBlockProperty               ; And get its corresponding
@@ -18404,12 +19872,13 @@ Player_CheckOnBreakableBlock:               ; [$e905]
     TAX                                     ; X = A
     LDA Player_PosX_Block                   ; A = Player X position.
     CLC
-    ADC @_CHECK_BREAKABLE_BLOCK_X_OFFSETS,X ; Load a block offset to round to
-                                            ; the next overlapping blocks.
+    ADC a:@_CHECK_BREAKABLE_BLOCK_X_OFFSETS,X ; Load a block offset to round
+                                              ; to the next overlapping
+                                              ; blocks.
     STA Arg_PixelPosX                       ; Store as the X position to
                                             ; check.
     JSR Area_ConvertPixelsToBlockPos        ; Convert it to a block position.
-    LDY ScreenBuffer,X                      ; Load the block value from the
+    LDY a:ScreenBuffer,X                    ; Load the block value from the
                                             ; screen.
     STY Blocks_Result                       ; Store as the block result.
     JSR Area_GetBlockProperty
@@ -18465,7 +19934,7 @@ Player_CheckPushingBlock:                   ; [$e95d]
     STA Arg_PixelPosY
     LDA Player_PosX_Block
     CLC
-    ADC BYTE_ARRAY_PRG15_MIRROR__e9be,X
+    ADC a:BYTE_ARRAY_PRG15_MIRROR__e9be,X
     STA Arg_PixelPosX
 
 
@@ -18473,7 +19942,7 @@ Player_CheckPushingBlock:                   ; [$e95d]
     ; Fetch the block property at this position.
     ;
     JSR Area_ConvertPixelsToBlockPos
-    LDY ScreenBuffer,X
+    LDY a:ScreenBuffer,X
     JSR Area_GetBlockProperty
 
 
@@ -18595,9 +20064,9 @@ Player_CheckSwitchScreen:                   ; [$e9c0]
     LDA Area_CurrentArea
     ASL A
     TAX
-    LDA AREA_SCREEN_COMPARATORS,X
+    LDA a:AREA_SCREEN_COMPARATORS,X
     STA Temp_Addr_L
-    LDA AREA_SCREEN_COMPARATORS+1,X
+    LDA a:AREA_SCREEN_COMPARATORS+1,X
     STA Temp_Addr_U
     LDY #$00
 
@@ -18633,16 +20102,16 @@ Player_CheckSwitchScreen:                   ; [$e9c0]
 ;     Player_CheckSwitchScreen
 ;
 AREA_SCREEN_COMPARATORS:                    ; [$ea37]
-    pointer BYTE_PRG15_MIRROR__ea4f         ; Eolis
-    pointer BYTE_PRG15_MIRROR__ea47         ; Apolune
-    pointer BYTE_PRG15_MIRROR__ea4f         ; Forepaw
-    pointer BYTE_PRG15_MIRROR__ea4f         ; Mascon
-    pointer BYTE_PRG15_MIRROR__ea4f         ; Victim
-    pointer BYTE_PRG15_MIRROR__ea4f         ; Conflate
-    pointer BYTE_PRG15_MIRROR__ea4f         ; Daybreak
-    pointer BYTE_PRG15_MIRROR__ea4f         ; Evil Fortress
+    pointer AREA_SCREEN_COMPARATOR_END      ; Eolis
+    pointer AREA_SCREEN_COMPARATOR_APOLUNE  ; Apolune
+    pointer AREA_SCREEN_COMPARATOR_END      ; Forepaw
+    pointer AREA_SCREEN_COMPARATOR_END      ; Mascon
+    pointer AREA_SCREEN_COMPARATOR_END      ; Victim
+    pointer AREA_SCREEN_COMPARATOR_END      ; Conflate
+    pointer AREA_SCREEN_COMPARATOR_END      ; Daybreak
+    pointer AREA_SCREEN_COMPARATOR_END      ; Evil Fortress
 
-BYTE_PRG15_MIRROR__ea47:                    ; [$ea47]
+AREA_SCREEN_COMPARATOR_APOLUNE:             ; [$ea47]
     .byte $0c                               ; Current screen comparator
     .byte $16                               ; New screen index
     .byte $b3                               ; Y, X
@@ -18657,7 +20126,7 @@ BYTE_PRG15_MIRROR__ea47:                    ; [$ea47]
 ;     AREA_SCREEN_COMPARATORS
 ;     [$PRG15_MIRROR::ea37]
 ;
-BYTE_PRG15_MIRROR__ea4f:                    ; [$ea4f]
+AREA_SCREEN_COMPARATOR_END:                 ; [$ea4f]
     .byte $ff                               ; [$ea4f] byte
 
 
@@ -18723,9 +20192,9 @@ Player_CheckSwitchScreen_SwitchAreaHoriz:   ; [$ea5f]
     BEQ Game_BeginExitBuilding
     ASL A
     TAY
-    LDA AREA_TOWN_TRANSITIONS_DATA,Y
+    LDA a:AREA_TOWN_TRANSITIONS_DATA,Y
     STA Temp_Addr_L
-    LDA AREA_TOWN_TRANSITIONS_DATA+1,Y
+    LDA a:AREA_TOWN_TRANSITIONS_DATA+1,Y
     STA Temp_Addr_U
     LDY #$00
 
@@ -18787,10 +20256,10 @@ TOWN_TRANSITIONS_TRUNK:                     ; [$eaac]
     .byte PALETTE_TOWN
     .byte $07                               ; Entering Trunk from Trunk
                                             ; (screen 7)
-    .byte AREA_TOWNS                        ;   |-> Switch to area 3
-    .byte $00                               ;   |-> Screen index 0
-    .byte $92                               ;   |-> Start position Y=9, X=2
-    .byte PALETTE_TOWN                      ;   '-> Palette 27
+    .byte AREA_TOWNS                        ; |-> Switch to area 3
+    .byte $00                               ; |-> Screen index 0
+    .byte $92                               ; |-> Start position Y=9, X=2
+    .byte PALETTE_TOWN                      ; '-> Palette 27
     .byte $08                               ; [$eab6] byte
 
     .byte AREA_TOWNS
@@ -18799,10 +20268,10 @@ TOWN_TRANSITIONS_TRUNK:                     ; [$eaac]
     .byte PALETTE_TOWN
     .byte $1a                               ; Entering Trunk from Trunk
                                             ; (screen 26)
-    .byte AREA_TOWNS                        ;   |-> Switch to area 3
-    .byte $02                               ;   |-> Screen index 2
-    .byte $92                               ;   |-> Start position X=2, Y=9
-    .byte PALETTE_TOWN                      ;   '-> Palette 27
+    .byte AREA_TOWNS                        ; |-> Switch to area 3
+    .byte $02                               ; |-> Screen index 2
+    .byte $92                               ; |-> Start position X=2, Y=9
+    .byte PALETTE_TOWN                      ; '-> Palette 27
     .byte $1d                               ; [$eac0] byte
 
     .byte AREA_TOWNS
@@ -18819,76 +20288,76 @@ TOWN_TRANSITIONS_TRUNK:                     ; [$eaac]
 TOWN_TRANSITIONS_TOWNS:                     ; [$eac6]
     .byte $00                               ; Exiting left from Apolune
                                             ; screen 0
-    .byte AREA_TRUNK                        ;   |-> Switch to area 1
-    .byte $07                               ;   |-> Screen index 6
-    .byte $7e                               ;   |-> Start position Y=7, X=14
-    .byte PALETTE_OUTSIDE                   ;   '-> Palette 6
+    .byte AREA_TRUNK                        ; |-> Switch to area 1
+    .byte $07                               ; |-> Screen index 6
+    .byte $7e                               ; |-> Start position Y=7, X=14
+    .byte PALETTE_OUTSIDE                   ; '-> Palette 6
     .byte $01                               ; Exit right from Apolune screen
                                             ; 1
-    .byte AREA_TRUNK                        ;   |-> Switch to area 1
-    .byte $08                               ;   |-> Screen index 8
-    .byte $71                               ;   |-> Start position Y=7, X=1
-    .byte PALETTE_OUTSIDE                   ;   '-> Palette 6
+    .byte AREA_TRUNK                        ; |-> Switch to area 1
+    .byte $08                               ; |-> Screen index 8
+    .byte $71                               ; |-> Start position Y=7, X=1
+    .byte PALETTE_OUTSIDE                   ; '-> Palette 6
     .byte $02                               ; Exiting left from Forepaw to
                                             ; Trunk (screen 2)
-    .byte AREA_TRUNK                        ;   |-> Switch to area 1
-    .byte $1a                               ;   |-> Screen index 26
-    .byte $7e                               ;   |-> Start position X=14, Y=7
-    .byte PALETTE_OUTSIDE                   ;   '-> Palette 6
+    .byte AREA_TRUNK                        ; |-> Switch to area 1
+    .byte $1a                               ; |-> Screen index 26
+    .byte $7e                               ; |-> Start position X=14, Y=7
+    .byte PALETTE_OUTSIDE                   ; '-> Palette 6
     .byte $03                               ; Exiting right from Forepaw to
                                             ; Branch (screen 3)
-    .byte AREA_TRUNK                        ;   |-> Switch to area 3
-    .byte $1d                               ;   |-> Screen index 29
-    .byte $71                               ;   |-> Start position X=1, Y=7
-    .byte PALETTE_OUTSIDE                   ;   |-> Palette 6
+    .byte AREA_TRUNK                        ; |-> Switch to area 3
+    .byte $1d                               ; |-> Screen index 29
+    .byte $71                               ; |-> Start position X=1, Y=7
+    .byte PALETTE_OUTSIDE                   ; |-> Palette 6
     .byte $04                               ; Exiting left from Mascon to
                                             ; Mist (screen 4)
-    .byte AREA_MIST                         ;   |-> Switch to area 2
-    .byte $09                               ;   |-> Screen index 9
-    .byte $9e                               ;   |-> Start position X=14, Y=9
-    .byte PALETTE_MIST                      ;   '-> Palette 10
+    .byte AREA_MIST                         ; |-> Switch to area 2
+    .byte $09                               ; |-> Screen index 9
+    .byte $9e                               ; |-> Start position X=14, Y=9
+    .byte PALETTE_MIST                      ; '-> Palette 10
     .byte $05                               ; Exiting right from Mascon to
                                             ; Mist (screen 5)
-    .byte AREA_MIST                         ;   |-> Switch to area 2
-    .byte $0c                               ;   |-> Screen index 12
-    .byte $91                               ;   |-> Start position X=1, Y=9
-    .byte PALETTE_MIST                      ;   '-> Palette 10
+    .byte AREA_MIST                         ; |-> Switch to area 2
+    .byte $0c                               ; |-> Screen index 12
+    .byte $91                               ; |-> Start position X=1, Y=9
+    .byte PALETTE_MIST                      ; '-> Palette 10
     .byte $06                               ; Exit left from Victim to Mist
                                             ; from screen 6
-    .byte AREA_MIST                         ;   |-> Switch to area 2
-    .byte $22                               ;   |-> Screen index 34
-    .byte $9e                               ;   |-> Start position X=14, Y=9
-    .byte PALETTE_MIST                      ;   '-> Palette 10
+    .byte AREA_MIST                         ; |-> Switch to area 2
+    .byte $22                               ; |-> Screen index 34
+    .byte $9e                               ; |-> Start position X=14, Y=9
+    .byte PALETTE_MIST                      ; '-> Palette 10
     .byte $07                               ; Exit right from Victim to Mist
                                             ; on screen 7
-    .byte AREA_MIST                         ;   |-> Switch to area 7
-    .byte $25                               ;   |-> Screen index = 37
-    .byte $91                               ;   |-> Start position X=1, Y=9
-    .byte PALETTE_MIST                      ;   '-> Palette 10
+    .byte AREA_MIST                         ; |-> Switch to area 7
+    .byte $25                               ; |-> Screen index = 37
+    .byte $91                               ; |-> Start position X=1, Y=9
+    .byte PALETTE_MIST                      ; '-> Palette 10
     .byte $08                               ; Exit left from Conflate to
                                             ; Branch
-    .byte AREA_BRANCH                       ;   |-> Switch to area 5
-    .byte $0d                               ;   |-> Screen index 13
-    .byte $7e                               ;   |-> Start position X=14, Y=7
-    .byte PALETTE_BRANCH                    ;   '-> Palette 8
+    .byte AREA_BRANCH                       ; |-> Switch to area 5
+    .byte $0d                               ; |-> Screen index 13
+    .byte $7e                               ; |-> Start position X=14, Y=7
+    .byte PALETTE_BRANCH                    ; '-> Palette 8
     .byte $0a                               ; Exit left from Daybreak to
                                             ; Branch
-    .byte AREA_BRANCH                       ;   |-> Switch to area 5
-    .byte $23                               ;   |-> Screen index 35
-    .byte $7e                               ;   |-> Start position X=14, Y=7
-    .byte PALETTE_BRANCH                    ;   '-> Palette 8
+    .byte AREA_BRANCH                       ; |-> Switch to area 5
+    .byte $23                               ; |-> Screen index 35
+    .byte $7e                               ; |-> Start position X=14, Y=7
+    .byte PALETTE_BRANCH                    ; '-> Palette 8
     .byte $0b                               ; Exit right from Daybreak to
                                             ; Branch
-    .byte AREA_BRANCH                       ;   |-> Switch to area 5
-    .byte $24                               ;   |-> Screen index 36
-    .byte $71                               ;   |-> Start position X=1, Y=7
-    .byte PALETTE_BRANCH                    ;   '-> Palette 8
+    .byte AREA_BRANCH                       ; |-> Switch to area 5
+    .byte $24                               ; |-> Screen index 36
+    .byte $71                               ; |-> Start position X=1, Y=7
+    .byte PALETTE_BRANCH                    ; '-> Palette 8
     .byte $0c                               ; Exit left from Dartmoor to
                                             ; Branch (screen 12)
-    .byte AREA_DARTMOOR                     ;   |-> Switch to area 6
-    .byte $03                               ;   |-> Screen index 3
-    .byte $7e                               ;   |-> Start position X=14, Y=7
-    .byte PALETTE_DARTMOOR                  ;   '-> Palette 12
+    .byte AREA_DARTMOOR                     ; |-> Switch to area 6
+    .byte $03                               ; |-> Screen index 3
+    .byte $7e                               ; |-> Start position X=14, Y=7
+    .byte PALETTE_DARTMOOR                  ; '-> Palette 12
     .byte $ff                               ; [$eb02] byte
 
 ;
@@ -18899,28 +20368,28 @@ TOWN_TRANSITIONS_TOWNS:                     ; [$eac6]
 TOWN_TRANSITIONS_MIST:                      ; [$eb03]
     .byte $09                               ; Entering Mascon from Mist
                                             ; (screen 9)
-    .byte AREA_TOWNS                        ;   |-> Switch to area 3
-    .byte $04                               ;   |-> Screen index 4
-    .byte $91                               ;   |-> Start position X=1, Y=9
-    .byte PALETTE_TOWN                      ;   '-> Palette 27
+    .byte AREA_TOWNS                        ; |-> Switch to area 3
+    .byte $04                               ; |-> Screen index 4
+    .byte $91                               ; |-> Start position X=1, Y=9
+    .byte PALETTE_TOWN                      ; '-> Palette 27
     .byte $0c                               ; Entering left to Mascon from
                                             ; Mist
-    .byte AREA_TOWNS                        ;   |-> Switch to area 3
-    .byte $05                               ;   |-> Screen index 5
-    .byte $9e                               ;   |-> Start position X=14, Y=9
-    .byte PALETTE_TOWN                      ;   '-> Palette 27
+    .byte AREA_TOWNS                        ; |-> Switch to area 3
+    .byte $05                               ; |-> Screen index 5
+    .byte $9e                               ; |-> Start position X=14, Y=9
+    .byte PALETTE_TOWN                      ; '-> Palette 27
     .byte $22                               ; Enering right to Victim from
                                             ; Mist (screen 34)
-    .byte AREA_TOWNS                        ;   |-> Switch to area 3
-    .byte $06                               ;   |-> Screen index 6
-    .byte $91                               ;   |-> Start position X=1, Y=9
-    .byte PALETTE_TOWN                      ;   '-> Palette 27
+    .byte AREA_TOWNS                        ; |-> Switch to area 3
+    .byte $06                               ; |-> Screen index 6
+    .byte $91                               ; |-> Start position X=1, Y=9
+    .byte PALETTE_TOWN                      ; '-> Palette 27
     .byte $25                               ; Entering left to Victim from
                                             ; Mist (screen 37)
-    .byte AREA_TOWNS                        ;   |-> Switch to area 3
-    .byte $07                               ;   |-> Screen index 7
-    .byte $9e                               ;   |-> Start position X=14, Y=9
-    .byte PALETTE_TOWN                      ;   '-> Palette 27
+    .byte AREA_TOWNS                        ; |-> Switch to area 3
+    .byte $07                               ; |-> Screen index 7
+    .byte $9e                               ; |-> Start position X=14, Y=9
+    .byte PALETTE_TOWN                      ; '-> Palette 27
     .byte $ff                               ; [$eb17] byte
 
 ;
@@ -18931,22 +20400,22 @@ TOWN_TRANSITIONS_MIST:                      ; [$eb03]
 TOWN_TRANSITIONS_BRANCH:                    ; [$eb18]
     .byte $0d                               ; Entering right to Conflate from
                                             ; Branch (screen 13)
-    .byte AREA_TOWNS                        ;   |-> Switch to area 3
-    .byte $08                               ;   |-> Screen index 8
-    .byte $91                               ;   |-> Start position X=1, Y=9
-    .byte PALETTE_TOWN                      ;   '-> Palette 27
+    .byte AREA_TOWNS                        ; |-> Switch to area 3
+    .byte $08                               ; |-> Screen index 8
+    .byte $91                               ; |-> Start position X=1, Y=9
+    .byte PALETTE_TOWN                      ; '-> Palette 27
     .byte $23                               ; Entering Daybreak from Branch
                                             ; (screen 35)
-    .byte AREA_TOWNS                        ;   |-> Switch to area 3
-    .byte $0a                               ;   |-> Screen index 10
-    .byte $92                               ;   |-> Start position X=2, Y=9
-    .byte PALETTE_TOWN                      ;   '-> Palette 27
+    .byte AREA_TOWNS                        ; |-> Switch to area 3
+    .byte $0a                               ; |-> Screen index 10
+    .byte $92                               ; |-> Start position X=2, Y=9
+    .byte PALETTE_TOWN                      ; '-> Palette 27
     .byte $24                               ; Entering Daybreak from Branch
                                             ; (screen 36)
-    .byte AREA_TOWNS                        ;   |-> Switch to area 3
-    .byte $0b                               ;   |-> Screen index 11
-    .byte $9e                               ;   |-> Start position X=14, Y=9
-    .byte PALETTE_TOWN                      ;   '-> Palette 27
+    .byte AREA_TOWNS                        ; |-> Switch to area 3
+    .byte $0b                               ; |-> Screen index 11
+    .byte $9e                               ; |-> Start position X=14, Y=9
+    .byte PALETTE_TOWN                      ; '-> Palette 27
     .byte $ff                               ; [$eb27] byte
 
 ;
@@ -18957,10 +20426,10 @@ TOWN_TRANSITIONS_BRANCH:                    ; [$eb18]
 TOWN_TRANSITIONS_DARTMOOR:                  ; [$eb28]
     .byte $03                               ; Entering right to Dartmoor from
                                             ; Branch (screen 3)
-    .byte AREA_TOWNS                        ;   |-> Switch to area 3
-    .byte $0c                               ;   |-> Screen index 12
-    .byte $92                               ;   |-> Start position X=2, Y=9
-    .byte PALETTE_TOWN                      ;   '-> Palette 27
+    .byte AREA_TOWNS                        ; |-> Switch to area 3
+    .byte $0c                               ; |-> Screen index 12
+    .byte $92                               ; |-> Start position X=2, Y=9
+    .byte PALETTE_TOWN                      ; '-> Palette 27
     .byte $ff                               ; [$eb2d] byte
 
 ;
@@ -19003,9 +20472,9 @@ Game_RunDoorRequirementHandler:             ; [$eb2f]
     BEQ RETURN_EB3E
     ASL A
     TAY
-    LDA DOOR_REQUIREMENT_LOOKUP_FUNC_ADDRS+1,Y
+    LDA a:DOOR_REQUIREMENT_LOOKUP_FUNC_ADDRS+1,Y
     PHA
-    LDA DOOR_REQUIREMENT_LOOKUP_FUNC_ADDRS,Y
+    LDA a:DOOR_REQUIREMENT_LOOKUP_FUNC_ADDRS,Y
     PHA
 
 ;============================================================================
@@ -19525,7 +20994,7 @@ Player_DrawBody:                            ; [$ebee]
     TAX
     PLA
     CLC
-    ADC PLAYER_BODY_TILEINFO_START_OFFSETS,X
+    ADC a:PLAYER_BODY_TILEINFO_START_OFFSETS,X
     JSR Sprite_SetPlayerAppearanceAddr
     JMP FUN_PRG15_MIRROR__ec58
 
@@ -19576,7 +21045,7 @@ Player_SetFacingLeft:                       ; [$ec51]
 FUN_PRG15_MIRROR__ec58:                     ; [$ec58]
     LDA Player_Flags
     BPL @_return
-    LDA PlayerHitsPhaseCounter
+    LDA Player_AttackPhaseAnimFrame
     CMP #$02
     BNE @_return
     LDY #$00
@@ -19586,7 +21055,7 @@ FUN_PRG15_MIRROR__ec58:                     ; [$ec58]
     INY
 
   @LAB_PRG15_MIRROR__ec6b:                  ; [$ec6b]
-    LDA BYTE_ARRAY_PRG15_MIRROR__eca2,Y
+    LDA a:BYTE_ARRAY_PRG15_MIRROR__eca2,Y
     JSR Player_CalcValueAndFFForNeg
     LDA Player_PosX_Block
     CLC
@@ -19612,7 +21081,7 @@ FUN_PRG15_MIRROR__ec58:                     ; [$ec58]
     TYA
     ORA Temp_00
     TAY
-    LDA BYTE_ARRAY_PRG15_MIRROR__eca4,Y
+    LDA a:BYTE_ARRAY_PRG15_MIRROR__eca4,Y
     JMP Sprite_SetPlayerAppearanceAddr
 
   @_return:                                 ; [$eca1]
@@ -19683,8 +21152,8 @@ Player_GetBodySpriteFrameOffset:            ; [$ecac]
     BPL @LAB_PRG15_MIRROR__ecd2
 
   @LAB_PRG15_MIRROR__eccc:                  ; [$eccc]
-    LDX PlayerHitsPhaseCounter
-    LDA BYTE_ARRAY_PRG15_MIRROR__ecf3,X
+    LDX Player_AttackPhaseAnimFrame
+    LDA a:BYTE_ARRAY_PRG15_MIRROR__ecf3,X
     RTS
 
   @LAB_PRG15_MIRROR__ecd2:                  ; [$ecd2]
@@ -19707,7 +21176,7 @@ Player_GetBodySpriteFrameOffset:            ; [$ecac]
 
   @LAB_PRG15_MIRROR__ecea:                  ; [$ecea]
     TAX
-    LDA BYTE_ARRAY_PRG15_MIRROR__ecef,X
+    LDA a:BYTE_ARRAY_PRG15_MIRROR__ecef,X
     RTS
 
 ;
@@ -19760,8 +21229,8 @@ BYTE_ARRAY_PRG15_MIRROR__ecf3:              ; [$ecf3]
 ; XREFS:
 ;     Player_CastMagic
 ;     Player_CheckHandleAttack
-;     Player_ContinueHandleClimbOrJump
 ;     Player_GetBodySpriteFrameOffset
+;     Player_UpdateClimbOrJump
 ;============================================================================
 Player_IsClimbing:                          ; [$ecf6]
     ;
@@ -20059,7 +21528,7 @@ Player_LoadArmorTilesToPPU:                 ; [$ed72]
     ; The caller will use this to iterate through the tiles to
     ; load.
     ;
-    LDA PLAYER_ARMOR_TILE_COUNTS,X          ; Load the tile count.
+    LDA a:PLAYER_ARMOR_TILE_COUNTS,X        ; Load the tile count.
     STA Temp_00                             ; Store it for the parent caller
                                             ; to use.
 
@@ -20161,7 +21630,7 @@ Player_LoadWeaponTilesToPPU:                ; [$ed9d]
     ;
   @_loadWeaponTiles:                        ; [$edab]
     TAX                                     ; X = weapon.
-    LDA PLAYER_WEAPON_TILE_COUNTS,X         ; Load the tile count.
+    LDA a:PLAYER_WEAPON_TILE_COUNTS,X       ; Load the tile count.
     STA Temp_00                             ; Store it for the parent caller
                                             ; to use.
 
@@ -20172,10 +21641,10 @@ Player_LoadWeaponTilesToPPU:                ; [$ed9d]
     TXA                                     ; X = tile count.
     ASL A                                   ; Convert to a word boundary.
     TAY                                     ; Y = resulting index.
-    LDA PLAYER_WEAPON_TILE_PPU_ADDRS,Y      ; Load the lower byte of the
+    LDA a:PLAYER_WEAPON_TILE_PPU_ADDRS,Y    ; Load the lower byte of the
                                             ; target PPU address for weapons.
     STA Player_SpriteSegmentPPUAddr_L       ; Set it for load.
-    LDA PLAYER_WEAPON_TILE_PPU_ADDRS+1,Y    ; Load the upper byte of the
+    LDA a:PLAYER_WEAPON_TILE_PPU_ADDRS+1,Y  ; Load the upper byte of the
                                             ; target PPU address for weapons.
     STA Player_SpriteSegmentPPUAddr_U       ; Set it for load.
     JMP Player_LoadWeaponSpriteTileAddrs    ; Load the sprite tiles
@@ -21019,7 +22488,7 @@ Player_LoadSpriteTile:                      ; [$eed2]
 
   @_copyLoop:                               ; [$ef25]
     LDA (Temp_04),Y                         ; Load a byte of the tile.
-    STA PPUBuffer,X                         ; Write it to the PPU buffer.
+    STA a:PPUBuffer,X                       ; Write it to the PPU buffer.
     INX                                     ; X++ (buffer position).
     INY                                     ; Y++ (loop counter).
     CPY #$10                                ; Is it < 16?
@@ -21054,7 +22523,7 @@ Player_LoadSpriteTile:                      ; [$eed2]
 
 
 ;============================================================================
-; DEAD CODE: Unset the special event ID.
+; DEADCODE: Unset the special event ID.
 ;
 ; This is not used in the game.
 ;============================================================================
@@ -21118,10 +22587,10 @@ GameLoop_RunScreenEventHandlers:            ; [$ef4b]
     ; to run.
     ;
     TAY                                     ; Y = A
-    LDA SPECIAL_SCREEN_EVENT_LOOKUP_TABLE+1,Y ; Load the lower byte of the
-                                              ; handler address.
+    LDA a:SPECIAL_SCREEN_EVENT_LOOKUP_TABLE+1,Y ; Load the lower byte of the
+                                                ; handler address.
     PHA                                     ; Push it to the stack.
-    LDA SPECIAL_SCREEN_EVENT_LOOKUP_TABLE,Y ; Load the upper byte.
+    LDA a:SPECIAL_SCREEN_EVENT_LOOKUP_TABLE,Y ; Load the upper byte.
     PHA                                     ; Push it.
 
   @_return:                                 ; [$ef62]
@@ -21242,7 +22711,7 @@ Sprites_HasSpritesNotOfType:                ; [$ef88]
     LDX #$07
 
   @_loop:                                   ; [$ef8c]
-    LDA CurrentSprites_Entities,X
+    LDA a:CurrentSprites_Entities,X
     CMP #$ff
     BEQ @_prepareNextIter
     CMP Temp_00
@@ -21472,7 +22941,7 @@ Maybe_IsSpriteEntityNotOnScreen:            ; [$efe6]
     ; Check the entity for this index in the current sprites list.
     ;
   @_spriteLoop:                             ; [$efea]
-    LDA CurrentSprites_Entities,Y           ; Load the entity of the sprite
+    LDA a:CurrentSprites_Entities,Y         ; Load the entity of the sprite
                                             ; at loop index.
     CMP Temp_00                             ; Is it the entity the caller is
                                             ; checking for?
@@ -21529,9 +22998,9 @@ Sprites_HasBoss:                            ; [$eff8]
     ; Check if this sprite is a boss.
     ;
   @_loop:                                   ; [$effa]
-    LDY CurrentSprites_Entities,X           ; Load the sprite entity at that
+    LDY a:CurrentSprites_Entities,X         ; Load the sprite entity at that
                                             ; index.
-    LDA SPRITE_CATEGORIES_BY_ENTITY,Y       ; Load the category for the
+    LDA a:SPRITE_CATEGORIES_BY_ENTITY,Y     ; Load the category for the
                                             ; entity.
     CMP #$07                                ; Is it 7 (boss)?
     BNE @_notBoss                           ; If not, jump.
@@ -21574,7 +23043,7 @@ Sprites_HasCurrentSprites:                  ; [$f00b]
     LDY #$07                                ; Y = 7 (loop counter).
 
   @_loop:                                   ; [$f00d]
-    LDA CurrentSprites_Entities,Y           ; Load the sprite entity at that
+    LDA a:CurrentSprites_Entities,Y         ; Load the sprite entity at that
                                             ; index.
     CMP #$ff                                ; Is it unset?
     BEQ @_prepareNextLoopIter               ; If yes, jump to prepare for the
@@ -22063,7 +23532,7 @@ Sprite_Draw_Standard:                       ; [$f0ec]
     ;
     LDX Temp_Sprites_TileXOffset            ; X = tile X offset.
     LDA Temp_Sprites_NormXPos               ; A = normalized X position.
-    ADC SPRITE_TILE_BLOCK_POSITIONS,X       ; A += the offset from the lookup
+    ADC a:SPRITE_TILE_BLOCK_POSITIONS,X     ; A += the offset from the lookup
                                             ; table at X.
     STA Temp_00                             ; Store it temporarily.
 
@@ -22090,7 +23559,7 @@ Sprite_Draw_Standard:                       ; [$f0ec]
     ;
     LDX Temp_Sprites_TileYOffset            ; X = tile Y offset.
     LDA Temp_Sprites_NormYPos               ; A = normalized Y position.
-    ADC SPRITE_TILE_BLOCK_POSITIONS,X       ; A += the offset from the lookup
+    ADC a:SPRITE_TILE_BLOCK_POSITIONS,X     ; A += the offset from the lookup
                                             ; table at X.
     STA Temp_01                             ; Store it temporarily.
 
@@ -22125,7 +23594,7 @@ Sprite_Draw_Standard:                       ; [$f0ec]
     ;
     TAX                                     ; X = A (read offset)
     LDA Temp_01                             ; Load the Y position.
-    STA SPRITE_0_RANGE_1_START,X            ; Write the Y position to DMA.
+    STA a:SPRITE_0_RANGE_1_START,X          ; Write the Y position to DMA.
 
 
     ;
@@ -22138,7 +23607,7 @@ Sprite_Draw_Standard:                       ; [$f0ec]
     CLC
     ADC Sprites_PPUOffset                   ; Add the PPU starting offset for
                                             ; the list of tiles.
-    STA SPRITE_0_RANGE_1_START,X            ; Write the tile ID to DMA.
+    STA a:SPRITE_0_RANGE_1_START,X          ; Write the tile ID to DMA.
 
 
     ;
@@ -22171,7 +23640,7 @@ Sprite_Draw_Standard:                       ; [$f0ec]
     TAY                                     ; Y = result.
     LDA MovingSpriteVisibility              ; Load the moving visibility of
                                             ; the sprite.
-    AND DRAW_SPRITE_VISIBILITY_MASK,Y       ; AND with the lookup table,
+    AND a:DRAW_SPRITE_VISIBILITY_MASK,Y     ; AND with the lookup table,
                                             ; determining priority.
     BEQ @_storeAttribute                    ; If non-0, keep foreground
                                             ; priority. Else...
@@ -22192,7 +23661,7 @@ Sprite_Draw_Standard:                       ; [$f0ec]
     ;
   @_storeAttribute:                         ; [$f151]
     LDA Temp_01                             ; Load the calculated attribute.
-    STA SPRITE_0_RANGE_1_START,X            ; Store the tile attributes to
+    STA a:SPRITE_0_RANGE_1_START,X          ; Store the tile attributes to
                                             ; DMA.
 
 
@@ -22201,7 +23670,7 @@ Sprite_Draw_Standard:                       ; [$f0ec]
     ;
     INX                                     ; X++ (read offset)
     LDA Temp_00                             ; Load the X position.
-    STA SPRITE_0_RANGE_1_START,X            ; Write the X coordinate to DMA.
+    STA a:SPRITE_0_RANGE_1_START,X          ; Write the X coordinate to DMA.
 
 
     ;
@@ -22323,14 +23792,14 @@ Sprite_Draw_FlippedHoriz:                   ; [$f181]
     BNE @LAB_PRG15_MIRROR__f215
     LDX Temp_Sprites_TileXOffset
     LDA Temp_Sprites_NormXPos
-    ADC SPRITE_TILE_BLOCK_POSITIONS,X
+    ADC a:SPRITE_TILE_BLOCK_POSITIONS,X
     STA Temp_00
     LDA Sprite_TileInfo_OffsetX
     ADC #$00
     BNE @LAB_PRG15_MIRROR__f215
     LDX Temp_Sprites_TileYOffset
     LDA Temp_Sprites_NormYPos
-    ADC SPRITE_TILE_BLOCK_POSITIONS,X
+    ADC a:SPRITE_TILE_BLOCK_POSITIONS,X
     STA Temp_01
     LDA Sprite_TileInfo_OffsetY
     ADC #$00
@@ -22343,12 +23812,12 @@ Sprite_Draw_FlippedHoriz:                   ; [$f181]
     EOR Sprites_StartSlotRange
     TAX
     LDA Temp_01
-    STA SPRITE_0_RANGE_1_START,X
+    STA a:SPRITE_0_RANGE_1_START,X
     INX
     LDA (Sprite_TileInfo_ReadAddr_L),Y
     CLC
     ADC Sprites_PPUOffset
-    STA SPRITE_0_RANGE_1_START,X
+    STA a:SPRITE_0_RANGE_1_START,X
     INX
     INY
     LDA (Sprite_TileInfo_ReadAddr_L),Y
@@ -22358,7 +23827,7 @@ Sprite_Draw_FlippedHoriz:                   ; [$f181]
     AND #$01
     TAY
     LDA MovingSpriteVisibility
-    AND BYTE_ARRAY_PRG15_MIRROR__f226,Y
+    AND a:BYTE_ARRAY_PRG15_MIRROR__f226,Y
     BEQ @LAB_PRG15_MIRROR__f205
     LDA Temp_01
     ORA #$20
@@ -22366,10 +23835,10 @@ Sprite_Draw_FlippedHoriz:                   ; [$f181]
 
   @LAB_PRG15_MIRROR__f205:                  ; [$f205]
     LDA Temp_01
-    STA SPRITE_0_RANGE_1_START,X
+    STA a:SPRITE_0_RANGE_1_START,X
     INX
     LDA Temp_00
-    STA SPRITE_0_RANGE_1_START,X
+    STA a:SPRITE_0_RANGE_1_START,X
     JSR Sprites_IncNextSpriteSlot
     PLA
     TAY
@@ -22713,7 +24182,7 @@ IScripts_DrawPortraitAnimationFrame:        ; [$f29b]
     JSR IScripts_GetPortraitOffset          ; Get the offset into the table
                                             ; for the portrait ID.
     CLC
-    ADC PORTRAIT_EYE_APPEARANCE_OFFSETS,X   ; Add the eyes animation offset
+    ADC a:PORTRAIT_EYE_APPEARANCE_OFFSETS,X ; Add the eyes animation offset
                                             ; for this even/odd frame.
     JSR Sprite_DrawPortraitPartAppearance   ; Draw as the eyes.
 
@@ -22735,8 +24204,9 @@ IScripts_DrawPortraitAnimationFrame:        ; [$f29b]
     JSR IScripts_GetPortraitOffset          ; Get the offset into the table
                                             ; for the portrait ID.
     CLC
-    ADC PORTRAIT_MOUTH_APPEARANCE_OFFSETS,X ; Add the mouth animation offset
-                                            ; for this even/odd frame.
+    ADC a:PORTRAIT_MOUTH_APPEARANCE_OFFSETS,X ; Add the mouth animation
+                                              ; offset for this even/odd
+                                              ; frame.
     JMP Sprite_DrawPortraitPartAppearance   ; Draw as the mouth.
 
 
@@ -23019,7 +24489,7 @@ IScripts_DrawPortraitTileToPPU:             ; [$f316]
   @_drawLoop:                               ; [$f34e]
     LDA (Temp_04),Y                         ; Load the next byte for the
                                             ; tile.
-    STA PPUBuffer,X                         ; Store it in the PPU buffer.
+    STA a:PPUBuffer,X                       ; Store it in the PPU buffer.
     INX                                     ; X++ (destination).
     INY                                     ; Y++ (loop counter).
     CPY #$10                                ; Have we hit 16 bytes?
@@ -23117,9 +24587,9 @@ SoundEffect_SetCurrent:                     ; [$f36f]
     ;
     TAX                                     ; X = new sound ID
     LDY a:SoundEffect_Unused_PriorityID     ; Y = current sound ID
-    LDA SOUND_PRIORITIES,Y                  ; A = Sound type for current
+    LDA a:SOUND_PRIORITIES,Y                ; A = Sound type for current
                                             ; sound from map
-    CMP SOUND_PRIORITIES,X                  ; Is this already the current
+    CMP a:SOUND_PRIORITIES,X                ; Is this already the current
                                             ; sound?
     BEQ @_queueNext                         ; If yes, then jump
     BCC @_queueNext                         ; If it's a lower priority
@@ -23211,33 +24681,56 @@ SOUND_PRIORITIES:                           ; [$f388]
 ;     PasswordScreen_Show
 ;============================================================================
 PPU_LoadGlyphsForStrings:                   ; [$f3a5]
-    LDA a:CurrentROMBank
-    PHA
-    LDX #$0d
-    JSR MMC1_UpdateROMBank
-    LDA #$00
-    STA Temp_Int24
-    LDA #$80
+    ;
+    ; Save the current bank and switch to bank 13 (strings).
+    ;
+    LDA a:CurrentROMBank                    ; Get the current ROM bank.
+    PHA                                     ; Push it to the stack.
+    LDX #$0d                                ; 13 = Strings bank.
+    JSR MMC1_UpdateROMBank                  ; Switch to the bank.
+
+
+    ;
+    ; Set the starting address to load from ($8000).
+    ;
+    LDA #<TILE_GLYPHS_START                 ; Lower byte of the starting
+                                            ; address.
+    STA Temp_Int24                          ; Store it.
+    LDA #$80                                ; Upper byte of the starting
+                                            ; address.
     STA Temp_Int24_M
-    LDA #$12
-    STA a:PPUADDR
-    LDA #$00
-    STA a:PPUADDR
+
+
+    ;
+    ; Set the starting PPU address to write glyphs to.
+    ;
+    LDA #$12                                ; Lower byte of the PPU address.
+    STA a:PPUADDR                           ; Set it.
+    LDA #$00                                ; Upper byte of the PPU address.
+    STA a:PPUADDR                           ; Set it.
     LDX #$60
 
-  @LAB_PRG15_MIRROR__f3c2:                  ; [$f3c2]
-    JSR PPU_WriteGlyphTile
-    JSR PPU_WriteGlyphTile
-    LDA Temp_Int24
+  @_loadGlyphsLoop:                         ; [$f3c2]
+    JSR PPU_WriteGlyphTile                  ; Write the glyph as plane 1.
+    JSR PPU_WriteGlyphTile                  ; Write the glyph as plane 2.
+    LDA Temp_Int24                          ; Load the lower byte of the load
+                                            ; address.
     CLC
-    ADC #$08
-    BCC @LAB_PRG15_MIRROR__f3d1
-    INC Temp_Int24_M
+    ADC #$08                                ; Increment by 8.
+    BCC @_prepareNextLoop                   ; If it didn't wrap, jump to
+                                            ; avoid setting the upper byte.
+    INC Temp_Int24_M                        ; Increment the upper byte of the
+                                            ; load address.
 
-  @LAB_PRG15_MIRROR__f3d1:                  ; [$f3d1]
-    STA Temp_Int24
-    DEX
-    BNE @LAB_PRG15_MIRROR__f3c2
+  @_prepareNextLoop:                        ; [$f3d1]
+    STA Temp_Int24                          ; Store as the new lower byte of
+                                            ; the load address.
+    DEX                                     ; X--
+    BNE @_loadGlyphsLoop                    ; If X > 0, loop.
+
+    ;
+    ; v-- Fall through --v
+    ;
 
 
 ;============================================================================
@@ -23267,7 +24760,7 @@ PPU_LoadGlyphsForStrings:                   ; [$f3a5]
 ;============================================================================
 MMC1_UpdatePRGBankToStackA:                 ; [$f3d6]
     PLA                                     ; Pop the bank from the stack.
-    TAX                                     ; X = A
+    TAX                                     ; X = Resulting bank.
     JSR MMC1_UpdateROMBank                  ; Switch to the bank.
     RTS
 
@@ -23414,10 +24907,10 @@ Messages_Load:                              ; [$f3f5]
     ;
     ; Set the start of the messages string (MESSAGE_STRINGS).
     ;
-    LDX #$00                                ; Set the lower byte of the
+    LDX #<MESSAGE_STRINGS                   ; Set the lower byte of the
                                             ; address for the strings.
     STX Temp_Int24
-    LDX #$83                                ; Set the upper byte of the
+    LDX #>MESSAGE_STRINGS                   ; Set the upper byte of the
                                             ; address for the strings.
     STX Temp_Int24_M
 
@@ -23774,7 +25267,7 @@ TextBox_DisplayMessage:                     ; [$f4a2]
     ASL A
     ORA Temp_Int24
     TAX                                     ; X = A
-    LDA PLAYER_TITLE_STRINGS,X              ; Look up the string.
+    LDA a:PLAYER_TITLE_STRINGS,X            ; Look up the string.
     INC a:Textbox_TitleCharOffset
     CMP #$20
     BNE TextBox_ShowMessageWithSound
@@ -24160,7 +25653,7 @@ TextBox_ShowMessage_ShowPlayerTitle:        ; [$f55e]
     ASL A
     ASL A
     TAX                                     ; X = A
-    LDA PLAYER_TITLE_STRINGS,X              ; Load the title string at X.
+    LDA a:PLAYER_TITLE_STRINGS,X            ; Load the title string at X.
     JMP TextBox_ShowMessageWithSound        ; Show this title in the textbox.
 ;============================================================================
 ; TODO: Document TextBox_ShowMessage_Fill4Lines
@@ -24616,30 +26109,38 @@ PLAYER_TITLE_STRINGS:                       ; [$f649]
     .byte "Paladin "                        ; [$f729] char
     .byte "        "                        ; [$f731] char
     .byte "Lord    "                        ; [$f739] char
-    .byte "        "                        ; [$f741] char
+    .byte "      "                          ; [$f741] char
+
+;
+; XREFS:
+;     Player_SetInitialExpAndGold
+;
+PLAYER_TITLE_STRINGS_15__14_:               ; [$f747]
+    .byte " "                               ; [$f747] char
+
+;
+; XREFS:
+;     Player_SetInitialExpAndGold
+;
+PLAYER_TITLE_STRINGS_15__15_:               ; [$f748]
+    .byte " "                               ; [$f748] char
 
 
 ;============================================================================
 ; Experience requirements for each title.
 ;
 ; XREFS:
-;     Player_SetInitialExpAndGold
+;     PlayerMenu_ShowStatusMenu
 ;     Player_CheckReachedNextTitle
 ;============================================================================
 
 ;
 ; XREFS:
-;     Player_SetInitialExpAndGold
+;     PlayerMenu_ShowStatusMenu
 ;     Player_CheckReachedNextTitle
 ;
 PLAYER_TITLE_EXP_NEEDED:                    ; [$f749]
     .word $03e8                             ; [0]: Aspirant (1,000 exp)
-
-;
-; XREFS:
-;     PlayerMenu_ShowStatusMenu
-;
-PLAYER_TITLE_EXP_NEEDED_1_:                 ; [$f74b]
     .word $0898                             ; [1]: Battler (2,200 exp)
     .word $0dac                             ; [2]: Fighter (3,500 exp)
     .word $12c0                             ; [3]: Adept (4,800 exp)
@@ -24653,20 +26154,18 @@ PLAYER_TITLE_EXP_NEEDED_1_:                 ; [$f74b]
     .word $6590                             ; [11]: Champion (26,000 exp)
     .word $7530                             ; [12]: Superhero (30,000 exp)
     .word $88b8                             ; [13]: Paladin (35,000 exp)
+
+;
+; XREFS:
+;     Player_SetInitialExpAndGold
+;
+PLAYER_TITLE_EXP_NEEDED_14_:                ; [$f765]
     .word $afc8                             ; [14]: Lord (45,000 exp)
 
 
 ;============================================================================
 ; Starting gold at each player title.
-;
-; XREFS:
-;     Player_SetInitialExpAndGold
 ;============================================================================
-
-;
-; XREFS:
-;     Player_SetInitialExpAndGold
-;
 PLAYER_TITLE_GOLD:                          ; [$f767]
     .word $01f4                             ; [0]:
     .word $0320                             ; [1]:
@@ -24760,8 +26259,8 @@ Player_GetInventoryBitForIndex:             ; [$f78b]
 ;============================================================================
 ; Multiply a value by 16.
 ;
-; This seems to be primarily used for textbox widths.
-; 16 is the max width of text in a box.
+; This if often used for for textbox widths. 16 is the max
+; width of text in a box.
 ;
 ; INPUTS:
 ;     A:
@@ -24861,7 +26360,7 @@ TextBox_GetBackingAttributeData:            ; [$f791]
     ;
     TAX                                     ; X = A (screen buffer lookup
                                             ; index)
-    LDY ScreenBuffer,X                      ; Y = Screen buffer data at the
+    LDY a:ScreenBuffer,X                    ; Y = Screen buffer data at the
                                             ; index.
     LDA (CurrentArea_BlockAttributesAddr),Y ; Load the block attributes at
                                             ; the given offset.
@@ -24901,7 +26400,7 @@ Textbox_Maybe_GetAreaBehindTextbox:         ; [$f7b7]
     SEC
     SBC #$20
     TAX
-    LDY ScreenBuffer,X
+    LDY a:ScreenBuffer,X
     LDA a:TextBox_ContentsX
     AND #$01
     STA Temp_Int24
@@ -25244,10 +26743,10 @@ PPUBuffer_WriteFromTemp:                    ; [$f842]
 ;     TextBox_FillPPUBufferForTextWidth
 ;     TextBox_FillPlaceholderTextAtLineWithStartChar
 ;     UI_DrawDigitsZeroPadded
-;     UI_DrawManaOrHPBar
+;     UI_SetHUDBarValue
 ;============================================================================
 PPUBuffer_Set:                              ; [$f845]
-    STA PPUBuffer,X                         ; Store A in the PPU buffer at X.
+    STA a:PPUBuffer,X                       ; Store A in the PPU buffer at X.
     INX                                     ; X++
     RTS
 
@@ -25439,8 +26938,7 @@ MMC1_LoadBankAndJump:                       ; [$f859]
     LDY #$03                                ; Y = 3
     LDA (Temp_Int24),Y                      ; A = Upper byte of the address
                                             ; to jump to.
-    STA Maybe_Temp4                         ; Maybe_Temp4 =
-                                            ; A
+    STA Temp_0xEF                           ; Temp_0xEF = A
     DEY                                     ; Y-- (2)
     LDA (Temp_Int24),Y                      ; A = Lower byte of the address
                                             ; to jump to.
@@ -25454,19 +26952,20 @@ MMC1_LoadBankAndJump:                       ; [$f859]
 
 
     ;
-    ; Push the trampoline address $C5F8.
+    ; Push the trampoline address (MMC1_PopBank).
     ;
-    LDA #$f8                                ; A = 0xF8
+    LDA #>MMC1_PopBank                      ; Upper byte of the trampoline
+                                            ; address. .
     PHA                                     ; Push A to stack
-    LDA #$c5                                ; A = 0xC5
+    LDA #<MMC1_PopBank-1                    ; Upper byte of the trampoline
+                                            ; address. .
     PHA                                     ; Push A to stack
 
 
     ;
     ; Push the target address for the trampoline.
     ;
-    LDA Maybe_Temp4                         ; A =
-                                            ; Maybe_Temp4
+    LDA Temp_0xEF                           ; A = Temp_0xEF
     PHA                                     ; Push A to stack
     LDA Temp_Int24_U                        ; A = upper byte of
                                             ; Temp_Int24.
@@ -25525,6 +27024,21 @@ PPU_WriteTilesFromCHRRAM:                   ; [$f89e]
     BNE @LAB_PRG15_MIRROR__f8b5
     DEC Temp_Int24
     BNE @LAB_PRG15_MIRROR__f8b3
+
+    ;
+    ; v-- Fall through --v
+    ;
+
+;============================================================================
+; TODO: Document MMC1_PopBank
+;
+; INPUTS:
+;     None.
+;
+; OUTPUTS:
+;     TODO
+;============================================================================
+MMC1_PopBank:                               ; [$f8c6]
     PLA
     TAX
     JMP MMC1_UpdateROMBank
@@ -25700,7 +27214,7 @@ UI_DrawHUDSprites:                          ; [$f8eb]
     LDA #$20
     STA a:PPUADDR                           ; Store the upper draw position
                                             ; byte as 0x20.
-    LDA UI_STATUS_SYMBOL_PPU_ADDR_L,X       ; Load the lower byte from the
+    LDA a:UI_STATUS_SYMBOL_PPU_ADDR_L,X     ; Load the lower byte from the
                                             ; lookup table based on the
                                             ; index.
     STA a:PPUADDR                           ; Store it as the lower byte.
@@ -25717,7 +27231,7 @@ UI_DrawHUDSprites:                          ; [$f8eb]
     ; This is generally 2-4 tiles per address.
     ;
   @_drawTiles:                              ; [$f910]
-    LDA UI_STATUS_TILES,Y                   ; Load the tile to draw at the
+    LDA a:UI_STATUS_TILES,Y                 ; Load the tile to draw at the
                                             ; current tile index.
     BEQ @_advanceIndexes                    ; If this is 0x00, we've reached
                                             ; the end of the run. Advance
@@ -25744,22 +27258,35 @@ UI_DrawHUDSprites:                          ; [$f8eb]
     CPX #$07                                ; Have we reached the end (draw
                                             ; position 7)?
     BNE @_goToNextPosition                  ; If not, loop.
+    JSR UI_DrawSelectedItem                 ; Draw the selected item.
 
 
     ;
-    ; We've finished drawing the status UI.
+    ; Set the location in bank 10 to load HUD tiles from
+    ; (HUD_TILES_START).
     ;
-    JSR UI_DrawSelectedItem
-    LDA #$40
-    STA IScriptOrCHRAddr
-    LDA #$81
-    STA IScriptOrCHRAddr_U
-    LDA #$00
-    STA PPU_TargetAddr
-    LDA #$10
-    STA PPU_TargetAddr_U
-    LDX #$0a
-    LDY #$3c
+    LDA #<HUD_TILES_START                   ; Lower byte of the start of HUD
+                                            ; tiles.
+    STA IScriptOrCHRAddr                    ; Set it for reading.
+    LDA #>HUD_TILES_START                   ; Upper byte of the start of HUD
+                                            ; tiles.
+    STA IScriptOrCHRAddr_U                  ; Set it for reading.
+
+
+    ;
+    ; Set the address in the PPU to write tiles to ($1000).
+    ;
+    LDA #$00                                ; Lower byte of PPU address.
+    STA PPU_TargetAddr                      ; Set it for writing.
+    LDA #$10                                ; Upper byte of PPU address.
+    STA PPU_TargetAddr_U                    ; Set it for writing.
+
+
+    ;
+    ; Begin writing 60 tiles from bank 10.
+    ;
+    LDX #$0a                                ; X = bank 10.
+    LDY #$3c                                ; Y = number of tiles to write.
     JSR PPU_WriteTilesFromCHRRAM
     RTS
 
@@ -25803,10 +27330,10 @@ Player_CheckReachedNextTitle:               ; [$f93c]
     TAX
     LDA a:Experience                        ; Load the lower byte from the
                                             ; lookup table.
-    CMP PLAYER_TITLE_EXP_NEEDED,X           ; Compare it.
+    CMP a:PLAYER_TITLE_EXP_NEEDED,X         ; Compare it.
     LDA a:Experience_U                      ; Load the upper byte from the
                                             ; lookup table.
-    SBC PLAYER_TITLE_EXP_NEEDED+1,X         ; Compare it.
+    SBC a:PLAYER_TITLE_EXP_NEEDED+1,X       ; Compare it.
     BCC @_return                            ; If we're under, exit.
 
 
@@ -25827,13 +27354,27 @@ Player_CheckReachedNextTitle:               ; [$f93c]
 ;
 ; INPUTS:
 ;     Temp_Int24:
-;         The lower byte of experience to add.
-;
 ;     Temp_Int24+1:
-;         The upper byte of experience to add.
+;         The experience to add.
+;
+;     Experience:
+;     Experience_U:
+;         The existing experience.
 ;
 ; OUTPUTS:
-;     None
+;     Experience:
+;         The updated experience.
+;
+;     PPU_TargetAddr:
+;     PPU_TargetAddr+1:
+;     Temp_Int24:
+;     $ee:
+;     $ee:
+;         Clobbered.
+;
+; CALLS:
+;     Player_CheckReachedNextTitle
+;     UI_DrawDigitsZeroPadded
 ;
 ; XREFS:
 ;     Player_AddExperienceFromSprite
@@ -26346,7 +27887,7 @@ UI_DrawDigitsZeroPadded_Populated:          ; [$fa0b]
     TAY                                     ; Y = result (loop counter).
 
   @_drawDigitsLoop:                         ; [$fa18]
-    LDA UI_DigitsToRender,Y                 ; Load the digit to draw at this
+    LDA a:UI_DigitsToRender,Y               ; Load the digit to draw at this
                                             ; index.
     JSR PPUBuffer_Set                       ; Set it in the PPU buffer.
     INY                                     ; Y++
@@ -26434,7 +27975,7 @@ UI_PopulateDigitsNoLeadingZeroes:           ; [$fa31]
     ; Check if the digit displays "0". If not, we're done.
     ;
   @_loop:                                   ; [$fa35]
-    LDA UI_DigitsToRender,X                 ; Load the current ASCII digit.
+    LDA a:UI_DigitsToRender,X               ; Load the current ASCII digit.
     CMP #$30                                ; Is it an ASCII "0"?
     BNE @_return                            ; If not, we're done.
 
@@ -26443,7 +27984,7 @@ UI_PopulateDigitsNoLeadingZeroes:           ; [$fa31]
     ; Clear out the digit entirely.
     ;
     LDA #$00                                ; NUL out this digit.
-    STA UI_DigitsToRender,X                 ; Store that as the new digit
+    STA a:UI_DigitsToRender,X               ; Store that as the new digit
                                             ; value.
     INX                                     ; i++
     CPX #$06                                ; Are we at the end of the loop?
@@ -26498,7 +28039,7 @@ UI_PopulateDigits:                          ; [$fa47]
     JSR UI_GetValueForDigit                 ; Get the value for this digit.
     ORA #$30                                ; Normalize the value to an ASCII
                                             ; digit.
-    STA UI_DigitsToRender,X                 ; Store in the target position in
+    STA a:UI_DigitsToRender,X               ; Store in the target position in
                                             ; RAM.
     DEX                                     ; i--
     BPL @_loop                              ; Loop if we're not done.
@@ -26583,38 +28124,35 @@ UI_GetValueForDigit:                        ; [$fa55]
     BNE @_loop                              ; Loop until we hit 0.
     RTS
 
+;
+; XREFS:
+;     UI_SetHUDBarValue
+;
 STATUS_BAR_PPU_ADDR_L:                      ; [$fa6c]
     .byte $63                               ; [0]: Power bar
+    .byte $43                               ; [1]: Magic bar
 
 ;
 ; XREFS:
-;     UI_DrawManaOrHPBar
+;     UI_SetHUDBarValue
 ;
-STATUS_BAR_PPU_ADDR_L_1_:                   ; [$fa6d]
-    .byte $43                               ; [1]: Mana bar
+STATUS_BAR_FILL_TILE_INDEXES:               ; [$fa6e]
     .byte $08                               ; [0]: Power bar
+    .byte $09                               ; [1]: Magic bar
 
 ;
 ; XREFS:
-;     UI_DrawManaOrHPBar
+;     UI_SetHUDBarValue
 ;
-BYTE_ARRAY_PRG15_MIRROR__fa6e_1_:           ; [$fa6f]
-    .byte $09                               ; [1]: Manab ar
+STATUS_BAR_PARTIAL_TILE_INDEXES:            ; [$fa70]
     .byte $0c                               ; [0]: Power bar
+    .byte $0d                               ; [1]: Magic bar
 
-;
-; XREFS:
-;     UI_DrawManaOrHPBar
-;
-BYTE_ARRAY_PRG15_MIRROR__fa70_1_:           ; [$fa71]
-    .byte $0d                               ; [1]: Mana bar
-
-BYTE_ARRAY_PRG15_MIRROR__fa72:              ; [$fa72]
-    .byte $c0                               ; [0]:
-
-BYTE_ARRAY_PRG15_MIRROR__fa72_1_:           ; [$fa73]
-    .byte $d0                               ; [1]:
-    .byte $60                               ; [2]:
+STATUS_BAR_PARTIAL_PPU_ADDR_L:              ; [$fa72]
+    .byte $c0                               ; [0]: Power bar
+    .byte $d0                               ; [1]: Magic bar
+    .byte $60                               ; DEADCODE: Leftover byte. RTS?
+                                            ; Extra bar type?
 ;============================================================================
 ; TODO: Document UI_DrawPlayerHPValue
 ;
@@ -26641,7 +28179,7 @@ UI_DrawPlayerHPValue:                       ; [$fa75]
     STA a:Temp_AddedHPValue
     STA a:Player_HP_U
     LDY #$00
-    BEQ UI_DrawManaOrHPBar
+    BEQ UI_SetHUDBarValue
 
     ;
     ; v-- Fall through --v
@@ -26649,16 +28187,19 @@ UI_DrawPlayerHPValue:                       ; [$fa75]
 
 
 ;============================================================================
-; Set the number of mana points for the player.
+; Set the MP value for the player.
 ;
-; Once set, the mana bar will be drawn to reflect the new amount.
+; Once set, the magic bar will be drawn to reflect the new amount.
 ;
 ; INPUT:
 ;     A:
-;         The mana points to set.
+;         The MP to set.
 ;
 ; OUTPUT:
 ;     None
+;
+; CALLS:
+;     UI_SetHUDBarValue
 ;
 ; XREFS:
 ;     IScriptAction_AddMP
@@ -26668,184 +28209,463 @@ UI_DrawPlayerHPValue:                       ; [$fa75]
 ;============================================================================
 Player_SetMP:                               ; [$fa85]
     ;
-    ; Cap the number of mana points to 80, if over.
+    ; Cap the MP to 80.
     ;
-    CMP #$51                                ; Check if over 80 mana points.
-    BCC @_storePoints                       ; If not over, we'll store what
+    CMP #$51                                ; Check if over 80 MP.
+    BCC @_setMP                             ; If not over, we'll store what
                                             ; was passed in.
-    LDA #$50                                ; Cap to 80 mana points.
+    LDA #$50                                ; Cap to 80 MP.
 
-  @_storePoints:                            ; [$fa8b]
-    STA a:Player_MP                         ; Set the player's current mana
-                                            ; points.
-    LDY #$01
+
+    ;
+    ; Proceed to set the MP on the player and then draw the
+    ; Magic bar.
+    ;
+  @_setMP:                                  ; [$fa8b]
+    STA a:Player_MP                         ; Set the player's current MP.
+    LDY #$01                                ; Set 1 = Magic Bar and fall
+                                            ; through to update.
 
     ;
     ; v-- Fall through --v
     ;
+
+
 ;============================================================================
-; TODO: Document UI_DrawManaOrHPBar
+; Set the Power or Magic bar's value.
+;
+; This fills up the bar to the specified value. It's done by
+; considering three types of tiles:
+;
+; 1. Zero or more "fill" tiles
+; 2. An optional single "partial fill" tile
+; 3. Zero or more "empty" tiles
+;
+; The number of each type of tile needed is calculated. Any
+; fill tiles will be drawn across the bar up to the maximum
+; width, followed by a partial tile (if the value isn't at
+; an even tile boundary), followed by any empty tiles needed
+; to fill up the bar.
+;
+; There's a "partial fill" tile for each possible value,
+; listed immediately after this function.
 ;
 ; INPUTS:
-;     A
-;     Y
+;     A:
+;         The value to set for the bar.
+;
+;         This will always be capped to the maximum value
+;         allowed by the bar.
+;
+;     Y:
+;         The index of the bar.
+;
+;         0 = Power Bar
+;         1 = Magic Bar
+;
+;     UI_MPAndHPBarWidth:
+;         The width of the MP/HP bar in pixels.
+;
+;     STATUS_BAR_PPU_ADDR_L:
+;         Table of lower PPU address bytes for drawing, by
+;         bar type.
+;
+;     STATUS_BAR_FILL_TILE_INDEXES:
+;         Indexes of the fill tiles in the PPU to set for
+;         drawing, by bar type.
+;
+;     STATUS_BAR_PARTIAL_TILE_INDEXES:
+;         Indexes of the partial fill tiles in the PPU to
+;         set for drawing, by bar type.
+;
+;     STATUS_BAR_PARTIAL_PPU_ADDR_L:
+;         Table of lower PPU address bytes for partial
+;         tiles, by bar type.
+;
+;     STATUS_BAR_PARTIAL_PPU_TILES:
+;         Start of the list of partial fill tiles.
 ;
 ; OUTPUTS:
-;     TODO
+;     PPUBuffer_WriteOffset:
+;         Next offset into the PPU buffer for writing.
+;
+;     PPU_TargetAddr:
+;     PPU_TargetAddr+1:
+;     Temp_Int24:
+;     $ee:
+;     Temp_0xEF:
+;         Clobbered.
+;
+; CALLS:
+;     Math_MultiplyBy16
+;     PPUBuffer_QueueCommandOrLength
+;     PPUBuffer_Set
 ;
 ; XREFS:
 ;     UI_DrawPlayerHPValue
 ;============================================================================
-UI_DrawManaOrHPBar:                         ; [$fa90]
+UI_SetHUDBarValue:                          ; [$fa90]
     ;
-    ; Set the upper byte of the 24-bit integer of the value to draw.
+    ; Cap the value to be <= the max for the bar.
     ;
-    STA Temp_Int24_U
-    LDA a:UI_MPAndHPBarWidth
+    ; The cap is the bar's width * 8.
+    ;
+    STA Temp_Int24_U                        ; Store the value temporarily.
+    LDA a:UI_MPAndHPBarWidth                ; Load the total width of the
+                                            ; bar.
+    ASL A                                   ; Multiply by 8, yielding the max
+                                            ; available tile-bound value.
     ASL A
     ASL A
-    ASL A
-    CMP Temp_Int24_U
-    BCS @LAB_PRG15_MIRROR__fa9e
-    STA Temp_Int24_U
-
-  @LAB_PRG15_MIRROR__fa9e:                  ; [$fa9e]
-    STY Maybe_Temp4
+    CMP Temp_Int24_U                        ; Is the passed-in value less
+                                            ; than the max?
+    BCS @_setBar                            ; If so, jump to draw.
+    STA Temp_Int24_U                        ; Else, cap to the max.
 
 
     ;
-    ; Set the draw position for the bar to update.
-    ; This will be based on the lower address from the
-    ; STATUS_BAR_PPU_ADDR_L lookup table.
+    ; Set the draw position for the bar to update. This will be
+    ; based on the lower address from the
+    ; STATUS_BAR_PPU_ADDR_L
+    ; lookup table.
     ;
     ; Bar 0 is the Mana bar.
     ; Bar 1 is the Power bar.
     ;
-    LDA #$20
-    STA PPU_TargetAddr_U
-    LDA STATUS_BAR_PPU_ADDR_L,Y
-    STA PPU_TargetAddr
-    LDX a:UI_MPAndHPBarWidth
-    INX
-    TXA
-    JSR PPUBuffer_QueueCommandOrLength
-    LDA Temp_Int24_U
-    LSR A
-    LSR A
-    LSR A
-    BEQ @LAB_PRG15_MIRROR__fac6
-    PHA
-    STA Temp_Int24
-    LDA $fa6e,Y
+  @_setBar:                                 ; [$fa9e]
+    STY Temp_0xEF                           ; Set the bar index in a temp
+                                            ; variable
+    LDA #$20                                ; Upper byte of the PPU address.
+    STA PPU_TargetAddr_U                    ; Set it.
+    LDA a:STATUS_BAR_PPU_ADDR_L,Y           ; Lower byte of the PPU address,
+                                            ; based on the bar index.
+    STA PPU_TargetAddr                      ; Set it.
 
-  @LAB_PRG15_MIRROR__fabe:                  ; [$fabe]
-    JSR PPUBuffer_Set
-    DEC Temp_Int24
-    BNE @LAB_PRG15_MIRROR__fabe
-    PLA
 
-  @LAB_PRG15_MIRROR__fac6:                  ; [$fac6]
-    CMP a:UI_MPAndHPBarWidth
-    BEQ @LAB_PRG15_MIRROR__fae2
-    PHA
-    LDA $fa70,Y
-    JSR PPUBuffer_Set
-    PLA
-    TAY
+    ;
+    ; Set the number of tiles to draw as the bar width + 1.
+    ;
+    LDX a:UI_MPAndHPBarWidth                ; Load the width of the bar.
+    INX                                     ; Increment by 1.
+    TXA                                     ; A = result.
+    JSR PPUBuffer_QueueCommandOrLength      ; Queue that as the number of
+                                            ; tiles to draw.
+
+
+    ;
+    ; Calculate the numer of pixels to draw.
+    ;
+    LDA Temp_Int24_U                        ; Load the value to draw.
+    LSR A                                   ; Multiply by 8 to get a
+                                            ; tile-bound value.
+    LSR A
+    LSR A
+    BEQ @_drawPartialTile                   ; If 0, jump.
+    PHA                                     ; Push the normalized value to
+                                            ; the stack.
+
+
+    ;
+    ; Begin the loop for drawing fill tiles.
+    ;
+    STA Temp_Int24                          ; Store it as a temp variable.
+    LDA a:STATUS_BAR_FILL_TILE_INDEXES,Y    ; Load the fill tile index to
+                                            ; draw for this bar.
+
+  @_fillTileLoop:                           ; [$fabe]
+    JSR PPUBuffer_Set                       ; Queue drawing the tile.
+    DEC Temp_Int24                          ; Decrement the loop counter.
+    BNE @_fillTileLoop                      ; If > 0, loop.
+
+
+    ;
+    ; The loop is complete.
+    ;
+    ; See if the bar is full. If not, the rest will need to be
+    ; filled in.
+    ;
+    PLA                                     ; Pop the normalized value.
+
+  @_drawPartialTile:                        ; [$fac6]
+    CMP a:UI_MPAndHPBarWidth                ; Was the bar maxed out?
+    BEQ @_drawEndBarDeco                    ; If so, jump.
+
+
+    ;
+    ; The bar was not maxed out. Draw a partial tile before
+    ; the empty tiles.
+    ;
+    ; A partial tile has the fill in the left and empty space
+    ; in the right.
+    ;
+    PHA                                     ; Else, push the normalized value
+                                            ; back to the stack.
+    LDA a:STATUS_BAR_PARTIAL_TILE_INDEXES,Y ; Load the partial tile index to
+                                            ; draw for this bar.
+    JSR PPUBuffer_Set                       ; Queue drawing the tile.
+    PLA                                     ; Pop the normalized value from
+                                            ; the stack.
+    TAY                                     ; Y = result.
+
+
+    ;
+    ; Now fill in the rest with empty tiles.
+    ;
+    ; This will be tile index 7 for either bar.
+    ;
     LDA #$07
 
-  @LAB_PRG15_MIRROR__fad6:                  ; [$fad6]
-    INY
-    CPY a:UI_MPAndHPBarWidth
-    BEQ @LAB_PRG15_MIRROR__fae2
-    JSR PPUBuffer_Set
-    JMP @LAB_PRG15_MIRROR__fad6
-
-  @LAB_PRG15_MIRROR__fae2:                  ; [$fae2]
-    LDA #$0b
-    JSR PPUBuffer_Set
-    STX PPUBuffer_WriteOffset
-    LDA Temp_Int24_U
-    AND #$07
-    JSR Math_MultiplyBy16
-    TAY
-    LDA #$10
-    STA PPU_TargetAddr_U
-    LDX Maybe_Temp4
-    LDA BYTE_ARRAY_PRG15_MIRROR__fa72,X
-    STA PPU_TargetAddr
-    LDA #$10
-    JSR PPUBuffer_QueueCommandOrLength
-    LDA Maybe_Temp4
-    BNE @LAB_PRG15_MIRROR__fb14
+  @_emptyTileLoop:                          ; [$fad6]
+    INY                                     ; Y++ (next value for the bar).
+    CPY a:UI_MPAndHPBarWidth                ; Would this max out the bar?
+    BEQ @_drawEndBarDeco                    ; If so, break out of the loop.
+    JSR PPUBuffer_Set                       ; Else, queue drawing the tile.
+    JMP @_emptyTileLoop                     ; Loop.
 
 
     ;
-    ; DEADCODE: All this is wired off behind Maybe_Temp4, which
-    ;           is never actually set. This appears to be code they
-    ;           were working on but never completed/got right. Which
-    ;           would not be a shock since part of it reaches into
-    ;           program code instead of an array of values.
+    ; Draw the ending decoration for the bar.
     ;
-  @LAB_PRG15_MIRROR__fb05:                  ; [$fb05]
-    LDA BYTE_PRG15_MIRROR__fb2f,Y
-    INY
-    JSR PPUBuffer_Set
-    TYA
-    AND #$0f
-    BNE @LAB_PRG15_MIRROR__fb05
-    STX PPUBuffer_WriteOffset
-    RTS
-
-  @LAB_PRG15_MIRROR__fb14:                  ; [$fb14]
-    LDA BYTE_PRG15_MIRROR__fb37,Y
-    INY
-    JSR PPUBuffer_Set
-    TYA
-    AND #$07
-    BNE @LAB_PRG15_MIRROR__fb14
+  @_drawEndBarDeco:                         ; [$fae2]
+    LDA #$0b                                ; 0x0B == Ending bar decoration.
+    JSR PPUBuffer_Set                       ; Queue drawing it.
+    STX PPUBuffer_WriteOffset               ; X = resulting write offset.
 
 
     ;
-    ; XXX Is this correct? It's reading from program code.
+    ; Next, the partial tile will be updated to fill in the
+    ; number of pixels remaining in the bar value.
     ;
-  @LAB_PRG15_MIRROR__fb20:                  ; [$fb20]
-    LDA @LAB_PRG15_MIRROR__fb27,Y
-    INY
-    JSR PPUBuffer_Set
+    LDA Temp_Int24_U                        ; Load the raw value to set for
+                                            ; the bar.
+    AND #$07                                ; Convert to a partial tile index
+                                            ; below.
+    JSR Math_MultiplyBy16                   ; Multiply by 16 (2 tiles).
+    TAY                                     ; Y = result.
+
+
+    ;
+    ; Compute the PPU address where the partial tile resides
+    ; for this bar.
+    ;
+    LDA #$10                                ; Upper byte of PPU address.
+    STA PPU_TargetAddr_U                    ; Set it.
+    LDX Temp_0xEF                           ; Load the bar index.
+    LDA a:STATUS_BAR_PARTIAL_PPU_ADDR_L,X   ; Lower byte of the PPU address,
+                                            ; based on bar index.
+    STA PPU_TargetAddr                      ; Set it.
+    LDA #$10                                ; A = Length of 16 tiles (2
+                                            ; pattern draws).
+    JSR PPUBuffer_QueueCommandOrLength      ; Set as the draw length.
+
+
+    ;
+    ; Figure out which bar is being drawn, so the appropriate
+    ; partial tile can be updated.
+    ;
+    LDA Temp_0xEF                           ; Load the bar index.
+    BNE @_updateMagicBarPartialTilePattern1Loop ; If not the Power bar, jump.
+
+
+    ;
+    ; This is the Power bar. Queue drawing each tile in range.
+    ;
+  @_updatePowerBarPartialTileLoop:          ; [$fb05]
+    LDA a:STATUS_BAR_PARTIAL_PPU_TILES,Y    ; Load the partial tile to set.
+    INY                                     ; Y++ (next partial tile to
+                                            ; draw).
+    JSR PPUBuffer_Set                       ; Queue drawing the loaded tile.
+    TYA                                     ; A = Next tile index.
+    AND #$0f                                ; Cap to 16.
+    BNE @_updatePowerBarPartialTileLoop     ; If the tile index is within
+                                            ; bounds (> 0, < 16), loop.
+
+
+    ;
+    ; We're done. Finish up and exit.
+    ;
+    STX PPUBuffer_WriteOffset               ; Store the resulting PPU buffer
+                                            ; write offset.
+    RTS                                     ; And return.
+
+
+    ;
+    ; This is the Magic bar. Queue drawing each tile in range.
+    ;
+    ; Start with drawing pattern 1 based on pattern 2 in the
+    ; selected tile. This is half-way through the tile. (Tiles
+    ; consist of 2 patterns).
+    ;
+    ; Note that the second half of all these bar tiles are the same.
+    ;
+  @_updateMagicBarPartialTilePattern1Loop:  ; [$fb14]
+    LDA a:STATUS_BAR_PARTIAL_PPU_TILES+8,Y  ; Load the partial tile to set.
+    INY                                     ; Y++ (next partial tile to
+                                            ; draw).
+    JSR PPUBuffer_Set                       ; Queue drawing the loaded tile.
+    TYA                                     ; A = Next tile index.
+    AND #$07                                ; Cap to 8 (pattern length).
+    BNE @_updateMagicBarPartialTilePattern1Loop ; If the tile index is within
+                                                ; bounds (> 0, < 8), loop.
+
+  @_updateMagicBarPartialTilePattern2Loop:  ; [$fb20]
+    LDA a:STATUS_BAR_PARTIAL_PPU_TILES-8,Y  ; Load the first half as pattern
+                                            ; 1.
+    INY                                     ; Y++ (next partial tile to
+                                            ; draw).
+    JSR PPUBuffer_Set                       ; Queue drawing the loaded tile.
 
   @LAB_PRG15_MIRROR__fb27:                  ; [$fb27]
-    TYA
-    AND #$07
-    BNE @LAB_PRG15_MIRROR__fb20
-    STX PPUBuffer_WriteOffset
-    RTS
+    TYA                                     ; A = loop counter.
+    AND #$07                                ; Cap to 8 (pattern length).
+    BNE @_updateMagicBarPartialTilePattern2Loop ; If the tile index is within
+                                                ; bounds (> 0, < 8), loop.
 
+
+    ;
+    ; We're done. Finish up and exit.
+    ;
+    STX PPUBuffer_WriteOffset               ; Store the resulting PPU buffer
+                                            ; write offset.
+    RTS                                     ; And return.
+
+
+;============================================================================
+; The collection of partial tiles for the Power/Magic bars.
+;
+; When drawing the Power bar, the tiles are used as normal.
+; The first half is pattern 1, the second half is pattern 2.
+;
+; When drawing the Magic bar, that's reversed. Pattern 1
+; comes from the second half, and pattern 2 comes from the
+; first half.
 ;
 ; XREFS:
-;     LAB_PRG15_MIRROR__fb05 [$PRG15_MIRROR::fb05]
+;     _updatePowerBarPartialTileLoop
+;     [$PRG15_MIRROR::fb05]
+;============================================================================
+
 ;
-BYTE_PRG15_MIRROR__fb2f:                    ; [$fb2f]
+; ........
+; ████████
+; ........
+; ........
+; ........
+; ........
+; ████████
+; ........
+;
+; XREFS:
+;     _updatePowerBarPartialTileLoop
+;     [$PRG15_MIRROR::fb05]
+;
+STATUS_BAR_PARTIAL_PPU_TILES:               ; [$fb2f]
     .byte $00,$ff,$00,$00,$00,$00,$ff,$00   ; [$fb2f] byte
 
 ;
 ; XREFS:
-;     LAB_PRG15_MIRROR__fb14 [$PRG15_MIRROR::fb14]
+;     _updateMagicBarPartialTilePattern1Loop
+;     [$PRG15_MIRROR::fb14]
 ;
-BYTE_PRG15_MIRROR__fb37:                    ; [$fb37]
+STATUS_BAR_PARTIAL_PPU_TILES_row0_1:        ; [$fb37]
     .byte $00,$ff,$00,$00,$00,$00,$ff,$00   ; [$fb37] byte
-    .byte $00,$ff,$80,$80,$80,$80,$ff,$00   ; [$fb3f] byte
-    .byte $00,$ff,$00,$00,$00,$00,$ff,$00   ; [$fb47] byte
+
+
+;
+; ........
+; ████████
+; ░.......
+; ░.......
+; ░.......
+; ░.......
+; ████████
+; ........
+;
+    .byte $00                               ; ........
+    .byte $ff,$80,$80,$80,$80,$ff,$00,$00   ; [$fb40] byte
+    .byte $ff,$00,$00,$00,$00,$ff,$00       ; [$fb48] byte
+
+
+;
+; ........
+; ████████
+; ░░......
+; ░░......
+; ░░......
+; ░░......
+; ████████
+; ........
+;
     .byte $00,$ff,$c0,$c0,$c0,$c0,$ff,$00   ; [$fb4f] byte
     .byte $00,$ff,$00,$00,$00,$00,$ff,$00   ; [$fb57] byte
+
+
+;
+; ........
+; ████████
+; ░░░.....
+; ░░░.....
+; ░░░.....
+; ░░░.....
+; ████████
+; ........
+;
     .byte $00,$ff,$e0,$e0,$e0,$e0,$ff,$00   ; [$fb5f] byte
     .byte $00,$ff,$00,$00,$00,$00,$ff,$00   ; [$fb67] byte
+
+
+;
+; ........
+; ████████
+; ░░░░....
+; ░░░░....
+; ░░░░....
+; ░░░░....
+; ████████
+; ........
+;
     .byte $00,$ff,$f0,$f0,$f0,$f0,$ff,$00   ; [$fb6f] byte
     .byte $00,$ff,$00,$00,$00,$00,$ff,$00   ; [$fb77] byte
+
+
+;
+; ........
+; ████████
+; ░░░░░...
+; ░░░░░...
+; ░░░░░...
+; ░░░░░...
+; ████████
+; ........
+;
     .byte $00,$ff,$f8,$f8,$f8,$f8,$ff,$00   ; [$fb7f] byte
     .byte $00,$ff,$00,$00,$00,$00,$ff,$00   ; [$fb87] byte
+
+
+;
+; ........
+; ████████
+; ░░░░░░..
+; ░░░░░░..
+; ░░░░░░..
+; ░░░░░░..
+; ████████
+; ........
+;
     .byte $00,$ff,$fc,$fc,$fc,$fc,$ff,$00   ; [$fb8f] byte
     .byte $00,$ff,$00,$00,$00,$00,$ff,$00   ; [$fb97] byte
+
+
+;
+; ........
+; ████████
+; ░░░░░░░.
+; ░░░░░░░.
+; ░░░░░░░.
+; ░░░░░░░.
+; ████████
+; ........
+;
     .byte $00,$ff,$fe,$fe,$fe,$fe,$ff,$00   ; [$fb9f] byte
     .byte $00,$ff,$00,$00,$00,$00,$ff,$00   ; [$fba7] byte
 
@@ -26882,7 +28702,7 @@ UI_DrawSelectedItem:                        ; [$fbaf]
     JSR MMC1_UpdateROMBank
 
   @LAB_PRG15_MIRROR__fbd1:                  ; [$fbd1]
-    LDA ITEM_TILEMAP_INDEXES,Y
+    LDA a:ITEM_TILEMAP_INDEXES,Y
     JSR UI_Maybe_GetItemSpritePPUTileAddr
     TYA
     PHA
@@ -26953,6 +28773,10 @@ Player_SetItem:                             ; [$fc0b]
     STX PPU_TargetAddr
     ORA #$80
 
+    ;
+    ; v-- Fall through --v
+    ;
+
 ;============================================================================
 ; TODO: Document TextBox_LoadItemSourceTiles
 ;
@@ -26969,10 +28793,10 @@ TextBox_LoadItemSourceTiles:                ; [$fc18]
     PHA
     JSR Player_GetInventoryIndexForItem
     TAX
-    LDA FUN_PRG15_MIRROR__fc0b__LOWER_ADDR_TABLE,X
+    LDA a:FUN_PRG15_MIRROR__fc0b__LOWER_ADDR_TABLE,X
     STA Temp_Int24_U
-    LDA FUN_PRG15_MIRROR__fc0b__UPPER_ADDR_TABLE,X
-    STA Maybe_Temp4
+    LDA a:FUN_PRG15_MIRROR__fc0b__UPPER_ADDR_TABLE,X
+    STA Temp_0xEF
     PLA
     AND #$1f
     ASL A
@@ -27280,129 +29104,790 @@ PPU_ClearAllTilemaps:                       ; [$fcb9]
     DEX                                     ; X--
     BNE @_loop                              ; If not 0, loop.
     RTS
-    .byte $bd,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fccd] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fcd5] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fcdd] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fce5] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fced] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fcf5] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fcfd] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fd05] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fd0d] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fd15] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fd1d] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fd25] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fd2d] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fd35] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fd3d] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fd45] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fd4d] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fd55] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fd5d] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fd65] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fd6d] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fd75] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fd7d] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fd85] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fd8d] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fd95] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fd9d] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fda5] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fdad] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fdb5] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fdbd] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fdc5] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fdcd] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fdd5] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fddd] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fde5] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fded] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fdf5] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fdfd] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fe05] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fe0d] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fe15] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fe1d] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fe25] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fe2d] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fe35] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fe3d] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fe45] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fe4d] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fe55] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fe5d] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fe65] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fe6d] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fe75] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fe7d] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fe85] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fe8d] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fe95] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fe9d] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fea5] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fead] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$feb5] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$febd] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fec5] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fecd] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fed5] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fedd] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fee5] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$feed] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fef5] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$fefd] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$ff05] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$ff0d] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$ff15] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$ff1d] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$ff25] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$ff2d] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$ff35] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$ff3d] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$ff45] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$ff4d] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$ff55] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$ff5d] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$ff65] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$ff6d] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$ff75] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$ff7d] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$ff85] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$ff8d] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$ff95] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$ff9d] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$ffa5] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$ffad] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$ffb5] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$ffbd] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$ffc5] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$ffcd] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$ffd5] undefined
-    .byte $ff,$ff,$ff                       ; [$ffdd] undefined
-
-    .byte $20                               ; Game title
-    .byte $20,$20,$20,$20,$20,$20,$20,$46   ; [$ffe1] string
-    .byte $41,$58,$41,$4e,$41,$44,$55       ; [$ffe9] string
-
-    .word $4227                             ; PRG Checksum
-    .word $0000                             ; CHR CHecksum
-    .byte $48                               ; CHR size: 0 = 8KiB CHR type: 0
-                                            ; = CHR ROM PRG size: 5 = 512KiB
-    .byte $04                               ; Mapper:    4 = MMC Nametable: 0
-                                            ; = Horizontal arrangement
-    .byte $01                               ; Title encoding: 1 = ASCII
-    .byte $07                               ; Title length: 8 bytes
-    .byte $18                               ; Licensee Code: Hudson Soft
-    .byte $94                               ; Header validation byte
-    pointer OnInterrupt                     ; OnInterrupt
-                                            ; [$PRG15_MIRROR::fffa]
-    pointer Game_Init                       ; Game_Init
-                                            ; [$PRG15_MIRROR::fffc]
-    .byte $d5                               ; [$fffe] undefined
-
-;
-; XREFS:
-;     MMC1_Init
-;
-MMC1_SERIAL:                                ; [$ffff]
-    .byte $c9                               ; [$ffff] undefined
+    .byte $bd                               ; [0]:
+    .byte $ff                               ; [1]:
+    .byte $ff                               ; [2]:
+    .byte $ff                               ; [3]:
+    .byte $ff                               ; [4]:
+    .byte $ff                               ; [5]:
+    .byte $ff                               ; [6]:
+    .byte $ff                               ; [7]:
+    .byte $ff                               ; [8]:
+    .byte $ff                               ; [9]:
+    .byte $ff                               ; [10]:
+    .byte $ff                               ; [11]:
+    .byte $ff                               ; [12]:
+    .byte $ff                               ; [13]:
+    .byte $ff                               ; [14]:
+    .byte $ff                               ; [15]:
+    .byte $ff                               ; [16]:
+    .byte $ff                               ; [17]:
+    .byte $ff                               ; [18]:
+    .byte $ff                               ; [19]:
+    .byte $ff                               ; [20]:
+    .byte $ff                               ; [21]:
+    .byte $ff                               ; [22]:
+    .byte $ff                               ; [23]:
+    .byte $ff                               ; [24]:
+    .byte $ff                               ; [25]:
+    .byte $ff                               ; [26]:
+    .byte $ff                               ; [27]:
+    .byte $ff                               ; [28]:
+    .byte $ff                               ; [29]:
+    .byte $ff                               ; [30]:
+    .byte $ff                               ; [31]:
+    .byte $ff                               ; [32]:
+    .byte $ff                               ; [33]:
+    .byte $ff                               ; [34]:
+    .byte $ff                               ; [35]:
+    .byte $ff                               ; [36]:
+    .byte $ff                               ; [37]:
+    .byte $ff                               ; [38]:
+    .byte $ff                               ; [39]:
+    .byte $ff                               ; [40]:
+    .byte $ff                               ; [41]:
+    .byte $ff                               ; [42]:
+    .byte $ff                               ; [43]:
+    .byte $ff                               ; [44]:
+    .byte $ff                               ; [45]:
+    .byte $ff                               ; [46]:
+    .byte $ff                               ; [47]:
+    .byte $ff                               ; [48]:
+    .byte $ff                               ; [49]:
+    .byte $ff                               ; [50]:
+    .byte $ff                               ; [51]:
+    .byte $ff                               ; [52]:
+    .byte $ff                               ; [53]:
+    .byte $ff                               ; [54]:
+    .byte $ff                               ; [55]:
+    .byte $ff                               ; [56]:
+    .byte $ff                               ; [57]:
+    .byte $ff                               ; [58]:
+    .byte $ff                               ; [59]:
+    .byte $ff                               ; [60]:
+    .byte $ff                               ; [61]:
+    .byte $ff                               ; [62]:
+    .byte $ff                               ; [63]:
+    .byte $ff                               ; [64]:
+    .byte $ff                               ; [65]:
+    .byte $ff                               ; [66]:
+    .byte $ff                               ; [67]:
+    .byte $ff                               ; [68]:
+    .byte $ff                               ; [69]:
+    .byte $ff                               ; [70]:
+    .byte $ff                               ; [71]:
+    .byte $ff                               ; [72]:
+    .byte $ff                               ; [73]:
+    .byte $ff                               ; [74]:
+    .byte $ff                               ; [75]:
+    .byte $ff                               ; [76]:
+    .byte $ff                               ; [77]:
+    .byte $ff                               ; [78]:
+    .byte $ff                               ; [79]:
+    .byte $ff                               ; [80]:
+    .byte $ff                               ; [81]:
+    .byte $ff                               ; [82]:
+    .byte $ff                               ; [83]:
+    .byte $ff                               ; [84]:
+    .byte $ff                               ; [85]:
+    .byte $ff                               ; [86]:
+    .byte $ff                               ; [87]:
+    .byte $ff                               ; [88]:
+    .byte $ff                               ; [89]:
+    .byte $ff                               ; [90]:
+    .byte $ff                               ; [91]:
+    .byte $ff                               ; [92]:
+    .byte $ff                               ; [93]:
+    .byte $ff                               ; [94]:
+    .byte $ff                               ; [95]:
+    .byte $ff                               ; [96]:
+    .byte $ff                               ; [97]:
+    .byte $ff                               ; [98]:
+    .byte $ff                               ; [99]:
+    .byte $ff                               ; [100]:
+    .byte $ff                               ; [101]:
+    .byte $ff                               ; [102]:
+    .byte $ff                               ; [103]:
+    .byte $ff                               ; [104]:
+    .byte $ff                               ; [105]:
+    .byte $ff                               ; [106]:
+    .byte $ff                               ; [107]:
+    .byte $ff                               ; [108]:
+    .byte $ff                               ; [109]:
+    .byte $ff                               ; [110]:
+    .byte $ff                               ; [111]:
+    .byte $ff                               ; [112]:
+    .byte $ff                               ; [113]:
+    .byte $ff                               ; [114]:
+    .byte $ff                               ; [115]:
+    .byte $ff                               ; [116]:
+    .byte $ff                               ; [117]:
+    .byte $ff                               ; [118]:
+    .byte $ff                               ; [119]:
+    .byte $ff                               ; [120]:
+    .byte $ff                               ; [121]:
+    .byte $ff                               ; [122]:
+    .byte $ff                               ; [123]:
+    .byte $ff                               ; [124]:
+    .byte $ff                               ; [125]:
+    .byte $ff                               ; [126]:
+    .byte $ff                               ; [127]:
+    .byte $ff                               ; [128]:
+    .byte $ff                               ; [129]:
+    .byte $ff                               ; [130]:
+    .byte $ff                               ; [131]:
+    .byte $ff                               ; [132]:
+    .byte $ff                               ; [133]:
+    .byte $ff                               ; [134]:
+    .byte $ff                               ; [135]:
+    .byte $ff                               ; [136]:
+    .byte $ff                               ; [137]:
+    .byte $ff                               ; [138]:
+    .byte $ff                               ; [139]:
+    .byte $ff                               ; [140]:
+    .byte $ff                               ; [141]:
+    .byte $ff                               ; [142]:
+    .byte $ff                               ; [143]:
+    .byte $ff                               ; [144]:
+    .byte $ff                               ; [145]:
+    .byte $ff                               ; [146]:
+    .byte $ff                               ; [147]:
+    .byte $ff                               ; [148]:
+    .byte $ff                               ; [149]:
+    .byte $ff                               ; [150]:
+    .byte $ff                               ; [151]:
+    .byte $ff                               ; [152]:
+    .byte $ff                               ; [153]:
+    .byte $ff                               ; [154]:
+    .byte $ff                               ; [155]:
+    .byte $ff                               ; [156]:
+    .byte $ff                               ; [157]:
+    .byte $ff                               ; [158]:
+    .byte $ff                               ; [159]:
+    .byte $ff                               ; [160]:
+    .byte $ff                               ; [161]:
+    .byte $ff                               ; [162]:
+    .byte $ff                               ; [163]:
+    .byte $ff                               ; [164]:
+    .byte $ff                               ; [165]:
+    .byte $ff                               ; [166]:
+    .byte $ff                               ; [167]:
+    .byte $ff                               ; [168]:
+    .byte $ff                               ; [169]:
+    .byte $ff                               ; [170]:
+    .byte $ff                               ; [171]:
+    .byte $ff                               ; [172]:
+    .byte $ff                               ; [173]:
+    .byte $ff                               ; [174]:
+    .byte $ff                               ; [175]:
+    .byte $ff                               ; [176]:
+    .byte $ff                               ; [177]:
+    .byte $ff                               ; [178]:
+    .byte $ff                               ; [179]:
+    .byte $ff                               ; [180]:
+    .byte $ff                               ; [181]:
+    .byte $ff                               ; [182]:
+    .byte $ff                               ; [183]:
+    .byte $ff                               ; [184]:
+    .byte $ff                               ; [185]:
+    .byte $ff                               ; [186]:
+    .byte $ff                               ; [187]:
+    .byte $ff                               ; [188]:
+    .byte $ff                               ; [189]:
+    .byte $ff                               ; [190]:
+    .byte $ff                               ; [191]:
+    .byte $ff                               ; [192]:
+    .byte $ff                               ; [193]:
+    .byte $ff                               ; [194]:
+    .byte $ff                               ; [195]:
+    .byte $ff                               ; [196]:
+    .byte $ff                               ; [197]:
+    .byte $ff                               ; [198]:
+    .byte $ff                               ; [199]:
+    .byte $ff                               ; [200]:
+    .byte $ff                               ; [201]:
+    .byte $ff                               ; [202]:
+    .byte $ff                               ; [203]:
+    .byte $ff                               ; [204]:
+    .byte $ff                               ; [205]:
+    .byte $ff                               ; [206]:
+    .byte $ff                               ; [207]:
+    .byte $ff                               ; [208]:
+    .byte $ff                               ; [209]:
+    .byte $ff                               ; [210]:
+    .byte $ff                               ; [211]:
+    .byte $ff                               ; [212]:
+    .byte $ff                               ; [213]:
+    .byte $ff                               ; [214]:
+    .byte $ff                               ; [215]:
+    .byte $ff                               ; [216]:
+    .byte $ff                               ; [217]:
+    .byte $ff                               ; [218]:
+    .byte $ff                               ; [219]:
+    .byte $ff                               ; [220]:
+    .byte $ff                               ; [221]:
+    .byte $ff                               ; [222]:
+    .byte $ff                               ; [223]:
+    .byte $ff                               ; [224]:
+    .byte $ff                               ; [225]:
+    .byte $ff                               ; [226]:
+    .byte $ff                               ; [227]:
+    .byte $ff                               ; [228]:
+    .byte $ff                               ; [229]:
+    .byte $ff                               ; [230]:
+    .byte $ff                               ; [231]:
+    .byte $ff                               ; [232]:
+    .byte $ff                               ; [233]:
+    .byte $ff                               ; [234]:
+    .byte $ff                               ; [235]:
+    .byte $ff                               ; [236]:
+    .byte $ff                               ; [237]:
+    .byte $ff                               ; [238]:
+    .byte $ff                               ; [239]:
+    .byte $ff                               ; [240]:
+    .byte $ff                               ; [241]:
+    .byte $ff                               ; [242]:
+    .byte $ff                               ; [243]:
+    .byte $ff                               ; [244]:
+    .byte $ff                               ; [245]:
+    .byte $ff                               ; [246]:
+    .byte $ff                               ; [247]:
+    .byte $ff                               ; [248]:
+    .byte $ff                               ; [249]:
+    .byte $ff                               ; [250]:
+    .byte $ff                               ; [251]:
+    .byte $ff                               ; [252]:
+    .byte $ff                               ; [253]:
+    .byte $ff                               ; [254]:
+    .byte $ff                               ; [255]:
+    .byte $ff                               ; [256]:
+    .byte $ff                               ; [257]:
+    .byte $ff                               ; [258]:
+    .byte $ff                               ; [259]:
+    .byte $ff                               ; [260]:
+    .byte $ff                               ; [261]:
+    .byte $ff                               ; [262]:
+    .byte $ff                               ; [263]:
+    .byte $ff                               ; [264]:
+    .byte $ff                               ; [265]:
+    .byte $ff                               ; [266]:
+    .byte $ff                               ; [267]:
+    .byte $ff                               ; [268]:
+    .byte $ff                               ; [269]:
+    .byte $ff                               ; [270]:
+    .byte $ff                               ; [271]:
+    .byte $ff                               ; [272]:
+    .byte $ff                               ; [273]:
+    .byte $ff                               ; [274]:
+    .byte $ff                               ; [275]:
+    .byte $ff                               ; [276]:
+    .byte $ff                               ; [277]:
+    .byte $ff                               ; [278]:
+    .byte $ff                               ; [279]:
+    .byte $ff                               ; [280]:
+    .byte $ff                               ; [281]:
+    .byte $ff                               ; [282]:
+    .byte $ff                               ; [283]:
+    .byte $ff                               ; [284]:
+    .byte $ff                               ; [285]:
+    .byte $ff                               ; [286]:
+    .byte $ff                               ; [287]:
+    .byte $ff                               ; [288]:
+    .byte $ff                               ; [289]:
+    .byte $ff                               ; [290]:
+    .byte $ff                               ; [291]:
+    .byte $ff                               ; [292]:
+    .byte $ff                               ; [293]:
+    .byte $ff                               ; [294]:
+    .byte $ff                               ; [295]:
+    .byte $ff                               ; [296]:
+    .byte $ff                               ; [297]:
+    .byte $ff                               ; [298]:
+    .byte $ff                               ; [299]:
+    .byte $ff                               ; [300]:
+    .byte $ff                               ; [301]:
+    .byte $ff                               ; [302]:
+    .byte $ff                               ; [303]:
+    .byte $ff                               ; [304]:
+    .byte $ff                               ; [305]:
+    .byte $ff                               ; [306]:
+    .byte $ff                               ; [307]:
+    .byte $ff                               ; [308]:
+    .byte $ff                               ; [309]:
+    .byte $ff                               ; [310]:
+    .byte $ff                               ; [311]:
+    .byte $ff                               ; [312]:
+    .byte $ff                               ; [313]:
+    .byte $ff                               ; [314]:
+    .byte $ff                               ; [315]:
+    .byte $ff                               ; [316]:
+    .byte $ff                               ; [317]:
+    .byte $ff                               ; [318]:
+    .byte $ff                               ; [319]:
+    .byte $ff                               ; [320]:
+    .byte $ff                               ; [321]:
+    .byte $ff                               ; [322]:
+    .byte $ff                               ; [323]:
+    .byte $ff                               ; [324]:
+    .byte $ff                               ; [325]:
+    .byte $ff                               ; [326]:
+    .byte $ff                               ; [327]:
+    .byte $ff                               ; [328]:
+    .byte $ff                               ; [329]:
+    .byte $ff                               ; [330]:
+    .byte $ff                               ; [331]:
+    .byte $ff                               ; [332]:
+    .byte $ff                               ; [333]:
+    .byte $ff                               ; [334]:
+    .byte $ff                               ; [335]:
+    .byte $ff                               ; [336]:
+    .byte $ff                               ; [337]:
+    .byte $ff                               ; [338]:
+    .byte $ff                               ; [339]:
+    .byte $ff                               ; [340]:
+    .byte $ff                               ; [341]:
+    .byte $ff                               ; [342]:
+    .byte $ff                               ; [343]:
+    .byte $ff                               ; [344]:
+    .byte $ff                               ; [345]:
+    .byte $ff                               ; [346]:
+    .byte $ff                               ; [347]:
+    .byte $ff                               ; [348]:
+    .byte $ff                               ; [349]:
+    .byte $ff                               ; [350]:
+    .byte $ff                               ; [351]:
+    .byte $ff                               ; [352]:
+    .byte $ff                               ; [353]:
+    .byte $ff                               ; [354]:
+    .byte $ff                               ; [355]:
+    .byte $ff                               ; [356]:
+    .byte $ff                               ; [357]:
+    .byte $ff                               ; [358]:
+    .byte $ff                               ; [359]:
+    .byte $ff                               ; [360]:
+    .byte $ff                               ; [361]:
+    .byte $ff                               ; [362]:
+    .byte $ff                               ; [363]:
+    .byte $ff                               ; [364]:
+    .byte $ff                               ; [365]:
+    .byte $ff                               ; [366]:
+    .byte $ff                               ; [367]:
+    .byte $ff                               ; [368]:
+    .byte $ff                               ; [369]:
+    .byte $ff                               ; [370]:
+    .byte $ff                               ; [371]:
+    .byte $ff                               ; [372]:
+    .byte $ff                               ; [373]:
+    .byte $ff                               ; [374]:
+    .byte $ff                               ; [375]:
+    .byte $ff                               ; [376]:
+    .byte $ff                               ; [377]:
+    .byte $ff                               ; [378]:
+    .byte $ff                               ; [379]:
+    .byte $ff                               ; [380]:
+    .byte $ff                               ; [381]:
+    .byte $ff                               ; [382]:
+    .byte $ff                               ; [383]:
+    .byte $ff                               ; [384]:
+    .byte $ff                               ; [385]:
+    .byte $ff                               ; [386]:
+    .byte $ff                               ; [387]:
+    .byte $ff                               ; [388]:
+    .byte $ff                               ; [389]:
+    .byte $ff                               ; [390]:
+    .byte $ff                               ; [391]:
+    .byte $ff                               ; [392]:
+    .byte $ff                               ; [393]:
+    .byte $ff                               ; [394]:
+    .byte $ff                               ; [395]:
+    .byte $ff                               ; [396]:
+    .byte $ff                               ; [397]:
+    .byte $ff                               ; [398]:
+    .byte $ff                               ; [399]:
+    .byte $ff                               ; [400]:
+    .byte $ff                               ; [401]:
+    .byte $ff                               ; [402]:
+    .byte $ff                               ; [403]:
+    .byte $ff                               ; [404]:
+    .byte $ff                               ; [405]:
+    .byte $ff                               ; [406]:
+    .byte $ff                               ; [407]:
+    .byte $ff                               ; [408]:
+    .byte $ff                               ; [409]:
+    .byte $ff                               ; [410]:
+    .byte $ff                               ; [411]:
+    .byte $ff                               ; [412]:
+    .byte $ff                               ; [413]:
+    .byte $ff                               ; [414]:
+    .byte $ff                               ; [415]:
+    .byte $ff                               ; [416]:
+    .byte $ff                               ; [417]:
+    .byte $ff                               ; [418]:
+    .byte $ff                               ; [419]:
+    .byte $ff                               ; [420]:
+    .byte $ff                               ; [421]:
+    .byte $ff                               ; [422]:
+    .byte $ff                               ; [423]:
+    .byte $ff                               ; [424]:
+    .byte $ff                               ; [425]:
+    .byte $ff                               ; [426]:
+    .byte $ff                               ; [427]:
+    .byte $ff                               ; [428]:
+    .byte $ff                               ; [429]:
+    .byte $ff                               ; [430]:
+    .byte $ff                               ; [431]:
+    .byte $ff                               ; [432]:
+    .byte $ff                               ; [433]:
+    .byte $ff                               ; [434]:
+    .byte $ff                               ; [435]:
+    .byte $ff                               ; [436]:
+    .byte $ff                               ; [437]:
+    .byte $ff                               ; [438]:
+    .byte $ff                               ; [439]:
+    .byte $ff                               ; [440]:
+    .byte $ff                               ; [441]:
+    .byte $ff                               ; [442]:
+    .byte $ff                               ; [443]:
+    .byte $ff                               ; [444]:
+    .byte $ff                               ; [445]:
+    .byte $ff                               ; [446]:
+    .byte $ff                               ; [447]:
+    .byte $ff                               ; [448]:
+    .byte $ff                               ; [449]:
+    .byte $ff                               ; [450]:
+    .byte $ff                               ; [451]:
+    .byte $ff                               ; [452]:
+    .byte $ff                               ; [453]:
+    .byte $ff                               ; [454]:
+    .byte $ff                               ; [455]:
+    .byte $ff                               ; [456]:
+    .byte $ff                               ; [457]:
+    .byte $ff                               ; [458]:
+    .byte $ff                               ; [459]:
+    .byte $ff                               ; [460]:
+    .byte $ff                               ; [461]:
+    .byte $ff                               ; [462]:
+    .byte $ff                               ; [463]:
+    .byte $ff                               ; [464]:
+    .byte $ff                               ; [465]:
+    .byte $ff                               ; [466]:
+    .byte $ff                               ; [467]:
+    .byte $ff                               ; [468]:
+    .byte $ff                               ; [469]:
+    .byte $ff                               ; [470]:
+    .byte $ff                               ; [471]:
+    .byte $ff                               ; [472]:
+    .byte $ff                               ; [473]:
+    .byte $ff                               ; [474]:
+    .byte $ff                               ; [475]:
+    .byte $ff                               ; [476]:
+    .byte $ff                               ; [477]:
+    .byte $ff                               ; [478]:
+    .byte $ff                               ; [479]:
+    .byte $ff                               ; [480]:
+    .byte $ff                               ; [481]:
+    .byte $ff                               ; [482]:
+    .byte $ff                               ; [483]:
+    .byte $ff                               ; [484]:
+    .byte $ff                               ; [485]:
+    .byte $ff                               ; [486]:
+    .byte $ff                               ; [487]:
+    .byte $ff                               ; [488]:
+    .byte $ff                               ; [489]:
+    .byte $ff                               ; [490]:
+    .byte $ff                               ; [491]:
+    .byte $ff                               ; [492]:
+    .byte $ff                               ; [493]:
+    .byte $ff                               ; [494]:
+    .byte $ff                               ; [495]:
+    .byte $ff                               ; [496]:
+    .byte $ff                               ; [497]:
+    .byte $ff                               ; [498]:
+    .byte $ff                               ; [499]:
+    .byte $ff                               ; [500]:
+    .byte $ff                               ; [501]:
+    .byte $ff                               ; [502]:
+    .byte $ff                               ; [503]:
+    .byte $ff                               ; [504]:
+    .byte $ff                               ; [505]:
+    .byte $ff                               ; [506]:
+    .byte $ff                               ; [507]:
+    .byte $ff                               ; [508]:
+    .byte $ff                               ; [509]:
+    .byte $ff                               ; [510]:
+    .byte $ff                               ; [511]:
+    .byte $ff                               ; [512]:
+    .byte $ff                               ; [513]:
+    .byte $ff                               ; [514]:
+    .byte $ff                               ; [515]:
+    .byte $ff                               ; [516]:
+    .byte $ff                               ; [517]:
+    .byte $ff                               ; [518]:
+    .byte $ff                               ; [519]:
+    .byte $ff                               ; [520]:
+    .byte $ff                               ; [521]:
+    .byte $ff                               ; [522]:
+    .byte $ff                               ; [523]:
+    .byte $ff                               ; [524]:
+    .byte $ff                               ; [525]:
+    .byte $ff                               ; [526]:
+    .byte $ff                               ; [527]:
+    .byte $ff                               ; [528]:
+    .byte $ff                               ; [529]:
+    .byte $ff                               ; [530]:
+    .byte $ff                               ; [531]:
+    .byte $ff                               ; [532]:
+    .byte $ff                               ; [533]:
+    .byte $ff                               ; [534]:
+    .byte $ff                               ; [535]:
+    .byte $ff                               ; [536]:
+    .byte $ff                               ; [537]:
+    .byte $ff                               ; [538]:
+    .byte $ff                               ; [539]:
+    .byte $ff                               ; [540]:
+    .byte $ff                               ; [541]:
+    .byte $ff                               ; [542]:
+    .byte $ff                               ; [543]:
+    .byte $ff                               ; [544]:
+    .byte $ff                               ; [545]:
+    .byte $ff                               ; [546]:
+    .byte $ff                               ; [547]:
+    .byte $ff                               ; [548]:
+    .byte $ff                               ; [549]:
+    .byte $ff                               ; [550]:
+    .byte $ff                               ; [551]:
+    .byte $ff                               ; [552]:
+    .byte $ff                               ; [553]:
+    .byte $ff                               ; [554]:
+    .byte $ff                               ; [555]:
+    .byte $ff                               ; [556]:
+    .byte $ff                               ; [557]:
+    .byte $ff                               ; [558]:
+    .byte $ff                               ; [559]:
+    .byte $ff                               ; [560]:
+    .byte $ff                               ; [561]:
+    .byte $ff                               ; [562]:
+    .byte $ff                               ; [563]:
+    .byte $ff                               ; [564]:
+    .byte $ff                               ; [565]:
+    .byte $ff                               ; [566]:
+    .byte $ff                               ; [567]:
+    .byte $ff                               ; [568]:
+    .byte $ff                               ; [569]:
+    .byte $ff                               ; [570]:
+    .byte $ff                               ; [571]:
+    .byte $ff                               ; [572]:
+    .byte $ff                               ; [573]:
+    .byte $ff                               ; [574]:
+    .byte $ff                               ; [575]:
+    .byte $ff                               ; [576]:
+    .byte $ff                               ; [577]:
+    .byte $ff                               ; [578]:
+    .byte $ff                               ; [579]:
+    .byte $ff                               ; [580]:
+    .byte $ff                               ; [581]:
+    .byte $ff                               ; [582]:
+    .byte $ff                               ; [583]:
+    .byte $ff                               ; [584]:
+    .byte $ff                               ; [585]:
+    .byte $ff                               ; [586]:
+    .byte $ff                               ; [587]:
+    .byte $ff                               ; [588]:
+    .byte $ff                               ; [589]:
+    .byte $ff                               ; [590]:
+    .byte $ff                               ; [591]:
+    .byte $ff                               ; [592]:
+    .byte $ff                               ; [593]:
+    .byte $ff                               ; [594]:
+    .byte $ff                               ; [595]:
+    .byte $ff                               ; [596]:
+    .byte $ff                               ; [597]:
+    .byte $ff                               ; [598]:
+    .byte $ff                               ; [599]:
+    .byte $ff                               ; [600]:
+    .byte $ff                               ; [601]:
+    .byte $ff                               ; [602]:
+    .byte $ff                               ; [603]:
+    .byte $ff                               ; [604]:
+    .byte $ff                               ; [605]:
+    .byte $ff                               ; [606]:
+    .byte $ff                               ; [607]:
+    .byte $ff                               ; [608]:
+    .byte $ff                               ; [609]:
+    .byte $ff                               ; [610]:
+    .byte $ff                               ; [611]:
+    .byte $ff                               ; [612]:
+    .byte $ff                               ; [613]:
+    .byte $ff                               ; [614]:
+    .byte $ff                               ; [615]:
+    .byte $ff                               ; [616]:
+    .byte $ff                               ; [617]:
+    .byte $ff                               ; [618]:
+    .byte $ff                               ; [619]:
+    .byte $ff                               ; [620]:
+    .byte $ff                               ; [621]:
+    .byte $ff                               ; [622]:
+    .byte $ff                               ; [623]:
+    .byte $ff                               ; [624]:
+    .byte $ff                               ; [625]:
+    .byte $ff                               ; [626]:
+    .byte $ff                               ; [627]:
+    .byte $ff                               ; [628]:
+    .byte $ff                               ; [629]:
+    .byte $ff                               ; [630]:
+    .byte $ff                               ; [631]:
+    .byte $ff                               ; [632]:
+    .byte $ff                               ; [633]:
+    .byte $ff                               ; [634]:
+    .byte $ff                               ; [635]:
+    .byte $ff                               ; [636]:
+    .byte $ff                               ; [637]:
+    .byte $ff                               ; [638]:
+    .byte $ff                               ; [639]:
+    .byte $ff                               ; [640]:
+    .byte $ff                               ; [641]:
+    .byte $ff                               ; [642]:
+    .byte $ff                               ; [643]:
+    .byte $ff                               ; [644]:
+    .byte $ff                               ; [645]:
+    .byte $ff                               ; [646]:
+    .byte $ff                               ; [647]:
+    .byte $ff                               ; [648]:
+    .byte $ff                               ; [649]:
+    .byte $ff                               ; [650]:
+    .byte $ff                               ; [651]:
+    .byte $ff                               ; [652]:
+    .byte $ff                               ; [653]:
+    .byte $ff                               ; [654]:
+    .byte $ff                               ; [655]:
+    .byte $ff                               ; [656]:
+    .byte $ff                               ; [657]:
+    .byte $ff                               ; [658]:
+    .byte $ff                               ; [659]:
+    .byte $ff                               ; [660]:
+    .byte $ff                               ; [661]:
+    .byte $ff                               ; [662]:
+    .byte $ff                               ; [663]:
+    .byte $ff                               ; [664]:
+    .byte $ff                               ; [665]:
+    .byte $ff                               ; [666]:
+    .byte $ff                               ; [667]:
+    .byte $ff                               ; [668]:
+    .byte $ff                               ; [669]:
+    .byte $ff                               ; [670]:
+    .byte $ff                               ; [671]:
+    .byte $ff                               ; [672]:
+    .byte $ff                               ; [673]:
+    .byte $ff                               ; [674]:
+    .byte $ff                               ; [675]:
+    .byte $ff                               ; [676]:
+    .byte $ff                               ; [677]:
+    .byte $ff                               ; [678]:
+    .byte $ff                               ; [679]:
+    .byte $ff                               ; [680]:
+    .byte $ff                               ; [681]:
+    .byte $ff                               ; [682]:
+    .byte $ff                               ; [683]:
+    .byte $ff                               ; [684]:
+    .byte $ff                               ; [685]:
+    .byte $ff                               ; [686]:
+    .byte $ff                               ; [687]:
+    .byte $ff                               ; [688]:
+    .byte $ff                               ; [689]:
+    .byte $ff                               ; [690]:
+    .byte $ff                               ; [691]:
+    .byte $ff                               ; [692]:
+    .byte $ff                               ; [693]:
+    .byte $ff                               ; [694]:
+    .byte $ff                               ; [695]:
+    .byte $ff                               ; [696]:
+    .byte $ff                               ; [697]:
+    .byte $ff                               ; [698]:
+    .byte $ff                               ; [699]:
+    .byte $ff                               ; [700]:
+    .byte $ff                               ; [701]:
+    .byte $ff                               ; [702]:
+    .byte $ff                               ; [703]:
+    .byte $ff                               ; [704]:
+    .byte $ff                               ; [705]:
+    .byte $ff                               ; [706]:
+    .byte $ff                               ; [707]:
+    .byte $ff                               ; [708]:
+    .byte $ff                               ; [709]:
+    .byte $ff                               ; [710]:
+    .byte $ff                               ; [711]:
+    .byte $ff                               ; [712]:
+    .byte $ff                               ; [713]:
+    .byte $ff                               ; [714]:
+    .byte $ff                               ; [715]:
+    .byte $ff                               ; [716]:
+    .byte $ff                               ; [717]:
+    .byte $ff                               ; [718]:
+    .byte $ff                               ; [719]:
+    .byte $ff                               ; [720]:
+    .byte $ff                               ; [721]:
+    .byte $ff                               ; [722]:
+    .byte $ff                               ; [723]:
+    .byte $ff                               ; [724]:
+    .byte $ff                               ; [725]:
+    .byte $ff                               ; [726]:
+    .byte $ff                               ; [727]:
+    .byte $ff                               ; [728]:
+    .byte $ff                               ; [729]:
+    .byte $ff                               ; [730]:
+    .byte $ff                               ; [731]:
+    .byte $ff                               ; [732]:
+    .byte $ff                               ; [733]:
+    .byte $ff                               ; [734]:
+    .byte $ff                               ; [735]:
+    .byte $ff                               ; [736]:
+    .byte $ff                               ; [737]:
+    .byte $ff                               ; [738]:
+    .byte $ff                               ; [739]:
+    .byte $ff                               ; [740]:
+    .byte $ff                               ; [741]:
+    .byte $ff                               ; [742]:
+    .byte $ff                               ; [743]:
+    .byte $ff                               ; [744]:
+    .byte $ff                               ; [745]:
+    .byte $ff                               ; [746]:
+    .byte $ff                               ; [747]:
+    .byte $ff                               ; [748]:
+    .byte $ff                               ; [749]:
+    .byte $ff                               ; [750]:
+    .byte $ff                               ; [751]:
+    .byte $ff                               ; [752]:
+    .byte $ff                               ; [753]:
+    .byte $ff                               ; [754]:
+    .byte $ff                               ; [755]:
+    .byte $ff                               ; [756]:
+    .byte $ff                               ; [757]:
+    .byte $ff                               ; [758]:
+    .byte $ff                               ; [759]:
+    .byte $ff                               ; [760]:
+    .byte $ff                               ; [761]:
+    .byte $ff                               ; [762]:
+    .byte $ff                               ; [763]:
+    .byte $ff                               ; [764]:
+    .byte $ff                               ; [765]:
+    .byte $ff                               ; [766]:
+    .byte $ff                               ; [767]:
+    .byte $ff                               ; [768]:
+    .byte $ff                               ; [769]:
+    .byte $ff                               ; [770]:
+    .byte $ff                               ; [771]:
+    .byte $ff                               ; [772]:
+    .byte $ff                               ; [773]:
+    .byte $ff                               ; [774]:
+    .byte $ff                               ; [775]:
+    .byte $ff                               ; [776]:
+    .byte $ff                               ; [777]:
+    .byte $ff                               ; [778]:
+    .byte $ff                               ; [779]:
+    .byte $ff                               ; [780]:
+    .byte $ff                               ; [781]:
+    .byte $ff                               ; [782]:
+    .byte $ff                               ; [783]:
+    .byte $ff                               ; [784]:
+    .byte $ff                               ; [785]:
+    .byte $ff                               ; [786]:

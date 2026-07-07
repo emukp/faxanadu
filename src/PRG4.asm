@@ -5409,7 +5409,7 @@ AREA_TILESETS_MIST:                         ; [$9000]
 ; XREFS:
 ;     TILE_INDEX_TO_ADDR [$PRG15_MIRROR::cf09]
 ;
-AREA_TILESETS_BRANCHES:                     ; [$9800]
+AREA_TILESETS_BRANCH:                       ; [$9800]
     .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$9800] byte
     .byte $00,$00,$00,$00,$00,$00,$00,$00   ; [$9808] byte
 

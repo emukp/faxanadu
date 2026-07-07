@@ -7,70 +7,92 @@
     .segment "PRG6"
     .reloc
 
-    .word $0002                             ; BANK6_SPRITEADDRS_START
+    bank_offset_16 BANK6_SPRITEADDRS_START  ; BANK6_SPRITEADDRS_START
                                             ; [$PRG6::8000]
 
 BANK6_SPRITEADDRS_START:                    ; [$8002]
-    .word $0072                             ; [0]:
-    .word $0072                             ; [1]: Dropped: Bread
-    .word $0072                             ; [2]: Dropped: Coin
-    .word $0072                             ; [3]: Enemy: ?
-    .word $0072                             ; [4]: Enemy: Raiden
-    .word $0172                             ; [5]: Enemy: Necron Aides
-    .word $0272                             ; [6]: Enemy: Zombie
-    .word $0372                             ; [7]: Enemy: Hornet
-    .word $03f2                             ; [8]: Enemy: Bihoruda
-    .word $0452                             ; [9]: Enemy: Lilith
-    .word $0d22                             ; [10]: Magic: ?
-    .word $04b2                             ; [11]: Enemy: Yuinaru
-    .word $0512                             ; [12]: Enemy: Snowman
-    .word $05d2                             ; [13]: Enemy: Nash
-    .word $06d2                             ; [14]: Enemy: Fire Giant
-    .word $07d2                             ; [15]: Enemy: Ishiisu
-    .word $08f2                             ; [16]: Enemy: Execution Hood
-    .word $09c2                             ; [17]: Boss: Rokusutahn
-    .word $0c22                             ; [18]: Boss: Unused Snake
-    .word $0d22                             ; [19]: Effect: Enemy death
-    .word $0d22                             ; [20]: Effect: Lightning ball
-    .word $0d32                             ; [21]: Enemy: Charron
-    .word $0d22                             ; [22]: Enemy: ? (Unused)
-    .word $0e92                             ; [23]: Enemy: Geributa
-    .word $0f92                             ; [24]: Enemy: Sugata
-    .word $1072                             ; [25]: Enemy: Grimlock
-    .word $1192                             ; [26]: Enemy: Giant Bees
-    .word $1252                             ; [27]: Enemy: Myconid
-    .word $1332                             ; [28]: Enemy: Naga
-    .word $1432                             ; [29]: Enemy: Skeleton Knight
-                                            ; (unused)
-    .word $1532                             ; [30]: Enemy: Giant Strider
-    .word $1652                             ; [31]: Enemy: Sir Gawaine
-    .word $1772                             ; [32]: Enemy: Maskman
-    .word $1962                             ; [33]: Enemy: Wolfman
-    .word $1ac2                             ; [34]: Enemy: Yareeka
-    .word $1bb2                             ; [35]: Enemy: Magman
-    .word $1cb2                             ; [36]: Enemy: Curly-tailed guy
-                                            ; with spear (unused)
-    .word $0d22                             ; [37]: Enemy: ? (unused)
-    .word $1de2                             ; [38]: Enemy: Ikeda
-    .word $1ef2                             ; [39]: Enemy: Muppet guy
-                                            ; (unused)
-    .word $1ff2                             ; [40]: Enemy: Lamprey
-    .word $0d22                             ; [41]: Enemy: ? (unused)
-    .word $20f2                             ; [42]: Enemy: Monodron
-    .word $2222                             ; [43]: Enemy: Winged skeleton
-                                            ; (unused)
-    .word $22e2                             ; [44]: Enemy: Tamazutsu
-    .word $2402                             ; [45]: Boss: Ripasheiku
-    .word $27e2                             ; [46]: Boss: Zoradohna
-    .word $2b12                             ; [47]: Boss: Borabohra
-    .word $2cd2                             ; [48]: Boss: Pakukame
-    .word $2db2                             ; [49]: Boss: Zorugeriru
-    .word $2fd2                             ; [50]: Boss: King Grieve
-    .word $3512                             ; [51]: Boss: Shadow Eura
-    .word $3ba2                             ; [52]: NPC: Walking Man 1
-    .word $3ca2                             ; [53]: NPC: Blue lady (unused)
-    .word $3da2                             ; [54]: NPC: Child (unused)
-    .word $3e32                             ; [55]: NPC: Armor Salesman
+    bank_offset_16 SPRITE_TILES_START       ; [0]:
+    bank_offset_16 SPRITE_TILES_START       ; [1]: Dropped: Bread
+    bank_offset_16 SPRITE_TILES_START       ; [2]: Dropped: Coin
+    bank_offset_16 SPRITE_TILES_START       ; [3]: Enemy: ?
+    bank_offset_16 SPRITE_TILES_ENEMY_RAIDEN_00 ; [4]: Enemy: Raiden
+    bank_offset_16 SPRITE_TILES_ENEMY_NECRON_AIDES_00 ; [5]: Enemy: Necron
+                                                      ; Aides
+    bank_offset_16 SPRITE_TILES_ENEMY_ZOMBIE_00 ; [6]: Enemy: Zombie
+    bank_offset_16 SPRITE_TILES_ENEMY_HORNET_00 ; [7]: Enemy: Hornet
+    bank_offset_16 SPRITE_TILES_ENEMY_BIHORUDA_00 ; [8]: Enemy: Bihoruda
+    bank_offset_16 SPRITE_TILES_ENEMY_LILITH_00 ; [9]: Enemy: Lilith
+    bank_offset_16 SPRITE_TILES_EFFECT_ENEMY_DEATH_00 ; [10]: Magic: ?
+    bank_offset_16 SPRITE_TILES_ENEMY_YUINARU_00 ; [11]: Enemy: Yuinaru
+    bank_offset_16 SPRITE_TILES_ENEMY_SNOWMAN_00 ; [12]: Enemy: Snowman
+    bank_offset_16 SPRITE_TILES_ENEMY_NASH_00 ; [13]: Enemy: Nash
+    bank_offset_16 SPRITE_TILES_ENEMY_FIRE_GIANT_00 ; [14]: Enemy: Fire Giant
+    bank_offset_16 SPRITE_TILES_ENEMY_ISHIISU_00 ; [15]: Enemy: Ishiisu
+    bank_offset_16 SPRITE_TILES_ENEMY_EXECUTION_HOOD_00 ; [16]: Enemy:
+                                                        ; Execution Hood
+    bank_offset_16 SPRITE_TILES_BOSS_ROKUSUTAHN_00 ; [17]: Boss: Rokusutahn
+    bank_offset_16 SPRITE_TILES_BOSS_UNUSED_SNAKE_00 ; [18]: Boss: unused
+                                                     ; (round body of snake
+                                                     ; boss)
+    bank_offset_16 SPRITE_TILES_EFFECT_ENEMY_DEATH_00 ; [19]: Effect: Enemy
+                                                      ; death
+    bank_offset_16 SPRITE_TILES_EFFECT_ENEMY_DEATH_00 ; [20]: Effect:
+                                                      ; Lightning ball
+    bank_offset_16 SPRITE_TILES_ENEMY_CHARRON_00 ; [21]: Enemy: Charron
+    bank_offset_16 SPRITE_TILES_EFFECT_ENEMY_DEATH_00 ; [22]: Enemy: ?
+                                                      ; (Unused)
+    bank_offset_16 SPRITE_TILES_ENEMY_GERIBUTA_00 ; [23]: Enemy: Geributa
+    bank_offset_16 SPRITE_TILES_ENEMY_SUGATA_00 ; [24]: Enemy: Sugata
+    bank_offset_16 SPRITE_TILES_ENEMY_GRIMLOCK_00 ; [25]: Enemy: Grimlock
+    bank_offset_16 SPRITE_TILES_ENEMY_GIANT_BEES_00 ; [26]: Enemy: Giant Bees
+    bank_offset_16 SPRITE_TILES_ENEMY_MYCONID_00 ; [27]: Enemy: Myconid
+    bank_offset_16 SPRITE_TILES_ENEMY_NAGA_00 ; [28]: Enemy: Naga
+    bank_offset_16 SPRITE_TILES_ENEMY_UNUSED_SKELETON_KNIGHT_00 ; [29]:
+                                                                ; Enemy:
+                                                                ; Skeleton
+                                                                ; Knight
+                                                                ; (unused)
+    bank_offset_16 SPRITE_TILES_ENEMY_GIANT_STRIDER_00 ; [30]: Enemy: Giant
+                                                       ; Strider
+    bank_offset_16 SPRITE_TILES_ENEMY_SIR_GAWAINE_00 ; [31]: Enemy: Sir
+                                                     ; Gawaine
+    bank_offset_16 SPRITE_TILES_ENEMY_MASKMAN_00 ; [32]: Enemy: Maskman
+    bank_offset_16 SPRITE_TILES_ENEMY_WOLFMAN_00 ; [33]: Enemy: Wolfman
+    bank_offset_16 SPRITE_TILES_ENEMY_YAREEKA_00 ; [34]: Enemy: Yareeka
+    bank_offset_16 SPRITE_TILES_ENEMY_MAGMAN_00 ; [35]: Enemy: Magman
+    bank_offset_16 SPRITE_TILES_ENEMY_UNUSED_CURLTAIL_00 ; [36]: Enemy:
+                                                         ; Curly-tailed guy
+                                                         ; with spear
+                                                         ; (unused)
+    bank_offset_16 SPRITE_TILES_EFFECT_ENEMY_DEATH_00 ; [37]: Enemy: ?
+                                                      ; (unused)
+    bank_offset_16 SPRITE_TILES_ENEMY_IKEDA_00 ; [38]: Enemy: Ikeda
+    bank_offset_16 SPRITE_TILES_ENEMY_UNUSED_MUPPET_GUY_00 ; [39]: Enemy:
+                                                           ; Muppet guy
+                                                           ; (unused)
+    bank_offset_16 SPRITE_TILES_ENEMY_LAMPREY_00 ; [40]: Enemy: Lamprey
+    bank_offset_16 SPRITE_TILES_EFFECT_ENEMY_DEATH_00 ; [41]: Enemy: ?
+                                                      ; (unused)
+    bank_offset_16 SPRITE_TILES_ENEMY_MONODRON_00 ; [42]: Enemy: Monodron
+    bank_offset_16 SPRITE_TILES_ENEMY_UNUSED_WINGED_SKELETON_00 ; [43]:
+                                                                ; Enemy:
+                                                                ; Winged
+                                                                ; skeleton
+                                                                ; (unused)
+    bank_offset_16 SPRITE_TILES_ENEMY_TAMAZUTSU_00 ; [44]: Enemy: Tamazutsu
+    bank_offset_16 SPRITE_TILES_BOSS_RIPASHEIKU_00 ; [45]: Boss: Ripasheiku
+    bank_offset_16 SPRITE_TILES_BOSS_ZORADOHNA_00 ; [46]: Boss: Zoradohna
+    bank_offset_16 SPRITE_TILES_BOSS_BORABOHRA_00 ; [47]: Boss: Borabohra
+    bank_offset_16 SPRITE_TILES_BOSS_PAKUKAME_00 ; [48]: Boss: Pakukame
+    bank_offset_16 SPRITE_TILES_BOSS_ZORUGERIRU_00 ; [49]: Boss: Zorugeriru
+    bank_offset_16 SPRITE_TILES_BOSS_KING_GRIEVE_00 ; [50]: Boss: King Grieve
+    bank_offset_16 SPRITE_TILES_BOSS_SHADOW_EURA_00 ; [51]: Boss: Shadow Eura
+    bank_offset_16 SPRITE_TILES_NPC_WALKING_MAN_00 ; [52]: NPC: Walking Man 1
+    bank_offset_16 SPRITE_TILES_NPC_UNUSED_BLUE_LADY_00 ; [53]: NPC: Blue
+                                                        ; lady (unused)
+    bank_offset_16 SPRITE_TILES_NPC_UNUSED_CHILD_00 ; [54]: NPC: Child
+                                                    ; (unused)
+    bank_offset_16 DAT_PRG6__be32           ; [55]:
 
 
 ;============================================================================
@@ -102,8 +124,10 @@ BANK6_SPRITEADDRS_START:                    ; [$8002]
 ;     BANK6_SPRITEADDRS_START [$PRG6::800a]
 ;
 SPRITE_TILES_ENEMY_RAIDEN_00:               ; [$8072]
-    .byte $02,$0f,$1f,$1f,$1f,$1f,$3b,$33   ; [$8072] byte
-    .byte $01,$03,$0f,$1f,$18,$04,$3f,$3f   ; [$807a] byte
+SPRITE_TILES_START:
+    .byte $02                               ; NPC: Martial Artist
+    .byte $0f,$1f,$1f,$1f,$1f,$3b,$33,$01   ; [$8073] byte
+    .byte $03,$0f,$1f,$18,$04,$3f,$3f       ; [$807b] byte
 
 
 ;
@@ -117,8 +141,9 @@ SPRITE_TILES_ENEMY_RAIDEN_00:               ; [$8072]
 ; █░░░....
 ;
 SPRITE_TILES_ENEMY_RAIDEN_01:               ; [$8082]
-    .byte $30,$c8,$e4,$e4,$f4,$d8,$b0,$f0   ; [$8082] byte
-    .byte $c0,$f0,$f8,$f8,$48,$e0,$e0,$80   ; [$808a] byte
+    .byte $30                               ; NPC: Guru
+    .byte $c8,$e4,$e4,$f4,$d8,$b0,$f0,$c0   ; [$8083] byte
+    .byte $f0,$f8,$f8,$48,$e0,$e0,$80       ; [$808b] byte
 
 
 ;
@@ -132,8 +157,9 @@ SPRITE_TILES_ENEMY_RAIDEN_01:               ; [$8082]
 ; .░░▒▒▒░░
 ;
 SPRITE_TILES_ENEMY_RAIDEN_02:               ; [$8092]
-    .byte $1f,$1f,$1f,$0f,$1f,$3f,$3f,$63   ; [$8092] byte
-    .byte $07,$03,$1e,$00,$0b,$1b,$13,$1c   ; [$809a] byte
+    .byte $1f                               ; NPC: King
+    .byte $1f,$1f,$0f,$1f,$3f,$3f,$63,$07   ; [$8093] byte
+    .byte $03,$1e,$00,$0b,$1b,$13,$1c       ; [$809b] byte
 
 
 ;
@@ -147,8 +173,9 @@ SPRITE_TILES_ENEMY_RAIDEN_02:               ; [$8092]
 ; ░░░▒███░
 ;
 SPRITE_TILES_ENEMY_RAIDEN_03:               ; [$80a2]
-    .byte $fc,$e2,$f9,$fd,$fd,$ff,$bf,$ef   ; [$80a2] byte
-    .byte $80,$1c,$3e,$fe,$fe,$dc,$de,$1e   ; [$80aa] byte
+    .byte $fc                               ; NPC: Magic Teacher
+    .byte $e2,$f9,$fd,$fd,$ff,$bf,$ef,$80   ; [$80a3] byte
+    .byte $1c,$3e,$fe,$fe,$dc,$de,$1e       ; [$80ab] byte
 
 
 ;
@@ -162,8 +189,9 @@ SPRITE_TILES_ENEMY_RAIDEN_03:               ; [$80a2]
 ; ░███▒░░░
 ;
 SPRITE_TILES_ENEMY_RAIDEN_04:               ; [$80b2]
-    .byte $fd,$ff,$ff,$0e,$1f,$2f,$77,$f7   ; [$80b2] byte
-    .byte $6e,$6d,$0d,$05,$06,$10,$38,$78   ; [$80ba] byte
+    .byte $fd                               ; NPC: Key Salesman
+    .byte $ff,$ff,$0e,$1f,$2f,$77,$f7,$6e   ; [$80b3] byte
+    .byte $6d,$0d,$05,$06,$10,$38,$78       ; [$80bb] byte
 
 
 ;
@@ -177,8 +205,9 @@ SPRITE_TILES_ENEMY_RAIDEN_04:               ; [$80b2]
 ; ██▒░░...
 ;
 SPRITE_TILES_ENEMY_RAIDEN_05:               ; [$80c2]
-    .byte $f7,$fd,$bd,$62,$dc,$e8,$e8,$d8   ; [$80c2] byte
-    .byte $8e,$de,$de,$9c,$60,$f0,$f0,$e0   ; [$80ca] byte
+    .byte $f7                               ; NPC: Smoking Man
+    .byte $fd,$bd,$62,$dc,$e8,$e8,$d8,$8e   ; [$80c3] byte
+    .byte $de,$de,$9c,$60,$f0,$f0,$e0       ; [$80cb] byte
 
 
 ;
@@ -192,8 +221,9 @@ SPRITE_TILES_ENEMY_RAIDEN_05:               ; [$80c2]
 ; ░░░░░░..
 ;
 SPRITE_TILES_ENEMY_RAIDEN_06:               ; [$80d2]
-    .byte $ed,$c8,$48,$29,$4d,$e4,$f4,$fc   ; [$80d2] byte
-    .byte $70,$70,$30,$10,$30,$78,$78,$00   ; [$80da] byte
+    .byte $ed                               ; NPC: Man in Chair
+    .byte $c8,$48,$29,$4d,$e4,$f4,$fc,$70   ; [$80d3] byte
+    .byte $70,$30,$10,$30,$78,$78,$00       ; [$80db] byte
 
 
 ;
@@ -207,8 +237,9 @@ SPRITE_TILES_ENEMY_RAIDEN_06:               ; [$80d2]
 ; ........
 ;
 SPRITE_TILES_ENEMY_RAIDEN_07:               ; [$80e2]
-    .byte $10,$90,$d0,$d8,$e8,$f8,$00,$00   ; [$80e2] byte
-    .byte $e0,$60,$60,$e0,$f0,$00,$00,$00   ; [$80ea] byte
+    .byte $10                               ; NPC: Sitting Man
+    .byte $90,$d0,$d8,$e8,$f8,$00,$00,$e0   ; [$80e3] byte
+    .byte $60,$60,$e0,$f0,$00,$00,$00       ; [$80eb] byte
 
 
 ;
@@ -222,8 +253,9 @@ SPRITE_TILES_ENEMY_RAIDEN_07:               ; [$80e2]
 ; ..███▒██
 ;
 SPRITE_TILES_ENEMY_RAIDEN_08:               ; [$80f2]
-    .byte $00,$02,$0f,$1f,$1f,$1f,$1f,$3b   ; [$80f2] byte
-    .byte $00,$01,$03,$0f,$1f,$18,$04,$3f   ; [$80fa] byte
+    .byte $00                               ; NPC: Meat Salesman
+    .byte $02,$0f,$1f,$1f,$1f,$1f,$3b,$00   ; [$80f3] byte
+    .byte $01,$03,$0f,$1f,$18,$04,$3f       ; [$80fb] byte
 
 
 ;
@@ -237,8 +269,10 @@ SPRITE_TILES_ENEMY_RAIDEN_08:               ; [$80f2]
 ; █▒█░....
 ;
 SPRITE_TILES_ENEMY_RAIDEN_09:               ; [$8102]
-    .byte $00,$30,$c8,$e4,$e4,$f4,$d8,$b0   ; [$8102] byte
-    .byte $00,$c0,$f0,$f8,$f8,$48,$e0,$e0   ; [$810a] byte
+    .byte $00                               ; NPC: Lady in Blue Dress with
+                                            ; Cup
+    .byte $30,$c8,$e4,$e4,$f4,$d8,$b0,$00   ; [$8103] byte
+    .byte $c0,$f0,$f8,$f8,$48,$e0,$e0       ; [$810b] byte
 
 
 ;
@@ -252,8 +286,9 @@ SPRITE_TILES_ENEMY_RAIDEN_09:               ; [$8102]
 ; ..░█▒▒░█
 ;
 SPRITE_TILES_ENEMY_RAIDEN_10:               ; [$8112]
-    .byte $1f,$1f,$1f,$3f,$1f,$3f,$2f,$33   ; [$8112] byte
-    .byte $07,$03,$03,$1e,$09,$1b,$12,$1d   ; [$811a] byte
+    .byte $1f                               ; NPC: Guard
+    .byte $1f,$1f,$3f,$1f,$3f,$2f,$33,$07   ; [$8113] byte
+    .byte $03,$03,$1e,$09,$1b,$12,$1d       ; [$811b] byte
 
 
 ;
@@ -267,8 +302,9 @@ SPRITE_TILES_ENEMY_RAIDEN_10:               ; [$8112]
 ; ██░░▒██░
 ;
 SPRITE_TILES_ENEMY_RAIDEN_11:               ; [$8122]
-    .byte $fc,$f2,$fd,$fd,$fd,$ef,$ef,$f7   ; [$8122] byte
-    .byte $80,$9c,$3e,$fe,$de,$1c,$9e,$ce   ; [$812a] byte
+    .byte $fc                               ; NPC: Doctor
+    .byte $f2,$fd,$fd,$fd,$ef,$ef,$f7,$80   ; [$8123] byte
+    .byte $9c,$3e,$fe,$de,$1c,$9e,$ce       ; [$812b] byte
 
 
 ;
@@ -282,8 +318,9 @@ SPRITE_TILES_ENEMY_RAIDEN_11:               ; [$8122]
 ; ██▒░░░..
 ;
 SPRITE_TILES_ENEMY_RAIDEN_12:               ; [$8132]
-    .byte $7b,$fa,$ef,$ff,$df,$ef,$ef,$dc   ; [$8132] byte
-    .byte $1d,$5d,$5c,$0c,$60,$f0,$f0,$e0   ; [$813a] byte
+    .byte $7b                               ; NPC: Walking Woman 1
+    .byte $fa,$ef,$ff,$df,$ef,$ef,$dc,$1d   ; [$8133] byte
+    .byte $5d,$5c,$0c,$60,$f0,$f0,$e0       ; [$813b] byte
 
 
 ;
@@ -297,8 +334,9 @@ SPRITE_TILES_ENEMY_RAIDEN_12:               ; [$8132]
 ; ███▒░...
 ;
 SPRITE_TILES_ENEMY_RAIDEN_13:               ; [$8142]
-    .byte $fb,$bf,$dd,$e2,$fc,$f8,$f8,$e8   ; [$8142] byte
-    .byte $e6,$fe,$3e,$1c,$00,$00,$60,$f0   ; [$814a] byte
+    .byte $fb                               ; NPC: Walking Woman 2
+    .byte $bf,$dd,$e2,$fc,$f8,$f8,$e8,$e6   ; [$8143] byte
+    .byte $fe,$3e,$1c,$00,$00,$60,$f0       ; [$814b] byte
 
 
 ;
@@ -312,8 +350,9 @@ SPRITE_TILES_ENEMY_RAIDEN_13:               ; [$8142]
 ; .......░
 ;
 SPRITE_TILES_ENEMY_RAIDEN_14:               ; [$8152]
-    .byte $91,$49,$68,$f4,$7c,$00,$01,$01   ; [$8152] byte
-    .byte $60,$30,$10,$78,$00,$00,$00,$00   ; [$815a] byte
+    .byte $91                               ; Enemy: Eyeball (unused)
+    .byte $49,$68,$f4,$7c,$00,$01,$01,$60   ; [$8153] byte
+    .byte $30,$10,$78,$00,$00,$00,$00       ; [$815b] byte
 
 
 ;
@@ -327,8 +366,9 @@ SPRITE_TILES_ENEMY_RAIDEN_14:               ; [$8152]
 ; ░░░░░...
 ;
 SPRITE_TILES_ENEMY_RAIDEN_15:               ; [$8162]
-    .byte $d8,$d0,$90,$48,$48,$e8,$f8,$f8   ; [$8162] byte
-    .byte $e0,$e0,$60,$30,$30,$70,$f0,$00   ; [$816a] byte
+    .byte $d8                               ; Enemy: Zozura
+    .byte $d0,$90,$48,$48,$e8,$f8,$f8,$e0   ; [$8163] byte
+    .byte $e0,$60,$30,$30,$70,$f0,$00       ; [$816b] byte
 
 
 ;============================================================================
@@ -352,8 +392,9 @@ SPRITE_TILES_ENEMY_RAIDEN_15:               ; [$8162]
 ;     BANK6_SPRITEADDRS_START [$PRG6::800c]
 ;
 SPRITE_TILES_ENEMY_NECRON_AIDES_00:         ; [$8172]
-    .byte $00,$00,$01,$03,$0d,$1f,$11,$0f   ; [$8172] byte
-    .byte $00,$01,$02,$06,$0f,$1e,$1f,$00   ; [$817a] byte
+    .byte $00                               ; Item: Glove
+    .byte $00,$01,$03,$0d,$1f,$11,$0f,$00   ; [$8173] byte
+    .byte $01,$02,$06,$0f,$1e,$1f,$00       ; [$817b] byte
 
 
 ;
@@ -367,8 +408,9 @@ SPRITE_TILES_ENEMY_NECRON_AIDES_00:         ; [$8172]
 ; ▒▒▒▒▒▒░.
 ;
 SPRITE_TILES_ENEMY_NECRON_AIDES_01:         ; [$8182]
-    .byte $00,$cc,$f2,$f9,$f9,$f1,$c1,$02   ; [$8182] byte
-    .byte $00,$b0,$5c,$5e,$be,$7e,$fe,$fc   ; [$818a] byte
+    .byte $00                               ; Item: Black Onyx
+    .byte $cc,$f2,$f9,$f9,$f1,$c1,$02,$00   ; [$8183] byte
+    .byte $b0,$5c,$5e,$be,$7e,$fe,$fc       ; [$818b] byte
 
 
 ;
@@ -382,8 +424,9 @@ SPRITE_TILES_ENEMY_NECRON_AIDES_01:         ; [$8182]
 ; .....▒▒▒
 ;
 SPRITE_TILES_ENEMY_NECRON_AIDES_02:         ; [$8192]
-    .byte $07,$08,$07,$03,$00,$00,$00,$00   ; [$8192] byte
-    .byte $05,$07,$00,$00,$00,$00,$00,$07   ; [$819a] byte
+    .byte $07                               ; Item: Pendant
+    .byte $08,$07,$03,$00,$00,$00,$00,$05   ; [$8193] byte
+    .byte $07,$00,$00,$00,$00,$00,$07       ; [$819b] byte
 
 
 ;
@@ -397,8 +440,9 @@ SPRITE_TILES_ENEMY_NECRON_AIDES_02:         ; [$8192]
 ; ▒▒▒▒█▒░░
 ;
 SPRITE_TILES_ENEMY_NECRON_AIDES_03:         ; [$81a2]
-    .byte $fe,$be,$fe,$ff,$1b,$09,$05,$0b   ; [$81a2] byte
-    .byte $00,$40,$00,$00,$04,$06,$0e,$fc   ; [$81aa] byte
+    .byte $fe                               ; Item: Red Potion
+    .byte $be,$fe,$ff,$1b,$09,$05,$0b,$00   ; [$81a3] byte
+    .byte $40,$00,$00,$04,$06,$0e,$fc       ; [$81ab] byte
 
 
 ;
@@ -412,8 +456,9 @@ SPRITE_TILES_ENEMY_NECRON_AIDES_03:         ; [$81a2]
 ; ▒█▒░░...
 ;
 SPRITE_TILES_ENEMY_NECRON_AIDES_04:         ; [$81b2]
-    .byte $07,$18,$21,$27,$4f,$4a,$58,$58   ; [$81b2] byte
-    .byte $1f,$3f,$7e,$79,$f2,$f0,$e0,$e0   ; [$81ba] byte
+    .byte $07                               ; Item: Poison
+    .byte $18,$21,$27,$4f,$4a,$58,$58,$1f   ; [$81b3] byte
+    .byte $3f,$7e,$79,$f2,$f0,$e0,$e0       ; [$81bb] byte
 
 
 ;
@@ -427,8 +472,9 @@ SPRITE_TILES_ENEMY_NECRON_AIDES_04:         ; [$81b2]
 ; ....░▒▒░
 ;
 SPRITE_TILES_ENEMY_NECRON_AIDES_05:         ; [$81c2]
-    .byte $e2,$0c,$f8,$f8,$d4,$2a,$12,$09   ; [$81c2] byte
-    .byte $fc,$f0,$00,$e0,$38,$1c,$0c,$06   ; [$81ca] byte
+    .byte $e2                               ; Item: Elixir
+    .byte $0c,$f8,$f8,$d4,$2a,$12,$09,$fc   ; [$81c3] byte
+    .byte $f0,$00,$e0,$38,$1c,$0c,$06       ; [$81cb] byte
 
 
 ;
@@ -442,8 +488,9 @@ SPRITE_TILES_ENEMY_NECRON_AIDES_05:         ; [$81c2]
 ; ......░░
 ;
 SPRITE_TILES_ENEMY_NECRON_AIDES_06:         ; [$81d2]
-    .byte $48,$0c,$26,$13,$0c,$02,$00,$03   ; [$81d2] byte
-    .byte $f0,$f0,$78,$7c,$3f,$1f,$0f,$00   ; [$81da] byte
+    .byte $48                               ; Item: Ointment
+    .byte $0c,$26,$13,$0c,$02,$00,$03,$f0   ; [$81d3] byte
+    .byte $f0,$78,$7c,$3f,$1f,$0f,$00       ; [$81db] byte
 
 
 ;
@@ -457,8 +504,9 @@ SPRITE_TILES_ENEMY_NECRON_AIDES_06:         ; [$81d2]
 ; ░░░░░...
 ;
 SPRITE_TILES_ENEMY_NECRON_AIDES_07:         ; [$81e2]
-    .byte $0d,$09,$0d,$91,$e9,$02,$0e,$f8   ; [$81e2] byte
-    .byte $06,$06,$06,$0e,$1e,$fc,$f0,$00   ; [$81ea] byte
+    .byte $0d                               ; Trigger: Intro
+    .byte $09,$0d,$91,$e9,$02,$0e,$f8,$06   ; [$81e3] byte
+    .byte $06,$06,$0e,$1e,$fc,$f0,$00       ; [$81eb] byte
 
 
 ;
@@ -472,8 +520,9 @@ SPRITE_TILES_ENEMY_NECRON_AIDES_07:         ; [$81e2]
 ; ......░░
 ;
 SPRITE_TILES_ENEMY_NECRON_AIDES_08:         ; [$81f2]
-    .byte $0e,$1d,$39,$73,$ff,$9b,$54,$03   ; [$81f2] byte
-    .byte $0d,$06,$26,$7d,$ff,$e7,$53,$00   ; [$81fa] byte
+    .byte $0e                               ; Item: Mattock
+    .byte $1d,$39,$73,$ff,$9b,$54,$03,$0d   ; [$81f3] byte
+    .byte $06,$26,$7d,$ff,$e7,$53,$00       ; [$81fb] byte
 
 
 ;
@@ -487,8 +536,9 @@ SPRITE_TILES_ENEMY_NECRON_AIDES_08:         ; [$81f2]
 ; ░░░░....
 ;
 SPRITE_TILES_ENEMY_NECRON_AIDES_09:         ; [$8202]
-    .byte $60,$90,$c8,$c8,$88,$18,$70,$f0   ; [$8202] byte
-    .byte $80,$e0,$f0,$f0,$f0,$e0,$80,$00   ; [$820a] byte
+    .byte $60                               ; Magic: ?
+    .byte $90,$c8,$c8,$88,$18,$70,$f0,$80   ; [$8203] byte
+    .byte $e0,$f0,$f0,$f0,$e0,$80,$00       ; [$820b] byte
 
 
 ;
@@ -502,8 +552,9 @@ SPRITE_TILES_ENEMY_NECRON_AIDES_09:         ; [$8202]
 ; ........
 ;
 SPRITE_TILES_ENEMY_NECRON_AIDES_10:         ; [$8212]
-    .byte $01,$55,$7b,$46,$3c,$00,$00,$00   ; [$8212] byte
-    .byte $02,$56,$54,$38,$00,$00,$00,$00   ; [$821a] byte
+    .byte $01                               ; Effect: Fountain
+    .byte $55,$7b,$46,$3c,$00,$00,$00,$02   ; [$8213] byte
+    .byte $56,$54,$38,$00,$00,$00,$00       ; [$821b] byte
 
 
 ;
@@ -517,8 +568,9 @@ SPRITE_TILES_ENEMY_NECRON_AIDES_10:         ; [$8212]
 ; .█▒░░...
 ;
 SPRITE_TILES_ENEMY_NECRON_AIDES_11:         ; [$8222]
-    .byte $e0,$f0,$f0,$b0,$98,$58,$18,$58   ; [$8222] byte
-    .byte $00,$00,$00,$40,$60,$60,$60,$60   ; [$822a] byte
+    .byte $e0                               ; Magic: ?
+    .byte $f0,$f0,$b0,$98,$58,$18,$58,$00   ; [$8223] byte
+    .byte $00,$00,$40,$60,$60,$60,$60       ; [$822b] byte
 
 
 ;
@@ -532,8 +584,9 @@ SPRITE_TILES_ENEMY_NECRON_AIDES_11:         ; [$8222]
 ; ▒█▒░....
 ;
 SPRITE_TILES_ENEMY_NECRON_AIDES_12:         ; [$8232]
-    .byte $00,$00,$07,$18,$27,$2c,$58,$50   ; [$8232] byte
-    .byte $01,$07,$1f,$3f,$78,$70,$e0,$e0   ; [$823a] byte
+    .byte $00                               ; Magic: Enemy Fireball
+    .byte $00,$07,$18,$27,$2c,$58,$50,$01   ; [$8233] byte
+    .byte $07,$1f,$3f,$78,$70,$e0,$e0       ; [$823b] byte
 
 
 ;
@@ -547,8 +600,9 @@ SPRITE_TILES_ENEMY_NECRON_AIDES_12:         ; [$8232]
 ; ░░░.▒█░.
 ;
 SPRITE_TILES_ENEMY_NECRON_AIDES_13:         ; [$8242]
-    .byte $58,$90,$30,$e0,$00,$18,$0c,$e6   ; [$8242] byte
-    .byte $e0,$e0,$c0,$00,$00,$00,$18,$0c   ; [$824a] byte
+    .byte $58                               ; Item: Wing Boots
+    .byte $90,$30,$e0,$00,$18,$0c,$e6,$e0   ; [$8243] byte
+    .byte $e0,$c0,$00,$00,$00,$18,$0c       ; [$824b] byte
 
 
 ;
@@ -562,8 +616,9 @@ SPRITE_TILES_ENEMY_NECRON_AIDES_13:         ; [$8242]
 ; ....░░░.
 ;
 SPRITE_TILES_ENEMY_NECRON_AIDES_14:         ; [$8252]
-    .byte $51,$5a,$4d,$21,$32,$1c,$01,$0e   ; [$8252] byte
-    .byte $e0,$e1,$f3,$7f,$7f,$3f,$1e,$00   ; [$825a] byte
+    .byte $51                               ; Item: Hour Glass
+    .byte $5a,$4d,$21,$32,$1c,$01,$0e,$e0   ; [$8253] byte
+    .byte $e1,$f3,$7f,$7f,$3f,$1e,$00       ; [$825b] byte
 
 
 ;
@@ -577,8 +632,9 @@ SPRITE_TILES_ENEMY_NECRON_AIDES_14:         ; [$8252]
 ; ...░░░..
 ;
 SPRITE_TILES_ENEMY_NECRON_AIDES_15:         ; [$8262]
-    .byte $15,$d3,$eb,$6b,$ed,$c1,$22,$1c   ; [$8262] byte
-    .byte $e6,$e6,$f6,$b6,$36,$3e,$1c,$00   ; [$826a] byte
+    .byte $15                               ; Item: Magical Rod
+    .byte $d3,$eb,$6b,$ed,$c1,$22,$1c,$e6   ; [$8263] byte
+    .byte $e6,$f6,$b6,$36,$3e,$1c,$00       ; [$826b] byte
 
 
 ;============================================================================
@@ -602,8 +658,9 @@ SPRITE_TILES_ENEMY_NECRON_AIDES_15:         ; [$8262]
 ;     BANK6_SPRITEADDRS_START [$PRG6::800e]
 ;
 SPRITE_TILES_ENEMY_ZOMBIE_00:               ; [$8272]
-    .byte $3e,$7f,$7f,$7f,$ff,$ff,$ff,$ff   ; [$8272] byte
-    .byte $0f,$3f,$7f,$1f,$67,$b3,$73,$06   ; [$827a] byte
+    .byte $3e                               ; Item: Battle Suit
+    .byte $7f,$7f,$7f,$ff,$ff,$ff,$ff,$0f   ; [$8273] byte
+    .byte $3f,$7f,$1f,$67,$b3,$73,$06       ; [$827b] byte
 
 
 ;
@@ -617,8 +674,9 @@ SPRITE_TILES_ENEMY_ZOMBIE_00:               ; [$8272]
 ; █░▒░....
 ;
 SPRITE_TILES_ENEMY_ZOMBIE_01:               ; [$8282]
-    .byte $c0,$b0,$f8,$ec,$ec,$ec,$e8,$d0   ; [$8282] byte
-    .byte $00,$c0,$e0,$f0,$b0,$d0,$50,$a0   ; [$828a] byte
+    .byte $c0                               ; Item: Battle Helmet
+    .byte $b0,$f8,$ec,$ec,$ec,$e8,$d0,$00   ; [$8283] byte
+    .byte $c0,$e0,$f0,$b0,$d0,$50,$a0       ; [$828b] byte
 
 
 ;
@@ -632,8 +690,9 @@ SPRITE_TILES_ENEMY_ZOMBIE_01:               ; [$8282]
 ; .......░
 ;
 SPRITE_TILES_ENEMY_ZOMBIE_02:               ; [$8292]
-    .byte $ff,$bf,$2f,$0f,$0f,$2d,$39,$01   ; [$8292] byte
-    .byte $9f,$aa,$22,$04,$04,$28,$10,$00   ; [$829a] byte
+    .byte $ff                               ; Item: Dragon Slayer
+    .byte $bf,$2f,$0f,$0f,$2d,$39,$01,$9f   ; [$8293] byte
+    .byte $aa,$22,$04,$04,$28,$10,$00       ; [$829b] byte
 
 
 ;
@@ -647,8 +706,9 @@ SPRITE_TILES_ENEMY_ZOMBIE_02:               ; [$8292]
 ; ▒▒▒░░█▒░
 ;
 SPRITE_TILES_ENEMY_ZOMBIE_03:               ; [$82a2]
-    .byte $f0,$c8,$b4,$f4,$fa,$7a,$2e,$1d   ; [$82a2] byte
-    .byte $00,$30,$78,$78,$7c,$bc,$dc,$e6   ; [$82aa] byte
+    .byte $f0                               ; Item: Mattock
+    .byte $c8,$b4,$f4,$fa,$7a,$2e,$1d,$00   ; [$82a3] byte
+    .byte $30,$78,$78,$7c,$bc,$dc,$e6       ; [$82ab] byte
 
 
 ;
@@ -662,8 +722,9 @@ SPRITE_TILES_ENEMY_ZOMBIE_03:               ; [$82a2]
 ; ...░░░▒░
 ;
 SPRITE_TILES_ENEMY_ZOMBIE_04:               ; [$82b2]
-    .byte $01,$01,$01,$01,$03,$0e,$10,$1d   ; [$82b2] byte
-    .byte $00,$00,$00,$00,$01,$01,$0f,$02   ; [$82ba] byte
+    .byte $01                               ; Item: Wing Boots (from quest)
+    .byte $01,$01,$01,$03,$0e,$10,$1d,$00   ; [$82b3] byte
+    .byte $00,$00,$00,$01,$01,$0f,$02       ; [$82bb] byte
 
 
 ;
@@ -677,8 +738,9 @@ SPRITE_TILES_ENEMY_ZOMBIE_04:               ; [$82b2]
 ; ░░░░▒░░.
 ;
 SPRITE_TILES_ENEMY_ZOMBIE_05:               ; [$82c2]
-    .byte $1d,$1f,$0f,$8f,$f7,$1f,$0f,$f6   ; [$82c2] byte
-    .byte $ee,$ee,$f6,$f6,$ee,$ee,$f6,$08   ; [$82ca] byte
+    .byte $1d                               ; Item: Red Potion
+    .byte $1f,$0f,$8f,$f7,$1f,$0f,$f6,$ee   ; [$82c3] byte
+    .byte $ee,$f6,$f6,$ee,$ee,$f6,$08       ; [$82cb] byte
 
 
 ;
@@ -692,8 +754,9 @@ SPRITE_TILES_ENEMY_ZOMBIE_05:               ; [$82c2]
 ; ░███░░░░
 ;
 SPRITE_TILES_ENEMY_ZOMBIE_06:               ; [$82d2]
-    .byte $3f,$7e,$7d,$34,$1a,$1f,$7d,$ff   ; [$82d2] byte
-    .byte $1c,$39,$30,$18,$0c,$0c,$1e,$70   ; [$82da] byte
+    .byte $3f                               ; Item: Poison
+    .byte $7e,$7d,$34,$1a,$1f,$7d,$ff,$1c   ; [$82d3] byte
+    .byte $39,$30,$18,$0c,$0c,$1e,$70       ; [$82db] byte
 
 
 ;
@@ -707,8 +770,9 @@ SPRITE_TILES_ENEMY_ZOMBIE_06:               ; [$82d2]
 ; .██░░...
 ;
 SPRITE_TILES_ENEMY_ZOMBIE_07:               ; [$82e2]
-    .byte $7c,$f0,$d0,$ec,$7a,$3e,$7c,$78   ; [$82e2] byte
-    .byte $f0,$e0,$e0,$70,$3c,$1c,$38,$60   ; [$82ea] byte
+    .byte $7c                               ; Item: Glove
+    .byte $f0,$d0,$ec,$7a,$3e,$7c,$78,$f0   ; [$82e3] byte
+    .byte $e0,$e0,$70,$3c,$1c,$38,$60       ; [$82eb] byte
 
 
 ;
@@ -722,8 +786,9 @@ SPRITE_TILES_ENEMY_ZOMBIE_07:               ; [$82e2]
 ; .....░██
 ;
 SPRITE_TILES_ENEMY_ZOMBIE_08:               ; [$82f2]
-    .byte $ff,$bf,$2f,$7f,$3d,$01,$02,$07   ; [$82f2] byte
-    .byte $9e,$aa,$22,$0c,$00,$00,$01,$03   ; [$82fa] byte
+    .byte $ff                               ; Item: Ointment
+    .byte $bf,$2f,$7f,$3d,$01,$02,$07,$9e   ; [$82f3] byte
+    .byte $aa,$22,$0c,$00,$00,$01,$03       ; [$82fb] byte
 
 
 ;
@@ -737,8 +802,9 @@ SPRITE_TILES_ENEMY_ZOMBIE_08:               ; [$82f2]
 ; ▒▒░░█▒..
 ;
 SPRITE_TILES_ENEMY_ZOMBIE_09:               ; [$8302]
-    .byte $c8,$b4,$ba,$5a,$3e,$2e,$2e,$38   ; [$8302] byte
-    .byte $30,$78,$7c,$bc,$cc,$dc,$dc,$cc   ; [$830a] byte
+    .byte $c8                               ; Effect: Spring of Trunk
+    .byte $b4,$ba,$5a,$3e,$2e,$2e,$38,$30   ; [$8303] byte
+    .byte $78,$7c,$bc,$cc,$dc,$dc,$cc       ; [$830b] byte
 
 
 ;
@@ -752,8 +818,9 @@ SPRITE_TILES_ENEMY_ZOMBIE_09:               ; [$8302]
 ; ....░▒██
 ;
 SPRITE_TILES_ENEMY_ZOMBIE_10:               ; [$8312]
-    .byte $07,$05,$0c,$08,$08,$1f,$07,$0b   ; [$8312] byte
-    .byte $03,$02,$03,$07,$07,$00,$02,$07   ; [$831a] byte
+    .byte $07                               ; Effect: Spring of Sky
+    .byte $05,$0c,$08,$08,$1f,$07,$0b,$03   ; [$8313] byte
+    .byte $02,$03,$07,$07,$00,$02,$07       ; [$831b] byte
 
 
 ;
@@ -767,8 +834,9 @@ SPRITE_TILES_ENEMY_ZOMBIE_10:               ; [$8312]
 ; ▒░░░....
 ;
 SPRITE_TILES_ENEMY_ZOMBIE_11:               ; [$8322]
-    .byte $fc,$fc,$3c,$14,$04,$08,$d8,$70   ; [$8322] byte
-    .byte $b8,$38,$d0,$e8,$f8,$f0,$20,$80   ; [$832a] byte
+    .byte $fc                               ; Effect: Spring of Tower
+    .byte $fc,$3c,$14,$04,$08,$d8,$70,$b8   ; [$8323] byte
+    .byte $38,$d0,$e8,$f8,$f0,$20,$80       ; [$832b] byte
 
 
 ;
@@ -782,8 +850,9 @@ SPRITE_TILES_ENEMY_ZOMBIE_11:               ; [$8322]
 ; ....░███
 ;
 SPRITE_TILES_ENEMY_ZOMBIE_12:               ; [$8332]
-    .byte $0b,$07,$03,$03,$03,$01,$07,$0f   ; [$8332] byte
-    .byte $07,$03,$01,$01,$01,$00,$01,$07   ; [$833a] byte
+    .byte $0b                               ; Effect: Boss Death
+    .byte $07,$03,$03,$03,$01,$07,$0f,$07   ; [$8333] byte
+    .byte $03,$01,$01,$01,$00,$01,$07       ; [$833b] byte
 
 
 ;

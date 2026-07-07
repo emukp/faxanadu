@@ -2344,23 +2344,9 @@ TOWNS_BLOCKS_SCREEN_04:                     ; [$bacd]
     .byte $3c,$74,$6c,$b7,$2e,$cf,$74,$74   ; [$bb0d] byte
     .byte $0c,$57,$5b,$c5,$b4,$ed,$6b,$36   ; [$bb15] byte
     .byte $d3,$1d,$3f,$3a,$cf,$14,$0c,$0f   ; [$bb1d] byte
-    .byte $1c,$c3                           ; [$bb25] byte
-
-;
-; XREFS:
-;     CastMagic_RunUpdateSpellHandler
-;
-BYTE_bb27:                                  ; [$bb27]
-    .byte $1c                               ; [$bb27] byte
-
-;
-; XREFS:
-;     CastMagic_RunUpdateSpellHandler
-;
-BYTE_bb28:                                  ; [$bb28]
-    .byte $e9,$5c,$cb,$3b,$cd,$94,$07,$1d   ; [$bb28] byte
-    .byte $5c,$ed,$c0,$80,$00,$00,$00,$c0   ; [$bb30] byte
-    .byte $40,$00,$00,$00                   ; [$bb38] byte
+    .byte $1c,$c3,$1c,$e9,$5c,$cb,$3b,$cd   ; [$bb25] byte
+    .byte $94,$07,$1d,$5c,$ed,$c0,$80,$00   ; [$bb2d] byte
+    .byte $00,$00,$c0,$40,$00,$00,$00       ; [$bb35] byte
 
 TOWNS_BLOCKS_SCREEN_05:                     ; [$bb3c]
     .byte $d3,$40,$00,$00,$00,$00,$00,$00   ; [$bb3c] byte

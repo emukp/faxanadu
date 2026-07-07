@@ -632,15 +632,10 @@ TRUNK_BLOCKS_SCREEN_20:                     ; [$8da0]
     .byte $6f,$08,$d3,$33,$ec,$6f,$08,$d3   ; [$8e28] byte
     .byte $33,$ec,$6f,$08,$d3,$33           ; [$8e30] byte
 
-;
-; XREFS:
-;     BANK7_SPRITEADDRS_START [$PRG7::8060]
-;
-BYTE_PRG1__8e36:                            ; [$8e36]
-    .byte $ec,$6f,$08,$cc,$00,$74,$ec,$c7   ; [$8e36] byte
-    .byte $30,$74,$ec,$c7,$30,$73,$1c,$c0   ; [$8e3e] byte
-    .byte $c6,$f0,$8c,$6f,$08,$c6,$f0,$8c   ; [$8e46] byte
-    .byte $6f,$08,$c6,$f0,$8c,$6f,$08,$c6   ; [$8e4e] byte
+    .byte $ec,$6f,$08,$cc,$00,$74,$ec,$c7   ; [$8e37] undefined
+    .byte $30,$74,$ec,$c7,$30,$73,$1c,$c0   ; [$8e3e] undefined
+    .byte $c6,$f0,$8c,$6f,$08,$c6,$f0,$8c   ; [$8e46] undefined
+    .byte $6f,$08,$c6,$f0,$8c,$6f,$08,$c6   ; [$8e4e] undefined
     .byte $f0,$8c,$6f,$08,$2a,$aa,$aa,$aa   ; [$8e56] byte
 
 TRUNK_BLOCKS_SCREEN_21:                     ; [$8e5e]

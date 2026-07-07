@@ -734,14 +734,9 @@ IScripts_OpenForPortrait:                   ; [$821f]
                                             ; portrait.
     JMP TextBox_Open                        ; Open the textbox.
 
+
 ;============================================================================
-; TODO: Document DEADCODE_TextBox_ClosePortrait
-;
-; INPUTS:
-;     None.
-;
-; OUTPUTS:
-;     TODO
+; DEADCODE: Close a portrait textbox.
 ;============================================================================
 DEADCODE_TextBox_ClosePortrait:             ; [$8225]
     JSR TextBox_SetCoordsForPortrait
@@ -755,9 +750,11 @@ DEADCODE_TextBox_ClosePortrait:             ; [$8225]
 ; once by taking the entire dimensions of both and replacing
 ; them with the screen's tiles.
 ;
-; Based on the DEADCODE function above, this used to be split
-; into portrait-specific and dialogue-specific textbox closing
-; logic, but they likely determined this was faster or cheaper.
+; NOTE:
+;     Based on the DEADCODE function above, this used to be
+;     split into portrait-specific and dialogue-specific
+;     textbox closing logic, but they likely determined this
+;     was faster or cheaper.
 ;
 ; INPUTS:
 ;     None.
@@ -860,10 +857,10 @@ IScripts_Begin:                             ; [$8242]
   @_loadScript:                             ; [$8248]
     STA a:Temp_0200                         ; Store the index temporarily.
     TAX                                     ; X = A
-    LDA ISCRIPT_ADDRS_L,X                   ; Load the lower byte of the
+    LDA a:ISCRIPT_ADDRS_L,X                 ; Load the lower byte of the
                                             ; IScript address.
     STA IScriptOrCHRAddr                    ; Store as the lower byte.
-    LDA ISCRIPT_ADDRS_U,X                   ; Load the upper byte of the
+    LDA a:ISCRIPT_ADDRS_U,X                 ; Load the upper byte of the
                                             ; IScript address.
     STA IScriptOrCHRAddr_U                  ; Store as the upper byte.
     LDY #$00                                ; Y = 0 (start offset in the
@@ -933,10 +930,10 @@ IScripts_InvokeNextAction:                  ; [$826e]
     JSR IScripts_LoadByte                   ; Load the script ID
     TAX                                     ; Store the byte in X and load
                                             ; from the offset table.
-    LDA IScriptActions_U,X                  ; Fetch the upper script offset
+    LDA a:IScriptActions_U,X                ; Fetch the upper script offset
     PHA                                     ; Push the upper offset to the
                                             ; stack
-    LDA IScriptActions_L,X                  ; Fetch the lower script offset
+    LDA a:IScriptActions_L,X                ; Fetch the lower script offset
     PHA                                     ; Push the lower offset to the
                                             ; stack
     RTS
@@ -1659,7 +1656,7 @@ IScriptAction_OpenShop:                     ; [$83d8]
     JSR Shop_GetPlayerHasSelectedItem
     BCS @LAB_PRG12__8469
     LDX a:Menu_CursorPos
-    LDA DataArray,X
+    LDA a:DataArray,X
     CMP #$80
     BEQ @LAB_PRG12__8439
     CMP #$81
@@ -1678,17 +1675,17 @@ IScriptAction_OpenShop:                     ; [$83d8]
     BEQ @LAB_PRG12__8439
     JSR Player_GetInventoryIndexForItem
     TAX
-    LDA NumberOfWeapons,X                   ; Number of weapons in the
+    LDA a:NumberOfWeapons,X                 ; Number of weapons in the
                                             ; player's inventory.
-    CMP MAX_INVENTORY_SLOTS,X
+    CMP a:MAX_INVENTORY_SLOTS,X
     BEQ @LAB_PRG12__8469
 
   @LAB_PRG12__8439:                         ; [$8439]
     LDX a:Menu_CursorPos
-    LDA ShopItemCostsL,X
+    LDA a:ShopItemCostsL,X
     STA Temp_Int24
     STA a:Temp_0202
-    LDA ShopItemCostsU,X
+    LDA a:ShopItemCostsU,X
     STA Temp_Int24_M
     STA a:Temp_0203
     JSR IScripts_CheckEnoughMoney
@@ -1698,7 +1695,7 @@ IScriptAction_OpenShop:                     ; [$83d8]
 
   @LAB_PRG12__8457:                         ; [$8457]
     LDX a:Menu_CursorPos
-    LDA DataArray,X
+    LDA a:DataArray,X
     JSR Player_AddToInventory
     JSR IScripts_ProgressivelySubtractGold
     JSR Maybe_Shop_DrawTextBox
@@ -1753,7 +1750,7 @@ MAX_INVENTORY_SLOTS:                        ; [$847d]
 ;============================================================================
 Shop_GetPlayerHasSelectedItem:              ; [$8482]
     LDX a:Menu_CursorPos
-    LDA DataArray,X
+    LDA a:DataArray,X
     BPL @LAB_PRG12__84bf
     LDX #$00
     CMP #$80
@@ -1786,7 +1783,7 @@ Shop_GetPlayerHasSelectedItem:              ; [$8482]
 
   @LAB_PRG12__84b5:                         ; [$84b5]
     LDA a:SpecialItems
-    AND BYTE_ARRAY_PRG12__84e5,X
+    AND a:BYTE_ARRAY_PRG12__84e5,X
     BEQ @LAB_PRG12__84b3
 
   @LAB_PRG12__84bd:                         ; [$84bd]
@@ -1797,15 +1794,15 @@ Shop_GetPlayerHasSelectedItem:              ; [$8482]
     PHA
     JSR Player_GetInventoryIndexForItem
     TAX
-    LDA INVENTORY_CATEGORY_L,X
+    LDA a:INVENTORY_CATEGORY_L,X
     STA Temp_Int24
-    LDA INVENTORY_CATEGORY_U,X
+    LDA a:INVENTORY_CATEGORY_U,X
     STA Temp_Int24_M
     PLA
     AND #$1f
-    CMP SelectedWeapon,X
+    CMP a:SelectedWeapon,X
     BEQ @LAB_PRG12__84bd
-    LDY NumberOfWeapons,X
+    LDY a:NumberOfWeapons,X
     BEQ @LAB_PRG12__84b3
     DEY
 
@@ -1888,13 +1885,16 @@ BYTE_ARRAY_PRG12__84e5_7_:                  ; [$84ec]
 ;     IScripts_WaitForMenuInput
 ;============================================================================
 IScripts_WaitForMenuInput:                  ; [$84ed]
-    JSR IScripts_UpdatePortraitAnimation
-    JSR Menu_UpdateAndDraw
-    LDA Joy1_ChangedButtonMask
-    BMI @_returnFalse
-    ASL A
-    BMI @_returnTrue
-    JMP IScripts_WaitForMenuInput
+    JSR IScripts_UpdatePortraitAnimation    ; Update the portrait animation.
+    JSR Menu_UpdateAndDraw                  ; Update and draw the menu.
+    LDA Joy1_ChangedButtonMask              ; Load the controller 1 button
+                                            ; mask.
+    BMI @_returnFalse                       ; If "A" is pressed, jump to
+                                            ; return false.
+    ASL A                                   ; Shift "B" into bit 7.
+    BMI @_returnTrue                        ; If "B" is pressed, jump to
+                                            ; return true.
+    JMP IScripts_WaitForMenuInput           ; Loop.
 
   @_returnFalse:                            ; [$84fd]
     CLC
@@ -1959,7 +1959,7 @@ Shop_Populate:                              ; [$8501]
     ;
     ; Store the item.
     ;
-    STA DataArray,X                         ; Store the item in the menu.
+    STA a:DataArray,X                       ; Store the item in the menu.
     INY                                     ; Y++
 
 
@@ -1968,11 +1968,11 @@ Shop_Populate:                              ; [$8501]
     ;
     LDA (Temp_Int24),Y                      ; Load the lower byte of the item
                                             ; cost.
-    STA ShopItemCostsL,X                    ; Store it.
+    STA a:ShopItemCostsL,X                  ; Store it.
     INY                                     ; Y++
     LDA (Temp_Int24),Y                      ; Load the upper byte of the item
                                             ; cost.
-    STA ShopItemCostsU,X                    ; Store it.
+    STA a:ShopItemCostsU,X                  ; Store it.
 
 
     ;
@@ -2240,7 +2240,7 @@ IScriptAction_IfQuestCompleted:             ; [$85d1]
                                             ; index into our table.
     TAX                                     ; X = result
     LDA a:Quests                            ; Load the current player quests.
-    AND ISCRIPTS_QUEST_BITS-1,X             ; AND it to the bitmask at the
+    AND a:ISCRIPTS_QUEST_BITS-1,X           ; AND it to the bitmask at the
                                             ; given index.
     BNE @_hasQuestCompleted
     JMP IScripts_SkipAddrAndInvoke          ; Skip 2 bytes and invoke the
@@ -2269,7 +2269,7 @@ IScriptAction_SetQuestComplete:             ; [$85e6]
                                             ; index into our table.
     TAX                                     ; X = result
     LDA a:Quests                            ; Load the current player quests.
-    ORA ISCRIPTS_QUEST_BITS-1,X             ; OR it with the bit for this
+    ORA a:ISCRIPTS_QUEST_BITS-1,X           ; OR it with the bit for this
                                             ; index.
     STA a:Quests                            ; Store as the new quests
                                             ; bitmask.
@@ -2511,16 +2511,16 @@ IScriptAction_ShowSellMenu:                 ; [$8660]
     LDX #$04
 
   @LAB_PRG12__8671:                         ; [$8671]
-    LDY NumberOfWeapons,X
+    LDY a:NumberOfWeapons,X
     BEQ @LAB_PRG12__86b7
     TXA
     PHA
     JSR Player_GetInventoryBitForIndex
     STA a:Maybe_Shop_InventoryBitmask
-    LDA INVENTORY_CATEGORY_L,X
+    LDA a:INVENTORY_CATEGORY_L,X
     STA Temp_Int24_U
-    LDA INVENTORY_CATEGORY_U,X
-    STA Maybe_Temp4
+    LDA a:INVENTORY_CATEGORY_U,X
+    STA Temp_0xEF
     DEY
 
   @LAB_PRG12__8689:                         ; [$8689]
@@ -2532,15 +2532,15 @@ IScriptAction_ShowSellMenu:                 ; [$8660]
     JSR IScripts_SellMenu_Something8704
     BNE @LAB_PRG12__86b0
     LDX a:Arg_StringsCount
-    STA DataArray,X
+    STA a:DataArray,X
     INY
     LDA (Temp_Int24),Y
-    STA ShopItemCostsL,X
+    STA a:ShopItemCostsL,X
     INY
     LDA (Temp_Int24),Y
     LSR A
-    ROR ShopItemCostsL,X
-    STA ShopItemCostsU,X
+    ROR a:ShopItemCostsL,X
+    STA a:ShopItemCostsU,X
     INX
     STX a:Arg_StringsCount
 
@@ -2575,11 +2575,11 @@ IScriptAction_ShowSellMenu:                 ; [$8660]
     JSR IScripts_WaitForMenuInput
     BCS @_endScript
     LDX a:Menu_CursorPos
-    LDA ShopItemCostsL,X
+    LDA a:ShopItemCostsL,X
     STA a:Temp_0202
-    LDA ShopItemCostsU,X
+    LDA a:ShopItemCostsU,X
     STA a:Temp_0203
-    LDA DataArray,X
+    LDA a:DataArray,X
     JSR Player_RemoveItem
     JSR IScripts_ProgressivelyAddGold
     JSR TextBox_Close
@@ -2767,7 +2767,7 @@ PasswordScreen_ShowNextChar:                ; [$8757]
                                             ; state for the character offset.
     PHP                                     ; Push flags to stack.
     TAY                                     ; Y = A (index)
-    LDA PASSWORD_ENTERED_CHARS,Y            ; A = character at index Y
+    LDA a:PASSWORD_ENTERED_CHARS,Y          ; A = character at index Y
     JSR TextBox_ShowMessage                 ; Show the character in the
                                             ; textbox.
     PLP                                     ; Pop flags.
@@ -3119,17 +3119,17 @@ TextBox_SetNextAttributeData:               ; [$880e]
     LDA TextBox_ContentsX
     LSR A
     BCS @LAB_PRG12__882f
-    LDA TextBox_AttributeData,X
+    LDA a:TextBox_AttributeData,X
     AND #$fc
     STA Temp_Int24_M
     LDA Temp_Int24
     AND #$03
     ORA Temp_Int24_M
-    STA TextBox_AttributeData,X
+    STA a:TextBox_AttributeData,X
     RTS
 
   @LAB_PRG12__882f:                         ; [$882f]
-    LDA TextBox_AttributeData,X
+    LDA a:TextBox_AttributeData,X
     AND #$f3
     STA Temp_Int24_M
     LDA Temp_Int24
@@ -3137,14 +3137,14 @@ TextBox_SetNextAttributeData:               ; [$880e]
     ASL A
     AND #$0c
     ORA Temp_Int24_M
-    STA TextBox_AttributeData,X
+    STA a:TextBox_AttributeData,X
     RTS
 
   @LAB_PRG12__8842:                         ; [$8842]
     LDA TextBox_ContentsX
     LSR A
     BCS @LAB_PRG12__885c
-    LDA TextBox_AttributeData,X
+    LDA a:TextBox_AttributeData,X
     AND #$cf
     STA Temp_Int24_M
     LDA Temp_Int24
@@ -3154,11 +3154,11 @@ TextBox_SetNextAttributeData:               ; [$880e]
     ASL A
     AND #$30
     ORA Temp_Int24_M
-    STA TextBox_AttributeData,X
+    STA a:TextBox_AttributeData,X
     RTS
 
   @LAB_PRG12__885c:                         ; [$885c]
-    LDA TextBox_AttributeData,X
+    LDA a:TextBox_AttributeData,X
     AND #$3f
     STA Temp_Int24_M
     LDA Temp_Int24
@@ -3170,7 +3170,7 @@ TextBox_SetNextAttributeData:               ; [$880e]
     ASL A
     AND #$c0
     ORA Temp_Int24_M
-    STA TextBox_AttributeData,X
+    STA a:TextBox_AttributeData,X
     RTS
 
 PLAYER_TOP_MENU_ITEM_STRINGS:               ; [$8873]
@@ -3187,6 +3187,10 @@ PLAYER_TOP_MENU_ITEM_STRINGS:               ; [$8873]
     .byte $06,"PLAYER "                     ; [$88c3] char
     .byte "        "                        ; [$88cb] char
 
+;
+; XREFS:
+;     PlayerMenu_ShowStatusMenu
+;
 PLAYER_STATUS_MENU_STRINGS:                 ; [$88d3]
     .byte $09,"    RAN"                     ; [$88d3] char
     .byte "K:      "                        ; [$88db] char
@@ -3236,6 +3240,8 @@ PLAYER_STATUS_MENU_TITLES:                  ; [$8943]
     .byte "        "                        ; [$8a2b] char
     .byte $09,"LORD   "                     ; [$8a33] char
     .byte "        "                        ; [$8a3b] char
+
+NO_INVENTORY_ITEM_STRINGS:                  ; [$8a43]
     .byte $09,"NO WEAP"                     ; [$8a43] char
     .byte "ON      "                        ; [$8a4b] char
     .byte $09,"NO ARMO"                     ; [$8a53] char
@@ -3275,9 +3281,9 @@ PlayerMenu_Show:                            ; [$8a93]
     LDA #$18
     JSR Sound_PlayEffect
     JSR TextBox_Open
-    LDA #$73
+    LDA #<PLAYER_TOP_MENU_ITEM_STRINGS
     STA Temp_Int24
-    LDA #$88
+    LDA #>PLAYER_TOP_MENU_ITEM_STRINGS
     STA Temp_Int24_M
     LDX #$00
     STX a:DataArray
@@ -3333,7 +3339,7 @@ PlayerMenu_ShowSubmenu:                     ; [$8afa]
     JSR TextBox_Open
     LDX a:Menu_CursorPos
     STX a:PlayerMenu_SelectedInventory
-    LDA NumberOfWeapons,X
+    LDA a:NumberOfWeapons,X
     BNE PlayerMenu_ShowInventoryMenu
     LDA a:TextBox_X
     CLC
@@ -3344,9 +3350,9 @@ PlayerMenu_ShowSubmenu:                     ; [$8afa]
     ADC #$02
     STA TextBox_ContentsY
     JSR PPU_SetAddrForTextBoxPos
-    LDA #$43
+    LDA #<NO_INVENTORY_ITEM_STRINGS
     STA Temp_Int24
-    LDA #$8a
+    LDA #>NO_INVENTORY_ITEM_STRINGS
     STA Temp_Int24_M
     LDA a:Menu_CursorPos
     JSR Math_MultiplyBy16
@@ -3376,15 +3382,15 @@ PlayerMenu_ShowSubmenu:                     ; [$8afa]
 ;============================================================================
 PlayerMenu_ShowInventoryMenu:               ; [$8b4f]
     STA a:Arg_StringsCount
-    LDA INVENTORY_CATEGORY_L,X
+    LDA a:INVENTORY_CATEGORY_L,X
     STA Temp_Int24
-    LDA INVENTORY_CATEGORY_U,X
+    LDA a:INVENTORY_CATEGORY_U,X
     STA Temp_Int24_M
     LDY #$00
 
   @_loadMenuIDs:                            ; [$8b5e]
     LDA (Temp_Int24),Y
-    STA DataArray,Y
+    STA a:DataArray,Y
     INY
     CPY a:Arg_StringsCount
     BNE @_loadMenuIDs
@@ -3454,7 +3460,7 @@ PlayerMenu_HandleInventoryMenuInput:        ; [$8b71]
     CMP #$03                                ; Is it the Dragon Slayer?
     BEQ PlayerMenu_HandleInvalidChoice      ; If not, it's an invalid choice.
     LDX a:Menu_CursorPos                    ; X = Menu cursor position.
-    LDA DataArray,X                         ; A = Item ID at the cursor
+    LDA a:DataArray,X                       ; A = Item ID at the cursor
                                             ; position.
     CMP #$03                                ; Is the item ID 3 (Dragon
                                             ; Slayer)?
@@ -3522,7 +3528,7 @@ PlayerMenu_EquipItem:                       ; [$8bce]
     LDX a:Menu_CursorPos                    ; X = Menu cursor position.
     LDA a:PlayerMenu_SelectedInventory      ; A = Selected inventory.
     JSR Player_GetInventoryBitForIndex      ; Get the inventory bits.
-    ORA DataArray,X                         ; OR it with the selected item
+    ORA a:DataArray,X                       ; OR it with the selected item
                                             ; index as an item ID.
     JSR Player_Equip                        ; Equip the resulting item.
     JMP PlayerMenu_Close                    ; Close the Player Menu.
@@ -3606,7 +3612,7 @@ PlayerMenu_DrawInventoryItems:              ; [$8c04]
     STY TextBox_ContentsX
     LDA a:PlayerMenu_SelectedInventory
     JSR Player_GetInventoryBitForIndex
-    ORA DataArray,X
+    ORA a:DataArray,X
     PHA
     JSR TextBox_DrawItemImage
     PLA
@@ -3643,9 +3649,9 @@ TextBox_DrawItemName:                       ; [$8c36]
     PLA
     JSR Player_GetInventoryIndexForItem
     TAX
-    LDA ITEM_NAME_CATEGORIES_L,X
+    LDA a:ITEM_NAME_CATEGORIES_L,X
     STA Temp_Int24
-    LDA ITEM_NAME_CATEGORIES_U,X
+    LDA a:ITEM_NAME_CATEGORIES_U,X
     STA Temp_Int24_M
     PLA
     AND #$1f
@@ -3859,7 +3865,7 @@ Player_Equip:                               ; [$8ca9]
                                             ; the item.
     TAX                                     ; Set X = the inventory index we
                                             ; computed
-    LDA SelectedWeapon,X                    ; Get the current item in the
+    LDA a:SelectedWeapon,X                  ; Get the current item in the
                                             ; target inventory.
     STA a:Temp_PrevInventoryItem            ; Store the old item we're
                                             ; unequipping.
@@ -4046,9 +4052,9 @@ Player_LacksItem:                           ; [$8cf7]
                                             ; stack.
     JSR Player_GetInventoryIndexForItem     ; Get the inventory for the item.
     TAY                                     ; Set Y = inventory.
-    LDA INVENTORY_CATEGORY_L,Y
+    LDA a:INVENTORY_CATEGORY_L,Y
     STA Temp_Int24
-    LDA INVENTORY_CATEGORY_U,Y
+    LDA a:INVENTORY_CATEGORY_U,Y
     STA Temp_Int24_M
 
 
@@ -4060,7 +4066,7 @@ Player_LacksItem:                           ; [$8cf7]
     PLA                                     ; Pull the item into A
     AND #$1f                                ; Clear out the inventory bits,
                                             ; leaving the item value.
-    CMP SelectedWeapon,Y                    ; Get the inventory index from Y.
+    CMP a:Inventories,Y                     ; Get the inventory index from Y.
     BEQ @_returnFalse                       ; If this item is currently set,
                                             ; return false.
 
@@ -4070,7 +4076,7 @@ Player_LacksItem:                           ; [$8cf7]
     ;
     ; If the number is 0, we definitely lack the item.
     ;
-    LDX NumberOfWeapons,Y                   ; Set X = inventory item count.
+    LDX a:NumberOfWeapons,Y                 ; Set X = inventory item count.
     BEQ @_returnTrue                        ; If 0, we lack the item.
 
 
@@ -4107,7 +4113,7 @@ Player_LacksItem:                           ; [$8cf7]
   @_specialItemMatched:                     ; [$8d48]
     LDA a:SpecialItems                      ; Load the player's Special Items
                                             ; bitmask.
-    AND SPECIAL_ITEMS_BITMASKS,X            ; Clear the bit for the matched
+    AND a:SPECIAL_ITEMS_BITMASKS,X          ; Clear the bit for the matched
                                             ; item.
     BEQ @_returnTrue
 
@@ -4248,11 +4254,9 @@ PlayerMenu_ShowStatusMenu:                  ; [$8d5a]
     LDA #$07
     STA a:Arg_StringsCount                  ; Prepare to draw 7 rows of
                                             ; strings.
-    LDA #$d3                                ; 0xD3 = lower byte of text
-                                            ; strings.
+    LDA #<PLAYER_STATUS_MENU_STRINGS        ; Lower byte of text strings.
     STA Temp_Int24                          ; Store it.
-    LDA #$88                                ; 0x88 = upper byte of text
-                                            ; strings.
+    LDA #>PLAYER_STATUS_MENU_STRINGS        ; Upper byte of text strings.
     STA Temp_Int24_M                        ; Store it.
     LDX #$00                                ; X = 0 (index counter).
     STX a:DataArray                         ; Draw string 1 ("RANK:").
@@ -4291,11 +4295,11 @@ PlayerMenu_ShowStatusMenu:                  ; [$8d5a]
     JSR Math_MultiplyBy16                   ; Multiply by 16 to get an index
                                             ; into the strings.
     TAY                                     ; Y = A (result)
-    LDA #$43                                ; 0x43 == lower byte of Player
-                                            ; Title strings.
+    LDA #<PLAYER_STATUS_MENU_TITLES         ; Lower byte of Player Title
+                                            ; strings.
     STA Temp_Int24                          ; Store it.
-    LDA #$89                                ; 0x89 == upper byte of Player
-                                            ; Title strings.
+    LDA #>PLAYER_STATUS_MENU_TITLES         ; Upper byte of Player Title
+                                            ; strings.
     STA Temp_Int24_M                        ; Store it.
     JSR UI_DrawString                       ; Draw the string.
 
@@ -4323,11 +4327,11 @@ PlayerMenu_ShowStatusMenu:                  ; [$8d5a]
     ASL A                                   ; Convert the title index to a
                                             ; word boundary.
     TAX                                     ; X = A (result).
-    LDA $f749,X                             ; Load the lower byte of the
+    LDA a:PLAYER_TITLE_EXP_NEEDED,X         ; Load the lower byte of the
                                             ; amount of experience needed for
                                             ; the next level.
     STA Temp_Int24                          ; Store it.
-    LDA $f74a,X                             ; Load the middle byte.
+    LDA a:PLAYER_TITLE_EXP_NEEDED+1,X       ; Load the middle byte.
     STA Temp_Int24_M                        ; Store it.
     LDA #$00                                ; Upper byte is always 0.
     STA Temp_Int24_U                        ; Store it.
@@ -4354,7 +4358,7 @@ PlayerMenu_ShowStatusMenu:                  ; [$8d5a]
     INC TextBox_ContentsY                   ; Increment the draw Y coordinate
                                             ; by 2.
     INC TextBox_ContentsY
-    LDA SelectedWeapon,X                    ; Load the selected item for this
+    LDA a:SelectedWeapon,X                  ; Load the selected item for this
                                             ; type.
     BMI @_nextInventory                     ; If unset, advance to the next.
 
@@ -4369,7 +4373,7 @@ PlayerMenu_ShowStatusMenu:                  ; [$8d5a]
     TXA                                     ; A = X (loop counter).
     JSR Player_GetInventoryBitForIndex      ; Get the inventory bit for this
                                             ; index.
-    ORA SelectedWeapon,X                    ; OR with the item value,
+    ORA a:SelectedWeapon,X                  ; OR with the item value,
                                             ; yielding an inventory-backed
                                             ; item ID.
     PHA                                     ; Push it to the stack.
@@ -4426,7 +4430,7 @@ PlayerMenu_ShowStatusMenu:                  ; [$8d5a]
     TXA                                     ; A = X (loop counter).
     PHA                                     ; Push the loop counter to the
                                             ; stack.
-    LDA SPECIAL_ITEM_TILE_START_IDS,X       ; Load the tile start ID for this
+    LDA a:SPECIAL_ITEM_TILE_START_IDS,X     ; Load the tile start ID for this
                                             ; item.
     INX                                     ; X += 4 (number of item image
                                             ; tiles).
@@ -4523,7 +4527,7 @@ PlayerMenu_DrawStringLines:                 ; [$8e6b]
   @_drawLinesLoop:                          ; [$8e80]
     TXA
     PHA
-    LDA DataArray,X
+    LDA a:DataArray,X
     ASL A
     ASL A
     ASL A
@@ -4863,7 +4867,7 @@ TextBox_FillBackground:                     ; [$8f51]
     ; Loop through all the columns of text.
     ;
   @_drawColsLoop:                           ; [$8fdc]
-    LDA TextBox_AttributeData,Y
+    LDA a:TextBox_AttributeData,Y
     INY
     JSR PPUBuffer_Set
     DEC Temp_Int24
@@ -4995,7 +4999,7 @@ DEADCODE_FUN_PRG12__9041:                   ; [$9041]
     JSR PPUBuffer_QueueCommandOrLength
 
   @LAB_PRG12__9048:                         ; [$9048]
-    LDA TextBox_AttributeData,Y
+    LDA a:TextBox_AttributeData,Y
     INY
     JSR PPUBuffer_Set
     DEC TextBox_ContentsX
@@ -5147,8 +5151,8 @@ PasswordScreen_Show:                        ; [$909d]
     LDY #$1f
 
   @LAB_PRG12__90b4:                         ; [$90b4]
-    LDA PASSWORD_SCREEN_PALETTE,Y
-    STA Screen_PaletteData_Tiles,Y
+    LDA a:PASSWORD_SCREEN_PALETTE,Y
+    STA a:Screen_PaletteData_Tiles,Y
     DEY
     BPL @LAB_PRG12__90b4
     JSR PPUBuffer_WritePalette
@@ -5195,10 +5199,10 @@ PasswordScreen_Show:                        ; [$909d]
     ; bytes of the current offset into INPUT_CHARS.
     ;
   @_startRow:                               ; [$90e7]
-    LDA INPUT_CHARS,Y
+    LDA a:INPUT_CHARS,Y
     STA a:PPUADDR
     INY
-    LDA INPUT_CHARS,Y
+    LDA a:INPUT_CHARS,Y
     STA a:PPUADDR
     INY
 
@@ -5211,7 +5215,7 @@ PasswordScreen_Show:                        ; [$909d]
     LDX #$19
 
   @_writePasswordCharsLoop:                 ; [$90f7]
-    LDA INPUT_CHARS,Y
+    LDA a:INPUT_CHARS,Y
     STA a:PPUDATA
     INY
     DEX
@@ -5230,9 +5234,9 @@ PasswordScreen_Show:                        ; [$909d]
     STA a:PPUADDR
     LDA #$a5
     STA a:PPUADDR
-    LDA #$ec
+    LDA #<STRING_ENTER_YOUR_MANTRA
     STA Temp_Int24
-    LDA #$91
+    LDA #>STRING_ENTER_YOUR_MANTRA
     STA Temp_Int24_M
     JSR UI_DrawText
 
@@ -5249,7 +5253,7 @@ PasswordScreen_Show:                        ; [$909d]
     LDA #$ff
 
   @LAB_PRG12__9123:                         ; [$9123]
-    STA ScreenBuffer,X
+    STA a:ScreenBuffer,X
     DEX
     BPL @LAB_PRG12__9123
     LDA #$00
@@ -5494,10 +5498,10 @@ PasswordScreen_DrawMessage:                 ; [$9195]
     ;
     ; Load the message string.
     ;
-    LDA PASSWORD_MESSAGE_STRINGS_L,Y        ; Load the lower byte of the
+    LDA a:PASSWORD_MESSAGE_STRINGS_L,Y      ; Load the lower byte of the
                                             ; string address.
     STA Temp_Int24                          ; Store that.
-    LDA PASSWORD_MESSAGE_STRINGS_U,Y        ; Load the upper byte of the
+    LDA a:PASSWORD_MESSAGE_STRINGS_U,Y      ; Load the upper byte of the
                                             ; string address.
     STA Temp_Int24_M                        ; Store that.
 
@@ -5552,18 +5556,18 @@ RETURN_91B7:                                ; [$91b7]
 ;     PasswordScreen_DrawMessage
 ;
 PASSWORD_MESSAGE_STRINGS_L:                 ; [$91b8]
-    .byte $be                               ; [0]:
-    .byte $d5                               ; [1]:
-    .byte $ec                               ; [2]:
+    .byte <STRING_MANTRA_IN_THE_WRONG       ; [0]: [0]:
+    .byte <STRING_PASSWORD_SPACES           ; [0]: [1]:
+    .byte <STRING_ENTER_YOUR_MANTRA         ; [0]: [2]:
 
 ;
 ; XREFS:
 ;     PasswordScreen_DrawMessage
 ;
 PASSWORD_MESSAGE_STRINGS_U:                 ; [$91bb]
-    .byte $91                               ; [0]:
-    .byte $91                               ; [1]:
-    .byte $91                               ; [2]:
+    .byte >STRING_MANTRA_IN_THE_WRONG       ; [0]:
+    .byte >STRING_PASSWORD_SPACES           ; [1]:
+    .byte >STRING_ENTER_YOUR_MANTRA         ; [2]:
 
 
 ;============================================================================
@@ -5573,11 +5577,13 @@ PASSWORD_MESSAGE_STRINGS_U:                 ; [$91bb]
 ;
 ; XREFS:
 ;     PASSWORD_MESSAGE_STRINGS_L [$PRG12::91b8]
+;     PASSWORD_MESSAGE_STRINGS_U [$PRG12::91bb]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     PASSWORD_MESSAGE_STRINGS_L [$PRG12::91b8]
+;     PASSWORD_MESSAGE_STRINGS_U [$PRG12::91bb]
 ;
 STRING_MANTRA_IN_THE_WRONG:                 ; [$91be]
     .byte "Mantra i"                        ; [$91be] char
@@ -5592,11 +5598,13 @@ STRING_MANTRA_IN_THE_WRONG:                 ; [$91be]
 ;
 ; XREFS:
 ;     PASSWORD_MESSAGE_STRINGS_L [$PRG12::91b9]
+;     PASSWORD_MESSAGE_STRINGS_U [$PRG12::91bc]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     PASSWORD_MESSAGE_STRINGS_L [$PRG12::91b9]
+;     PASSWORD_MESSAGE_STRINGS_U [$PRG12::91bc]
 ;
 STRING_PASSWORD_SPACES:                     ; [$91d5]
     .byte "        "                        ; [$91d5] char
@@ -5611,11 +5619,13 @@ STRING_PASSWORD_SPACES:                     ; [$91d5]
 ;
 ; XREFS:
 ;     PASSWORD_MESSAGE_STRINGS_L [$PRG12::91ba]
+;     PASSWORD_MESSAGE_STRINGS_U [$PRG12::91bd]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     PASSWORD_MESSAGE_STRINGS_L [$PRG12::91ba]
+;     PASSWORD_MESSAGE_STRINGS_U [$PRG12::91bd]
 ;
 STRING_ENTER_YOUR_MANTRA:                   ; [$91ec]
     .byte "  Enter "                        ; [$91ec] char
@@ -5625,7 +5635,15 @@ STRING_ENTER_YOUR_MANTRA:                   ; [$91ec]
 
 ;============================================================================
 ; Palette data for the password screen.
+;
+; XREFS:
+;     PasswordScreen_Show
 ;============================================================================
+
+;
+; XREFS:
+;     PasswordScreen_Show
+;
 PASSWORD_SCREEN_PALETTE:                    ; [$9204]
     .byte $0f                               ; [0]:
     .byte $00                               ; [1]:
@@ -5657,19 +5675,7 @@ PASSWORD_SCREEN_PALETTE:                    ; [$9204]
     .byte $26                               ; [27]:
     .byte $0f                               ; [28]:
     .byte $0f                               ; [29]:
-
-;
-; XREFS:
-;     PasswordScreen_Show
-;
-PASSWORD_SCREEN_PALETTE_30_:                ; [$9222]
     .byte $0f                               ; [30]:
-
-;
-; XREFS:
-;     PasswordScreen_Show
-;
-PASSWORD_SCREEN_PALETTE_31_:                ; [$9223]
     .byte $0f                               ; [31]:
 
 
@@ -5687,19 +5693,7 @@ PASSWORD_SCREEN_PALETTE_31_:                ; [$9223]
 ;
 INPUT_CHARS:                                ; [$9224]
     .byte $21                               ; [0]: [0]:
-
-;
-; XREFS:
-;     PasswordScreen_Show
-;
-INPUT_CHARS_ppuAddr_1_:                     ; [$9225]
     .byte $c4                               ; [0]: [1]:
-
-;
-; XREFS:
-;     PasswordScreen_Show
-;
-INPUT_CHARS_chars:                          ; [$9226]
     .byte "A"                               ; [$9226] char
 
 ;
@@ -5707,24 +5701,9 @@ INPUT_CHARS_chars:                          ; [$9226]
 ;     PasswordScreen_Show
 ;
 INPUT_CHARS_chars_1_:                       ; [$9227]
-    .byte " "                               ; [$9227] char
-
-;
-; XREFS:
-;     PasswordScreen_Show
-;
-INPUT_CHARS_chars_2_:                       ; [$9228]
-    .byte "B"                               ; [$9228] char
-
-;
-; XREFS:
-;     PasswordScreen_Show
-;
-INPUT_CHARS_chars_3_:                       ; [$9229]
-    .byte " C D E F"                        ; [$9229] char
-    .byte " G H I J"                        ; [$9231] char
-    .byte " K L M"                          ; [$9239] char
-
+    .byte " B C D E"                        ; [$9227] char
+    .byte " F G H I"                        ; [$922f] char
+    .byte " J K L M"                        ; [$9237] char
     .byte $22                               ; [1]: [0]:
     .byte $04                               ; [1]: [1]:
     .byte "N O P Q "                        ; [$9241] char
@@ -5858,7 +5837,7 @@ PasswordScreen_DrawAtCursorPosition:        ; [$92db]
     ; Check the character at the cursor position.
     ;
     LDX a:Password_FieldCursorPos           ; X = Cursor position.
-    LDA ScreenBuffer,X                      ; A = Character at that position.
+    LDA a:ScreenBuffer,X                    ; A = Character at that position.
     CMP #$ff                                ; Is it 0xFF (unset)?
     BEQ @_writeBlankChar                    ; If not, jump.
 
@@ -5867,7 +5846,7 @@ PasswordScreen_DrawAtCursorPosition:        ; [$92db]
     ; There's no character at this position.
     ;
     TAX                                     ; X = A (character offset)
-    LDA PASSWORD_ENTERED_CHARS,X            ; Get the character value for
+    LDA a:PASSWORD_ENTERED_CHARS,X          ; Get the character value for
                                             ; that offset.
     BPL PasswordScreen_WriteCharTile        ; Write it.
 
@@ -5931,14 +5910,14 @@ PasswordScreen_WriteCharTile:               ; [$92ed]
     ; Look up the PPU address for that index.
     ;
     TAY                                     ; Y = A
-    LDA PASSWORD_CURSOR_START_PPU_ADDRS_U,Y ; A = Upper byte of the PPU
-                                            ; address for this position.
+    LDA a:PASSWORD_CURSOR_START_PPU_ADDRS_U,Y ; A = Upper byte of the PPU
+                                              ; address for this position.
     STA PPU_TargetAddr_U                    ; Store it.
     LDA a:Password_FieldCursorPos           ; Load the cursor position again.
     AND #$0f                                ; Keep the lower nibble.
     CLC
-    ADC PASSWORD_CURSOR_START_PPU_ADDRS_L,Y ; Add the lower byte of the PPU
-                                            ; address.
+    ADC a:PASSWORD_CURSOR_START_PPU_ADDRS_L,Y ; Add the lower byte of the PPU
+                                              ; address.
     STA PPU_TargetAddr                      ; Store as the target address to
                                             ; write to.
 
@@ -5982,7 +5961,7 @@ PasswordScreen_HandleInputChar:             ; [$9312]
     ; Place the character in the buffer.
     ;
     LDX a:Password_FieldCursorPos           ; X = Current cursor position.
-    STA ScreenBuffer,X                      ; Store in the screen buffer.
+    STA a:ScreenBuffer,X                    ; Store in the screen buffer.
     JSR PasswordScreen_DrawAtCursorPosition ; Write the character.
 
 
@@ -6235,8 +6214,8 @@ PasswordScreen_HandleDeleteAtCursor:        ; [$93b4]
     CPX a:Password_EnteredCharsLength
     BEQ @LAB_PRG12__93d7
     LDX a:Password_FieldCursorPos
-    LDA DAT_0601,X
-    STA ScreenBuffer,X
+    LDA a:DAT_0601,X
+    STA a:ScreenBuffer,X
     JSR PasswordScreen_DrawAtCursorPosition
     INC a:Password_FieldCursorPos
     BNE @_loop
@@ -6244,7 +6223,7 @@ PasswordScreen_HandleDeleteAtCursor:        ; [$93b4]
   @LAB_PRG12__93d7:                         ; [$93d7]
     LDX a:Password_FieldCursorPos
     LDA #$ff
-    STA ScreenBuffer,X
+    STA a:ScreenBuffer,X
     JSR PasswordScreen_DrawAtCursorPosition
     DEC a:Password_EnteredCharsLength
     PLA
@@ -6271,7 +6250,7 @@ PasswordScreen_HandleDeleteLastChar:        ; [$93ec]
     DEC a:Password_EnteredCharsLength
     LDX a:Password_FieldCursorPos
     LDA #$ff
-    STA ScreenBuffer,X
+    STA a:ScreenBuffer,X
     JMP PasswordScreen_DrawAtCursorPosition
 
 ;============================================================================
@@ -6372,7 +6351,7 @@ PasswordScreen_IsCursorSpotInvalid:         ; [$9426]
     ; Load the value from that entry in the table.
     ;
     TAX
-    LDA PASSWORD_VALUES_FOR_CURSOR_POS,X
+    LDA a:PASSWORD_VALUES_FOR_CURSOR_POS,X
 
 
     ;
@@ -7101,11 +7080,11 @@ Player_SetInitialExpAndGold:                ; [$95b1]
     ;
     ; These tables are in bank 15.
     ;
-    LDA $f747,X                             ; Load the lower byte of
+    LDA a:PLAYER_TITLE_EXP_NEEDED-2,X       ; Load the lower byte of
                                             ; experience for the title.
     STA a:Experience                        ; Set it as the player's
                                             ; experience.
-    LDA $f748,X                             ; Load the uper byte of
+    LDA a:PLAYER_TITLE_EXP_NEEDED-1,X       ; Load the uper byte of
                                             ; experience for the title.
     STA a:Experience_U                      ; Set it as the player's
                                             ; experience.
@@ -7116,9 +7095,9 @@ Player_SetInitialExpAndGold:                ; [$95b1]
     ;
     ; The same off-by-2 trick is being used for this lookup table.
     ;
-    LDA $f765,X                             ; Load the lower byte of gold.
+    LDA a:PLAYER_TITLE_GOLD-2,X             ; Load the lower byte of gold.
     STA a:Gold                              ; Set it.
-    LDA $f766,X                             ; Load the middle byte of gold.
+    LDA a:PLAYER_TITLE_GOLD-1,X             ; Load the middle byte of gold.
     STA a:Gold_M                            ; Set it.
     LDA #$00                                ; Set the upper byte to 0.
     STA a:Gold_U
@@ -7174,7 +7153,7 @@ Player_SetInitialExpAndGold:                ; [$95b1]
 ;     Password_ByteCounter:
 ;     Password_BitCounter:
 ;     $ee:
-;     Maybe_Temp4:
+;     Temp_0xEF:
 ;         Clobbered.
 ;
 ; CALLS:
@@ -7279,12 +7258,10 @@ Password_Load:                              ; [$95e9]
     ;
     ; Decode the weapon inventory into WeaponInventory.
     ;
-    LDA #$9d                                ; 0x9D == Lower byte of
-                                            ; inventory.
+    LDA #<WeaponInventory                   ; Lower byte of inventory.
     STA Temp_Int24_U                        ; Store it.
-    LDA #$03                                ; 0x03 == Upper byte of
-                                            ; inventory.
-    STA Maybe_Temp4                         ; Store it.
+    LDA #>WeaponInventory                   ; Upper byte of inventory.
+    STA Temp_0xEF                           ; Store it.
     LDY #$03                                ; Y = 3 bits for items.
     LDX #$02                                ; X = 2 bits for max count.
     JSR Password_DecodeValueList            ; Decode the weapon inventory.
@@ -7303,12 +7280,10 @@ Password_Load:                              ; [$95e9]
     ;
     ; Decode the armor inventory into ArmorInventory.
     ;
-    LDA #$a1                                ; 0xA1 == Lower byte of
-                                            ; inventory.
+    LDA #<ArmorInventory                    ; Lower byte of inventory.
     STA Temp_Int24_U                        ; Store it.
-    LDA #$03                                ; 0x03 == Upper byte of
-                                            ; inventory.
-    STA Maybe_Temp4                         ; Store it.
+    LDA #>ArmorInventory                    ; Upper byte of inventory.
+    STA Temp_0xEF                           ; Store it.
     LDY #$03                                ; Y = 3 bits for items.
     LDX #$02                                ; X = 2 bits for max count.
     JSR Password_DecodeValueList            ; Decode the armor inventory.
@@ -7327,12 +7302,10 @@ Password_Load:                              ; [$95e9]
     ;
     ; Decode the shield inventory into ShieldInventory.
     ;
-    LDA #$a5                                ; 0xA5 == Lower byte of
-                                            ; inventory.
+    LDA #<ShieldInventory                   ; Lower byte of inventory.
     STA Temp_Int24_U                        ; Store it.
-    LDA #$03                                ; 0x03 == Upper byte of
-                                            ; inventory.
-    STA Maybe_Temp4                         ; Store it.
+    LDA #>ShieldInventory                   ; Upper byte of inventory.
+    STA Temp_0xEF                           ; Store it.
     LDY #$03                                ; Y = 3 bits for items.
     LDX #$02                                ; X = 2 bits for max count.
     JSR Password_DecodeValueList            ; Decode the shield inventory.
@@ -7351,12 +7324,10 @@ Password_Load:                              ; [$95e9]
     ;
     ; Decode the magic inventory into MagicInventory.
     ;
-    LDA #$a9                                ; 0xA9 == Lower byte of
-                                            ; inventory.
+    LDA #<MagicInventory                    ; Lower byte of inventory.
     STA Temp_Int24_U                        ; Store it.
-    LDA #$03                                ; 0x03 == Upper byte of
-                                            ; inventory.
-    STA Maybe_Temp4                         ; Store it.
+    LDA #>MagicInventory                    ; Upper byte of inventory.
+    STA Temp_0xEF                           ; Store it.
     LDY #$03                                ; Y = 3 bits for items.
     LDX #$03                                ; X = 3 bits for max count.
     JSR Password_DecodeValueList            ; Decode the magic inventory.
@@ -7375,12 +7346,10 @@ Password_Load:                              ; [$95e9]
     ;
     ; Decode the items inventory into ItemInventory.
     ;
-    LDA #$ad                                ; 0xAD == Lower byte of
-                                            ; inventory.
+    LDA #<ItemInventory                     ; Lower byte of inventory.
     STA Temp_Int24_U                        ; Store it.
-    LDA #$03                                ; 0x03 == Upper byte of
-                                            ; inventory.
-    STA Maybe_Temp4                         ; Store it.
+    LDA #>ItemInventory                     ; Upper byte of inventory.
+    STA Temp_0xEF                           ; Store it.
     LDY #$04                                ; Y = 4 bits for items.
     LDX #$05                                ; X = 5 bits for max count.
     JSR Password_DecodeValueList            ; Decode the item inventory.
@@ -7788,7 +7757,7 @@ Password_GenerateState:                     ; [$96fe]
     ;
     LDX a:Password_ByteCounter              ; X = byte counter
     LDA #$00                                ; A = 0
-    STA Password_EncodedState,X             ; Store as the final byte value.
+    STA a:Password_EncodedState,X           ; Store as the final byte value.
 
 
     ;
@@ -7956,7 +7925,7 @@ Password_EncodeGameState:                   ; [$976c]
     LDA #$9d
     STA Temp_Int24_U
     LDA #$03
-    STA Maybe_Temp4
+    STA Temp_0xEF
 
 
     ;
@@ -7976,7 +7945,7 @@ Password_EncodeGameState:                   ; [$976c]
     LDA #$a1
     STA Temp_Int24_U
     LDA #$03
-    STA Maybe_Temp4
+    STA Temp_0xEF
 
 
     ;
@@ -7996,7 +7965,7 @@ Password_EncodeGameState:                   ; [$976c]
     LDA #$a5
     STA Temp_Int24_U
     LDA #$03
-    STA Maybe_Temp4
+    STA Temp_0xEF
 
 
     ;
@@ -8016,7 +7985,7 @@ Password_EncodeGameState:                   ; [$976c]
     LDA #$a9
     STA Temp_Int24_U
     LDA #$03
-    STA Maybe_Temp4
+    STA Temp_0xEF
 
 
     ;
@@ -8036,7 +8005,7 @@ Password_EncodeGameState:                   ; [$976c]
     LDA #$ad
     STA Temp_Int24_U
     LDA #$03
-    STA Maybe_Temp4
+    STA Temp_0xEF
 
 
     ;
@@ -8223,15 +8192,15 @@ Password_Maybe_CheckPasswordLength:         ; [$9850]
     STX a:Password_BitCounter
     STX a:Password_Checksum
     LDY #$06
-    LDA ScreenBuffer,X
+    LDA a:ScreenBuffer,X
     JSR Password_EncodeValue
     INX
     LDY #$06
-    LDA ScreenBuffer,X
+    LDA a:ScreenBuffer,X
     JSR Password_EncodeValue
     INX
     LDY #$06
-    LDA ScreenBuffer,X
+    LDA a:ScreenBuffer,X
     JSR Password_EncodeValue
     INX
     LDA a:Password_EncodedState_1_
@@ -8243,7 +8212,7 @@ Password_Maybe_CheckPasswordLength:         ; [$9850]
 
   @LAB_PRG12__9881:                         ; [$9881]
     LDY #$06
-    LDA ScreenBuffer,X
+    LDA a:ScreenBuffer,X
     JSR Password_EncodeValue
     INX
     CPX a:Password_EnteredCharsLength
@@ -8365,7 +8334,7 @@ Password_EncodeValue:                       ; [$98a7]
     ; Password_ByteCounter). This will be the stored value * 2,
     ; OR'd with the carry bit from the calculation above.
     ;
-    ROL Password_EncodedState,X             ; Dest value = Dest value * 2 | C
+    ROL a:Password_EncodedState,X           ; Dest value = Dest value * 2 | C
                                             ; If overflow, C = 1
 
 
@@ -8388,7 +8357,7 @@ Password_EncodeValue:                       ; [$98a7]
     ; bit counter.
     ;
     LDX a:Password_ByteCounter              ; X = Computed byte index
-    LDA Password_EncodedState,X             ; A = Dest value
+    LDA a:Password_EncodedState,X           ; A = Dest value
 
 
     ;
@@ -8444,7 +8413,7 @@ Password_DecodeValue:                       ; [$98e9]
 
   @LAB_PRG12__98ed:                         ; [$98ed]
     LDX a:Password_ByteCounter
-    ASL Password_EncodedState,X
+    ASL a:Password_EncodedState,X
     ROL A
     INC a:Password_BitCounter
     LDX a:Password_BitCounter
@@ -9040,19 +9009,19 @@ Shop_Draw:                                  ; [$99f8]
     STA TextBox_ContentsX
     TXA
     PHA
-    LDA DataArray,X
+    LDA a:DataArray,X
     JSR TextBox_DrawItemImage
     PLA
     TAX
-    LDA ShopItemCostsU,X
+    LDA a:ShopItemCostsU,X
     PHA
-    LDA ShopItemCostsL,X
+    LDA a:ShopItemCostsL,X
     PHA
     LDA a:TextBox_X
     CLC
     ADC #$05
     STA TextBox_ContentsX
-    LDA DataArray,X
+    LDA a:DataArray,X
     JSR TextBox_DrawItemName
     PLA
     STA Temp_Int24
@@ -9117,12 +9086,12 @@ Player_RemoveItem:                          ; [$9a6a]
     STA Temp_Int24_U
     JSR Player_GetInventoryIndexForItem
     TAX
-    LDA NumberOfWeapons,X
+    LDA a:NumberOfWeapons,X
     BEQ @_return
-    STA Maybe_Temp4
-    LDA INVENTORY_CATEGORY_L,X
+    STA Temp_0xEF
+    LDA a:INVENTORY_CATEGORY_L,X
     STA Temp_Int24
-    LDA INVENTORY_CATEGORY_U,X
+    LDA a:INVENTORY_CATEGORY_U,X
     STA Temp_Int24_M
     LDY #$00
     LDA Temp_Int24_U
@@ -9132,13 +9101,13 @@ Player_RemoveItem:                          ; [$9a6a]
     CMP (Temp_Int24),Y
     BEQ @_moveInventoryLoop
     INY
-    CPY Maybe_Temp4
+    CPY Temp_0xEF
     BNE @_inventoryCheckLoop
     RTS
 
   @_moveInventoryLoop:                      ; [$9aba]
     INY
-    CPY Maybe_Temp4
+    CPY Temp_0xEF
     BEQ @_updateCountAndReturn
     LDA (Temp_Int24),Y
     DEY
@@ -9147,14 +9116,14 @@ Player_RemoveItem:                          ; [$9a6a]
     BNE @_moveInventoryLoop
 
   @_updateCountAndReturn:                   ; [$9ac7]
-    DEC NumberOfWeapons,X
+    DEC a:NumberOfWeapons,X
 
   @_return:                                 ; [$9aca]
     RTS
 
   @_isSpecialItem:                          ; [$9acb]
     LDA a:SpecialItems
-    AND SHOP_ITEM_TO_CLEAR_SPECIAL_ITEM_BITS,X
+    AND a:SHOP_ITEM_TO_CLEAR_SPECIAL_ITEM_BITS,X
     STA a:SpecialItems
     RTS
 
@@ -9266,7 +9235,7 @@ BYTE_PRG12__9aec:                           ; [$9aec]
 ;============================================================================
 Player_AddSpecialItem:                      ; [$9aed]
     LDA a:SpecialItems
-    ORA SPECIAL_ITEM_BITMASKS,X
+    ORA a:SPECIAL_ITEM_BITMASKS,X
     STA a:SpecialItems
     RTS
 
@@ -9288,7 +9257,7 @@ Player_AddToInventory:                      ; [$9af7]
     LDX #$07                                ; i = 7; Loop through item bits.
 
   @_checkSpecialItems:                      ; [$9af9]
-    CMP SPECIAL_ITEM_IDS,X                  ; Check if this is a special,
+    CMP a:SPECIAL_ITEM_IDS,X                ; Check if this is a special,
                                             ; non-consumable item
     BEQ Player_AddSpecialItem               ; If this is a special item...
     DEX                                     ; Next i
@@ -9297,28 +9266,28 @@ Player_AddToInventory:                      ; [$9af7]
     JSR Player_GetInventoryIndexForItem     ; Convert the item ID to a
                                             ; category.
     TAX
-    LDA INVENTORY_CATEGORY_L,X
+    LDA a:INVENTORY_CATEGORY_L,X
     STA Temp_Int24
-    LDA INVENTORY_CATEGORY_U,X
+    LDA a:INVENTORY_CATEGORY_U,X
     STA Temp_Int24_M
 
 
     ;
     ; Check if the maximum has been reached for the inventory category.
     ;
-    LDA NumberOfWeapons,X                   ; Load the number of items in the
+    LDA a:NumberOfWeapons,X                 ; Load the number of items in the
                                             ; inventory category
-    CMP MAX_INVENTORY_SLOTS,X               ; Check if the max has been hit
+    CMP a:MAX_INVENTORY_SLOTS,X             ; Check if the max has been hit
     BNE @_addItem
-    DEC NumberOfWeapons,X                   ; The max has been hit. Remove
+    DEC a:NumberOfWeapons,X                 ; The max has been hit. Remove
                                             ; one.
 
   @_addItem:                                ; [$9b1c]
-    LDY NumberOfWeapons,X
+    LDY a:NumberOfWeapons,X
     LDA Temp_Int24_U
     AND #$1f
     STA (Temp_Int24),Y
-    INC NumberOfWeapons,X                   ; Increase the length of the
+    INC a:NumberOfWeapons,X                 ; Increase the length of the
                                             ; inventory
     RTS
 
@@ -9523,6 +9492,10 @@ ITEM_NAMES_KEYS:                            ; [$9c4d]
     .byte $0d,"FIRE CR"                     ; [$9d9d] char
     .byte "YSTAL   "                        ; [$9da5] char
 
+;
+; XREFS:
+;     StartScreen_Draw
+;
 STARTSCREEEN_PALETTE_SPRITES:               ; [$9dad]
     .byte $0f                               ; [0]:
     .byte $00                               ; [1]:
@@ -9538,19 +9511,7 @@ STARTSCREEEN_PALETTE_SPRITES:               ; [$9dad]
     .byte $20                               ; [11]:
     .byte $0f                               ; [12]:
     .byte $00                               ; [13]:
-
-;
-; XREFS:
-;     StartScreen_Draw
-;
-STARTSCREEEN_PALETTE_SPRITES_14_:           ; [$9dbb]
     .byte $10                               ; [14]:
-
-;
-; XREFS:
-;     StartScreen_Draw
-;
-STARTSCREEEN_PALETTE_SPRITES_15_:           ; [$9dbc]
     .byte $20                               ; [15]:
 
 TEXT_TILES_START:                           ; [$9dbd]
@@ -9694,9 +9655,9 @@ StartScreen_Draw:                           ; [$9e21]
     ; From: CHR ROM: Bank 10, 0x8E00: CHR_FAXANADU_LOGO
     ; To:   CHR RAM: 0x1000
     ;
-    LDA #$00
+    LDA #<CHR_FAXANADU_LOGO
     STA IScriptOrCHRAddr
-    LDA #$8e
+    LDA #>CHR_FAXANADU_LOGO
     STA IScriptOrCHRAddr_U
     LDA #$00
     STA PPU_TargetAddr
@@ -9713,9 +9674,9 @@ StartScreen_Draw:                           ; [$9e21]
     ; From: CHR ROM: Bank 10, 0x8240: CHR_LETTERS
     ; To:   CHR RAM: 0x1E00
     ;
-    LDA #$40
+    LDA #<CHR_LETTERS
     STA IScriptOrCHRAddr
-    LDA #$82
+    LDA #>CHR_LETTERS
     STA IScriptOrCHRAddr_U
     LDA #$00
     STA PPU_TargetAddr
@@ -9732,9 +9693,9 @@ StartScreen_Draw:                           ; [$9e21]
     ; From: CHR ROM: Bank 10, 0x8440: CHR_NUMBERS
     ; To:   CHR RAM: 0x1D60
     ;
-    LDA #$40
+    LDA #<CHR_NUMBERS
     STA IScriptOrCHRAddr
-    LDA #$84
+    LDA #>CHR_NUMBERS
     STA IScriptOrCHRAddr_U
     LDA #$60
     STA PPU_TargetAddr
@@ -9752,9 +9713,9 @@ StartScreen_Draw:                           ; [$9e21]
     ; From: Bank 10, 0x9B60: PRG10:9B60
     ; To:   Attribute table: 0x23C0
     ;
-    LDA #$60
+    LDA #<START_SCREEN_PPU_ATTRIBUTES
     STA IScriptOrCHRAddr
-    LDA #$9b
+    LDA #>START_SCREEN_PPU_ATTRIBUTES
     STA IScriptOrCHRAddr_U
     LDA #$c0
     STA PPU_TargetAddr
@@ -9778,10 +9739,10 @@ StartScreen_Draw:                           ; [$9e21]
     STA a:PPUADDR
     LDA #$00
     STA Temp_Int24
-    LDA #$80
+    LDA #>START_SCREEN_LOGO_TILES
     STA Temp_Int24_M
     LDY #$00
-    LDA #$10
+    LDA #<START_SCREEN_LOGO_TILES
     STA Temp_Int24_U
 
   @LAB_PRG12__9e9b:                         ; [$9e9b]
@@ -9816,9 +9777,9 @@ StartScreen_Draw:                           ; [$9e21]
     STA a:PPUADDR
     LDA #$88
     STA a:PPUADDR
-    LDA #$bd
+    LDA #<TEXT_TILES_START
     STA Temp_Int24
-    LDA #$9d
+    LDA #>TEXT_TILES_START
     STA Temp_Int24_M
     JSR UI_DrawText
 
@@ -9831,9 +9792,9 @@ StartScreen_Draw:                           ; [$9e21]
     STA a:PPUADDR
     LDA #$90
     STA a:PPUADDR
-    LDA #$c3
+    LDA #<TEXT_TILES_CONTINUE
     STA Temp_Int24
-    LDA #$9d
+    LDA #>TEXT_TILES_CONTINUE
     STA Temp_Int24_M
     JSR UI_DrawText
 
@@ -9846,9 +9807,9 @@ StartScreen_Draw:                           ; [$9e21]
     STA a:PPUADDR
     LDA #$e7
     STA a:PPUADDR
-    LDA #$cc
+    LDA #<TEXT_TILES_COPYRIGHT_1998_HUDSON_SOFT
     STA Temp_Int24
-    LDA #$9d
+    LDA #>TEXT_TILES_COPYRIGHT_1998_HUDSON_SOFT
     STA Temp_Int24_M
     JSR UI_DrawText
 
@@ -9861,9 +9822,9 @@ StartScreen_Draw:                           ; [$9e21]
     STA a:PPUADDR
     LDA #$24
     STA a:PPUADDR
-    LDA #$df
+    LDA #<TEXT_TILES_UNDER_LICENSE_FROM_FALCOM
     STA Temp_Int24
-    LDA #$9d
+    LDA #>TEXT_TILES_UNDER_LICENSE_FROM_FALCOM
     STA Temp_Int24_M
     JSR UI_DrawText
 
@@ -9876,9 +9837,9 @@ StartScreen_Draw:                           ; [$9e21]
     STA a:PPUADDR
     LDA #$66
     STA a:PPUADDR
-    LDA #$f9
+    LDA #<TEXT_TILES_LICENSED_TO_NINTENDO
     STA Temp_Int24
-    LDA #$9d
+    LDA #>TEXT_TILES_LICENSED_TO_NINTENDO
     STA Temp_Int24_M
     JSR UI_DrawText
     LDA #$10
@@ -9886,8 +9847,8 @@ StartScreen_Draw:                           ; [$9e21]
     LDX #$0f
 
   @LAB_PRG12__9f31:                         ; [$9f31]
-    LDA STARTSCREEEN_PALETTE_SPRITES,X
-    STA Screen_PaletteData_Sprites,X
+    LDA a:STARTSCREEEN_PALETTE_SPRITES,X
+    STA a:Screen_PaletteData_Sprites,X
     DEX
     BPL @LAB_PRG12__9f31
     JSR PPUBuffer_WritePalette
@@ -9925,7 +9886,7 @@ StartScreen_CheckHandleInput:               ; [$9f44]
     ; Draw the symbol used to show the current menu item selection.
     ;
   @_drawCurrentItemSymbol:                  ; [$9f5f]
-    LDX BYTE_ARRAY_PRG12__9f69,Y            ; X = menu item X position.
+    LDX a:BYTE_ARRAY_PRG12__9f69,Y          ; X = menu item X position.
     LDY #$7e                                ; Y = 126.
     LDA #$ad                                ; A = 0xAD (right arrow symbol)
     JMP UI_DrawPromptInputSymbol            ; Draw the symbol.
@@ -9936,12 +9897,6 @@ StartScreen_CheckHandleInput:               ; [$9f44]
 ;
 BYTE_ARRAY_PRG12__9f69:                     ; [$9f69]
     .byte $34                               ; [0]:
-
-;
-; XREFS:
-;     StartScreen_CheckHandleInput
-;
-BYTE_ARRAY_PRG12__9f69_1_:                  ; [$9f6a]
     .byte $74                               ; [1]:
 
 
@@ -9949,328 +9904,328 @@ BYTE_ARRAY_PRG12__9f69_1_:                  ; [$9f6a]
 ; Lower bytes of IScript addresses by entrypoint index.
 ;============================================================================
 ISCRIPT_ADDRS_L:                            ; [$9f6b]
-    .byte $9f                               ; [0]:
-    .byte $a3                               ; [1]:
-    .byte $ad                               ; [2]:
-    .byte $b1                               ; [3]:
-    .byte $bc                               ; [4]:
-    .byte $c9                               ; [5]:
-    .byte $d3                               ; [6]:
-    .byte $dd                               ; [7]:
-    .byte $50                               ; [8]:
-    .byte $ee                               ; [9]:
-    .byte $f8                               ; [10]:
-    .byte $a1                               ; [11]:
-    .byte $fc                               ; [12]:
-    .byte $7a                               ; [13]:
-    .byte $5d                               ; [14]:
-    .byte $02                               ; [15]:
-    .byte $0b                               ; [16]:
-    .byte $16                               ; [17]:
-    .byte $21                               ; [18]:
-    .byte $2c                               ; [19]:
-    .byte $37                               ; [20]:
-    .byte $a2                               ; [21]:
-    .byte $3b                               ; [22]:
-    .byte $46                               ; [23]:
-    .byte $51                               ; [24]:
-    .byte $8c                               ; [25]:
-    .byte $0e                               ; [26]:
-    .byte $55                               ; [27]:
-    .byte $03                               ; [28]:
-    .byte $9e                               ; [29]:
-    .byte $9f                               ; [30]:
+    .byte <ISCRIPT_INTRO                    ; [0]:
+    .byte <ISCRIPT_EOLIS_WALKING_MAN_01     ; [1]:
+    .byte <ISCRIPT_MARK_OF_JACK             ; [2]:
+    .byte <ISCRIPT_EOLIS_WALKING_WOMAN_01   ; [3]:
+    .byte <ISCRIPT_EOLIS_GURU               ; [4]:
+    .byte <ISCRIPT_EOLIS_WALKING_WOMAN_02   ; [5]:
+    .byte <ISCRIPT_EOLIS_SMOKING_MAN        ; [6]:
+    .byte <ISCRIPT_EOLIS_KINGS_GUARD        ; [7]:
+    .byte <ISCRIPT_EOLIS_KING               ; [8]:
+    .byte <ISCRIPT_A0EE                     ; [9]:
+    .byte <ISCRIPT_A0F8                     ; [10]:
+    .byte <ISCRIPT_EOLIS_MEAT_SHOP          ; [11]:
+    .byte <ISCRIPT_EOLIS_KEY_SHOP           ; [12]:
+    .byte <ISCRIPT_EOLIS_TOOL_SHOP          ; [13]:
+    .byte <ISCRIPT_EOLIS_MARTIAL_ARTS_MAGIC_SHOP ; [14]:
+    .byte <ISCRIPT_EOLIS_MARTIAL_ARTIST     ; [15]:
+    .byte <ISCRIPT_A10B                     ; [16]:
+    .byte <ISCRIPT_A116                     ; [17]:
+    .byte <ISCRIPT_A121                     ; [18]:
+    .byte <ISCRIPT_A12C                     ; [19]:
+    .byte <ISCRIPT_A137                     ; [20]:
+    .byte <ISCRIPT_APOLUNE_DOCTOR           ; [21]:
+    .byte <ISCRIPT_A13B                     ; [22]:
+    .byte <ISCRIPT_A146                     ; [23]:
+    .byte <ISCRIPT_A151                     ; [24]:
+    .byte <ISCRIPT_APOLUNE_TOOL_SHOP        ; [25]:
+    .byte <ISCRIPT_APOLUNE_KEY_SHOP         ; [26]:
+    .byte <ISCRIPT_A155                     ; [27]:
+    .byte <ISCRIPT_APOLUNE_GURU             ; [28]:
+    .byte <ISCRIPT_BEFORE_APOLUNE_TOOL_SHOP ; [29]:
+    .byte <ISCRIPT_INTRO                    ; [30]:
 
 ;
 ; XREFS:
 ;     IScripts_Begin
 ;
 ISCRIPT_ADDRS_L_31_:                        ; [$9f8a]
-    .byte $9b                               ; [31]:
-    .byte $57                               ; [32]:
-    .byte $62                               ; [33]:
-    .byte $6d                               ; [34]:
-    .byte $78                               ; [35]:
-    .byte $8a                               ; [36]:
-    .byte $9e                               ; [37]:
-    .byte $ab                               ; [38]:
-    .byte $c3                               ; [39]:
-    .byte $b0                               ; [40]:
-    .byte $0c                               ; [41]:
-    .byte $b1                               ; [42]:
-    .byte $20                               ; [43]:
-    .byte $ae                               ; [44]:
-    .byte $9f                               ; [45]:
-    .byte $9f                               ; [46]:
-    .byte $9f                               ; [47]:
-    .byte $d9                               ; [48]:
-    .byte $e4                               ; [49]:
-    .byte $ef                               ; [50]:
-    .byte $fa                               ; [51]:
-    .byte $05                               ; [52]:
-    .byte $10                               ; [53]:
-    .byte $1b                               ; [54]:
-    .byte $26                               ; [55]:
-    .byte $c0                               ; [56]:
-    .byte $c2                               ; [57]:
-    .byte $bb                               ; [58]:
-    .byte $32                               ; [59]:
-    .byte $d4                               ; [60]:
-    .byte $15                               ; [61]:
-    .byte $9f                               ; [62]:
-    .byte $9f                               ; [63]:
-    .byte $31                               ; [64]:
-    .byte $3c                               ; [65]:
-    .byte $47                               ; [66]:
-    .byte $52                               ; [67]:
-    .byte $66                               ; [68]:
-    .byte $71                               ; [69]:
-    .byte $7c                               ; [70]:
-    .byte $cf                               ; [71]:
-    .byte $e6                               ; [72]:
-    .byte $c8                               ; [73]:
-    .byte $44                               ; [74]:
-    .byte $68                               ; [75]:
-    .byte $1e                               ; [76]:
-    .byte $9f                               ; [77]:
-    .byte $9f                               ; [78]:
-    .byte $9f                               ; [79]:
-    .byte $90                               ; [80]:
-    .byte $9b                               ; [81]:
-    .byte $a6                               ; [82]:
-    .byte $b8                               ; [83]:
-    .byte $c3                               ; [84]:
-    .byte $27                               ; [85]:
-    .byte $de                               ; [86]:
-    .byte $f8                               ; [87]:
-    .byte $d5                               ; [88]:
-    .byte $9f                               ; [89]:
-    .byte $9f                               ; [90]:
-    .byte $9f                               ; [91]:
-    .byte $9f                               ; [92]:
-    .byte $9f                               ; [93]:
-    .byte $9f                               ; [94]:
-    .byte $9f                               ; [95]:
-    .byte $ce                               ; [96]:
-    .byte $d9                               ; [97]:
-    .byte $e4                               ; [98]:
-    .byte $ef                               ; [99]:
-    .byte $fa                               ; [100]:
-    .byte $05                               ; [101]:
-    .byte $0a                               ; [102]:
-    .byte $e2                               ; [103]:
-    .byte $56                               ; [104]:
-    .byte $3d                               ; [105]:
-    .byte $9f                               ; [106]:
-    .byte $9f                               ; [107]:
-    .byte $9f                               ; [108]:
-    .byte $9f                               ; [109]:
-    .byte $9f                               ; [110]:
-    .byte $9f                               ; [111]:
-    .byte $10                               ; [112]:
-    .byte $1b                               ; [113]:
-    .byte $26                               ; [114]:
-    .byte $31                               ; [115]:
-    .byte $3c                               ; [116]:
-    .byte $1c                               ; [117]:
-    .byte $ef                               ; [118]:
-    .byte $68                               ; [119]:
-    .byte $46                               ; [120]:
-    .byte $4f                               ; [121]:
-    .byte $ed                               ; [122]:
-    .byte $54                               ; [123]:
-    .byte $58                               ; [124]:
-    .byte $5c                               ; [125]:
-    .byte $60                               ; [126]:
-    .byte $64                               ; [127]:
-    .byte $68                               ; [128]:
-    .byte $6c                               ; [129]:
-    .byte $70                               ; [130]:
-    .byte $74                               ; [131]:
-    .byte $78                               ; [132]:
-    .byte $7c                               ; [133]:
-    .byte $80                               ; [134]:
-    .byte $84                               ; [135]:
-    .byte $88                               ; [136]:
-    .byte $8c                               ; [137]:
-    .byte $90                               ; [138]:
-    .byte $94                               ; [139]:
-    .byte $98                               ; [140]:
-    .byte $9c                               ; [141]:
-    .byte $a0                               ; [142]:
-    .byte $a4                               ; [143]:
-    .byte $a8                               ; [144]:
-    .byte $ac                               ; [145]:
-    .byte $b0                               ; [146]:
-    .byte $b4                               ; [147]:
-    .byte $b8                               ; [148]:
-    .byte $bc                               ; [149]:
-    .byte $c0                               ; [150]:
-    .byte $c4                               ; [151]:
+    .byte <ISCRIPT_REMEMBER_YOUR_MANTRA     ; [31]:
+    .byte <ISCRIPT_FOREPAW_GREETER          ; [32]:
+    .byte <ISCRIPT_A162                     ; [33]:
+    .byte <ISCRIPT_A16D                     ; [34]:
+    .byte <ISCRIPT_A178                     ; [35]:
+    .byte <ISCRIPT_A18A                     ; [36]:
+    .byte <ISCRIPT_SPRING_OF_SKY            ; [37]:
+    .byte <ISCRIPT_SPRING_OF_TRUNK          ; [38]:
+    .byte <ISCRIPT_A1C3                     ; [39]:
+    .byte <ISCRIPT_FOREPAW_TOOL_SHOP        ; [40]:
+    .byte <ISCRIPT_FOREPAW_GURU             ; [41]:
+    .byte <ISCRIPT_FOREPAW_DOCTOR           ; [42]:
+    .byte <ISCRIPT_FOREPAW_KEY_SHOP         ; [43]:
+    .byte <ISCRIPT_FOREPAW_MEAT_SHOP        ; [44]:
+    .byte <ISCRIPT_INTRO                    ; [45]:
+    .byte <ISCRIPT_INTRO                    ; [46]:
+    .byte <ISCRIPT_INTRO                    ; [47]:
+    .byte <ISCRIPT_A1D9                     ; [48]:
+    .byte <ISCRIPT_A1E4                     ; [49]:
+    .byte <ISCRIPT_A1EF                     ; [50]:
+    .byte <ISCRIPT_A1FA                     ; [51]:
+    .byte <ISCRIPT_A205                     ; [52]:
+    .byte <ISCRIPT_OVERWORLD_MIST_HOUSE_MAN ; [53]:
+    .byte <ISCRIPT_OVERWORLD_MIST_HOUSE_WOMAN ; [54]:
+    .byte <ISCRIPT_A226                     ; [55]:
+    .byte <ISCRIPT_MASCON_DOCTOR            ; [56]:
+    .byte <ISCRIPT_MASCON_TOOL_SHOP         ; [57]:
+    .byte <ISCRIPT_MASCON_MEAT_SHOP         ; [58]:
+    .byte <ISCRIPT_MASCON_KEY_SHOP          ; [59]:
+    .byte <ISCRIPT_AFTER_MASCON_TOOL_SHOP   ; [60]:
+    .byte <ISCRIPT_MASCON_GURU              ; [61]:
+    .byte <ISCRIPT_INTRO                    ; [62]:
+    .byte <ISCRIPT_INTRO                    ; [63]:
+    .byte <ISCRIPT_A231                     ; [64]:
+    .byte <ISCRIPT_A23C                     ; [65]:
+    .byte <ISCRIPT_A247                     ; [66]:
+    .byte <ISCRIPT_A252                     ; [67]:
+    .byte <ISCRIPT_A266                     ; [68]:
+    .byte <ISCRIPT_A271                     ; [69]:
+    .byte <ISCRIPT_A27C                     ; [70]:
+    .byte <ISCRIPT_VICTIM_DOCTOR            ; [71]:
+    .byte <ISCRIPT_VICTIM_TOOL_SHOP         ; [72]:
+    .byte <ISCRIPT_VICTIM_MEAT_SHOP         ; [73]:
+    .byte <ISCRIPT_VICTIM_KEY_SHOP          ; [74]:
+    .byte <ISCRIPT_AFTER_VICTIM_MAGIC_SHOP  ; [75]:
+    .byte <ISCRIPT_VICTIM_GURU              ; [76]:
+    .byte <ISCRIPT_INTRO                    ; [77]:
+    .byte <ISCRIPT_INTRO                    ; [78]:
+    .byte <ISCRIPT_INTRO                    ; [79]:
+    .byte <ISCRIPT_A290                     ; [80]:
+    .byte <ISCRIPT_A29B                     ; [81]:
+    .byte <ISCRIPT_A2A6                     ; [82]:
+    .byte <ISCRIPT_A2B8                     ; [83]:
+    .byte <ISCRIPT_A2C3                     ; [84]:
+    .byte <ISCRIPT_CONFLATE_GURU            ; [85]:
+    .byte <ISCRIPT_CONFLATE_DOCTOR          ; [86]:
+    .byte <ISCRIPT_CONFLATE_TOOL_SHOP       ; [87]:
+    .byte <ISCRIPT_CONFLATE_MEAT_SHOP       ; [88]:
+    .byte <ISCRIPT_INTRO                    ; [89]:
+    .byte <ISCRIPT_INTRO                    ; [90]:
+    .byte <ISCRIPT_INTRO                    ; [91]:
+    .byte <ISCRIPT_INTRO                    ; [92]:
+    .byte <ISCRIPT_INTRO                    ; [93]:
+    .byte <ISCRIPT_INTRO                    ; [94]:
+    .byte <ISCRIPT_INTRO                    ; [95]:
+    .byte <ISCRIPT_A2CE                     ; [96]:
+    .byte <ISCRIPT_A2D9                     ; [97]:
+    .byte <ISCRIPT_A2E4                     ; [98]:
+    .byte <ISCRIPT_A2EF                     ; [99]:
+    .byte <ISCRIPT_A2FA                     ; [100]:
+    .byte <ISCRIPT_A305                     ; [101]:
+    .byte <ISCRIPT_DAYBREAK_TOOL_SHOP       ; [102]:
+    .byte <ISCRIPT_DAYBREAK_MEAT_SHOP       ; [103]:
+    .byte <ISCRIPT_DAYBREAK_KEY_SHOP        ; [104]:
+    .byte <ISCRIPT_DAYBREAK_GURU            ; [105]:
+    .byte <ISCRIPT_INTRO                    ; [106]:
+    .byte <ISCRIPT_INTRO                    ; [107]:
+    .byte <ISCRIPT_INTRO                    ; [108]:
+    .byte <ISCRIPT_INTRO                    ; [109]:
+    .byte <ISCRIPT_INTRO                    ; [110]:
+    .byte <ISCRIPT_INTRO                    ; [111]:
+    .byte <ISCRIPT_A310                     ; [112]:
+    .byte <ISCRIPT_OVERWORLD_HOUSE_MAN      ; [113]:
+    .byte <ISCRIPT_OVERWORLD_HOUSE_WOMAN    ; [114]:
+    .byte <ISCRIPT_A331                     ; [115]:
+    .byte <ISCRIPT_FRATERNAL_GURU           ; [116]:
+    .byte <ISCRIPT_DARTMOOR_TOOL_SHOP       ; [117]:
+    .byte <ISCRIPT_DARTMOOR_MEAT_SHOP       ; [118]:
+    .byte <ISCRIPT_DARTMOOR_KEY_SHOP        ; [119]:
+    .byte <ISCRIPT_GURU_FINAL               ; [120]:
+    .byte <ISCRIPT_KING_END_GAME            ; [121]:
+    .byte <ISCRIPT_DARTMOOR_DOCTOR          ; [122]:
+    .byte <ISCRIPT_MARK_OF_QUEEN            ; [123]:
+    .byte <ISCRIPT_MARK_OF_KING             ; [124]:
+    .byte <ISCRIPT_MARK_OF_ACE              ; [125]:
+    .byte <ISCRIPT_MARK_OF_JOKER            ; [126]:
+    .byte <ISCRIPT_NEED_RING_FOR_DOOR       ; [127]:
+    .byte <ISCRIPT_USED_RED_POTION          ; [128]:
+    .byte <ISCRIPT_USED_MATTOCK             ; [129]:
+    .byte <ISCRIPT_USED_HOURGLASS           ; [130]:
+    .byte <ISCRIPT_USED_WINGBOOTS           ; [131]:
+    .byte <ISCRIPT_USED_KEY                 ; [132]:
+    .byte <ISCRIPT_USED_ELIXIR              ; [133]:
+    .byte <ISCRIPT_GOT_ELIXIR               ; [134]:
+    .byte <ISCRIPT_GOT_RED_POTION           ; [135]:
+    .byte <ISCRIPT_GOT_MATTOCK              ; [136]:
+    .byte <ISCRIPT_GOT_WINGBOOTS            ; [137]:
+    .byte <ISCRIPT_GOT_HOURGLASS            ; [138]:
+    .byte <ISCRIPT_GOT_BATTLE_SUIT          ; [139]:
+    .byte <ISCRIPT_GOT_BATTLE_HELMET        ; [140]:
+    .byte <ISCRIPT_GOT_DRAGON_SLAYER        ; [141]:
+    .byte <ISCRIPT_GOT_BLACK_ONYX           ; [142]:
+    .byte <ISCRIPT_GOT_PENDANT              ; [143]:
+    .byte <ISCRIPT_GOT_MAGICAL_ROD          ; [144]:
+    .byte <ISCRIPT_TOUCHED_POISON           ; [145]:
+    .byte <ISCRIPT_GOT_POWER_GLOVE          ; [146]:
+    .byte <ISCRIPT_POWER_GLOVE_GONE         ; [147]:
+    .byte <ISCRIPT_OINTMENT_USED            ; [148]:
+    .byte <ISCRIPT_OINTMENT_GONE            ; [149]:
+    .byte <ISCRIPT_WINGBOOTS_GONE           ; [150]:
+    .byte <ISCRIPT_HOURGLASS_GONE           ; [151]:
 
 
 ;============================================================================
 ; Upper bytes of IScript addresses by entrypoint index.
 ;============================================================================
 ISCRIPT_ADDRS_U:                            ; [$a003]
-    .byte $a0                               ; [0]:
-    .byte $a0                               ; [1]:
-    .byte $a0                               ; [2]:
-    .byte $a0                               ; [3]:
-    .byte $a0                               ; [4]:
-    .byte $a0                               ; [5]:
-    .byte $a0                               ; [6]:
-    .byte $a0                               ; [7]:
-    .byte $a3                               ; [8]:
-    .byte $a0                               ; [9]:
-    .byte $a0                               ; [10]:
-    .byte $a4                               ; [11]:
-    .byte $a4                               ; [12]:
-    .byte $a3                               ; [13]:
-    .byte $a3                               ; [14]:
-    .byte $a1                               ; [15]:
-    .byte $a1                               ; [16]:
-    .byte $a1                               ; [17]:
-    .byte $a1                               ; [18]:
-    .byte $a1                               ; [19]:
-    .byte $a1                               ; [20]:
-    .byte $a5                               ; [21]:
-    .byte $a1                               ; [22]:
-    .byte $a1                               ; [23]:
-    .byte $a1                               ; [24]:
-    .byte $a3                               ; [25]:
-    .byte $a5                               ; [26]:
-    .byte $a1                               ; [27]:
-    .byte $a6                               ; [28]:
-    .byte $a3                               ; [29]:
-    .byte $a0                               ; [30]:
+    .byte >ISCRIPT_INTRO                    ; [0]:
+    .byte >ISCRIPT_EOLIS_WALKING_MAN_01     ; [1]:
+    .byte >ISCRIPT_MARK_OF_JACK             ; [2]:
+    .byte >ISCRIPT_EOLIS_WALKING_WOMAN_01   ; [3]:
+    .byte >ISCRIPT_EOLIS_GURU               ; [4]:
+    .byte >ISCRIPT_EOLIS_WALKING_WOMAN_02   ; [5]:
+    .byte >ISCRIPT_EOLIS_SMOKING_MAN        ; [6]:
+    .byte >ISCRIPT_EOLIS_KINGS_GUARD        ; [7]:
+    .byte >ISCRIPT_EOLIS_KING               ; [8]:
+    .byte >ISCRIPT_A0EE                     ; [9]:
+    .byte >ISCRIPT_A0F8                     ; [10]:
+    .byte >ISCRIPT_EOLIS_MEAT_SHOP          ; [11]:
+    .byte >ISCRIPT_EOLIS_KEY_SHOP           ; [12]:
+    .byte >ISCRIPT_EOLIS_TOOL_SHOP          ; [13]:
+    .byte >ISCRIPT_EOLIS_MARTIAL_ARTS_MAGIC_SHOP ; [14]:
+    .byte >ISCRIPT_EOLIS_MARTIAL_ARTIST     ; [15]:
+    .byte >ISCRIPT_A10B                     ; [16]:
+    .byte >ISCRIPT_A116                     ; [17]:
+    .byte >ISCRIPT_A121                     ; [18]:
+    .byte >ISCRIPT_A12C                     ; [19]:
+    .byte >ISCRIPT_A137                     ; [20]:
+    .byte >ISCRIPT_APOLUNE_DOCTOR           ; [21]:
+    .byte >ISCRIPT_A13B                     ; [22]:
+    .byte >ISCRIPT_A146                     ; [23]:
+    .byte >ISCRIPT_A151                     ; [24]:
+    .byte >ISCRIPT_APOLUNE_TOOL_SHOP        ; [25]:
+    .byte >ISCRIPT_APOLUNE_KEY_SHOP         ; [26]:
+    .byte >ISCRIPT_A155                     ; [27]:
+    .byte >ISCRIPT_APOLUNE_GURU             ; [28]:
+    .byte >ISCRIPT_BEFORE_APOLUNE_TOOL_SHOP ; [29]:
+    .byte >ISCRIPT_INTRO                    ; [30]:
 
 ;
 ; XREFS:
 ;     IScripts_Begin
 ;
 ISCRIPT_ADDRS_U_31_:                        ; [$a022]
-    .byte $a0                               ; [31]:
-    .byte $a1                               ; [32]:
-    .byte $a1                               ; [33]:
-    .byte $a1                               ; [34]:
-    .byte $a1                               ; [35]:
-    .byte $a1                               ; [36]:
-    .byte $a1                               ; [37]:
-    .byte $a1                               ; [38]:
-    .byte $a1                               ; [39]:
-    .byte $a3                               ; [40]:
-    .byte $a6                               ; [41]:
-    .byte $a5                               ; [42]:
-    .byte $a5                               ; [43]:
-    .byte $a4                               ; [44]:
-    .byte $a0                               ; [45]:
-    .byte $a0                               ; [46]:
-    .byte $a0                               ; [47]:
-    .byte $a1                               ; [48]:
-    .byte $a1                               ; [49]:
-    .byte $a1                               ; [50]:
-    .byte $a1                               ; [51]:
-    .byte $a2                               ; [52]:
-    .byte $a2                               ; [53]:
-    .byte $a2                               ; [54]:
-    .byte $a2                               ; [55]:
-    .byte $a5                               ; [56]:
-    .byte $a3                               ; [57]:
-    .byte $a4                               ; [58]:
-    .byte $a5                               ; [59]:
-    .byte $a3                               ; [60]:
-    .byte $a6                               ; [61]:
-    .byte $a0                               ; [62]:
-    .byte $a0                               ; [63]:
-    .byte $a2                               ; [64]:
-    .byte $a2                               ; [65]:
-    .byte $a2                               ; [66]:
-    .byte $a2                               ; [67]:
-    .byte $a2                               ; [68]:
-    .byte $a2                               ; [69]:
-    .byte $a2                               ; [70]:
-    .byte $a5                               ; [71]:
-    .byte $a3                               ; [72]:
-    .byte $a4                               ; [73]:
-    .byte $a5                               ; [74]:
-    .byte $a3                               ; [75]:
-    .byte $a6                               ; [76]:
-    .byte $a0                               ; [77]:
-    .byte $a0                               ; [78]:
-    .byte $a0                               ; [79]:
-    .byte $a2                               ; [80]:
-    .byte $a2                               ; [81]:
-    .byte $a2                               ; [82]:
-    .byte $a2                               ; [83]:
-    .byte $a2                               ; [84]:
-    .byte $a6                               ; [85]:
-    .byte $a5                               ; [86]:
-    .byte $a3                               ; [87]:
-    .byte $a4                               ; [88]:
-    .byte $a0                               ; [89]:
-    .byte $a0                               ; [90]:
-    .byte $a0                               ; [91]:
-    .byte $a0                               ; [92]:
-    .byte $a0                               ; [93]:
-    .byte $a0                               ; [94]:
-    .byte $a0                               ; [95]:
-    .byte $a2                               ; [96]:
-    .byte $a2                               ; [97]:
-    .byte $a2                               ; [98]:
-    .byte $a2                               ; [99]:
-    .byte $a2                               ; [100]:
-    .byte $a3                               ; [101]:
-    .byte $a4                               ; [102]:
-    .byte $a4                               ; [103]:
-    .byte $a5                               ; [104]:
-    .byte $a6                               ; [105]:
-    .byte $a0                               ; [106]:
-    .byte $a0                               ; [107]:
-    .byte $a0                               ; [108]:
-    .byte $a0                               ; [109]:
-    .byte $a0                               ; [110]:
-    .byte $a0                               ; [111]:
-    .byte $a3                               ; [112]:
-    .byte $a3                               ; [113]:
-    .byte $a3                               ; [114]:
-    .byte $a3                               ; [115]:
-    .byte $a3                               ; [116]:
-    .byte $a4                               ; [117]:
-    .byte $a4                               ; [118]:
-    .byte $a5                               ; [119]:
-    .byte $a6                               ; [120]:
-    .byte $a6                               ; [121]:
-    .byte $a5                               ; [122]:
-    .byte $a6                               ; [123]:
-    .byte $a6                               ; [124]:
-    .byte $a6                               ; [125]:
-    .byte $a6                               ; [126]:
-    .byte $a6                               ; [127]:
-    .byte $a6                               ; [128]:
-    .byte $a6                               ; [129]:
-    .byte $a6                               ; [130]:
-    .byte $a6                               ; [131]:
-    .byte $a6                               ; [132]:
-    .byte $a6                               ; [133]:
-    .byte $a6                               ; [134]:
-    .byte $a6                               ; [135]:
-    .byte $a6                               ; [136]:
-    .byte $a6                               ; [137]:
-    .byte $a6                               ; [138]:
-    .byte $a6                               ; [139]:
-    .byte $a6                               ; [140]:
-    .byte $a6                               ; [141]:
-    .byte $a6                               ; [142]:
-    .byte $a6                               ; [143]:
-    .byte $a6                               ; [144]:
-    .byte $a6                               ; [145]:
-    .byte $a6                               ; [146]:
-    .byte $a6                               ; [147]:
-    .byte $a6                               ; [148]:
-    .byte $a6                               ; [149]:
-    .byte $a6                               ; [150]:
-    .byte $a6                               ; [151]:
+    .byte >ISCRIPT_REMEMBER_YOUR_MANTRA     ; [31]:
+    .byte >ISCRIPT_FOREPAW_GREETER          ; [32]:
+    .byte >ISCRIPT_A162                     ; [33]:
+    .byte >ISCRIPT_A16D                     ; [34]:
+    .byte >ISCRIPT_A178                     ; [35]:
+    .byte >ISCRIPT_A18A                     ; [36]:
+    .byte >ISCRIPT_SPRING_OF_SKY            ; [37]:
+    .byte >ISCRIPT_SPRING_OF_TRUNK          ; [38]:
+    .byte >ISCRIPT_A1C3                     ; [39]:
+    .byte >ISCRIPT_FOREPAW_TOOL_SHOP        ; [40]:
+    .byte >ISCRIPT_FOREPAW_GURU             ; [41]:
+    .byte >ISCRIPT_FOREPAW_DOCTOR           ; [42]:
+    .byte >ISCRIPT_FOREPAW_KEY_SHOP         ; [43]:
+    .byte >ISCRIPT_FOREPAW_MEAT_SHOP        ; [44]:
+    .byte >ISCRIPT_INTRO                    ; [45]:
+    .byte >ISCRIPT_INTRO                    ; [46]:
+    .byte >ISCRIPT_INTRO                    ; [47]:
+    .byte >ISCRIPT_A1D9                     ; [48]:
+    .byte >ISCRIPT_A1E4                     ; [49]:
+    .byte >ISCRIPT_A1EF                     ; [50]:
+    .byte >ISCRIPT_A1FA                     ; [51]:
+    .byte >ISCRIPT_A205                     ; [52]:
+    .byte >ISCRIPT_OVERWORLD_MIST_HOUSE_MAN ; [53]:
+    .byte >ISCRIPT_OVERWORLD_MIST_HOUSE_WOMAN ; [54]:
+    .byte >ISCRIPT_A226                     ; [55]:
+    .byte >ISCRIPT_MASCON_DOCTOR            ; [56]:
+    .byte >ISCRIPT_MASCON_TOOL_SHOP         ; [57]:
+    .byte >ISCRIPT_MASCON_MEAT_SHOP         ; [58]:
+    .byte >ISCRIPT_MASCON_KEY_SHOP          ; [59]:
+    .byte >ISCRIPT_AFTER_MASCON_TOOL_SHOP   ; [60]:
+    .byte >ISCRIPT_MASCON_GURU              ; [61]:
+    .byte >ISCRIPT_INTRO                    ; [62]:
+    .byte >ISCRIPT_INTRO                    ; [63]:
+    .byte >ISCRIPT_A231                     ; [64]:
+    .byte >ISCRIPT_A23C                     ; [65]:
+    .byte >ISCRIPT_A247                     ; [66]:
+    .byte >ISCRIPT_A252                     ; [67]:
+    .byte >ISCRIPT_A266                     ; [68]:
+    .byte >ISCRIPT_A271                     ; [69]:
+    .byte >ISCRIPT_A27C                     ; [70]:
+    .byte >ISCRIPT_VICTIM_DOCTOR            ; [71]:
+    .byte >ISCRIPT_VICTIM_TOOL_SHOP         ; [72]:
+    .byte >ISCRIPT_VICTIM_MEAT_SHOP         ; [73]:
+    .byte >ISCRIPT_VICTIM_KEY_SHOP          ; [74]:
+    .byte >ISCRIPT_AFTER_VICTIM_MAGIC_SHOP  ; [75]:
+    .byte >ISCRIPT_VICTIM_GURU              ; [76]:
+    .byte >ISCRIPT_INTRO                    ; [77]:
+    .byte >ISCRIPT_INTRO                    ; [78]:
+    .byte >ISCRIPT_INTRO                    ; [79]:
+    .byte >ISCRIPT_A290                     ; [80]:
+    .byte >ISCRIPT_A29B                     ; [81]:
+    .byte >ISCRIPT_A2A6                     ; [82]:
+    .byte >ISCRIPT_A2B8                     ; [83]:
+    .byte >ISCRIPT_A2C3                     ; [84]:
+    .byte >ISCRIPT_CONFLATE_GURU            ; [85]:
+    .byte >ISCRIPT_CONFLATE_DOCTOR          ; [86]:
+    .byte >ISCRIPT_CONFLATE_TOOL_SHOP       ; [87]:
+    .byte >ISCRIPT_CONFLATE_MEAT_SHOP       ; [88]:
+    .byte >ISCRIPT_INTRO                    ; [89]:
+    .byte >ISCRIPT_INTRO                    ; [90]:
+    .byte >ISCRIPT_INTRO                    ; [91]:
+    .byte >ISCRIPT_INTRO                    ; [92]:
+    .byte >ISCRIPT_INTRO                    ; [93]:
+    .byte >ISCRIPT_INTRO                    ; [94]:
+    .byte >ISCRIPT_INTRO                    ; [95]:
+    .byte >ISCRIPT_A2CE                     ; [96]:
+    .byte >ISCRIPT_A2D9                     ; [97]:
+    .byte >ISCRIPT_A2E4                     ; [98]:
+    .byte >ISCRIPT_A2EF                     ; [99]:
+    .byte >ISCRIPT_A2FA                     ; [100]:
+    .byte >ISCRIPT_A305                     ; [101]:
+    .byte >ISCRIPT_DAYBREAK_TOOL_SHOP       ; [102]:
+    .byte >ISCRIPT_DAYBREAK_MEAT_SHOP       ; [103]:
+    .byte >ISCRIPT_DAYBREAK_KEY_SHOP        ; [104]:
+    .byte >ISCRIPT_DAYBREAK_GURU            ; [105]:
+    .byte >ISCRIPT_INTRO                    ; [106]:
+    .byte >ISCRIPT_INTRO                    ; [107]:
+    .byte >ISCRIPT_INTRO                    ; [108]:
+    .byte >ISCRIPT_INTRO                    ; [109]:
+    .byte >ISCRIPT_INTRO                    ; [110]:
+    .byte >ISCRIPT_INTRO                    ; [111]:
+    .byte >ISCRIPT_A310                     ; [112]:
+    .byte >ISCRIPT_OVERWORLD_HOUSE_MAN      ; [113]:
+    .byte >ISCRIPT_OVERWORLD_HOUSE_WOMAN    ; [114]:
+    .byte >ISCRIPT_A331                     ; [115]:
+    .byte >ISCRIPT_FRATERNAL_GURU           ; [116]:
+    .byte >ISCRIPT_DARTMOOR_TOOL_SHOP       ; [117]:
+    .byte >ISCRIPT_DARTMOOR_MEAT_SHOP       ; [118]:
+    .byte >ISCRIPT_DARTMOOR_KEY_SHOP        ; [119]:
+    .byte >ISCRIPT_GURU_FINAL               ; [120]:
+    .byte >ISCRIPT_KING_END_GAME            ; [121]:
+    .byte >ISCRIPT_DARTMOOR_DOCTOR          ; [122]:
+    .byte >ISCRIPT_MARK_OF_QUEEN            ; [123]:
+    .byte >ISCRIPT_MARK_OF_KING             ; [124]:
+    .byte >ISCRIPT_MARK_OF_ACE              ; [125]:
+    .byte >ISCRIPT_MARK_OF_JOKER            ; [126]:
+    .byte >ISCRIPT_NEED_RING_FOR_DOOR       ; [127]:
+    .byte >ISCRIPT_USED_RED_POTION          ; [128]:
+    .byte >ISCRIPT_USED_MATTOCK             ; [129]:
+    .byte >ISCRIPT_USED_HOURGLASS           ; [130]:
+    .byte >ISCRIPT_USED_WINGBOOTS           ; [131]:
+    .byte >ISCRIPT_USED_KEY                 ; [132]:
+    .byte >ISCRIPT_USED_ELIXIR              ; [133]:
+    .byte >ISCRIPT_GOT_ELIXIR               ; [134]:
+    .byte >ISCRIPT_GOT_RED_POTION           ; [135]:
+    .byte >ISCRIPT_GOT_MATTOCK              ; [136]:
+    .byte >ISCRIPT_GOT_WINGBOOTS            ; [137]:
+    .byte >ISCRIPT_GOT_HOURGLASS            ; [138]:
+    .byte >ISCRIPT_GOT_BATTLE_SUIT          ; [139]:
+    .byte >ISCRIPT_GOT_BATTLE_HELMET        ; [140]:
+    .byte >ISCRIPT_GOT_DRAGON_SLAYER        ; [141]:
+    .byte >ISCRIPT_GOT_BLACK_ONYX           ; [142]:
+    .byte >ISCRIPT_GOT_PENDANT              ; [143]:
+    .byte >ISCRIPT_GOT_MAGICAL_ROD          ; [144]:
+    .byte >ISCRIPT_TOUCHED_POISON           ; [145]:
+    .byte >ISCRIPT_GOT_POWER_GLOVE          ; [146]:
+    .byte >ISCRIPT_POWER_GLOVE_GONE         ; [147]:
+    .byte >ISCRIPT_OINTMENT_USED            ; [148]:
+    .byte >ISCRIPT_OINTMENT_GONE            ; [149]:
+    .byte >ISCRIPT_WINGBOOTS_GONE           ; [150]:
+    .byte >ISCRIPT_HOURGLASS_GONE           ; [151]:
 
 
 ;============================================================================
@@ -10280,11 +10235,13 @@ ISCRIPT_ADDRS_U_31_:                        ; [$a022]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f8a]
+;     ISCRIPT_ADDRS_U [$PRG12::a022]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f8a]
+;     ISCRIPT_ADDRS_U [$PRG12::a022]
 ;
 ISCRIPT_REMEMBER_YOUR_MANTRA:               ; [$a09b]
     .byte ISCRIPT_ENTITY_GENERIC            ; Show a generic text box.
@@ -10321,6 +10278,29 @@ ISCRIPT_REMEMBER_YOUR_MANTRA:               ; [$a09b]
 ;     ISCRIPT_ADDRS_L [$PRG12::9fd8]
 ;     ISCRIPT_ADDRS_L [$PRG12::9fd9]
 ;     ISCRIPT_ADDRS_L [$PRG12::9fda]
+;     ISCRIPT_ADDRS_U [$PRG12::a003]
+;     ISCRIPT_ADDRS_U [$PRG12::a021]
+;     ISCRIPT_ADDRS_U [$PRG12::a030]
+;     ISCRIPT_ADDRS_U [$PRG12::a031]
+;     ISCRIPT_ADDRS_U [$PRG12::a032]
+;     ISCRIPT_ADDRS_U [$PRG12::a041]
+;     ISCRIPT_ADDRS_U [$PRG12::a042]
+;     ISCRIPT_ADDRS_U [$PRG12::a050]
+;     ISCRIPT_ADDRS_U [$PRG12::a051]
+;     ISCRIPT_ADDRS_U [$PRG12::a052]
+;     ISCRIPT_ADDRS_U [$PRG12::a05c]
+;     ISCRIPT_ADDRS_U [$PRG12::a05d]
+;     ISCRIPT_ADDRS_U [$PRG12::a05e]
+;     ISCRIPT_ADDRS_U [$PRG12::a05f]
+;     ISCRIPT_ADDRS_U [$PRG12::a060]
+;     ISCRIPT_ADDRS_U [$PRG12::a061]
+;     ISCRIPT_ADDRS_U [$PRG12::a062]
+;     ISCRIPT_ADDRS_U [$PRG12::a06d]
+;     ISCRIPT_ADDRS_U [$PRG12::a06e]
+;     ISCRIPT_ADDRS_U [$PRG12::a06f]
+;     ISCRIPT_ADDRS_U [$PRG12::a070]
+;     ISCRIPT_ADDRS_U [$PRG12::a071]
+;     ISCRIPT_ADDRS_U [$PRG12::a072]
 ;============================================================================
 
 ;
@@ -10348,6 +10328,29 @@ ISCRIPT_REMEMBER_YOUR_MANTRA:               ; [$a09b]
 ;     ISCRIPT_ADDRS_L [$PRG12::9fd8]
 ;     ISCRIPT_ADDRS_L [$PRG12::9fd9]
 ;     ISCRIPT_ADDRS_L [$PRG12::9fda]
+;     ISCRIPT_ADDRS_U [$PRG12::a003]
+;     ISCRIPT_ADDRS_U [$PRG12::a021]
+;     ISCRIPT_ADDRS_U [$PRG12::a030]
+;     ISCRIPT_ADDRS_U [$PRG12::a031]
+;     ISCRIPT_ADDRS_U [$PRG12::a032]
+;     ISCRIPT_ADDRS_U [$PRG12::a041]
+;     ISCRIPT_ADDRS_U [$PRG12::a042]
+;     ISCRIPT_ADDRS_U [$PRG12::a050]
+;     ISCRIPT_ADDRS_U [$PRG12::a051]
+;     ISCRIPT_ADDRS_U [$PRG12::a052]
+;     ISCRIPT_ADDRS_U [$PRG12::a05c]
+;     ISCRIPT_ADDRS_U [$PRG12::a05d]
+;     ISCRIPT_ADDRS_U [$PRG12::a05e]
+;     ISCRIPT_ADDRS_U [$PRG12::a05f]
+;     ISCRIPT_ADDRS_U [$PRG12::a060]
+;     ISCRIPT_ADDRS_U [$PRG12::a061]
+;     ISCRIPT_ADDRS_U [$PRG12::a062]
+;     ISCRIPT_ADDRS_U [$PRG12::a06d]
+;     ISCRIPT_ADDRS_U [$PRG12::a06e]
+;     ISCRIPT_ADDRS_U [$PRG12::a06f]
+;     ISCRIPT_ADDRS_U [$PRG12::a070]
+;     ISCRIPT_ADDRS_U [$PRG12::a071]
+;     ISCRIPT_ADDRS_U [$PRG12::a072]
 ;
 ISCRIPT_INTRO:                              ; [$a09f]
     .byte ISCRIPT_ENTITY_GENERIC            ; Show a generic textbox.
@@ -10366,13 +10369,15 @@ ISCRIPT_INTRO:                              ; [$a09f]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f6c]
+;     ISCRIPT_ADDRS_U [$PRG12::a004]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f6c]
+;     ISCRIPT_ADDRS_U [$PRG12::a004]
 ;
-ISCRIPT_EOLIS_WALKING_MAN_1:                ; [$a0a3]
+ISCRIPT_EOLIS_WALKING_MAN_01:               ; [$a0a3]
     .byte ISCRIPT_ENTITY_GENERIC            ; Show a generic textbox.
     .byte ISCRIPT_ACTION_CHECK_GOLD         ; Check if the player has any
                                             ; gold.
@@ -10395,11 +10400,13 @@ ISCRIPT_EOLIS_WALKING_MAN_1:                ; [$a0a3]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f6d]
+;     ISCRIPT_ADDRS_U [$PRG12::a005]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f6d]
+;     ISCRIPT_ADDRS_U [$PRG12::a005]
 ;
 ISCRIPT_MARK_OF_JACK:                       ; [$a0ad]
     .byte ISCRIPT_ENTITY_GENERIC            ; Show a generic textbox.
@@ -10414,13 +10421,15 @@ ISCRIPT_MARK_OF_JACK:                       ; [$a0ad]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f6e]
+;     ISCRIPT_ADDRS_U [$PRG12::a006]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f6e]
+;     ISCRIPT_ADDRS_U [$PRG12::a006]
 ;
-ISCRIPT_EOLIS_WALKING_WOMAN_1:              ; [$a0b1]
+ISCRIPT_EOLIS_WALKING_WOMAN_01:             ; [$a0b1]
     .byte ISCRIPT_ENTITY_GENERIC            ; Show a generic textbox.
     .byte ISCRIPT_ACTION_CHECK_FOR_ITEM     ; Check if the player has the
                                             ; Ring of Elf.
@@ -10449,11 +10458,13 @@ ISCRIPT_EOLIS_WALKING_WOMAN_1:              ; [$a0b1]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f6f]
+;     ISCRIPT_ADDRS_U [$PRG12::a007]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f6f]
+;     ISCRIPT_ADDRS_U [$PRG12::a007]
 ;
 ISCRIPT_EOLIS_GURU:                         ; [$a0bc]
     .byte ISCRIPT_ENTITY_GURU               ; Show the Guru portrait text
@@ -10482,13 +10493,15 @@ ISCRIPT_EOLIS_GURU:                         ; [$a0bc]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f70]
+;     ISCRIPT_ADDRS_U [$PRG12::a008]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f70]
+;     ISCRIPT_ADDRS_U [$PRG12::a008]
 ;
-ISCRIPT_EOLIS_WALKING_WOMAN_2:              ; [$a0c9]
+ISCRIPT_EOLIS_WALKING_WOMAN_02:             ; [$a0c9]
     .byte ISCRIPT_ENTITY_GENERIC            ; Show a generic text box.
     .byte ISCRIPT_ACTION_CHECK_GOLD         ; Check if the player has any
                                             ; gold.
@@ -10516,11 +10529,13 @@ ISCRIPT_EOLIS_WALKING_WOMAN_2:              ; [$a0c9]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f71]
+;     ISCRIPT_ADDRS_U [$PRG12::a009]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f71]
+;     ISCRIPT_ADDRS_U [$PRG12::a009]
 ;
 ISCRIPT_EOLIS_SMOKING_MAN:                  ; [$a0d3]
     .byte ISCRIPT_ENTITY_GENERIC            ; Show a generic text box.
@@ -10553,11 +10568,13 @@ ISCRIPT_EOLIS_SMOKING_MAN:                  ; [$a0d3]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f72]
+;     ISCRIPT_ADDRS_U [$PRG12::a00a]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f72]
+;     ISCRIPT_ADDRS_U [$PRG12::a00a]
 ;
 ISCRIPT_EOLIS_KINGS_GUARD:                  ; [$a0dd]
     .byte ISCRIPT_ENTITY_GENERIC            ; Show a generic text box.
@@ -10591,11 +10608,13 @@ ISCRIPT_EOLIS_KINGS_GUARD:                  ; [$a0dd]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f74]
+;     ISCRIPT_ADDRS_U [$PRG12::a00c]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f74]
+;     ISCRIPT_ADDRS_U [$PRG12::a00c]
 ;
 ISCRIPT_A0EE:                               ; [$a0ee]
     .byte ISCRIPT_ENTITY_GENERIC            ; Show a generic text box.
@@ -10619,11 +10638,13 @@ ISCRIPT_A0EE:                               ; [$a0ee]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f75]
+;     ISCRIPT_ADDRS_U [$PRG12::a00d]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f75]
+;     ISCRIPT_ADDRS_U [$PRG12::a00d]
 ;
 ISCRIPT_A0F8:                               ; [$a0f8]
     .byte ISCRIPT_ENTITY_GENERIC            ; Show a generic text box.
@@ -10649,11 +10670,13 @@ ISCRIPT_A0F8:                               ; [$a0f8]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f7a]
+;     ISCRIPT_ADDRS_U [$PRG12::a012]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f7a]
+;     ISCRIPT_ADDRS_U [$PRG12::a012]
 ;
 ISCRIPT_EOLIS_MARTIAL_ARTIST:               ; [$a102]
     .byte ISCRIPT_ENTITY_MARTIAL_ARTIST     ; Show a Martial Artist portrait
@@ -10675,11 +10698,13 @@ ISCRIPT_EOLIS_MARTIAL_ARTIST:               ; [$a102]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f7b]
+;     ISCRIPT_ADDRS_U [$PRG12::a013]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f7b]
+;     ISCRIPT_ADDRS_U [$PRG12::a013]
 ;
 ISCRIPT_A10B:                               ; [$a10b]
     .byte ISCRIPT_ENTITY_GENERIC            ; Show a generic text box.
@@ -10704,11 +10729,13 @@ ISCRIPT_A10B:                               ; [$a10b]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f7c]
+;     ISCRIPT_ADDRS_U [$PRG12::a014]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f7c]
+;     ISCRIPT_ADDRS_U [$PRG12::a014]
 ;
 ISCRIPT_A116:                               ; [$a116]
     .byte ISCRIPT_ENTITY_GENERIC            ; Show a generic text box.
@@ -10733,11 +10760,13 @@ ISCRIPT_A116:                               ; [$a116]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f7d]
+;     ISCRIPT_ADDRS_U [$PRG12::a015]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f7d]
+;     ISCRIPT_ADDRS_U [$PRG12::a015]
 ;
 ISCRIPT_A121:                               ; [$a121]
     .byte ISCRIPT_ENTITY_GENERIC            ; Show a generic text box.
@@ -10762,11 +10791,13 @@ ISCRIPT_A121:                               ; [$a121]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f7e]
+;     ISCRIPT_ADDRS_U [$PRG12::a016]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f7e]
+;     ISCRIPT_ADDRS_U [$PRG12::a016]
 ;
 ISCRIPT_A12C:                               ; [$a12c]
     .byte ISCRIPT_ENTITY_GENERIC            ; Show a generic text box.
@@ -10791,11 +10822,13 @@ ISCRIPT_A12C:                               ; [$a12c]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f7f]
+;     ISCRIPT_ADDRS_U [$PRG12::a017]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f7f]
+;     ISCRIPT_ADDRS_U [$PRG12::a017]
 ;
 ISCRIPT_A137:                               ; [$a137]
     .byte ISCRIPT_ENTITY_GENERIC            ; Show a generic text box.
@@ -10810,11 +10843,13 @@ ISCRIPT_A137:                               ; [$a137]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f81]
+;     ISCRIPT_ADDRS_U [$PRG12::a019]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f81]
+;     ISCRIPT_ADDRS_U [$PRG12::a019]
 ;
 ISCRIPT_A13B:                               ; [$a13b]
     .byte ISCRIPT_ENTITY_NURSE              ; [$a13b] IScriptEntity
@@ -10839,11 +10874,13 @@ ISCRIPT_A13B:                               ; [$a13b]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f82]
+;     ISCRIPT_ADDRS_U [$PRG12::a01a]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f82]
+;     ISCRIPT_ADDRS_U [$PRG12::a01a]
 ;
 ISCRIPT_A146:                               ; [$a146]
     .byte ISCRIPT_ENTITY_GENERIC            ; Show a generic text box.
@@ -10868,11 +10905,13 @@ ISCRIPT_A146:                               ; [$a146]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f83]
+;     ISCRIPT_ADDRS_U [$PRG12::a01b]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f83]
+;     ISCRIPT_ADDRS_U [$PRG12::a01b]
 ;
 ISCRIPT_A151:                               ; [$a151]
     .byte ISCRIPT_ENTITY_GENERIC            ; Show a generic text box.
@@ -10889,11 +10928,13 @@ ISCRIPT_A151:                               ; [$a151]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f86]
+;     ISCRIPT_ADDRS_U [$PRG12::a01e]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f86]
+;     ISCRIPT_ADDRS_U [$PRG12::a01e]
 ;
 ISCRIPT_A155:                               ; [$a155]
     .byte ISCRIPT_ENTITY_GENERIC            ; Show a generic text box.
@@ -10905,11 +10946,13 @@ ISCRIPT_A155:                               ; [$a155]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f8b]
+;     ISCRIPT_ADDRS_U [$PRG12::a023]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f8b]
+;     ISCRIPT_ADDRS_U [$PRG12::a023]
 ;
 ISCRIPT_FOREPAW_GREETER:                    ; [$a157]
     .byte ISCRIPT_ENTITY_GENERIC            ; Show a generic text box.
@@ -10936,11 +10979,13 @@ ISCRIPT_FOREPAW_GREETER:                    ; [$a157]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f8c]
+;     ISCRIPT_ADDRS_U [$PRG12::a024]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f8c]
+;     ISCRIPT_ADDRS_U [$PRG12::a024]
 ;
 ISCRIPT_A162:                               ; [$a162]
     .byte ISCRIPT_ENTITY_GENERIC            ; Show a generic text box.
@@ -10965,11 +11010,13 @@ ISCRIPT_A162:                               ; [$a162]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f8d]
+;     ISCRIPT_ADDRS_U [$PRG12::a025]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f8d]
+;     ISCRIPT_ADDRS_U [$PRG12::a025]
 ;
 ISCRIPT_A16D:                               ; [$a16d]
     .byte ISCRIPT_ENTITY_GENERIC            ; Show a generic text box.
@@ -10995,11 +11042,13 @@ ISCRIPT_A16D:                               ; [$a16d]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f8e]
+;     ISCRIPT_ADDRS_U [$PRG12::a026]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f8e]
+;     ISCRIPT_ADDRS_U [$PRG12::a026]
 ;
 ISCRIPT_A178:                               ; [$a178]
     .byte ISCRIPT_ENTITY_NURSE              ; [$a178] IScriptEntity
@@ -11036,11 +11085,13 @@ ISCRIPT_A178:                               ; [$a178]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f8f]
+;     ISCRIPT_ADDRS_U [$PRG12::a027]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f8f]
+;     ISCRIPT_ADDRS_U [$PRG12::a027]
 ;
 ISCRIPT_A18A:                               ; [$a18a]
     .byte ISCRIPT_ENTITY_GENERIC            ; Show a generic text box.
@@ -11084,11 +11135,13 @@ ISCRIPT_A18A:                               ; [$a18a]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f90]
+;     ISCRIPT_ADDRS_U [$PRG12::a028]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f90]
+;     ISCRIPT_ADDRS_U [$PRG12::a028]
 ;
 ISCRIPT_SPRING_OF_SKY:                      ; [$a19e]
     .byte ISCRIPT_ENTITY_GENERIC            ; Show a generic text box.
@@ -11124,11 +11177,13 @@ ISCRIPT_SPRING_OF_SKY:                      ; [$a19e]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f91]
+;     ISCRIPT_ADDRS_U [$PRG12::a029]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f91]
+;     ISCRIPT_ADDRS_U [$PRG12::a029]
 ;
 ISCRIPT_SPRING_OF_TRUNK:                    ; [$a1ab]
     .byte ISCRIPT_ENTITY_GENERIC            ; Show a generic text box.
@@ -11171,11 +11226,13 @@ ISCRIPT_SPRING_OF_TRUNK:                    ; [$a1ab]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f92]
+;     ISCRIPT_ADDRS_U [$PRG12::a02a]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f92]
+;     ISCRIPT_ADDRS_U [$PRG12::a02a]
 ;
 ISCRIPT_A1C3:                               ; [$a1c3]
     .byte ISCRIPT_ENTITY_GENERIC            ; Show a generic text box
@@ -11216,11 +11273,13 @@ ISCRIPT_A1C3:                               ; [$a1c3]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f9b]
+;     ISCRIPT_ADDRS_U [$PRG12::a033]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f9b]
+;     ISCRIPT_ADDRS_U [$PRG12::a033]
 ;
 ISCRIPT_A1D9:                               ; [$a1d9]
     .byte ISCRIPT_ENTITY_GENERIC            ; Show a generic text box.
@@ -11245,11 +11304,13 @@ ISCRIPT_A1D9:                               ; [$a1d9]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f9c]
+;     ISCRIPT_ADDRS_U [$PRG12::a034]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f9c]
+;     ISCRIPT_ADDRS_U [$PRG12::a034]
 ;
 ISCRIPT_A1E4:                               ; [$a1e4]
     .byte ISCRIPT_ENTITY_GENERIC            ; Show a generic text box.
@@ -11274,11 +11335,13 @@ ISCRIPT_A1E4:                               ; [$a1e4]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f9d]
+;     ISCRIPT_ADDRS_U [$PRG12::a035]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f9d]
+;     ISCRIPT_ADDRS_U [$PRG12::a035]
 ;
 ISCRIPT_A1EF:                               ; [$a1ef]
     .byte ISCRIPT_ENTITY_GENERIC            ; Show a generic text box.
@@ -11303,11 +11366,13 @@ ISCRIPT_A1EF:                               ; [$a1ef]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f9e]
+;     ISCRIPT_ADDRS_U [$PRG12::a036]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f9e]
+;     ISCRIPT_ADDRS_U [$PRG12::a036]
 ;
 ISCRIPT_A1FA:                               ; [$a1fa]
     .byte ISCRIPT_ENTITY_GENERIC            ; Show a generic text box.
@@ -11332,11 +11397,13 @@ ISCRIPT_A1FA:                               ; [$a1fa]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f9f]
+;     ISCRIPT_ADDRS_U [$PRG12::a037]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f9f]
+;     ISCRIPT_ADDRS_U [$PRG12::a037]
 ;
 ISCRIPT_A205:                               ; [$a205]
     .byte ISCRIPT_ENTITY_GENERIC            ; Show a generic text box.
@@ -11369,11 +11436,13 @@ ISCRIPT_A205:                               ; [$a205]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fa0]
+;     ISCRIPT_ADDRS_U [$PRG12::a038]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fa0]
+;     ISCRIPT_ADDRS_U [$PRG12::a038]
 ;
 ISCRIPT_OVERWORLD_MIST_HOUSE_MAN:           ; [$a210]
     .byte ISCRIPT_ENTITY_GENERIC            ; Show a generic text box.
@@ -11406,11 +11475,13 @@ ISCRIPT_OVERWORLD_MIST_HOUSE_MAN:           ; [$a210]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fa1]
+;     ISCRIPT_ADDRS_U [$PRG12::a039]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fa1]
+;     ISCRIPT_ADDRS_U [$PRG12::a039]
 ;
 ISCRIPT_OVERWORLD_MIST_HOUSE_WOMAN:         ; [$a21b]
     .byte ISCRIPT_ENTITY_GENERIC            ; Show a generic text box.
@@ -11435,11 +11506,13 @@ ISCRIPT_OVERWORLD_MIST_HOUSE_WOMAN:         ; [$a21b]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fa2]
+;     ISCRIPT_ADDRS_U [$PRG12::a03a]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fa2]
+;     ISCRIPT_ADDRS_U [$PRG12::a03a]
 ;
 ISCRIPT_A226:                               ; [$a226]
     .byte ISCRIPT_ENTITY_NURSE              ; XXX Show a portrait box
@@ -11464,11 +11537,13 @@ ISCRIPT_A226:                               ; [$a226]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fab]
+;     ISCRIPT_ADDRS_U [$PRG12::a043]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fab]
+;     ISCRIPT_ADDRS_U [$PRG12::a043]
 ;
 ISCRIPT_A231:                               ; [$a231]
     .byte ISCRIPT_ENTITY_GENERIC            ; Show a generic text box.
@@ -11493,11 +11568,13 @@ ISCRIPT_A231:                               ; [$a231]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fac]
+;     ISCRIPT_ADDRS_U [$PRG12::a044]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fac]
+;     ISCRIPT_ADDRS_U [$PRG12::a044]
 ;
 ISCRIPT_A23C:                               ; [$a23c]
     .byte ISCRIPT_ENTITY_GENERIC            ; Show a generic text box.
@@ -11522,11 +11599,13 @@ ISCRIPT_A23C:                               ; [$a23c]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fad]
+;     ISCRIPT_ADDRS_U [$PRG12::a045]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fad]
+;     ISCRIPT_ADDRS_U [$PRG12::a045]
 ;
 ISCRIPT_A247:                               ; [$a247]
     .byte ISCRIPT_ENTITY_GENERIC            ; Show a generic text box.
@@ -11551,11 +11630,13 @@ ISCRIPT_A247:                               ; [$a247]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fae]
+;     ISCRIPT_ADDRS_U [$PRG12::a046]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fae]
+;     ISCRIPT_ADDRS_U [$PRG12::a046]
 ;
 ISCRIPT_A252:                               ; [$a252]
     .byte ISCRIPT_ENTITY_GENERIC            ; Show a generic text box.
@@ -11593,11 +11674,13 @@ ISCRIPT_A252:                               ; [$a252]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9faf]
+;     ISCRIPT_ADDRS_U [$PRG12::a047]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9faf]
+;     ISCRIPT_ADDRS_U [$PRG12::a047]
 ;
 ISCRIPT_A266:                               ; [$a266]
     .byte ISCRIPT_ENTITY_GENERIC            ; Show a generic text box.
@@ -11622,11 +11705,13 @@ ISCRIPT_A266:                               ; [$a266]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fb0]
+;     ISCRIPT_ADDRS_U [$PRG12::a048]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fb0]
+;     ISCRIPT_ADDRS_U [$PRG12::a048]
 ;
 ISCRIPT_A271:                               ; [$a271]
     .byte ISCRIPT_ENTITY_GENERIC            ; Show a generic text box.
@@ -11651,11 +11736,13 @@ ISCRIPT_A271:                               ; [$a271]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fb1]
+;     ISCRIPT_ADDRS_U [$PRG12::a049]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fb1]
+;     ISCRIPT_ADDRS_U [$PRG12::a049]
 ;
 ISCRIPT_A27C:                               ; [$a27c]
     .byte ISCRIPT_ENTITY_GENERIC            ; Show a generic text box.
@@ -11693,11 +11780,13 @@ ISCRIPT_A27C:                               ; [$a27c]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fbb]
+;     ISCRIPT_ADDRS_U [$PRG12::a053]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fbb]
+;     ISCRIPT_ADDRS_U [$PRG12::a053]
 ;
 ISCRIPT_A290:                               ; [$a290]
     .byte ISCRIPT_ENTITY_GENERIC            ; Show a generic textbox.
@@ -11722,11 +11811,13 @@ ISCRIPT_A290:                               ; [$a290]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fbc]
+;     ISCRIPT_ADDRS_U [$PRG12::a054]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fbc]
+;     ISCRIPT_ADDRS_U [$PRG12::a054]
 ;
 ISCRIPT_A29B:                               ; [$a29b]
     .byte ISCRIPT_ENTITY_GENERIC            ; Show a generic text box.
@@ -11751,11 +11842,13 @@ ISCRIPT_A29B:                               ; [$a29b]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fbd]
+;     ISCRIPT_ADDRS_U [$PRG12::a055]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fbd]
+;     ISCRIPT_ADDRS_U [$PRG12::a055]
 ;
 ISCRIPT_A2A6:                               ; [$a2a6]
     .byte ISCRIPT_ENTITY_GENERIC            ; Show a generic text box.
@@ -11790,11 +11883,13 @@ ISCRIPT_A2A6:                               ; [$a2a6]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fbe]
+;     ISCRIPT_ADDRS_U [$PRG12::a056]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fbe]
+;     ISCRIPT_ADDRS_U [$PRG12::a056]
 ;
 ISCRIPT_A2B8:                               ; [$a2b8]
     .byte ISCRIPT_ENTITY_GENERIC            ; Show a generic text box.
@@ -11819,11 +11914,13 @@ ISCRIPT_A2B8:                               ; [$a2b8]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fbf]
+;     ISCRIPT_ADDRS_U [$PRG12::a057]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fbf]
+;     ISCRIPT_ADDRS_U [$PRG12::a057]
 ;
 ISCRIPT_A2C3:                               ; [$a2c3]
     .byte ISCRIPT_ENTITY_GENERIC            ; Show a generic text box.
@@ -11848,11 +11945,13 @@ ISCRIPT_A2C3:                               ; [$a2c3]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fcb]
+;     ISCRIPT_ADDRS_U [$PRG12::a063]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fcb]
+;     ISCRIPT_ADDRS_U [$PRG12::a063]
 ;
 ISCRIPT_A2CE:                               ; [$a2ce]
     .byte ISCRIPT_ENTITY_GENERIC            ; Show a generic text box.
@@ -11877,11 +11976,13 @@ ISCRIPT_A2CE:                               ; [$a2ce]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fcc]
+;     ISCRIPT_ADDRS_U [$PRG12::a064]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fcc]
+;     ISCRIPT_ADDRS_U [$PRG12::a064]
 ;
 ISCRIPT_A2D9:                               ; [$a2d9]
     .byte ISCRIPT_ENTITY_GENERIC            ; Show a generic text box.
@@ -11908,11 +12009,13 @@ ISCRIPT_A2D9:                               ; [$a2d9]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fcd]
+;     ISCRIPT_ADDRS_U [$PRG12::a065]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fcd]
+;     ISCRIPT_ADDRS_U [$PRG12::a065]
 ;
 ISCRIPT_A2E4:                               ; [$a2e4]
     .byte ISCRIPT_ENTITY_GENERIC            ; Show a generic text box.
@@ -11937,11 +12040,13 @@ ISCRIPT_A2E4:                               ; [$a2e4]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fce]
+;     ISCRIPT_ADDRS_U [$PRG12::a066]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fce]
+;     ISCRIPT_ADDRS_U [$PRG12::a066]
 ;
 ISCRIPT_A2EF:                               ; [$a2ef]
     .byte ISCRIPT_ENTITY_NURSE              ; XXX Show a portrait text box
@@ -11966,11 +12071,13 @@ ISCRIPT_A2EF:                               ; [$a2ef]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fcf]
+;     ISCRIPT_ADDRS_U [$PRG12::a067]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fcf]
+;     ISCRIPT_ADDRS_U [$PRG12::a067]
 ;
 ISCRIPT_A2FA:                               ; [$a2fa]
     .byte ISCRIPT_ENTITY_GENERIC            ; Show a generic text box.
@@ -11995,11 +12102,13 @@ ISCRIPT_A2FA:                               ; [$a2fa]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fd0]
+;     ISCRIPT_ADDRS_U [$PRG12::a068]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fd0]
+;     ISCRIPT_ADDRS_U [$PRG12::a068]
 ;
 ISCRIPT_A305:                               ; [$a305]
     .byte ISCRIPT_ENTITY_GENERIC            ; Show a generic text box.
@@ -12024,11 +12133,13 @@ ISCRIPT_A305:                               ; [$a305]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fdb]
+;     ISCRIPT_ADDRS_U [$PRG12::a073]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fdb]
+;     ISCRIPT_ADDRS_U [$PRG12::a073]
 ;
 ISCRIPT_A310:                               ; [$a310]
     .byte ISCRIPT_ENTITY_GENERIC            ; Show a generic text box.
@@ -12060,11 +12171,13 @@ ISCRIPT_A310:                               ; [$a310]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fdc]
+;     ISCRIPT_ADDRS_U [$PRG12::a074]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fdc]
+;     ISCRIPT_ADDRS_U [$PRG12::a074]
 ;
 ISCRIPT_OVERWORLD_HOUSE_MAN:                ; [$a31b]
     .byte ISCRIPT_ENTITY_GENERIC            ; Show a generic text box.
@@ -12097,11 +12210,13 @@ ISCRIPT_OVERWORLD_HOUSE_MAN:                ; [$a31b]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fdd]
+;     ISCRIPT_ADDRS_U [$PRG12::a075]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fdd]
+;     ISCRIPT_ADDRS_U [$PRG12::a075]
 ;
 ISCRIPT_OVERWORLD_HOUSE_WOMAN:              ; [$a326]
     .byte ISCRIPT_ENTITY_GENERIC            ; Show a generic text box.
@@ -12126,11 +12241,13 @@ ISCRIPT_OVERWORLD_HOUSE_WOMAN:              ; [$a326]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fde]
+;     ISCRIPT_ADDRS_U [$PRG12::a076]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fde]
+;     ISCRIPT_ADDRS_U [$PRG12::a076]
 ;
 ISCRIPT_A331:                               ; [$a331]
     .byte ISCRIPT_ENTITY_GENERIC            ; Show a generic text box.
@@ -12167,11 +12284,13 @@ ISCRIPT_A331:                               ; [$a331]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fdf]
+;     ISCRIPT_ADDRS_U [$PRG12::a077]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fdf]
+;     ISCRIPT_ADDRS_U [$PRG12::a077]
 ;
 ISCRIPT_FRATERNAL_GURU:                     ; [$a33c]
     .byte ISCRIPT_ENTITY_GURU               ; Show the Guru portrait text
@@ -12216,11 +12335,13 @@ ISCRIPT_FRATERNAL_GURU:                     ; [$a33c]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f73]
+;     ISCRIPT_ADDRS_U [$PRG12::a00b]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f73]
+;     ISCRIPT_ADDRS_U [$PRG12::a00b]
 ;
 ISCRIPT_EOLIS_KING:                         ; [$a350]
     .byte ISCRIPT_ENTITY_KING               ; Show the King portrait text
@@ -12249,11 +12370,13 @@ ISCRIPT_EOLIS_KING:                         ; [$a350]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f79]
+;     ISCRIPT_ADDRS_U [$PRG12::a011]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f79]
+;     ISCRIPT_ADDRS_U [$PRG12::a011]
 ;
 ISCRIPT_EOLIS_MARTIAL_ARTS_MAGIC_SHOP:      ; [$a35d]
     .byte ISCRIPT_ENTITY_MAGICIAN           ; Show the Magician portrait text
@@ -12284,11 +12407,13 @@ ISCRIPT_EOLIS_MARTIAL_ARTS_MAGIC_SHOP:      ; [$a35d]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fb6]
+;     ISCRIPT_ADDRS_U [$PRG12::a04e]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fb6]
+;     ISCRIPT_ADDRS_U [$PRG12::a04e]
 ;
 ISCRIPT_AFTER_VICTIM_MAGIC_SHOP:            ; [$a368]
     .byte ISCRIPT_ENTITY_MAGICIAN           ; Show the Magician portrait text
@@ -12323,11 +12448,13 @@ ISCRIPT_AFTER_VICTIM_MAGIC_SHOP:            ; [$a368]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f78]
+;     ISCRIPT_ADDRS_U [$PRG12::a010]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f78]
+;     ISCRIPT_ADDRS_U [$PRG12::a010]
 ;
 ISCRIPT_EOLIS_TOOL_SHOP:                    ; [$a37a]
     .byte ISCRIPT_ENTITY_TOOLS_SALESMAN     ; Show the tools salesman
@@ -12360,11 +12487,13 @@ ISCRIPT_EOLIS_TOOL_SHOP:                    ; [$a37a]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f84]
+;     ISCRIPT_ADDRS_U [$PRG12::a01c]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f84]
+;     ISCRIPT_ADDRS_U [$PRG12::a01c]
 ;
 ISCRIPT_APOLUNE_TOOL_SHOP:                  ; [$a38c]
     .byte ISCRIPT_ENTITY_TOOLS_SALESMAN     ; Show the tools salesman
@@ -12396,11 +12525,13 @@ ISCRIPT_APOLUNE_TOOL_SHOP:                  ; [$a38c]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f88]
+;     ISCRIPT_ADDRS_U [$PRG12::a020]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f88]
+;     ISCRIPT_ADDRS_U [$PRG12::a020]
 ;
 ISCRIPT_BEFORE_APOLUNE_TOOL_SHOP:           ; [$a39e]
     .byte ISCRIPT_ENTITY_TOOLS_SALESMAN     ; Show the tools salesman
@@ -12433,11 +12564,13 @@ ISCRIPT_BEFORE_APOLUNE_TOOL_SHOP:           ; [$a39e]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f93]
+;     ISCRIPT_ADDRS_U [$PRG12::a02b]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f93]
+;     ISCRIPT_ADDRS_U [$PRG12::a02b]
 ;
 ISCRIPT_FOREPAW_TOOL_SHOP:                  ; [$a3b0]
     .byte ISCRIPT_ENTITY_TOOLS_SALESMAN     ; Show the tools salesman
@@ -12470,11 +12603,13 @@ ISCRIPT_FOREPAW_TOOL_SHOP:                  ; [$a3b0]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fa4]
+;     ISCRIPT_ADDRS_U [$PRG12::a03c]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fa4]
+;     ISCRIPT_ADDRS_U [$PRG12::a03c]
 ;
 ISCRIPT_MASCON_TOOL_SHOP:                   ; [$a3c2]
     .byte ISCRIPT_ENTITY_TOOLS_SALESMAN     ; Show the tools salesman
@@ -12507,11 +12642,13 @@ ISCRIPT_MASCON_TOOL_SHOP:                   ; [$a3c2]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fa7]
+;     ISCRIPT_ADDRS_U [$PRG12::a03f]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fa7]
+;     ISCRIPT_ADDRS_U [$PRG12::a03f]
 ;
 ISCRIPT_AFTER_MASCON_TOOL_SHOP:             ; [$a3d4]
     .byte ISCRIPT_ENTITY_TOOLS_SALESMAN     ; Show the tools salesman
@@ -12544,11 +12681,13 @@ ISCRIPT_AFTER_MASCON_TOOL_SHOP:             ; [$a3d4]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fb3]
+;     ISCRIPT_ADDRS_U [$PRG12::a04b]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fb3]
+;     ISCRIPT_ADDRS_U [$PRG12::a04b]
 ;
 ISCRIPT_VICTIM_TOOL_SHOP:                   ; [$a3e6]
     .byte ISCRIPT_ENTITY_TOOLS_SALESMAN     ; Show the tools salesman
@@ -12581,11 +12720,13 @@ ISCRIPT_VICTIM_TOOL_SHOP:                   ; [$a3e6]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fc2]
+;     ISCRIPT_ADDRS_U [$PRG12::a05a]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fc2]
+;     ISCRIPT_ADDRS_U [$PRG12::a05a]
 ;
 ISCRIPT_CONFLATE_TOOL_SHOP:                 ; [$a3f8]
     .byte ISCRIPT_ENTITY_TOOLS_SALESMAN     ; Show the tools salesman
@@ -12618,11 +12759,13 @@ ISCRIPT_CONFLATE_TOOL_SHOP:                 ; [$a3f8]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fd1]
+;     ISCRIPT_ADDRS_U [$PRG12::a069]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fd1]
+;     ISCRIPT_ADDRS_U [$PRG12::a069]
 ;
 ISCRIPT_DAYBREAK_TOOL_SHOP:                 ; [$a40a]
     .byte ISCRIPT_ENTITY_TOOLS_SALESMAN     ; Show the tools salesman
@@ -12655,11 +12798,13 @@ ISCRIPT_DAYBREAK_TOOL_SHOP:                 ; [$a40a]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fe0]
+;     ISCRIPT_ADDRS_U [$PRG12::a078]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fe0]
+;     ISCRIPT_ADDRS_U [$PRG12::a078]
 ;
 ISCRIPT_DARTMOOR_TOOL_SHOP:                 ; [$a41c]
     .byte ISCRIPT_ENTITY_TOOLS_SALESMAN     ; Show the tools salesman
@@ -12914,11 +13059,13 @@ DARTMOOR_TOOL_SHOP_ITEMS:                   ; [$a49a]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f76]
+;     ISCRIPT_ADDRS_U [$PRG12::a00e]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f76]
+;     ISCRIPT_ADDRS_U [$PRG12::a00e]
 ;
 ISCRIPT_EOLIS_MEAT_SHOP:                    ; [$a4a1]
     .byte ISCRIPT_ENTITY_MEAT_SALESMAN      ; Show the meat shop salesman
@@ -12948,11 +13095,13 @@ ISCRIPT_EOLIS_MEAT_SHOP:                    ; [$a4a1]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f97]
+;     ISCRIPT_ADDRS_U [$PRG12::a02f]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f97]
+;     ISCRIPT_ADDRS_U [$PRG12::a02f]
 ;
 ISCRIPT_FOREPAW_MEAT_SHOP:                  ; [$a4ae]
     .byte ISCRIPT_ENTITY_MEAT_SALESMAN      ; Show the meat shop salesman
@@ -12982,11 +13131,13 @@ ISCRIPT_FOREPAW_MEAT_SHOP:                  ; [$a4ae]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fa5]
+;     ISCRIPT_ADDRS_U [$PRG12::a03d]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fa5]
+;     ISCRIPT_ADDRS_U [$PRG12::a03d]
 ;
 ISCRIPT_MASCON_MEAT_SHOP:                   ; [$a4bb]
     .byte ISCRIPT_ENTITY_MEAT_SALESMAN      ; Show the meat shop salesman
@@ -13016,11 +13167,13 @@ ISCRIPT_MASCON_MEAT_SHOP:                   ; [$a4bb]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fb4]
+;     ISCRIPT_ADDRS_U [$PRG12::a04c]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fb4]
+;     ISCRIPT_ADDRS_U [$PRG12::a04c]
 ;
 ISCRIPT_VICTIM_MEAT_SHOP:                   ; [$a4c8]
     .byte ISCRIPT_ENTITY_MEAT_SALESMAN      ; Show the meat shop salesman
@@ -13050,11 +13203,13 @@ ISCRIPT_VICTIM_MEAT_SHOP:                   ; [$a4c8]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fc3]
+;     ISCRIPT_ADDRS_U [$PRG12::a05b]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fc3]
+;     ISCRIPT_ADDRS_U [$PRG12::a05b]
 ;
 ISCRIPT_CONFLATE_MEAT_SHOP:                 ; [$a4d5]
     .byte ISCRIPT_ENTITY_MEAT_SALESMAN      ; Show the meat shop salesman
@@ -13084,11 +13239,13 @@ ISCRIPT_CONFLATE_MEAT_SHOP:                 ; [$a4d5]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fd2]
+;     ISCRIPT_ADDRS_U [$PRG12::a06a]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fd2]
+;     ISCRIPT_ADDRS_U [$PRG12::a06a]
 ;
 ISCRIPT_DAYBREAK_MEAT_SHOP:                 ; [$a4e2]
     .byte ISCRIPT_ENTITY_MEAT_SALESMAN      ; Show the meat shop salesman
@@ -13118,11 +13275,13 @@ ISCRIPT_DAYBREAK_MEAT_SHOP:                 ; [$a4e2]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fe1]
+;     ISCRIPT_ADDRS_U [$PRG12::a079]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fe1]
+;     ISCRIPT_ADDRS_U [$PRG12::a079]
 ;
 ISCRIPT_DARTMOOR_MEAT_SHOP:                 ; [$a4ef]
     .byte ISCRIPT_ENTITY_MEAT_SALESMAN      ; Show the meat shop salesman
@@ -13150,11 +13309,13 @@ ISCRIPT_DARTMOOR_MEAT_SHOP:                 ; [$a4ef]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f77]
+;     ISCRIPT_ADDRS_U [$PRG12::a00f]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f77]
+;     ISCRIPT_ADDRS_U [$PRG12::a00f]
 ;
 ISCRIPT_EOLIS_KEY_SHOP:                     ; [$a4fc]
     .byte ISCRIPT_ENTITY_KEY_SALESMAN       ; Show the key salesman portrait
@@ -13188,11 +13349,13 @@ ISCRIPT_EOLIS_KEY_SHOP:                     ; [$a4fc]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f85]
+;     ISCRIPT_ADDRS_U [$PRG12::a01d]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f85]
+;     ISCRIPT_ADDRS_U [$PRG12::a01d]
 ;
 ISCRIPT_APOLUNE_KEY_SHOP:                   ; [$a50e]
     .byte ISCRIPT_ENTITY_KEY_SALESMAN       ; Show the key salesman portrait
@@ -13226,11 +13389,13 @@ ISCRIPT_APOLUNE_KEY_SHOP:                   ; [$a50e]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f96]
+;     ISCRIPT_ADDRS_U [$PRG12::a02e]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f96]
+;     ISCRIPT_ADDRS_U [$PRG12::a02e]
 ;
 ISCRIPT_FOREPAW_KEY_SHOP:                   ; [$a520]
     .byte ISCRIPT_ENTITY_KEY_SALESMAN       ; Show the key salesman portrait
@@ -13264,11 +13429,13 @@ ISCRIPT_FOREPAW_KEY_SHOP:                   ; [$a520]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fa6]
+;     ISCRIPT_ADDRS_U [$PRG12::a03e]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fa6]
+;     ISCRIPT_ADDRS_U [$PRG12::a03e]
 ;
 ISCRIPT_MASCON_KEY_SHOP:                    ; [$a532]
     .byte ISCRIPT_ENTITY_KEY_SALESMAN       ; Show the key salesman portrait
@@ -13302,11 +13469,13 @@ ISCRIPT_MASCON_KEY_SHOP:                    ; [$a532]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fb5]
+;     ISCRIPT_ADDRS_U [$PRG12::a04d]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fb5]
+;     ISCRIPT_ADDRS_U [$PRG12::a04d]
 ;
 ISCRIPT_VICTIM_KEY_SHOP:                    ; [$a544]
     .byte ISCRIPT_ENTITY_KEY_SALESMAN       ; Show the key salesman portrait
@@ -13340,11 +13509,13 @@ ISCRIPT_VICTIM_KEY_SHOP:                    ; [$a544]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fd3]
+;     ISCRIPT_ADDRS_U [$PRG12::a06b]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fd3]
+;     ISCRIPT_ADDRS_U [$PRG12::a06b]
 ;
 ISCRIPT_DAYBREAK_KEY_SHOP:                  ; [$a556]
     .byte ISCRIPT_ENTITY_KEY_SALESMAN       ; Show the key salesman portrait
@@ -13378,11 +13549,13 @@ ISCRIPT_DAYBREAK_KEY_SHOP:                  ; [$a556]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fe2]
+;     ISCRIPT_ADDRS_U [$PRG12::a07a]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fe2]
+;     ISCRIPT_ADDRS_U [$PRG12::a07a]
 ;
 ISCRIPT_DARTMOOR_KEY_SHOP:                  ; [$a568]
     .byte ISCRIPT_ENTITY_KEY_SALESMAN       ; Show the key salesman portrait
@@ -13516,11 +13689,13 @@ DARTMOOR_KEY_SHOP_ITEMS:                    ; [$a59e]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f80]
+;     ISCRIPT_ADDRS_U [$PRG12::a018]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f80]
+;     ISCRIPT_ADDRS_U [$PRG12::a018]
 ;
 ISCRIPT_APOLUNE_DOCTOR:                     ; [$a5a2]
     .byte ISCRIPT_ENTITY_DOCTOR             ; Show the Doctor portrait text
@@ -13551,11 +13726,13 @@ ISCRIPT_APOLUNE_DOCTOR:                     ; [$a5a2]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f95]
+;     ISCRIPT_ADDRS_U [$PRG12::a02d]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f95]
+;     ISCRIPT_ADDRS_U [$PRG12::a02d]
 ;
 ISCRIPT_FOREPAW_DOCTOR:                     ; [$a5b1]
     .byte ISCRIPT_ENTITY_DOCTOR             ; Show the Doctor portrait text
@@ -13586,11 +13763,13 @@ ISCRIPT_FOREPAW_DOCTOR:                     ; [$a5b1]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fa3]
+;     ISCRIPT_ADDRS_U [$PRG12::a03b]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fa3]
+;     ISCRIPT_ADDRS_U [$PRG12::a03b]
 ;
 ISCRIPT_MASCON_DOCTOR:                      ; [$a5c0]
     .byte ISCRIPT_ENTITY_DOCTOR             ; Show the Doctor portrait text
@@ -13621,11 +13800,13 @@ ISCRIPT_MASCON_DOCTOR:                      ; [$a5c0]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fb2]
+;     ISCRIPT_ADDRS_U [$PRG12::a04a]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fb2]
+;     ISCRIPT_ADDRS_U [$PRG12::a04a]
 ;
 ISCRIPT_VICTIM_DOCTOR:                      ; [$a5cf]
     .byte ISCRIPT_ENTITY_DOCTOR             ; Show the Doctor portrait text
@@ -13656,11 +13837,13 @@ ISCRIPT_VICTIM_DOCTOR:                      ; [$a5cf]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fc1]
+;     ISCRIPT_ADDRS_U [$PRG12::a059]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fc1]
+;     ISCRIPT_ADDRS_U [$PRG12::a059]
 ;
 ISCRIPT_CONFLATE_DOCTOR:                    ; [$a5de]
     .byte ISCRIPT_ENTITY_DOCTOR             ; Show the Doctor portrait text
@@ -13691,11 +13874,13 @@ ISCRIPT_CONFLATE_DOCTOR:                    ; [$a5de]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fe5]
+;     ISCRIPT_ADDRS_U [$PRG12::a07d]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fe5]
+;     ISCRIPT_ADDRS_U [$PRG12::a07d]
 ;
 ISCRIPT_DARTMOOR_DOCTOR:                    ; [$a5ed]
     .byte ISCRIPT_ENTITY_DOCTOR             ; Show the Doctor portrait text
@@ -13748,11 +13933,13 @@ ISCRIPT_COMMON_GURU_NEW_RANK:               ; [$a600]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f87]
+;     ISCRIPT_ADDRS_U [$PRG12::a01f]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f87]
+;     ISCRIPT_ADDRS_U [$PRG12::a01f]
 ;
 ISCRIPT_APOLUNE_GURU:                       ; [$a603]
     .byte ISCRIPT_ENTITY_GURU               ; Display a Guru portrait text
@@ -13775,11 +13962,13 @@ ISCRIPT_APOLUNE_GURU:                       ; [$a603]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f94]
+;     ISCRIPT_ADDRS_U [$PRG12::a02c]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9f94]
+;     ISCRIPT_ADDRS_U [$PRG12::a02c]
 ;
 ISCRIPT_FOREPAW_GURU:                       ; [$a60c]
     .byte ISCRIPT_ENTITY_GURU               ; Display a Guru portrait text
@@ -13802,11 +13991,13 @@ ISCRIPT_FOREPAW_GURU:                       ; [$a60c]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fa8]
+;     ISCRIPT_ADDRS_U [$PRG12::a040]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fa8]
+;     ISCRIPT_ADDRS_U [$PRG12::a040]
 ;
 ISCRIPT_MASCON_GURU:                        ; [$a615]
     .byte ISCRIPT_ENTITY_GURU               ; Display a Guru portrait text
@@ -13829,11 +14020,13 @@ ISCRIPT_MASCON_GURU:                        ; [$a615]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fb7]
+;     ISCRIPT_ADDRS_U [$PRG12::a04f]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fb7]
+;     ISCRIPT_ADDRS_U [$PRG12::a04f]
 ;
 ISCRIPT_VICTIM_GURU:                        ; [$a61e]
     .byte ISCRIPT_ENTITY_GURU               ; Display a Guru portrait text
@@ -13865,11 +14058,13 @@ ISCRIPT_VICTIM_GURU:                        ; [$a61e]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fc0]
+;     ISCRIPT_ADDRS_U [$PRG12::a058]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fc0]
+;     ISCRIPT_ADDRS_U [$PRG12::a058]
 ;
 ISCRIPT_CONFLATE_GURU:                      ; [$a627]
     .byte ISCRIPT_ENTITY_GURU               ; Display a Guru portrait text
@@ -13912,11 +14107,13 @@ ISCRIPT_CONFLATE_GURU:                      ; [$a627]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fd4]
+;     ISCRIPT_ADDRS_U [$PRG12::a06c]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fd4]
+;     ISCRIPT_ADDRS_U [$PRG12::a06c]
 ;
 ISCRIPT_DAYBREAK_GURU:                      ; [$a63d]
     .byte ISCRIPT_ENTITY_GURU               ; Display a Guru portrait text
@@ -13939,11 +14136,13 @@ ISCRIPT_DAYBREAK_GURU:                      ; [$a63d]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fe3]
+;     ISCRIPT_ADDRS_U [$PRG12::a07b]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fe3]
+;     ISCRIPT_ADDRS_U [$PRG12::a07b]
 ;
 ISCRIPT_GURU_FINAL:                         ; [$a646]
     .byte ISCRIPT_ENTITY_GURU               ; Display a Guru portrait text
@@ -13966,11 +14165,13 @@ ISCRIPT_GURU_FINAL:                         ; [$a646]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fe4]
+;     ISCRIPT_ADDRS_U [$PRG12::a07c]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fe4]
+;     ISCRIPT_ADDRS_U [$PRG12::a07c]
 ;
 ISCRIPT_KING_END_GAME:                      ; [$a64f]
     .byte ISCRIPT_ENTITY_GENERIC            ; [$a64f] IScriptEntity
@@ -13985,11 +14186,13 @@ ISCRIPT_KING_END_GAME:                      ; [$a64f]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fe6]
+;     ISCRIPT_ADDRS_U [$PRG12::a07e]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fe6]
+;     ISCRIPT_ADDRS_U [$PRG12::a07e]
 ;
 ISCRIPT_MARK_OF_QUEEN:                      ; [$a654]
     .byte ISCRIPT_ENTITY_GENERIC            ; [$a654] IScriptEntity
@@ -14003,11 +14206,13 @@ ISCRIPT_MARK_OF_QUEEN:                      ; [$a654]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fe7]
+;     ISCRIPT_ADDRS_U [$PRG12::a07f]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fe7]
+;     ISCRIPT_ADDRS_U [$PRG12::a07f]
 ;
 ISCRIPT_MARK_OF_KING:                       ; [$a658]
     .byte ISCRIPT_ENTITY_GENERIC            ; [$a658] IScriptEntity
@@ -14021,11 +14226,13 @@ ISCRIPT_MARK_OF_KING:                       ; [$a658]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fe8]
+;     ISCRIPT_ADDRS_U [$PRG12::a080]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fe8]
+;     ISCRIPT_ADDRS_U [$PRG12::a080]
 ;
 ISCRIPT_MARK_OF_ACE:                        ; [$a65c]
     .byte ISCRIPT_ENTITY_GENERIC            ; [$a65c] IScriptEntity
@@ -14039,11 +14246,13 @@ ISCRIPT_MARK_OF_ACE:                        ; [$a65c]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fe9]
+;     ISCRIPT_ADDRS_U [$PRG12::a081]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fe9]
+;     ISCRIPT_ADDRS_U [$PRG12::a081]
 ;
 ISCRIPT_MARK_OF_JOKER:                      ; [$a660]
     .byte ISCRIPT_ENTITY_GENERIC            ; [$a660] IScriptEntity
@@ -14057,11 +14266,13 @@ ISCRIPT_MARK_OF_JOKER:                      ; [$a660]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fea]
+;     ISCRIPT_ADDRS_U [$PRG12::a082]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fea]
+;     ISCRIPT_ADDRS_U [$PRG12::a082]
 ;
 ISCRIPT_NEED_RING_FOR_DOOR:                 ; [$a664]
     .byte ISCRIPT_ENTITY_GENERIC            ; [$a664] IScriptEntity
@@ -14075,11 +14286,13 @@ ISCRIPT_NEED_RING_FOR_DOOR:                 ; [$a664]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9feb]
+;     ISCRIPT_ADDRS_U [$PRG12::a083]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9feb]
+;     ISCRIPT_ADDRS_U [$PRG12::a083]
 ;
 ISCRIPT_USED_RED_POTION:                    ; [$a668]
     .byte ISCRIPT_ENTITY_GENERIC            ; [$a668] IScriptEntity
@@ -14093,11 +14306,13 @@ ISCRIPT_USED_RED_POTION:                    ; [$a668]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fec]
+;     ISCRIPT_ADDRS_U [$PRG12::a084]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fec]
+;     ISCRIPT_ADDRS_U [$PRG12::a084]
 ;
 ISCRIPT_USED_MATTOCK:                       ; [$a66c]
     .byte ISCRIPT_ENTITY_GENERIC            ; [$a66c] IScriptEntity
@@ -14111,11 +14326,13 @@ ISCRIPT_USED_MATTOCK:                       ; [$a66c]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fed]
+;     ISCRIPT_ADDRS_U [$PRG12::a085]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fed]
+;     ISCRIPT_ADDRS_U [$PRG12::a085]
 ;
 ISCRIPT_USED_HOURGLASS:                     ; [$a670]
     .byte ISCRIPT_ENTITY_GENERIC            ; [$a670] IScriptEntity
@@ -14129,11 +14346,13 @@ ISCRIPT_USED_HOURGLASS:                     ; [$a670]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fee]
+;     ISCRIPT_ADDRS_U [$PRG12::a086]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fee]
+;     ISCRIPT_ADDRS_U [$PRG12::a086]
 ;
 ISCRIPT_USED_WINGBOOTS:                     ; [$a674]
     .byte ISCRIPT_ENTITY_GENERIC            ; [$a674] IScriptEntity
@@ -14147,11 +14366,13 @@ ISCRIPT_USED_WINGBOOTS:                     ; [$a674]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fef]
+;     ISCRIPT_ADDRS_U [$PRG12::a087]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fef]
+;     ISCRIPT_ADDRS_U [$PRG12::a087]
 ;
 ISCRIPT_USED_KEY:                           ; [$a678]
     .byte ISCRIPT_ENTITY_GENERIC            ; [$a678] IScriptEntity
@@ -14165,11 +14386,13 @@ ISCRIPT_USED_KEY:                           ; [$a678]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9ff0]
+;     ISCRIPT_ADDRS_U [$PRG12::a088]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9ff0]
+;     ISCRIPT_ADDRS_U [$PRG12::a088]
 ;
 ISCRIPT_USED_ELIXIR:                        ; [$a67c]
     .byte ISCRIPT_ENTITY_GENERIC            ; [$a67c] IScriptEntity
@@ -14183,11 +14406,13 @@ ISCRIPT_USED_ELIXIR:                        ; [$a67c]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9ff1]
+;     ISCRIPT_ADDRS_U [$PRG12::a089]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9ff1]
+;     ISCRIPT_ADDRS_U [$PRG12::a089]
 ;
 ISCRIPT_GOT_ELIXIR:                         ; [$a680]
     .byte ISCRIPT_ENTITY_GENERIC            ; [$a680] IScriptEntity
@@ -14201,11 +14426,13 @@ ISCRIPT_GOT_ELIXIR:                         ; [$a680]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9ff2]
+;     ISCRIPT_ADDRS_U [$PRG12::a08a]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9ff2]
+;     ISCRIPT_ADDRS_U [$PRG12::a08a]
 ;
 ISCRIPT_GOT_RED_POTION:                     ; [$a684]
     .byte ISCRIPT_ENTITY_GENERIC            ; [$a684] IScriptEntity
@@ -14219,11 +14446,13 @@ ISCRIPT_GOT_RED_POTION:                     ; [$a684]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9ff3]
+;     ISCRIPT_ADDRS_U [$PRG12::a08b]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9ff3]
+;     ISCRIPT_ADDRS_U [$PRG12::a08b]
 ;
 ISCRIPT_GOT_MATTOCK:                        ; [$a688]
     .byte ISCRIPT_ENTITY_GENERIC            ; [$a688] IScriptEntity
@@ -14237,11 +14466,13 @@ ISCRIPT_GOT_MATTOCK:                        ; [$a688]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9ff4]
+;     ISCRIPT_ADDRS_U [$PRG12::a08c]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9ff4]
+;     ISCRIPT_ADDRS_U [$PRG12::a08c]
 ;
 ISCRIPT_GOT_WINGBOOTS:                      ; [$a68c]
     .byte ISCRIPT_ENTITY_GENERIC            ; [$a68c] IScriptEntity
@@ -14255,11 +14486,13 @@ ISCRIPT_GOT_WINGBOOTS:                      ; [$a68c]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9ff5]
+;     ISCRIPT_ADDRS_U [$PRG12::a08d]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9ff5]
+;     ISCRIPT_ADDRS_U [$PRG12::a08d]
 ;
 ISCRIPT_GOT_HOURGLASS:                      ; [$a690]
     .byte ISCRIPT_ENTITY_GENERIC            ; [$a690] IScriptEntity
@@ -14273,11 +14506,13 @@ ISCRIPT_GOT_HOURGLASS:                      ; [$a690]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9ff6]
+;     ISCRIPT_ADDRS_U [$PRG12::a08e]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9ff6]
+;     ISCRIPT_ADDRS_U [$PRG12::a08e]
 ;
 ISCRIPT_GOT_BATTLE_SUIT:                    ; [$a694]
     .byte ISCRIPT_ENTITY_GENERIC            ; [$a694] IScriptEntity
@@ -14291,11 +14526,13 @@ ISCRIPT_GOT_BATTLE_SUIT:                    ; [$a694]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9ff7]
+;     ISCRIPT_ADDRS_U [$PRG12::a08f]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9ff7]
+;     ISCRIPT_ADDRS_U [$PRG12::a08f]
 ;
 ISCRIPT_GOT_BATTLE_HELMET:                  ; [$a698]
     .byte ISCRIPT_ENTITY_GENERIC            ; [$a698] IScriptEntity
@@ -14309,11 +14546,13 @@ ISCRIPT_GOT_BATTLE_HELMET:                  ; [$a698]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9ff8]
+;     ISCRIPT_ADDRS_U [$PRG12::a090]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9ff8]
+;     ISCRIPT_ADDRS_U [$PRG12::a090]
 ;
 ISCRIPT_GOT_DRAGON_SLAYER:                  ; [$a69c]
     .byte ISCRIPT_ENTITY_GENERIC            ; [$a69c] IScriptEntity
@@ -14327,11 +14566,13 @@ ISCRIPT_GOT_DRAGON_SLAYER:                  ; [$a69c]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9ff9]
+;     ISCRIPT_ADDRS_U [$PRG12::a091]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9ff9]
+;     ISCRIPT_ADDRS_U [$PRG12::a091]
 ;
 ISCRIPT_GOT_BLACK_ONYX:                     ; [$a6a0]
     .byte ISCRIPT_ENTITY_GENERIC            ; [$a6a0] IScriptEntity
@@ -14345,11 +14586,13 @@ ISCRIPT_GOT_BLACK_ONYX:                     ; [$a6a0]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9ffa]
+;     ISCRIPT_ADDRS_U [$PRG12::a092]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9ffa]
+;     ISCRIPT_ADDRS_U [$PRG12::a092]
 ;
 ISCRIPT_GOT_PENDANT:                        ; [$a6a4]
     .byte ISCRIPT_ENTITY_GENERIC            ; [$a6a4] IScriptEntity
@@ -14363,11 +14606,13 @@ ISCRIPT_GOT_PENDANT:                        ; [$a6a4]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9ffb]
+;     ISCRIPT_ADDRS_U [$PRG12::a093]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9ffb]
+;     ISCRIPT_ADDRS_U [$PRG12::a093]
 ;
 ISCRIPT_GOT_MAGICAL_ROD:                    ; [$a6a8]
     .byte ISCRIPT_ENTITY_GENERIC            ; [$a6a8] IScriptEntity
@@ -14381,11 +14626,13 @@ ISCRIPT_GOT_MAGICAL_ROD:                    ; [$a6a8]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9ffc]
+;     ISCRIPT_ADDRS_U [$PRG12::a094]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9ffc]
+;     ISCRIPT_ADDRS_U [$PRG12::a094]
 ;
 ISCRIPT_TOUCHED_POISON:                     ; [$a6ac]
     .byte ISCRIPT_ENTITY_GENERIC            ; [$a6ac] IScriptEntity
@@ -14399,11 +14646,13 @@ ISCRIPT_TOUCHED_POISON:                     ; [$a6ac]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9ffd]
+;     ISCRIPT_ADDRS_U [$PRG12::a095]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9ffd]
+;     ISCRIPT_ADDRS_U [$PRG12::a095]
 ;
 ISCRIPT_GOT_POWER_GLOVE:                    ; [$a6b0]
     .byte ISCRIPT_ENTITY_GENERIC            ; [$a6b0] IScriptEntity
@@ -14417,11 +14666,13 @@ ISCRIPT_GOT_POWER_GLOVE:                    ; [$a6b0]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9ffe]
+;     ISCRIPT_ADDRS_U [$PRG12::a096]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9ffe]
+;     ISCRIPT_ADDRS_U [$PRG12::a096]
 ;
 ISCRIPT_POWER_GLOVE_GONE:                   ; [$a6b4]
     .byte ISCRIPT_ENTITY_GENERIC            ; [$a6b4] IScriptEntity
@@ -14435,11 +14686,13 @@ ISCRIPT_POWER_GLOVE_GONE:                   ; [$a6b4]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fff]
+;     ISCRIPT_ADDRS_U [$PRG12::a097]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::9fff]
+;     ISCRIPT_ADDRS_U [$PRG12::a097]
 ;
 ISCRIPT_OINTMENT_USED:                      ; [$a6b8]
     .byte ISCRIPT_ENTITY_GENERIC            ; [$a6b8] IScriptEntity
@@ -14453,11 +14706,13 @@ ISCRIPT_OINTMENT_USED:                      ; [$a6b8]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::a000]
+;     ISCRIPT_ADDRS_U [$PRG12::a098]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::a000]
+;     ISCRIPT_ADDRS_U [$PRG12::a098]
 ;
 ISCRIPT_OINTMENT_GONE:                      ; [$a6bc]
     .byte ISCRIPT_ENTITY_GENERIC            ; [$a6bc] IScriptEntity
@@ -14471,11 +14726,13 @@ ISCRIPT_OINTMENT_GONE:                      ; [$a6bc]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::a001]
+;     ISCRIPT_ADDRS_U [$PRG12::a099]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::a001]
+;     ISCRIPT_ADDRS_U [$PRG12::a099]
 ;
 ISCRIPT_WINGBOOTS_GONE:                     ; [$a6c0]
     .byte ISCRIPT_ENTITY_GENERIC            ; [$a6c0] IScriptEntity
@@ -14489,11 +14746,13 @@ ISCRIPT_WINGBOOTS_GONE:                     ; [$a6c0]
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::a002]
+;     ISCRIPT_ADDRS_U [$PRG12::a09a]
 ;============================================================================
 
 ;
 ; XREFS:
 ;     ISCRIPT_ADDRS_L [$PRG12::a002]
+;     ISCRIPT_ADDRS_U [$PRG12::a09a]
 ;
 ISCRIPT_HOURGLASS_GONE:                     ; [$a6c4]
     .byte ISCRIPT_ENTITY_GENERIC            ; [$a6c4] IScriptEntity
@@ -14597,14 +14856,14 @@ SplashAnimation_Intro_SomethingA708:        ; [$a708]
     LDY #$1f
 
   @LAB_PRG12__a714:                         ; [$a714]
-    LDA Screen_PaletteData_Tiles,Y
+    LDA a:Screen_PaletteData_Tiles,Y
     SEC
     SBC #$10
     BPL @LAB_PRG12__a71e
     LDA #$0f
 
   @LAB_PRG12__a71e:                         ; [$a71e]
-    STA Screen_PaletteData_Tiles,Y
+    STA a:Screen_PaletteData_Tiles,Y
     DEY
     BPL @LAB_PRG12__a714
     JMP PPUBuffer_WritePalette
@@ -14660,20 +14919,20 @@ SPLASHANIM_PALETTE_U:                       ; [$a72e]
 SplashAnimation_DrawScenery:                ; [$a730]
     STA a:SplashAnimation_SceneIndex
     JSR PPU_WaitUntilFlushed
-    LDA #$a0
+    LDA #<INTRO_ANIM_PLAYER_TILES
     STA IScriptOrCHRAddr
-    LDA #$9b
+    LDA #>INTRO_ANIM_PLAYER_TILES
     STA IScriptOrCHRAddr_U
     LDA #$00
     STA PPU_TargetAddr
     LDA #$00
     STA PPU_TargetAddr_U
     LDX #$0a
-    LDY #$90
+    LDY #$90                                ; Bank 10
     JSR PPU_WriteTilesFromCHRRAM
-    LDA #$a0
+    LDA #<INTRO_ANIM_BACKGROUND_TILES
     STA IScriptOrCHRAddr
-    LDA #$a4
+    LDA #>INTRO_ANIM_BACKGROUND_TILES
     STA IScriptOrCHRAddr_U
     LDA #$00
     STA PPU_TargetAddr
@@ -14683,9 +14942,9 @@ SplashAnimation_DrawScenery:                ; [$a730]
     LDY #$80
     JSR PPU_WriteTilesFromCHRRAM
     LDX a:SplashAnimation_SceneIndex
-    LDA SPLASHANIM_CHR_L,X
+    LDA a:SPLASHANIM_CHR_L,X
     STA IScriptOrCHRAddr
-    LDA SPLASHANIM_CHR_U,X
+    LDA a:SPLASHANIM_CHR_U,X
     STA IScriptOrCHRAddr_U
     LDA #$20
     STA PPU_TargetAddr_U
@@ -14695,15 +14954,15 @@ SplashAnimation_DrawScenery:                ; [$a730]
     LDY #$40
     JSR PPU_WriteTilesFromCHRRAM
     LDX a:SplashAnimation_SceneIndex
-    LDA SPLASHANIM_PALETTE_L,X
+    LDA a:SPLASHANIM_PALETTE_L,X
     STA Temp_Int24
-    LDA SPLASHANIM_PALETTE_U,X
+    LDA a:SPLASHANIM_PALETTE_U,X
     STA Temp_Int24_M
     LDY #$1f
 
   @_paletteLoop:                            ; [$a78f]
     LDA (Temp_Int24),Y
-    STA Screen_PaletteData_Tiles,Y
+    STA a:Screen_PaletteData_Tiles,Y
     DEY
     BPL @_paletteLoop
     JMP PPUBuffer_WritePalette
@@ -14763,12 +15022,12 @@ SplashAnimation_Maybe_CalcPlayerAnimState:  ; [$a7cf]
     LDY #$07
     JSR SplashAnimation_Maybe_NextAnimState2
     LDX a:IntroAnimation_PlayerSizeCounter
-    CMP BYTE_ARRAY_PRG12__a859,X
+    CMP a:BYTE_ARRAY_PRG12__a859,X
     BCS RETURN_A7F0
     INC a:IntroAnimation_PlayerSizeCounter
-    LDA BYTE_ARRAY_PRG12__a85e,X
+    LDA a:BYTE_ARRAY_PRG12__a85e,X
     STA a:SplashAnimation_0692
-    LDA BYTE_ARRAY_PRG12__a862,X
+    LDA a:BYTE_ARRAY_PRG12__a862,X
     STA a:SplashAnimation_0693
 
     ;
@@ -14797,12 +15056,12 @@ SplashAnimation_Maybe_CalcPlayerAnimSize:   ; [$a7f1]
     LDY #$07
     JSR SplashAnimation_Maybe_NextAnimState2
     LDX a:IntroAnimation_PlayerSizeCounter
-    CMP BYTE_ARRAY_PRG12__a866,X
+    CMP a:BYTE_ARRAY_PRG12__a866,X
     BCC RETURN_A7F0
     INC a:IntroAnimation_PlayerSizeCounter
-    LDA BYTE_ARRAY_PRG12__a86a,X
+    LDA a:BYTE_ARRAY_PRG12__a86a,X
     STA a:SplashAnimation_0692
-    LDA BYTE_ARRAY_PRG12__a86e,X
+    LDA a:BYTE_ARRAY_PRG12__a86e,X
     STA a:SplashAnimation_0693
     RTS
 
@@ -15021,7 +15280,7 @@ SplashAnimation_Maybe_AnimPlayerStep:       ; [$a8be]
     JSR Sound_PlayEffect
 
   @LAB_PRG12__a8d8:                         ; [$a8d8]
-    LDA BYTE_ARRAY_PRG12__a8de,X
+    LDA a:BYTE_ARRAY_PRG12__a8de,X
     JMP SplashAnimation_FuncAA94
 
 ;
@@ -15064,7 +15323,7 @@ BYTE_ARRAY_PRG12__a8de:                     ; [$a8de]
 ;============================================================================
 SplashAnimation_OutroFuncAF82:              ; [$a8f2]
     JSR SplashAnimation_A90F
-    LDA BYTE_ARRAY_PRG12__a8fb,X
+    LDA a:BYTE_ARRAY_PRG12__a8fb,X
     JMP SplashAnimation_FuncAA94
 
 ;
@@ -15274,18 +15533,18 @@ SplashAnimation_SomethingOutro_A99C:        ; [$a99c]
 ;============================================================================
 SpashAnimation_SomethingOutro_a9a2:         ; [$a9a2]
     LDA #$00
-    STA SplashAnimation_0694,X
-    STA SplashAnimation_0696,X
-    STA SplashAnimation_069c,X
-    STA SplashAnimation_069e,X
-    LDA BYTE_ARRAY_PRG12__a994,X
-    STA SplashAnimation_0698,X
-    LDA BYTE_ARRAY_PRG12__a996,X
-    STA SplashAnimation_069a,X
-    LDA BYTE_ARRAY_PRG12__a998,X
-    STA SplashAnimation_06a0,X
-    LDA BYTE_ARRAY_PRG12__a99a,X
-    STA SplashAnimation_06a2,X
+    STA a:SplashAnimation_0694,X
+    STA a:SplashAnimation_0696,X
+    STA a:SplashAnimation_069c,X
+    STA a:SplashAnimation_069e,X
+    LDA a:BYTE_ARRAY_PRG12__a994,X
+    STA a:SplashAnimation_0698,X
+    LDA a:BYTE_ARRAY_PRG12__a996,X
+    STA a:SplashAnimation_069a,X
+    LDA a:BYTE_ARRAY_PRG12__a998,X
+    STA a:SplashAnimation_06a0,X
+    LDA a:BYTE_ARRAY_PRG12__a99a,X
+    STA a:SplashAnimation_06a2,X
     RTS
 
 ;============================================================================
@@ -15310,19 +15569,19 @@ SplashAnimation_SomethingOutroA9C9:         ; [$a9c9]
     JSR SpashAnimation_SomethingOutro_aa20
     LDY #$01
     JSR SpashAnimation_SomethingOutro_aa46
-    LDY SplashAnimation_0696,X
+    LDY a:SplashAnimation_0696,X
     INY
     CPY #$08
     BNE @LAB_PRG12__a9ed
-    INC SplashAnimation_0694,X
-    LDA SplashAnimation_0694,X
+    INC a:SplashAnimation_0694,X
+    LDA a:SplashAnimation_0694,X
     CMP #$0a
     BEQ SpashAnimation_SomethingOutro_a9a2
     LDY #$00
 
   @LAB_PRG12__a9ed:                         ; [$a9ed]
     TYA
-    STA SplashAnimation_0696,X
+    STA a:SplashAnimation_0696,X
 
 RETURN_A9F1:                                ; [$a9f1]
     RTS
@@ -15345,19 +15604,19 @@ SplashAnimation_SomethingA9F2:              ; [$a9f2]
     INX
 
   @LAB_PRG12__a9f8:                         ; [$a9f8]
-    LDA SplashAnimation_0694,X
+    LDA a:SplashAnimation_0694,X
     CMP #$03
     BCS RETURN_A9F1
-    LDA SplashAnimation_0698,X
+    LDA a:SplashAnimation_0698,X
     STA a:SplashAnimation_0689
-    LDA SplashAnimation_069a,X
+    LDA a:SplashAnimation_069a,X
     STA a:SplashAnimation_068a
     TXA
     ASL A
     ASL A
-    ORA SplashAnimation_0694,X
+    ORA a:SplashAnimation_0694,X
     TAY
-    LDA BYTE_ARRAY_PRG12__aa18,Y
+    LDA a:BYTE_ARRAY_PRG12__aa18,Y
     JMP SplashAnimation_FuncAA94
 
 BYTE_ARRAY_PRG12__aa18:                     ; [$aa18]
@@ -15383,7 +15642,7 @@ BYTE_ARRAY_PRG12__aa18:                     ; [$aa18]
 SpashAnimation_SomethingOutro_aa20:         ; [$aa20]
     LDA #$00
     STA Temp_Int24
-    LDA SplashAnimation_06a0,X
+    LDA a:SplashAnimation_06a0,X
 
   @LAB_PRG12__aa27:                         ; [$aa27]
     STA Temp_Int24_M
@@ -15396,11 +15655,11 @@ SpashAnimation_SomethingOutro_aa20:         ; [$aa20]
     STA Temp_Int24_M
     LDA Temp_Int24
     CLC
-    ADC SplashAnimation_069c,X
-    STA SplashAnimation_069c,X
+    ADC a:SplashAnimation_069c,X
+    STA a:SplashAnimation_069c,X
     LDA Temp_Int24_M
-    ADC SplashAnimation_0698,X
-    STA SplashAnimation_0698,X
+    ADC a:SplashAnimation_0698,X
+    STA a:SplashAnimation_0698,X
     RTS
 
 ;============================================================================
@@ -15416,7 +15675,7 @@ SpashAnimation_SomethingOutro_aa20:         ; [$aa20]
 SpashAnimation_SomethingOutro_aa46:         ; [$aa46]
     LDA #$00
     STA Temp_Int24
-    LDA SplashAnimation_06a2,X
+    LDA a:SplashAnimation_06a2,X
 
   @LAB_PRG12__aa4d:                         ; [$aa4d]
     STA Temp_Int24_M
@@ -15429,11 +15688,11 @@ SpashAnimation_SomethingOutro_aa46:         ; [$aa46]
     STA Temp_Int24_M
     LDA Temp_Int24
     CLC
-    ADC SplashAnimation_069e,X
-    STA SplashAnimation_069e,X
+    ADC a:SplashAnimation_069e,X
+    STA a:SplashAnimation_069e,X
     LDA Temp_Int24_M
-    ADC SplashAnimation_069a,X
-    STA SplashAnimation_069a,X
+    ADC a:SplashAnimation_069a,X
+    STA a:SplashAnimation_069a,X
     RTS
 
 ;============================================================================
@@ -15480,13 +15739,13 @@ SplashAnimation_SomethingUpdateState:       ; [$aa83]
     LDA #$f0
 
   @LAB_PRG12__aa87:                         ; [$aa87]
-    STA SPRITE_0_RANGE_1_START,X
+    STA a:SPRITE_0_RANGE_1_START,X
     INX
     INX
     INX
     INX
     BNE @LAB_PRG12__aa87
-    STX a:SplashAnimation_0688
+    STX a:SplashAnimation_Something_SpriteOffset
     RTS
 
 ;============================================================================
@@ -15506,9 +15765,9 @@ SplashAnimation_SomethingUpdateState:       ; [$aa83]
 ;============================================================================
 SplashAnimation_FuncAA94:                   ; [$aa94]
     TAY
-    LDA BYTE_ARRAY_PRG12__ab17,Y
+    LDA a:BYTE_ARRAY_PRG12__ab17,Y
     STA Temp_Int24
-    LDA BYTE_ARRAY_PRG12__ab37,Y
+    LDA a:BYTE_ARRAY_PRG12__ab37,Y
     STA Temp_Int24_M
     LDY #$00
     LDA a:SplashAnimation_0689
@@ -15531,7 +15790,7 @@ SplashAnimation_FuncAA94:                   ; [$aa94]
     INY
     TXA
     PHA
-    LDX a:SplashAnimation_0688
+    LDX a:SplashAnimation_Something_SpriteOffset
 
   @LAB_PRG12__aac9:                         ; [$aac9]
     LDA a:DAT_068b
@@ -15544,17 +15803,17 @@ SplashAnimation_FuncAA94:                   ; [$aa94]
     INY
     CMP #$ff
     BEQ @LAB_PRG12__aaf9
-    STA SPRITE0_TILE,X
+    STA a:SPRITE0_TILE,X
     LDA a:SplashAnimation_068a
     CMP #$f0
     BCS @LAB_PRG12__ab11
     LDA a:SplashAnimation_068a
-    STA SPRITE_0_RANGE_1_START,X
+    STA a:SPRITE_0_RANGE_1_START,X
     LDA (Temp_Int24),Y
     INY
-    STA SPRITE0_ATTRS,X
+    STA a:SPRITE0_ATTRS,X
     LDA TextBox_ContentsX
-    STA SPRITE0_X,X
+    STA a:SPRITE0_X,X
     INX
     INX
     INX
@@ -15575,7 +15834,7 @@ SplashAnimation_FuncAA94:                   ; [$aa94]
     BNE @LAB_PRG12__aac9
 
   @LAB_PRG12__ab11:                         ; [$ab11]
-    STX a:SplashAnimation_0688
+    STX a:SplashAnimation_Something_SpriteOffset
     PLA
     TAX
 

@@ -19,7 +19,7 @@ SQ1_VOL:                                    ; [$4000]
 ;
 ; XREFS:
 ;     Audio_Reset
-;     Music_PlayWave
+;     Music_SetupWave
 ;     SoundEffect_PlayerDied_OnTick
 ;
 SQ1_SWEEP:                                  ; [$4001]
@@ -29,7 +29,7 @@ SQ1_SWEEP:                                  ; [$4001]
 ; XREFS:
 ;     Audio_Reset
 ;     Music_ApplySQPitchEffectToLO
-;     Music_PlayWave
+;     Music_SetupWave
 ;     SoundEffect_PlayerDied_OnTick
 ;
 SQ1_LO:                                     ; [$4002]
@@ -38,7 +38,7 @@ SQ1_LO:                                     ; [$4002]
 ;
 ; XREFS:
 ;     Audio_Reset
-;     Music_PlayWave
+;     Music_SetupWave
 ;     SoundEffect_PlayerDied_OnTick
 ;
 SQ1_HI:                                     ; [$4003]
@@ -75,7 +75,7 @@ SQ2_VOL:                                    ; [$4004]
 ;
 ; XREFS:
 ;     Audio_Reset
-;     Music_PlayWave
+;     Music_SetupWave
 ;     SoundEffect_0x48_OnTick
 ;     SoundEffect_BreadTouched_OnTick
 ;     SoundEffect_CharacterInput_OnTick
@@ -104,7 +104,7 @@ SQ2_SWEEP:                                  ; [$4005]
 ;
 ; XREFS:
 ;     Audio_Reset
-;     Music_PlayWave
+;     Music_SetupWave
 ;     SoundEffect_0x48_OnTick
 ;     SoundEffect_BreadTouched_OnTick
 ;     SoundEffect_CharacterInput_OnTick
@@ -133,7 +133,7 @@ SQ2_LO:                                     ; [$4006]
 ;
 ; XREFS:
 ;     Audio_Reset
-;     Music_PlayWave
+;     Music_SetupWave
 ;     SoundEffect_0x48_OnTick
 ;     SoundEffect_BreadTouched_OnTick
 ;     SoundEffect_CharacterInput_OnTick
@@ -163,7 +163,7 @@ SQ2_HI:                                     ; [$4007]
 ; XREFS:
 ;     Audio_Reset
 ;     Music_PlayForChannel
-;     Music_PlayWave
+;     Music_SetupWave
 ;     SoundEffect_PlayerDied_OnTick
 ;
 TRI_LINEAR:                                 ; [$4008]
@@ -172,7 +172,7 @@ TRI_LINEAR:                                 ; [$4008]
 ;
 ; XREFS:
 ;     Audio_Reset
-;     Music_PlayWave
+;     Music_SetupWave
 ;     SoundEffect_PlayerDied_OnTick
 ;
 TRI_LO:                                     ; [$400a]
@@ -181,7 +181,7 @@ TRI_LO:                                     ; [$400a]
 ;
 ; XREFS:
 ;     Audio_Reset
-;     Music_PlayWave
+;     Music_SetupWave
 ;
 TRI_HI:                                     ; [$400b]
     .byte $00                               ; [$400b] undefined
@@ -280,7 +280,7 @@ OAMDMA:                                     ; [$4014]
 ;     SoundEffects_Init
 ;
 SND_CHN:                                    ; [$4015]
-    .byte $00                               ; [$4015] SoundChannels
+    .byte $00                               ; [$4015] SoundChannelsBitmask
 
 ;
 ; XREFS:
