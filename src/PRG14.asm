@@ -21,7 +21,7 @@
 ;     Game_MainLoop
 ;     GetRandom
 ;============================================================================
-Sprites_UpdateAll:                          ; [$8000]
+Sprites_UpdateAll:
     LDA a:Sprites_UpdatesPaused
     BNE @_spritesLoop
     LDA a:DurationHourGlass
@@ -39,7 +39,7 @@ Sprites_UpdateAll:                          ; [$8000]
     ;
     ; Begin the loop.
     ;
-  @_spritesLoop:                            ; [$800f]
+  @_spritesLoop:
     LDX #$07
 
 
@@ -47,7 +47,7 @@ Sprites_UpdateAll:                          ; [$8000]
     ; Process this sprite slot if it's populated with a
     ; valid sprite.
     ;
-  @_updateSpriteLoop:                       ; [$8011]
+  @_updateSpriteLoop:
     STX a:CurrentSpriteIndex
     LDA a:CurrentSprites_Entities,X
     BMI @LAB_PRG14__8043
@@ -72,7 +72,7 @@ Sprites_UpdateAll:                          ; [$8000]
     JSR Sprites_Maybe_UpdateHitByMagic
     JMP @_updateSpriteState
 
-  @LAB_PRG14__802e:                         ; [$802e]
+  @LAB_PRG14__802e:
     JSR Sprites_UpdateBehavior
     JSR Player_HitSpriteWithWeapon
     JSR Sprite_CheckHitByCastMagic
@@ -80,10 +80,10 @@ Sprites_UpdateAll:                          ; [$8000]
     JSR Player_CheckShieldHitByMagic
     JSR CurrentSprite_CheckHitPlayer
 
-  @_updateSpriteState:                      ; [$8040]
+  @_updateSpriteState:
     JSR CurrentSprite_UpdateState
 
-  @LAB_PRG14__8043:                         ; [$8043]
+  @LAB_PRG14__8043:
     LDX a:CurrentSpriteIndex
     DEX
     BPL @_updateSpriteLoop
@@ -96,7 +96,7 @@ Sprites_UpdateAll:                          ; [$8000]
     ; The sprite has been hit. Reduce the hit counter. It'll
     ; eventually get to 0 if it's not hit again recently.
     ;
-  @_handleHit:                              ; [$804e]
+  @_handleHit:
     DEC a:CurrentSprites_HitCounter,X
     LDA a:CurrentSprites_Entities,X
 
@@ -134,12 +134,12 @@ Sprites_UpdateAll:                          ; [$8000]
 ; XREFS:
 ;     Game_DrawScreenInFrozenState
 ;============================================================================
-Sprites_UpdateAllStates:                    ; [$8070]
+Sprites_UpdateAllStates:
     LDA a:CurrentSpriteIndex
     PHA
     LDX #$07
 
-  @_loop:                                   ; [$8076]
+  @_loop:
     STX a:CurrentSpriteIndex
     JSR CurrentSprite_UpdateState
     LDX a:CurrentSpriteIndex
@@ -153,7 +153,7 @@ Sprites_UpdateAllStates:                    ; [$8070]
 ; XREFS:
 ;     CurrentSprite_UpdateState
 ;
-SPRITE_UPDATE_HANDLERS:                     ; [$8087]
+SPRITE_UPDATE_HANDLERS:
     pointer SpriteUpdateHandler_Invisible-1 ; [0]:
     pointer SpriteUpdateHandler_Bread-1     ; [1]: Dropped: Bread
     pointer SpriteUpdateHandler_Coin-1      ; [2]: Dropped: Coin
@@ -303,7 +303,7 @@ SPRITE_UPDATE_HANDLERS:                     ; [$8087]
 ; OUTPUTS:
 ;     TODO
 ;============================================================================
-Sprites_Maybe_UpdateHitByMagic:             ; [$8151]
+Sprites_Maybe_UpdateHitByMagic:
     LDY a:CurrentSprites_HitByMagicBehavior,X
     BEQ @LAB_PRG14__8162
     DEY
@@ -314,7 +314,7 @@ Sprites_Maybe_UpdateHitByMagic:             ; [$8151]
     STA a:CurrentSprites_HitByMagicBehavior,X
     RTS
 
-  @LAB_PRG14__8162:                         ; [$8162]
+  @LAB_PRG14__8162:
     LDA #$03
     STA a:Arg_DeltaX_Full
     LDA #$00
@@ -325,10 +325,10 @@ Sprites_Maybe_UpdateHitByMagic:             ; [$8151]
     LDA #$ff
     STA a:CurrentSprites_HitByMagicBehavior,X
 
-  @LAB_PRG14__8179:                         ; [$8179]
+  @LAB_PRG14__8179:
     RTS
 
-  @LAB_PRG14__817a:                         ; [$817a]
+  @LAB_PRG14__817a:
     LDA #$02
     STA a:Arg_DeltaX_Full
     LDA #$00
@@ -339,10 +339,10 @@ Sprites_Maybe_UpdateHitByMagic:             ; [$8151]
     LDA #$ff
     STA a:CurrentSprites_HitByMagicBehavior,X
 
-  @_return1:                                ; [$8191]
+  @_return1:
     RTS
 
-  @LAB_PRG14__8192:                         ; [$8192]
+  @LAB_PRG14__8192:
     LDA #$04
     STA a:Arg_DeltaX_Full
     LDA #$00
@@ -352,7 +352,7 @@ Sprites_Maybe_UpdateHitByMagic:             ; [$8151]
     LDA #$ff
     STA a:CurrentSprites_HitByMagicBehavior,X
 
-  @_return2:                                ; [$81a6]
+  @_return2:
     RTS
 
 ;============================================================================
@@ -368,7 +368,7 @@ Sprites_Maybe_UpdateHitByMagic:             ; [$8151]
 ; XREFS:
 ;     Sprite_CheckHitByCastMagic
 ;============================================================================
-Player_HitEnemyWithMagic:                   ; [$81a7]
+Player_HitEnemyWithMagic:
     LDA a:CurrentSprites_Entities,X         ; Load the sprite entity at the
                                             ; given index.
     CMP #$05                                ; Is this Necron Aides?
@@ -391,7 +391,7 @@ Player_HitEnemyWithMagic:                   ; [$81a7]
     ; calculating damage to the enemy, factoring in the spell
     ; and the enemy's magic defense.
     ;
-  @_handleHitWithMagic:                     ; [$81b6]
+  @_handleHitWithMagic:
     LDA #$02                                ; 2 == Enemy Hit With Magic sound
                                             ; effect
     JSR Sound_PlayEffect                    ; Play it.
@@ -429,7 +429,7 @@ Player_HitEnemyWithMagic:                   ; [$81a7]
                                             ; increase).
     STA Temp_00                             ; Store it.
 
-  @_prepareCalcDefense:                     ; [$81cf]
+  @_prepareCalcDefense:
     LDA #$00
     STA Temp_Addr_L                         ; Set the default magic defense
                                             ; flags to 0 (0%).
@@ -466,7 +466,7 @@ Player_HitEnemyWithMagic:                   ; [$81a7]
     ; Effectively, this makes sure we can operate on the right
     ; defense flags for the given magic spell as bits 0-1.
     ;
-  @_calcDefenseLoop:                        ; [$81df]
+  @_calcDefenseLoop:
     ASL A                                   ; Shift left, placing the
                                             ; most-significant bit into
                                             ; carry.
@@ -527,7 +527,7 @@ Player_HitEnemyWithMagic:                   ; [$81a7]
     ;
     ; Subtract the magic damage from entity's HP.
     ;
-  @_reduceEnemyHP:                          ; [$81fd]
+  @_reduceEnemyHP:
     LDA a:CurrentSprites_HP,X               ; Load the current HP for the
                                             ; entity being hit.
     SEC
@@ -557,7 +557,7 @@ Player_HitEnemyWithMagic:                   ; [$81a7]
     ;
     ; Add experience from the sprite.
     ;
-  @_addExperience:                          ; [$8215]
+  @_addExperience:
     JSR Player_AddExperienceFromSprite      ; Add experience to the player.
 
 
@@ -584,7 +584,7 @@ Player_HitEnemyWithMagic:                   ; [$81a7]
     ;
     JMP Sprite_ShowBigEnemyDeathByMagicOrWeapon ; Show the boss death effect.
 
-  @_isSmallEnemy:                           ; [$822a]
+  @_isSmallEnemy:
     JMP Sprite_ShowNormalEnemyDeathByMagic  ; Show the standard enemy death
                                             ; effect.
 
@@ -594,7 +594,7 @@ Player_HitEnemyWithMagic:                   ; [$81a7]
     ;     SpriteUpdateHandler_Effect_EnemyDeath
     ;     SpriteUpdateHandler_Effect_LightningBall20
     ;
-RETURN_822D:                                ; [$822d]
+RETURN_822D:
     RTS
 
 ;============================================================================
@@ -610,7 +610,7 @@ RETURN_822D:                                ; [$822d]
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::80ad]
 ;     SpriteUpdateHandler_Effect_BossDeath
 ;============================================================================
-SpriteUpdateHandler_Effect_EnemyDeath:      ; [$822e]
+SpriteUpdateHandler_Effect_EnemyDeath:
     LDA #$00
     STA Sprites_PPUOffset
     LDA a:SpriteUpdateCounter
@@ -661,7 +661,7 @@ SpriteUpdateHandler_Effect_EnemyDeath:      ; [$822e]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::814f]
 ;============================================================================
-SpriteUpdateHandler_Effect_BossDeath:       ; [$8279]
+SpriteUpdateHandler_Effect_BossDeath:
     LDA #$00
     STA Sprites_PPUOffset
     LDA a:CurrentSprites_Phases,X
@@ -684,7 +684,7 @@ SpriteUpdateHandler_Effect_BossDeath:       ; [$8279]
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::80af]
 ;     SpriteUpdateHandler_Effect_BossDeath
 ;============================================================================
-SpriteUpdateHandler_Effect_LightningBall20: ; [$828b]
+SpriteUpdateHandler_Effect_LightningBall20:
     LDA #$00
     STA Sprites_PPUOffset
     LDA a:SpriteUpdateCounter
@@ -697,7 +697,7 @@ SpriteUpdateHandler_Effect_LightningBall20: ; [$828b]
     JSR Sprite_EnterNextAppearancePhase
     LDY #$03
 
-  @LAB_PRG14__82a2:                         ; [$82a2]
+  @LAB_PRG14__82a2:
     LDX a:CurrentSpriteIndex
     LDA CurrentSprites_XPos_Full,X
     STA Arg_DrawSprite_PosX
@@ -711,7 +711,7 @@ SpriteUpdateHandler_Effect_LightningBall20: ; [$828b]
     BPL @LAB_PRG14__82bb
     INC Temp_00
 
-  @LAB_PRG14__82bb:                         ; [$82bb]
+  @LAB_PRG14__82bb:
     TYA
     AND #$02
     BNE @LAB_PRG14__82ca
@@ -721,13 +721,13 @@ SpriteUpdateHandler_Effect_LightningBall20: ; [$828b]
     STA Arg_DrawSprite_PosY
     JMP @LAB_PRG14__82d1
 
-  @LAB_PRG14__82ca:                         ; [$82ca]
+  @LAB_PRG14__82ca:
     LDA CurrentSprites_XPos_Full,X
     CLC
     ADC Temp_00
     STA Arg_DrawSprite_PosX
 
-  @LAB_PRG14__82d1:                         ; [$82d1]
+  @LAB_PRG14__82d1:
     LDA a:BYTE_ARRAY_PRG14__82f4,Y
     STA CurrentSprite_FlipMask
     LDA a:BYTE_ARRAY_PRG14__82ec,Y
@@ -748,7 +748,7 @@ SpriteUpdateHandler_Effect_LightningBall20: ; [$828b]
 ; XREFS:
 ;     SpriteUpdateHandler_Effect_LightningBall20
 ;
-BYTE_ARRAY_PRG14__82ec:                     ; [$82ec]
+BYTE_ARRAY_PRG14__82ec:
     .byte $01                               ; [0]:
     .byte $02                               ; [1]:
     .byte $03                               ; [2]:
@@ -758,7 +758,7 @@ BYTE_ARRAY_PRG14__82ec:                     ; [$82ec]
 ; XREFS:
 ;     SpriteUpdateHandler_Effect_LightningBall20
 ;
-BYTE_ARRAY_PRG14__82f0:                     ; [$82f0]
+BYTE_ARRAY_PRG14__82f0:
     .byte $ff                               ; [0]:
     .byte $00                               ; [1]:
     .byte $ff                               ; [2]:
@@ -768,7 +768,7 @@ BYTE_ARRAY_PRG14__82f0:                     ; [$82f0]
 ; XREFS:
 ;     SpriteUpdateHandler_Effect_LightningBall20
 ;
-BYTE_ARRAY_PRG14__82f4:                     ; [$82f4]
+BYTE_ARRAY_PRG14__82f4:
     .byte $00                               ; [0]:
     .byte $00                               ; [1]:
     .byte $00                               ; [2]:
@@ -788,7 +788,7 @@ BYTE_ARRAY_PRG14__82f4:                     ; [$82f4]
 ;     SpriteBehavior_Unknown_29_SomeSetup
 ;     SpriteOp_CheckDistanceToPlayer_X
 ;============================================================================
-Sprite_CalcDistanceXToPlayer:               ; [$82f8]
+Sprite_CalcDistanceXToPlayer:
     LDA CurrentSprites_XPos_Full,X
     SEC
     SBC Player_PosX_Block
@@ -803,18 +803,18 @@ Sprite_CalcDistanceXToPlayer:               ; [$82f8]
     BCS @_returnTrue
     LDA #$00
 
-  @_returnTrue:                             ; [$8310]
+  @_returnTrue:
     CLC
     RTS
 
-  @LAB_PRG14__8312:                         ; [$8312]
+  @LAB_PRG14__8312:
     SEC
     SBC #$10
     BCS @_return
     LDA #$00
     SEC
 
-  @_return:                                 ; [$831a]
+  @_return:
     RTS
 
 ;============================================================================
@@ -834,7 +834,7 @@ Sprite_CalcDistanceXToPlayer:               ; [$82f8]
 ;     SpriteBehavior_Unknown_29_SomeSetup
 ;     SpriteOp_CheckDistanceToPlayer_Y
 ;============================================================================
-Sprite_CalcDistanceYToPlayer:               ; [$831b]
+Sprite_CalcDistanceYToPlayer:
     LDA CurrentSprites_YPos,X
     SEC
     SBC Player_PosY
@@ -844,7 +844,7 @@ Sprite_CalcDistanceYToPlayer:               ; [$831b]
     ADC #$01
     CLC
 
-  @_return:                                 ; [$8328]
+  @_return:
     RTS
 
 ;============================================================================
@@ -859,7 +859,7 @@ Sprite_CalcDistanceYToPlayer:               ; [$831b]
 ; XREFS:
 ;     SpriteBehavior_Unknown_29
 ;============================================================================
-SpriteBehavior_Unknown_29_SomeSetup:        ; [$8329]
+SpriteBehavior_Unknown_29_SomeSetup:
     JSR BScript_Action_FacePlayerX
     JSR BScript_Action_FacePlayerY
     JSR Sprite_CalcDistanceXToPlayer
@@ -885,7 +885,7 @@ SpriteBehavior_Unknown_29_SomeSetup:        ; [$8329]
     STA a:CurrentSprites_BehaviorState_XFull,X
     RTS
 
-  @LAB_PRG14__836c:                         ; [$836c]
+  @LAB_PRG14__836c:
     LDA a:CurrentSprites_BehaviorState_XFull,X
     STA a:Arg_PlayerHealthDelta_U
     LDA a:CurrentSprites_BehaviorState_YFull,X
@@ -910,7 +910,7 @@ SpriteBehavior_Unknown_29_SomeSetup:        ; [$8329]
 ; XREFS:
 ;     FUN_PRG14__8398
 ;============================================================================
-FUN_PRG14__8398:                            ; [$8398]
+FUN_PRG14__8398:
     ASL a:CurrentSprites_BehaviorState_XFull,X
     ROL a:CurrentSprites_BehaviorState_XFrac,X
     ASL a:CurrentSprites_BehaviorState_YFull,X
@@ -923,7 +923,7 @@ FUN_PRG14__8398:                            ; [$8398]
 ;============================================================================
 ; MAYBE DEADCODE
 ;============================================================================
-FUN_PRG14__83a8:                            ; [$83a8]
+FUN_PRG14__83a8:
     LDA a:CurrentSprites_BehaviorState_XFull,X
     STA a:Arg_DeltaX_Frac
     LDA a:CurrentSprites_BehaviorState_XFrac,X
@@ -950,11 +950,11 @@ FUN_PRG14__83a8:                            ; [$83a8]
 ;     SpriteBehavior_Borabohra
 ;     SpriteBehavior_Yuinaru
 ;============================================================================
-Sprites_CalcHorizSpriteMovement:            ; [$83c1]
+Sprites_CalcHorizSpriteMovement:
     STA a:Arg_DeltaX_Frac                   ; Set pixels delta from A.
     LDA #$00                                ; A = 0
 
-  @_loop:                                   ; [$83c6]
+  @_loop:
     ASL a:Arg_DeltaX_Frac                   ; Shift the pixels delta amount
                                             ; left.
     ROL A
@@ -990,11 +990,11 @@ Sprites_CalcHorizSpriteMovement:            ; [$83c1]
 ;     SpriteBehavior_SomethingZoradohna_18
 ;     SpriteBehavior_Yuinaru
 ;============================================================================
-Sprites_CalcVerticalSpriteMovement:         ; [$83d1]
+Sprites_CalcVerticalSpriteMovement:
     STA a:Arg_DeltaY_Frac
     LDA #$00
 
-  @LAB_PRG14__83d6:                         ; [$83d6]
+  @LAB_PRG14__83d6:
     ASL a:Arg_DeltaY_Frac
     ROL A
     DEY
@@ -1029,7 +1029,7 @@ Sprites_CalcVerticalSpriteMovement:         ; [$83d1]
 ;     SpriteBehavior_SomethingZoradohna_18
 ;     SpriteBehavior_Yuinaru
 ;============================================================================
-Sprites_CalcYFromGravity:                   ; [$83e1]
+Sprites_CalcYFromGravity:
     PHA
     AND a:SPRITE_BEHAVIOR_HOP_PEAK_TICKS,Y
     STA Temp_00
@@ -1041,7 +1041,7 @@ Sprites_CalcYFromGravity:                   ; [$83e1]
     SBC Temp_00
     RTS
 
-  @LAB_PRG14__83f4:                         ; [$83f4]
+  @LAB_PRG14__83f4:
     LDA Temp_00
     RTS
 
@@ -1051,7 +1051,7 @@ Sprites_CalcYFromGravity:                   ; [$83e1]
 ;     SpriteBehavior_SomethingZoradohna_18
 ;     Sprites_CalcYFromGravity
 ;
-SPRITE_BEHAVIOR_HOP_PEAK_TICKS:             ; [$83f7]
+SPRITE_BEHAVIOR_HOP_PEAK_TICKS:
     .byte $ff                               ; [0]:
     .byte $7f                               ; [1]:
     .byte $3f                               ; [2]:
@@ -1065,7 +1065,7 @@ SPRITE_BEHAVIOR_HOP_PEAK_TICKS:             ; [$83f7]
 ; XREFS:
 ;     Sprites_CalcYFromGravity
 ;
-SPRITES_MAYBE_GRAVITY:                      ; [$83ff]
+SPRITES_MAYBE_GRAVITY:
     .byte $00                               ; [0]:
     .byte $80                               ; [1]:
     .byte $40                               ; [2]:
@@ -1088,7 +1088,7 @@ SPRITES_MAYBE_GRAVITY:                      ; [$83ff]
 ;     BSCRIPT_ACTIONS [$PRG14::a796]
 ;     SpriteBehavior_WalkForward
 ;============================================================================
-BScript_Action_FlipXDirection:              ; [$8407]
+BScript_Action_FlipXDirection:
     LDA a:CurrentSprites_Flags,X
     EOR #$01
     STA a:CurrentSprites_Flags,X
@@ -1112,7 +1112,7 @@ BScript_Action_FlipXDirection:              ; [$8407]
 ;     SpriteBehavior_Lilith
 ;     SpriteBehavior_SomethingZoradohna_18
 ;============================================================================
-BScript_Action_FlipYDirection:              ; [$8410]
+BScript_Action_FlipYDirection:
     LDA a:CurrentSprites_Flags,X
     EOR #$80
     STA a:CurrentSprites_Flags,X
@@ -1139,14 +1139,14 @@ BScript_Action_FlipYDirection:              ; [$8410]
 ;     SpriteBehavior_Yareeka
 ;     Sprite_MoveHorizOneBlockOrTurnAround
 ;============================================================================
-Sprite_MoveHorizAndTurnAroundIfNeeded:      ; [$8419]
+Sprite_MoveHorizAndTurnAroundIfNeeded:
     JSR Sprites_Something_SomethingAndMoveHoriz
     BCC @_return
     LDA a:CurrentSprites_Flags,X
     EOR #$01
     STA a:CurrentSprites_Flags,X
 
-  @_return:                                 ; [$8426]
+  @_return:
     RTS
 
 ;============================================================================
@@ -1164,7 +1164,7 @@ Sprite_MoveHorizAndTurnAroundIfNeeded:      ; [$8419]
 ;     SpriteBehavior_SomethingEyeball_17
 ;     SpriteBehavior_Yuinaru
 ;============================================================================
-Sprite_Maybe_TurnAroundIfAtScreenEdgeHoriz: ; [$8427]
+Sprite_Maybe_TurnAroundIfAtScreenEdgeHoriz:
     JSR Sprite_MoveForwardX
     LDA CurrentSprites_XPos_Full,X
     CMP #$f0
@@ -1177,7 +1177,7 @@ Sprite_Maybe_TurnAroundIfAtScreenEdgeHoriz: ; [$8427]
     CLC
     ADC #$10
 
-  @LAB_PRG14__843d:                         ; [$843d]
+  @LAB_PRG14__843d:
     STA CurrentSprites_XPos_Full,X
     LDA a:CurrentSprites_Flags,X
     EOR #$01
@@ -1185,7 +1185,7 @@ Sprite_Maybe_TurnAroundIfAtScreenEdgeHoriz: ; [$8427]
     SEC
     RTS
 
-  @_returnFalse:                            ; [$8449]
+  @_returnFalse:
     CLC
     RTS
 
@@ -1193,7 +1193,7 @@ Sprite_Maybe_TurnAroundIfAtScreenEdgeHoriz: ; [$8427]
 ;============================================================================
 ; MAYBE DEADCODE
 ;============================================================================
-FUN_PRG14__844b:                            ; [$844b]
+FUN_PRG14__844b:
     JSR Sprite_Maybe_AddFacingPosX
     LDA CurrentSprites_XPos_Full,X
     CMP #$f0
@@ -1206,7 +1206,7 @@ FUN_PRG14__844b:                            ; [$844b]
     CLC
     ADC #$10
 
-  @LAB_PRG14__8461:                         ; [$8461]
+  @LAB_PRG14__8461:
     STA CurrentSprites_XPos_Full,X
     LDA a:CurrentSprites_Flags,X
     EOR #$01
@@ -1217,7 +1217,7 @@ FUN_PRG14__844b:                            ; [$844b]
     ;     FUN_PRG14__844b
     ;     Sprite_Maybe_AddFacingPosX
     ;
-RETURN_846B:                                ; [$846b]
+RETURN_846B:
     RTS
 
 ;============================================================================
@@ -1232,7 +1232,7 @@ RETURN_846B:                                ; [$846b]
 ; XREFS:
 ;     FUN_PRG14__844b
 ;============================================================================
-Sprite_Maybe_AddFacingPosX:                 ; [$846c]
+Sprite_Maybe_AddFacingPosX:
     LDA CurrentSprites_XPos_Full,X
     CMP Player_PosX_Block
     BEQ RETURN_846B
@@ -1242,13 +1242,13 @@ Sprite_Maybe_AddFacingPosX:                 ; [$846c]
     BNE @LAB_PRG14__8488
     JMP Sprite_SubtractPosX
 
-  @LAB_PRG14__847e:                         ; [$847e]
+  @LAB_PRG14__847e:
     LDA a:CurrentSprites_Flags,X
     AND #$01
     BEQ @LAB_PRG14__8488
     JMP Sprite_AddPosX
 
-  @LAB_PRG14__8488:                         ; [$8488]
+  @LAB_PRG14__8488:
     CLC
     RTS
 
@@ -1256,7 +1256,7 @@ Sprite_Maybe_AddFacingPosX:                 ; [$846c]
 ;============================================================================
 ; MAYBE DEADCODE
 ;============================================================================
-FUN_PRG14__848a:                            ; [$848a]
+FUN_PRG14__848a:
     LDA #$00
     STA a:Arg_DeltaX_Frac
     LDA #$01
@@ -1289,7 +1289,7 @@ FUN_PRG14__848a:                            ; [$848a]
 ;     Sprite_MoveHorizAndTurnAroundIfNeeded
 ;     Sprites_Maybe_UpdateHitByMagic
 ;============================================================================
-Sprites_Something_SomethingAndMoveHoriz:    ; [$8494]
+Sprites_Something_SomethingAndMoveHoriz:
     JSR Sprite_MoveForwardX
     JMP MoveSpriteHorizIfPossible
 
@@ -1331,7 +1331,7 @@ Sprites_Something_SomethingAndMoveHoriz:    ; [$8494]
 ;     Sprite_Maybe_TurnAroundIfAtScreenEdgeHoriz
 ;     Sprites_Something_SomethingAndMoveHoriz
 ;============================================================================
-Sprite_MoveForwardX:                        ; [$849a]
+Sprite_MoveForwardX:
     LDA a:CurrentSprites_Flags,X            ; Load the sprite's flags.
     LSR A                                   ; Shift the "Facing Right" bit
                                             ; into Carry.
@@ -1366,7 +1366,7 @@ Sprite_MoveForwardX:                        ; [$849a]
 ; XREFS:
 ;     Sprite_Maybe_AddFacingPosX
 ;============================================================================
-Sprite_SubtractPosX:                        ; [$84a0]
+Sprite_SubtractPosX:
     LDA a:CurrentSprites_XPos_Frac,X        ; Load the fractional X position
                                             ; for the sprite entity.
     SEC
@@ -1403,7 +1403,7 @@ Sprite_SubtractPosX:                        ; [$84a0]
 ;     Sprite_Maybe_AddFacingPosX
 ;     Sprite_MoveForwardX
 ;============================================================================
-Sprite_AddPosX:                             ; [$84b2]
+Sprite_AddPosX:
     LDA a:CurrentSprites_XPos_Frac,X        ; Load the fractional X position
                                             ; for the sprite entity.
     CLC
@@ -1448,7 +1448,7 @@ Sprite_AddPosX:                             ; [$84b2]
 ; XREFS:
 ;     Sprites_Something_SomethingAndMoveHoriz
 ;============================================================================
-MoveSpriteHorizIfPossible:                  ; [$84c4]
+MoveSpriteHorizIfPossible:
     TYA
     PHA
     LDA a:CurrentSprites_Flags,X            ; Load the sprite flags.
@@ -1471,7 +1471,7 @@ MoveSpriteHorizIfPossible:                  ; [$84c4]
     CLC
     ADC #$10                                ; Add 1 to the block X position
 
-  @_updateHorizPos:                         ; [$84e7]
+  @_updateHorizPos:
     STA CurrentSprites_XPos_Full,X          ; Store the block position for
                                             ; the sprite.
     PLA                                     ; Restore the original Y
@@ -1480,7 +1480,7 @@ MoveSpriteHorizIfPossible:                  ; [$84c4]
     SEC                                     ; C = 1 (moved, true result)
     RTS
 
-  @_cannotMove:                             ; [$84ed]
+  @_cannotMove:
     PLA                                     ; Restore the registers
     TAY
     LDX a:CurrentSpriteIndex
@@ -1492,7 +1492,7 @@ MoveSpriteHorizIfPossible:                  ; [$84c4]
 ;============================================================================
 ; MAYBE DEADCODE
 ;============================================================================
-DEADCODE_FUN_PRG14__84f4:                   ; [$84f4]
+DEADCODE_FUN_PRG14__84f4:
     JSR Sprites_CanMoveDownByHitbox
     TAX
     BNE SpriteBehavior_RestoreXRegister
@@ -1515,7 +1515,7 @@ DEADCODE_FUN_PRG14__84f4:                   ; [$84f4]
 ; XREFS:
 ;     SpriteBehavior_Ishiisu
 ;============================================================================
-SpriteBehavior_Ishiisu_Something_915b:      ; [$8507]
+SpriteBehavior_Ishiisu_Something_915b:
     JSR Sprites_CanMoveDownByHitbox
     TAX
     BNE SpriteBehavior_RestoreXRegister
@@ -1531,7 +1531,7 @@ SpriteBehavior_Ishiisu_Something_915b:      ; [$8507]
 ; XREFS:
 ;     DEADCODE_FUN_PRG14__84f4
 ;============================================================================
-SpriteBehavior_Something_850d:              ; [$850d]
+SpriteBehavior_Something_850d:
     LDX a:CurrentSpriteIndex
     LDA a:CurrentSprites_Flags,X
     LSR A
@@ -1542,7 +1542,7 @@ SpriteBehavior_Something_850d:              ; [$850d]
     BCS @LAB_PRG14__851e
     ADC #$10
 
-  @LAB_PRG14__851e:                         ; [$851e]
+  @LAB_PRG14__851e:
     STA CurrentSprites_XPos_Full,X
     LDA InterruptCounter
     AND #$3f                                ; On interrupts 64 and 128...
@@ -1569,7 +1569,7 @@ SpriteBehavior_Something_850d:              ; [$850d]
 ;     SpriteBehavior_Ishiisu_Something_915b
 ;     SpriteBehavior_Something_850d
 ;============================================================================
-SpriteBehavior_RestoreXRegister:            ; [$852e]
+SpriteBehavior_RestoreXRegister:
     LDX a:CurrentSpriteIndex
     RTS
 
@@ -1577,7 +1577,7 @@ SpriteBehavior_RestoreXRegister:            ; [$852e]
 ; XREFS:
 ;     Sprites_CheckPlacementInvalidAtY
 ;
-SPRITE_CHECK_PLACEMENT_X_OFFSETS_BY_FACING: ; [$8532]
+SPRITE_CHECK_PLACEMENT_X_OFFSETS_BY_FACING:
     .byte $00                               ; [0]: 0 pixel movement
     .byte $0f                               ; [1]: 15 pixel movement
 
@@ -1593,7 +1593,7 @@ SPRITE_CHECK_PLACEMENT_X_OFFSETS_BY_FACING: ; [$8532]
 ; XREFS:
 ;     DEADCODE_FUN_PRG14__84f4
 ;============================================================================
-DEADCODE_Sprites_CanMoveDownBelowHitbox:    ; [$8534]
+DEADCODE_Sprites_CanMoveDownBelowHitbox:
     LDY a:CurrentSprites_HitBoxTypes,X      ; Load the hitbox type for the
                                             ; current sprite.
     LDA CurrentSprites_YPos,X               ; Load the sprite's Y position.
@@ -1618,7 +1618,7 @@ DEADCODE_Sprites_CanMoveDownBelowHitbox:    ; [$8534]
 ;     SpriteBehavior_Ishiisu_Something_915b
 ;     Sprites_SetCurrentSpriteCanMove
 ;============================================================================
-Sprites_CanMoveDownByHitbox:                ; [$8543]
+Sprites_CanMoveDownByHitbox:
     LDY a:CurrentSprites_HitBoxTypes,X      ; Load the hitbox type for the
                                             ; current sprite.
     LDA CurrentSprites_YPos,X               ; Load the sprite's Y position.
@@ -1670,7 +1670,7 @@ Sprites_CanMoveDownByHitbox:                ; [$8543]
 ; XREFS:
 ;     DEADCODE_Sprites_CanMoveDownBelowHitbox
 ;============================================================================
-Sprites_CheckPlacementInvalidAtY:           ; [$854c]
+Sprites_CheckPlacementInvalidAtY:
     ;
     ; Take the provided Y value (as the A register) and
     ; increment it by 1 for the block position check. It's
@@ -1730,7 +1730,7 @@ Sprites_CheckPlacementInvalidAtY:           ; [$854c]
 ;     SpriteBehavior_BuzzAround
 ;     SpriteBehavior_MoveVertically
 ;============================================================================
-Sprite_MoveVertAndFlipIfNeeded:             ; [$8564]
+Sprite_MoveVertAndFlipIfNeeded:
     JSR Sprite_CalculateNewVertPos
     JSR MoveSpriteVerticalIfPossible
     BCC @_return
@@ -1738,7 +1738,7 @@ Sprite_MoveVertAndFlipIfNeeded:             ; [$8564]
     EOR #$80
     STA a:CurrentSprites_Flags,X
 
-  @_return:                                 ; [$8574]
+  @_return:
     RTS
 
 ;============================================================================
@@ -1754,7 +1754,7 @@ Sprite_MoveVertAndFlipIfNeeded:             ; [$8564]
 ;     Sprite_MoveVertAndFlipIfNeeded
 ;     Sprite_MoveVertical
 ;============================================================================
-MoveSpriteVerticalIfPossible:               ; [$8575]
+MoveSpriteVerticalIfPossible:
     LDA a:CurrentSprites_Flags,X
     ROL A
     ROL A
@@ -1773,12 +1773,12 @@ MoveSpriteVerticalIfPossible:               ; [$8575]
     CLC
     ADC #$10
 
-  @_returnTrue:                             ; [$8596]
+  @_returnTrue:
     STA CurrentSprites_YPos,X
     SEC
     RTS
 
-  @_returnFalse:                            ; [$859a]
+  @_returnFalse:
     CLC
     RTS
 
@@ -1797,7 +1797,7 @@ MoveSpriteVerticalIfPossible:               ; [$8575]
 ;     SpriteBehavior_SomethingEyeball_17
 ;     SpriteBehavior_Yuinaru
 ;============================================================================
-Sprite_Maybe_TurnAroundIfAtScreenEdgeVert:  ; [$859c]
+Sprite_Maybe_TurnAroundIfAtScreenEdgeVert:
     JSR Sprite_CalculateNewVertPos
     JSR Sprite_CapToBlockOppositeFalling
     BCC @_return
@@ -1805,7 +1805,7 @@ Sprite_Maybe_TurnAroundIfAtScreenEdgeVert:  ; [$859c]
     EOR #$80
     STA a:CurrentSprites_Flags,X
 
-  @_return:                                 ; [$85ac]
+  @_return:
     RTS
 
 
@@ -1842,7 +1842,7 @@ Sprite_Maybe_TurnAroundIfAtScreenEdgeVert:  ; [$859c]
 ; XREFS:
 ;     Sprite_Maybe_TurnAroundIfAtScreenEdgeVert
 ;============================================================================
-Sprite_CapToBlockOppositeFalling:           ; [$85ad]
+Sprite_CapToBlockOppositeFalling:
     ;
     ; Check if the Y position is at the bottom of the screen.
     ;
@@ -1874,11 +1874,11 @@ Sprite_CapToBlockOppositeFalling:           ; [$85ad]
     ; Set the resulting Y position for the sprite, and
     ; set C = 1 for the result.
     ;
-  @_setY:                                   ; [$85c0]
+  @_setY:
     STA CurrentSprites_YPos,X               ; Set as the new Y position.
     SEC                                     ; Set C = 1.
 
-  @_return:                                 ; [$85c3]
+  @_return:
     RTS
 
 ;============================================================================
@@ -1903,7 +1903,7 @@ Sprite_CapToBlockOppositeFalling:           ; [$85ad]
 ;     SpriteBehavior_SomethingZoradohna_18
 ;     SpriteBehavior_Unknown_29
 ;============================================================================
-Sprite_MoveVertical:                        ; [$85c4]
+Sprite_MoveVertical:
     JSR Sprite_CalculateNewVertPos
     JMP MoveSpriteVerticalIfPossible
 
@@ -1923,7 +1923,7 @@ Sprite_MoveVertical:                        ; [$85c4]
 ;     Sprite_MoveVertAndFlipIfNeeded
 ;     Sprite_MoveVertical
 ;============================================================================
-Sprite_CalculateNewVertPos:                 ; [$85ca]
+Sprite_CalculateNewVertPos:
     LDA a:CurrentSprites_Flags,X            ; Load the sprite's flags.
     BMI @LAB_PRG14__85e1
     LDA a:CurrentSprites_YPos_Frac,X
@@ -1935,7 +1935,7 @@ Sprite_CalculateNewVertPos:                 ; [$85ca]
     STA CurrentSprites_YPos,X
     RTS
 
-  @LAB_PRG14__85e1:                         ; [$85e1]
+  @LAB_PRG14__85e1:
     LDA a:CurrentSprites_YPos_Frac,X
     CLC
     ADC a:Arg_DeltaY_Frac
@@ -1964,7 +1964,7 @@ Sprite_CalculateNewVertPos:                 ; [$85ca]
     LDX a:CurrentSpriteIndex
     RTS
 
-BYTE_ARRAY_PRG14__861d:                     ; [$861d]
+BYTE_ARRAY_PRG14__861d:
     .byte $00                               ; [0]:
     .byte $0f                               ; [1]:
 
@@ -1986,7 +1986,7 @@ BYTE_ARRAY_PRG14__861d:                     ; [$861d]
 ;     SpriteBehavior__a91e
 ;     Sprite_FallIfNeeded
 ;============================================================================
-Sprites_SetCurrentSpriteCanMove:            ; [$861f]
+Sprites_SetCurrentSpriteCanMove:
     LDX a:CurrentSpriteIndex                ; X = Currently active sprite.
     LDA a:CurrentSprites_Flags,X            ; A = Current sprite's flags.
     AND #$02
@@ -2001,7 +2001,7 @@ Sprites_SetCurrentSpriteCanMove:            ; [$861f]
     SEC
     RTS
 
-  @LAB_PRG14__863d:                         ; [$863d]
+  @LAB_PRG14__863d:
     LDX a:CurrentSpriteIndex
     LDA a:CurrentSprites_Flags,X
     AND #$fb
@@ -2047,7 +2047,7 @@ Sprites_SetCurrentSpriteCanMove:            ; [$861f]
 ;     SpriteBehavior__a91e
 ;     Sprite_FallIfNeeded
 ;============================================================================
-CurrentSprite_HandleFall:                   ; [$864a]
+CurrentSprite_HandleFall:
     LDX a:CurrentSpriteIndex                ; X = Currently active sprite.
     LDA a:CurrentSprites_Flags,X            ; A = Current sprite's flags.
     AND #$04                                ; Can the sprite move?
@@ -2085,12 +2085,12 @@ CurrentSprite_HandleFall:                   ; [$864a]
                                             ; (after the above += 8).
     STA CurrentSprites_YPos,X               ; Store as the new position.
 
-  @_done:                                   ; [$8671]
+  @_done:
     LDX a:CurrentSpriteIndex                ; Restore the current sprite
                                             ; index.
     RTS
 
-  @_clearSprite:                            ; [$8675]
+  @_clearSprite:
     LDA #$ff
     STA a:CurrentSprites_Entities,X
     RTS
@@ -2124,7 +2124,7 @@ CurrentSprite_HandleFall:                   ; [$864a]
 ;     SpriteBehavior_Tamazutsu
 ;     SpriteBehavior_Unknown_29_SomeSetup
 ;============================================================================
-BScript_Action_FacePlayerX:                 ; [$867b]
+BScript_Action_FacePlayerX:
     LDA Player_PosX_Block                   ; Load the player's X position.
 
 
@@ -2157,7 +2157,7 @@ BScript_Action_FacePlayerX:                 ; [$867b]
                                             ; our rotate above.
     STA a:CurrentSprites_Flags,X            ; Save it back out.
 
-  @_return:                                 ; [$8690]
+  @_return:
     RTS
 
 ;============================================================================
@@ -2176,7 +2176,7 @@ BScript_Action_FacePlayerX:                 ; [$867b]
 ;     SpriteBehavior_Naga
 ;     SpriteBehavior_Unknown_29_SomeSetup
 ;============================================================================
-BScript_Action_FacePlayerY:                 ; [$8691]
+BScript_Action_FacePlayerY:
     LDA Player_PosY
 
 
@@ -2207,7 +2207,7 @@ BScript_Action_FacePlayerY:                 ; [$8691]
                                             ; the rotate above.
     STA a:CurrentSprites_Flags,X            ; Save it back out.
 
-  @_return:                                 ; [$86a6]
+  @_return:
     RTS
 
 ;============================================================================
@@ -2222,7 +2222,7 @@ BScript_Action_FacePlayerY:                 ; [$8691]
 ; XREFS:
 ;     CurrentSprite_CanMoveInDirection
 ;============================================================================
-Sprites_MoveRight:                          ; [$86a7]
+Sprites_MoveRight:
     LDX a:CurrentSprites_HitBoxTypes,Y
     LDA a:CurrentSprites_XPos_Full,Y
     CLC
@@ -2245,7 +2245,7 @@ Sprites_MoveRight:                          ; [$86a7]
 ; XREFS:
 ;     FUN_PRG14__86bd
 ;============================================================================
-Sprites_SetBlockIsMovingResult:             ; [$86b5]
+Sprites_SetBlockIsMovingResult:
     ;
     ; Set the block as moving.
     ;
@@ -2266,7 +2266,7 @@ Sprites_SetBlockIsMovingResult:             ; [$86b5]
 ; XREFS:
 ;     CurrentSprite_CanMoveInDirection
 ;============================================================================
-FUN_PRG14__86bd:                            ; [$86bd]
+FUN_PRG14__86bd:
     LDA a:CurrentSprites_XPos_Full,Y
     CMP #$f1
     BCS Sprites_SetBlockIsMovingResult
@@ -2288,7 +2288,7 @@ FUN_PRG14__86bd:                            ; [$86bd]
 ; XREFS:
 ;     Sprites_MoveRight
 ;============================================================================
-Sprites_MoveRight__86c6:                    ; [$86c6]
+Sprites_MoveRight__86c6:
     LDA a:CurrentSprites_YPos,Y             ; Load the Y position of the
                                             ; sprite.
     STA Arg_PixelPosY                       ; Store as the pixel Y position
@@ -2304,7 +2304,7 @@ Sprites_MoveRight__86c6:                    ; [$86c6]
     LDA a:SPRITE_HITBOX_HEIGHTS,Y
     STA Temp_HitBoxValue
 
-  @_loop:                                   ; [$86e1]
+  @_loop:
     LDA Temp_HitBoxValue
     SEC
     SBC #$10
@@ -2319,7 +2319,7 @@ Sprites_MoveRight__86c6:                    ; [$86c6]
     BNE @LAB_PRG14__870c
     BEQ @_loop
 
-  @LAB_PRG14__86f8:                         ; [$86f8]
+  @LAB_PRG14__86f8:
     LDY a:CurrentSpriteIndex
     LDA a:CurrentSprites_YPos,Y
     AND #$0f
@@ -2331,7 +2331,7 @@ Sprites_MoveRight__86c6:                    ; [$86c6]
     JSR ScreenBuffer_IsBlockImpassable
     STA Blocks_Result
 
-  @LAB_PRG14__870c:                         ; [$870c]
+  @LAB_PRG14__870c:
     LDX a:CurrentSpriteIndex
     RTS
 
@@ -2349,7 +2349,7 @@ Sprites_MoveRight__86c6:                    ; [$86c6]
 ;     MoveSpriteHorizIfPossible
 ;     MoveSpriteVerticalIfPossible
 ;============================================================================
-CurrentSprite_CanMoveInDirection:           ; [$8710]
+CurrentSprite_CanMoveInDirection:
     LDY a:CurrentSpriteIndex
     TXA
     BEQ FUN_PRG14__86bd
@@ -2365,18 +2365,18 @@ CurrentSprite_CanMoveInDirection:           ; [$8710]
     CMP #$f0
     BCC @LAB_PRG14__873a
 
-  @LAB_PRG14__872c:                         ; [$872c]
+  @LAB_PRG14__872c:
     LDA #$01
     STA Blocks_Result
     RTS
 
-  @LAB_PRG14__8731:                         ; [$8731]
+  @LAB_PRG14__8731:
     LDA a:CurrentSprites_YPos,Y
     CMP #$f0
     BCS @LAB_PRG14__872c
     STA Arg_PixelPosY
 
-  @LAB_PRG14__873a:                         ; [$873a]
+  @LAB_PRG14__873a:
     LDA a:CurrentSprites_XPos_Full,Y
     STA Arg_PixelPosX
     JSR Area_ConvertPixelsToBlockPos
@@ -2389,7 +2389,7 @@ CurrentSprite_CanMoveInDirection:           ; [$8710]
     LDA a:SPRITE_HITBOX_WIDTHS,Y
     STA Temp_HitBoxValue
 
-  @LAB_PRG14__8755:                         ; [$8755]
+  @LAB_PRG14__8755:
     LDA Temp_HitBoxValue
     SEC
     SBC #$10
@@ -2401,7 +2401,7 @@ CurrentSprite_CanMoveInDirection:           ; [$8710]
     BNE @LAB_PRG14__8778
     BEQ @LAB_PRG14__8755
 
-  @LAB_PRG14__8768:                         ; [$8768]
+  @LAB_PRG14__8768:
     LDY a:CurrentSpriteIndex
     LDA a:CurrentSprites_XPos_Full,Y
     AND #$0f
@@ -2410,7 +2410,7 @@ CurrentSprite_CanMoveInDirection:           ; [$8710]
     JSR ScreenBuffer_IsBlockImpassable
     STA Blocks_Result
 
-  @LAB_PRG14__8778:                         ; [$8778]
+  @LAB_PRG14__8778:
     LDX a:CurrentSpriteIndex
     RTS
 
@@ -2423,7 +2423,7 @@ CurrentSprite_CanMoveInDirection:           ; [$8710]
 ; OUTPUTS:
 ;     TODO
 ;============================================================================
-Player_CheckShieldHitByMagic:               ; [$877c]
+Player_CheckShieldHitByMagic:
     LDA a:SelectedShield
     CMP #$03
     BCS RETURN_87CA
@@ -2467,7 +2467,7 @@ Player_CheckShieldHitByMagic:               ; [$877c]
     ;     Player_CheckShieldHitByMagic
     ;     Player_HitSpriteWithWeapon
     ;
-RETURN_87CA:                                ; [$87ca]
+RETURN_87CA:
     RTS
 
 ;============================================================================
@@ -2482,7 +2482,7 @@ RETURN_87CA:                                ; [$87ca]
 ; XREFS:
 ;     Player_CheckShieldHitByMagic
 ;============================================================================
-Player_HandleShieldHitByMagic:              ; [$87cb]
+Player_HandleShieldHitByMagic:
     JSR Player_HandleHitByMagic
     LDX a:CurrentSpriteIndex
     LDA #$ff
@@ -2503,13 +2503,13 @@ Player_HandleShieldHitByMagic:              ; [$87cb]
 ; XREFS:
 ;     Player_HandleShieldHitByMagic
 ;============================================================================
-Player_HandleHitByMagic:                    ; [$87dc]
+Player_HandleHitByMagic:
     LDX a:CurrentSpriteIndex
     LDY a:CurrentSprites_Entities,X
     LDA a:SPRITE_ENTITY_DAMAGES,Y
     LDY a:SelectedShield
 
-  @LAB_PRG14__87e8:                         ; [$87e8]
+  @LAB_PRG14__87e8:
     LSR A
     DEY
     BPL @LAB_PRG14__87e8
@@ -2520,7 +2520,7 @@ Player_HandleHitByMagic:                    ; [$87dc]
     BNE @LAB_PRG14__87fa
     RTS
 
-  @LAB_PRG14__87fa:                         ; [$87fa]
+  @LAB_PRG14__87fa:
     JSR Player_SetDamagedBySprite
     JMP Player_ReduceHP
     DEC a:CurrentSprites_HitCounter,X
@@ -2535,7 +2535,7 @@ Player_HandleHitByMagic:                    ; [$87dc]
 ; OUTPUTS:
 ;     TODO
 ;============================================================================
-Player_HitSpriteWithWeapon:                 ; [$8804]
+Player_HitSpriteWithWeapon:
     JSR Sprites_IsSpriteHidden
 
 
@@ -2568,7 +2568,7 @@ Player_HitSpriteWithWeapon:                 ; [$8804]
     CMP #$07
     BNE RETURN_87CA
 
-  @LAB_PRG14__8828:                         ; [$8828]
+  @LAB_PRG14__8828:
     LDA CurrentSprites_XPos_Full,X
     STA a:Something_Maybe_WeaponDistanceX
     LDA CurrentSprites_YPos,X
@@ -2582,7 +2582,7 @@ Player_HitSpriteWithWeapon:                 ; [$8804]
     ;
     JMP @_return
 
-  @LAB_PRG14__883a:                         ; [$883a]
+  @LAB_PRG14__883a:
     LDA a:CurrentSprites_Entities,X
     CMP #$05
     BNE @LAB_PRG14__8849
@@ -2595,7 +2595,7 @@ Player_HitSpriteWithWeapon:                 ; [$8804]
     ORA #$80
     STA a:CurrentSprites_Phases,X
 
-  @LAB_PRG14__8849:                         ; [$8849]
+  @LAB_PRG14__8849:
     LDA #$02
 
 
@@ -2621,7 +2621,7 @@ Player_HitSpriteWithWeapon:                 ; [$8804]
     BEQ @LAB_PRG14__885b
     INY
 
-  @LAB_PRG14__885b:                         ; [$885b]
+  @LAB_PRG14__885b:
     STY Temp_00
     LDA a:CurrentSprites_Flags,X
     AND #$fe
@@ -2666,7 +2666,7 @@ Player_HitSpriteWithWeapon:                 ; [$8804]
     ;     Giant Blade:   8HP
     ;     Dragon Slayer: 10HP
     ;
-  @_checkGlove:                             ; [$8884]
+  @_checkGlove:
     LDA a:DurationGlove                     ; Load the glove duration.
     BMI @_updateSpriteHP                    ; If it's no longer active, jump.
     LDA Temp_00                             ; Load the calculated weapon
@@ -2684,7 +2684,7 @@ Player_HitSpriteWithWeapon:                 ; [$8804]
     ; We'll take the current HP, remove what we've calculated
     ; for the weapon strength.
     ;
-  @_updateSpriteHP:                         ; [$8891]
+  @_updateSpriteHP:
     LDA a:CurrentSprites_HP,X               ; Load the current HP for this
                                             ; enemy.
     SEC
@@ -2721,7 +2721,7 @@ Player_HitSpriteWithWeapon:                 ; [$8804]
                                             ; greyscale.
     STA PPU_Mask                            ; Store back as the screen mode.
 
-  @_handleEnemyGeneric:                     ; [$88a9]
+  @_handleEnemyGeneric:
     LDA #$03                                ; Play sound #3.
 
 
@@ -2756,11 +2756,11 @@ Player_HitSpriteWithWeapon:                 ; [$8804]
     ;
     ; This was a standard enemy.
     ;
-  @LAB_PRG14__88c3:                         ; [$88c3]
+  @LAB_PRG14__88c3:
     JMP Sprite_ShowNormalEnemyDeathByWeapon ; Handle standard enemy death
                                             ; cleanup.
 
-  @_return:                                 ; [$88c6]
+  @_return:
     RTS
 
 
@@ -2775,7 +2775,7 @@ Player_HitSpriteWithWeapon:                 ; [$8804]
 ; XREFS:
 ;     Player_HitSpriteWithWeapon
 ;
-WEAPON_TO_GLOVE_STRENGTH:                   ; [$88c7]
+WEAPON_TO_GLOVE_STRENGTH:
     .byte $02                               ; [0]: Hand Dagger -- 2HP
     .byte $04                               ; [1]: Long Sword -- 4HP
     .byte $08                               ; [2]: Giant Blade -- 8HP
@@ -2803,7 +2803,7 @@ WEAPON_TO_GLOVE_STRENGTH:                   ; [$88c7]
 ; XREFS:
 ;     Player_HitSpriteWithWeapon
 ;============================================================================
-Sprites_IsSpriteOutOfWeaponRange:           ; [$88cb]
+Sprites_IsSpriteOutOfWeaponRange:
     ;
     ; First check the distance in the X position between the
     ; weapon and the sprite.
@@ -2845,7 +2845,7 @@ Sprites_IsSpriteOutOfWeaponRange:           ; [$88cb]
     CMP Temp_00
     BCS @_return
 
-  @_return:                                 ; [$88fa]
+  @_return:
     RTS
 
 
@@ -2872,7 +2872,7 @@ Sprites_IsSpriteOutOfWeaponRange:           ; [$88cb]
 ; XREFS:
 ;     SPRITE_COLLISION_HANDLERS [$PRG14::8962]
 ;============================================================================
-Player_HandleTouchItem:                     ; [$88fb]
+Player_HandleTouchItem:
     LDA a:CurrentSprites_Entities,X         ; Load the entity at the given
                                             ; index.
     JSR Player_PickUp                       ; Pick up the item.
@@ -2890,7 +2890,7 @@ Player_HandleTouchItem:                     ; [$88fb]
     ; XREFS:
     ;     CurrentSprite_CheckHitPlayer
     ;
-RETURN_8909:                                ; [$8909]
+RETURN_8909:
     RTS
 
 ;============================================================================
@@ -2902,7 +2902,7 @@ RETURN_8909:                                ; [$8909]
 ; OUTPUTS:
 ;     TODO
 ;============================================================================
-CurrentSprite_CheckHitPlayer:               ; [$890a]
+CurrentSprite_CheckHitPlayer:
     LDX a:CurrentSpriteIndex
     LDA a:CurrentSprites_Entities,X
     CMP #$ff
@@ -2947,7 +2947,7 @@ CurrentSprite_CheckHitPlayer:               ; [$890a]
     ;     CurrentSprite_CheckHitPlayer
     ;     SPRITE_COLLISION_HANDLERS [$PRG14::895e]
     ;
-Player_HandleCollision_NoOp:                ; [$8957]
+Player_HandleCollision_NoOp:
     RTS
 
 
@@ -2962,7 +2962,7 @@ Player_HandleCollision_NoOp:                ; [$8957]
 ; XREFS:
 ;     CurrentSprite_CheckHitPlayer
 ;
-SPRITE_COLLISION_HANDLERS:                  ; [$8958]
+SPRITE_COLLISION_HANDLERS:
     pointer Player_HandleTouchEnemy-1       ; [0]:
     pointer Player_HandleTouchBreadOrCoin-1 ; [1]: Coin/meat touched
     pointer Player_CheckHandlePressUpOnNPC-1 ; [2]: Press Up on NPC
@@ -2997,7 +2997,7 @@ SPRITE_COLLISION_HANDLERS:                  ; [$8958]
 ; XREFS:
 ;     SPRITE_COLLISION_HANDLERS [$PRG14::895a]
 ;============================================================================
-Player_HandleTouchBreadOrCoin:              ; [$8968]
+Player_HandleTouchBreadOrCoin:
     ;
     ; Check if this is a gold coin or bread.
     ;
@@ -3018,7 +3018,7 @@ Player_HandleTouchBreadOrCoin:              ; [$8968]
     ;
     ; This is bread.
     ;
-  @_isBread:                                ; [$8977]
+  @_isBread:
     LDA #$ff
     STA a:CurrentSprites_Entities,X         ; Clear the sprite.
     JMP Player_HandleTouchBread             ; Handle touching the bread.
@@ -3050,7 +3050,7 @@ Player_HandleTouchBreadOrCoin:              ; [$8968]
 ; XREFS:
 ;     SPRITE_COLLISION_HANDLERS [$PRG14::895c]
 ;============================================================================
-Player_CheckHandlePressUpOnNPC:             ; [$897f]
+Player_CheckHandlePressUpOnNPC:
     ;
     ; Check if Up is pressed.
     ;
@@ -3072,7 +3072,7 @@ Player_CheckHandlePressUpOnNPC:             ; [$897f]
     pointer IScripts_Begin-1                ; Address =
                                             ; IScripts_Begin
 
-  @_afterFarJump:                           ; [$8995]
+  @_afterFarJump:
     LDX a:CurrentSpriteIndex                ; X = current sprite index
 
     ;
@@ -3081,7 +3081,7 @@ Player_CheckHandlePressUpOnNPC:             ; [$897f]
     ;     Player_CheckHandlePressUpOnNPC
     ;     Player_HandleTouchNPC
     ;
-RETURN_8998:                                ; [$8998]
+RETURN_8998:
     RTS
 
 
@@ -3112,7 +3112,7 @@ RETURN_8998:                                ; [$8998]
 ; XREFS:
 ;     SPRITE_COLLISION_HANDLERS [$PRG14::8964]
 ;============================================================================
-Player_HandleTouchEnemyMagic:               ; [$8999]
+Player_HandleTouchEnemyMagic:
     LDA Player_InvincibilityPhase
     BNE RETURN_89AD
     LDA a:DurationOintment
@@ -3127,7 +3127,7 @@ Player_HandleTouchEnemyMagic:               ; [$8999]
     ;     Player_HandleTouchEnemy
     ;     Player_HandleTouchEnemyMagic
     ;
-RETURN_89AD:                                ; [$89ad]
+RETURN_89AD:
     RTS
 
 
@@ -3167,7 +3167,7 @@ RETURN_89AD:                                ; [$89ad]
 ;     SPRITE_COLLISION_HANDLERS [$PRG14::8958]
 ;     SPRITE_COLLISION_HANDLERS [$PRG14::8966]
 ;============================================================================
-Player_HandleTouchEnemy:                    ; [$89ae]
+Player_HandleTouchEnemy:
     ;
     ; Check if the player currently has iframes.
     ;
@@ -3180,7 +3180,7 @@ Player_HandleTouchEnemy:                    ; [$89ae]
     ;
     ; Check if the player has Ointment active.
     ;
-  @_canTakeDamage:                          ; [$89b3]
+  @_canTakeDamage:
     LDA a:DurationOintment                  ; Check the ointment duration.
     BPL RETURN_89AD                         ; If there's time left, no damage
                                             ; will be taken. Return.
@@ -3207,19 +3207,19 @@ Player_HandleTouchEnemy:                    ; [$89ae]
     ;
     ; Play the sound effect and process damage.
     ;
-  @_handleDamage:                           ; [$89c7]
+  @_handleDamage:
     LDA #$04
     JSR Sound_PlayEffect                    ; Play the Player Hit sound.
     JSR Player_SetDamagedBySprite           ; Mark the player as damaged and
                                             ; set state.
     JMP Player_ApplyDamage                  ; Apply damage.
-    .byte $60                               ; [$89d2] byte
+    .byte $60                               ; byte
 
 ;
 ; XREFS:
 ;     Player_SetDamagedBySprite
 ;
-SPRITES_FACING_VALUE_TO_OPPOSITE_PLAYER_FACING_BITMASK: ; [$89d3]
+SPRITES_FACING_VALUE_TO_OPPOSITE_PLAYER_FACING_BITMASK:
     .byte $40                               ; [0]:
     .byte $00                               ; [1]:
 
@@ -3255,7 +3255,7 @@ SPRITES_FACING_VALUE_TO_OPPOSITE_PLAYER_FACING_BITMASK: ; [$89d3]
 ;     Player_HandleHitByMagic
 ;     Player_HandleTouchEnemy
 ;============================================================================
-Player_SetDamagedBySprite:                  ; [$89d5]
+Player_SetDamagedBySprite:
     ;
     ; Set the invincibility phase to 60.
     ;
@@ -3317,7 +3317,7 @@ Player_SetDamagedBySprite:                  ; [$89d5]
 ; XREFS:
 ;     SPRITE_COLLISION_HANDLERS [$PRG14::8960]
 ;============================================================================
-Player_HandleTouchNPC:                      ; [$89ef]
+Player_HandleTouchNPC:
     LDA a:CurrentSprites_Values,X           ; Load the value for this sprite.
     STA a:CurrentSprite_Value               ; Store as the current sprite's
                                             ; value.
@@ -3333,7 +3333,7 @@ Player_HandleTouchNPC:                      ; [$89ef]
     ;
     ; Clear this sprite.
     ;
-  @_afterFarJump:                           ; [$89ff]
+  @_afterFarJump:
     LDX a:CurrentSpriteIndex                ; X = current sprite index.
     LDA #$ff                                ; A = 0xFF
     STA a:CurrentSprites_Entities,X         ; Set the entity at that index to
@@ -3349,7 +3349,7 @@ Player_HandleTouchNPC:                      ; [$89ef]
 ; OUTPUTS:
 ;     TODO
 ;============================================================================
-Sprite_GetBounds:                           ; [$8a08]
+Sprite_GetBounds:
     LDA #$00
     STA Temp_Addr_U
     LDA a:CurrentSprites_Entities,X
@@ -3370,7 +3370,7 @@ Sprite_GetBounds:                           ; [$8a08]
     CMP #$21
     BNE Sprite_SetBoundsFromTemp
 
-  @LAB_PRG14__8a2e:                         ; [$8a2e]
+  @LAB_PRG14__8a2e:
     LDA a:CurrentSprites_Phases,X
     CMP #$02
     BNE Sprite_SetBoundsFromTemp
@@ -3380,13 +3380,13 @@ Sprite_GetBounds:                           ; [$8a08]
     STA Temp_Addr_U
     JMP Sprite_SetBoundsFromTemp
 
-  @LAB_PRG14__8a40:                         ; [$8a40]
+  @LAB_PRG14__8a40:
     LDA a:CurrentSprites_Phases,X
     BEQ @LAB_PRG14__8a49
     CMP #$04
     BNE Sprite_SetBoundsFromTemp
 
-  @LAB_PRG14__8a49:                         ; [$8a49]
+  @LAB_PRG14__8a49:
     LDA #<SPRITE_GETBOUNDS_MASKMAN
     STA Temp_Addr_L
     LDA #>SPRITE_GETBOUNDS_MASKMAN
@@ -3396,7 +3396,7 @@ Sprite_GetBounds:                           ; [$8a08]
     ; XREFS:
     ;     Sprite_GetBounds
     ;
-Sprite_SetBoundsFromTemp:                   ; [$8a51]
+Sprite_SetBoundsFromTemp:
     LDY #$00
     LDA CurrentSprites_XPos_Full,X
     CLC
@@ -3415,13 +3415,13 @@ Sprite_SetBoundsFromTemp:                   ; [$8a51]
     STA a:SpriteBox_Height
     RTS
 
-SPRITE_GETBOUNDS_COMMON:                    ; [$8a71]
+SPRITE_GETBOUNDS_COMMON:
     .byte $30                               ; [0]:
     .byte $08                               ; [1]:
     .byte $f0                               ; [2]:
     .byte $00                               ; [3]:
 
-SPRITE_GETBOUNDS_MASKMAN:                   ; [$8a75]
+SPRITE_GETBOUNDS_MASKMAN:
     .byte $20                               ; [0]:
     .byte $10                               ; [1]:
     .byte $f8                               ; [2]:
@@ -3439,7 +3439,7 @@ SPRITE_GETBOUNDS_MASKMAN:                   ; [$8a75]
 ; XREFS:
 ;     Player_HandleTouchEnemy
 ;============================================================================
-Player_ApplyDamage:                         ; [$8a79]
+Player_ApplyDamage:
     LDY a:CurrentSprites_Entities,X
     LDA a:SPRITE_ENTITY_DAMAGES,Y
     STA Temp_Addr_U
@@ -3471,7 +3471,7 @@ Player_ApplyDamage:                         ; [$8a79]
                                             ; armor.
     TAY                                     ; Y = A
 
-  @LAB_PRG14__8aa2:                         ; [$8aa2]
+  @LAB_PRG14__8aa2:
     LDA Temp_Addr_L
     SEC
     SBC Temp_04
@@ -3482,7 +3482,7 @@ Player_ApplyDamage:                         ; [$8a79]
     DEY
     BNE @LAB_PRG14__8aa2
 
-  @_applyDamage:                            ; [$8ab2]
+  @_applyDamage:
     LDA Temp_Addr_L
     STA a:Arg_PlayerHealthDelta_L
     LDA Temp_Addr_U
@@ -3498,14 +3498,14 @@ Player_ApplyDamage:                         ; [$8a79]
     SBC Temp_05
     STA a:Arg_PlayerHealthDelta_U
 
-  @LAB_PRG14__8ad4:                         ; [$8ad4]
+  @LAB_PRG14__8ad4:
     JMP Player_ReduceHP
 
     ;
     ; XREFS:
     ;     Sprite_CheckHitByCastMagic
     ;
-RETURN_8AD7:                                ; [$8ad7]
+RETURN_8AD7:
     RTS
 
 
@@ -3520,7 +3520,7 @@ RETURN_8AD7:                                ; [$8ad7]
 ; XREFS:
 ;     Player_ApplyDamage
 ;
-ARMOR_DEFENSE_MULTIPLIERS:                  ; [$8ad8]
+ARMOR_DEFENSE_MULTIPLIERS:
     .byte $00                               ; [0]: Leather (0)
     .byte $01                               ; [1]: Studded Mail (1)
     .byte $02                               ; [2]: Full Plate (2)
@@ -3598,7 +3598,7 @@ ARMOR_DEFENSE_MULTIPLIERS:                  ; [$8ad8]
 ; CALLS:
 ;     Player_HitEnemyWithMagic
 ;============================================================================
-Sprite_CheckHitByCastMagic:                 ; [$8adc]
+Sprite_CheckHitByCastMagic:
     ;
     ; Check if there's a valid cast magic type on screen.
     ;
@@ -3638,7 +3638,7 @@ Sprite_CheckHitByCastMagic:                 ; [$8adc]
     ;
     ; Check if the magic overlaps the sprite in the X direction.
     ;
-  @_isEnemy:                                ; [$8afc]
+  @_isEnemy:
     LDY a:CastMagic_Type                    ; Load the cast magic type.
     LDA a:CAST_MAGIC_HIT_WIDTHS,Y           ; Load the htbox width for the
                                             ; magic.
@@ -3751,7 +3751,7 @@ Sprite_CheckHitByCastMagic:                 ; [$8adc]
 ;     CAST_MAGIC_HIT_HANDLERS [$PRG14::bb25]
 ;     Sprite_CheckHitByCastMagic
 ;============================================================================
-CastMagic_HitHandler_NoOp:                  ; [$8b72]
+CastMagic_HitHandler_NoOp:
     RTS
 
 
@@ -3766,7 +3766,7 @@ CastMagic_HitHandler_NoOp:                  ; [$8b72]
 ; XREFS:
 ;     Sprite_CheckHitByCastMagic
 ;
-CAST_MAGIC_HIT_WIDTHS:                      ; [$8b73]
+CAST_MAGIC_HIT_WIDTHS:
     .byte $0b                               ; [0]: Deluge (11)
     .byte $0b                               ; [1]: Thunder (11)
     .byte $1b                               ; [2]: Fire (27)
@@ -3785,7 +3785,7 @@ CAST_MAGIC_HIT_WIDTHS:                      ; [$8b73]
 ; XREFS:
 ;     Sprite_CheckHitByCastMagic
 ;
-CAST_MAGIC_HIT_HEIGHTS:                     ; [$8b78]
+CAST_MAGIC_HIT_HEIGHTS:
     .byte $0b                               ; [0]: Deluge (11)
     .byte $1b                               ; [1]: Thunder (27)
     .byte $0b                               ; [2]: Fire (11)
@@ -3804,7 +3804,7 @@ CAST_MAGIC_HIT_HEIGHTS:                     ; [$8b78]
 ; XREFS:
 ;     Sprite_CheckHitByCastMagic
 ;
-CAST_MAGIC_HIT_BEHAVIORS:                   ; [$8b7d]
+CAST_MAGIC_HIT_BEHAVIORS:
     .byte $00                               ; [0]: Deluge (0)
     .byte $01                               ; [1]: Thunder (1)
     .byte $02                               ; [2]: Fire (2)
@@ -3823,7 +3823,7 @@ CAST_MAGIC_HIT_BEHAVIORS:                   ; [$8b7d]
 ; XREFS:
 ;     Sprite_CheckHitByCastMagic
 ;
-CAST_MAGIC_HIT_IFRAMES:                     ; [$8b82]
+CAST_MAGIC_HIT_IFRAMES:
     .byte $04                               ; [0]: Deluge (4)
     .byte $08                               ; [1]: Thunder (8)
     .byte $ff                               ; [2]: Fire (none)
@@ -3854,7 +3854,7 @@ CAST_MAGIC_HIT_IFRAMES:                     ; [$8b82]
 ;     Player_HitEnemyWithMagic
 ;     Player_HitSpriteWithWeapon
 ;============================================================================
-Player_AddExperienceFromSprite:             ; [$8b87]
+Player_AddExperienceFromSprite:
     LDY a:CurrentSprites_Entities,X         ; Load the current enemy sprite
                                             ; type.
     LDA a:ENEMY_EXPERIENCE,Y                ; Load the experience for that
@@ -3896,7 +3896,7 @@ Player_AddExperienceFromSprite:             ; [$8b87]
 ; XREFS:
 ;     Player_HandleTouchBreadOrCoin
 ;============================================================================
-Player_HandleTouchCoin:                     ; [$8b9a]
+Player_HandleTouchCoin:
     LDA #$09
     JSR Sound_PlayEffect                    ; Play sound 9 (coin touched).
 
@@ -3960,7 +3960,7 @@ Player_HandleTouchCoin:                     ; [$8b9a]
 ; XREFS:
 ;     Player_HandleTouchBreadOrCoin
 ;============================================================================
-Player_HandleTouchBread:                    ; [$8bc0]
+Player_HandleTouchBread:
     LDA #$1b
     JSR Sound_PlayEffect                    ; Play sound 0x1B (pick up meat).
     LDX a:CurrentSpriteIndex                ; Load the current sprite index
@@ -3983,7 +3983,7 @@ Player_HandleTouchBread:                    ; [$8bc0]
 ;     Sprites_UpdateAllStates
 ;     _updateSpriteState [$PRG14::8040]
 ;============================================================================
-CurrentSprite_UpdateState:                  ; [$8bd2]
+CurrentSprite_UpdateState:
     LDA a:IScript_PortraitID
     BPL @_return
 
@@ -4017,7 +4017,7 @@ CurrentSprite_UpdateState:                  ; [$8bd2]
     ; Check the sprites hit counter. We'll do further updating
     ; for 2 frames, then stop for 2 frames, and rinse and repeat.
     ;
-  @_notTamazutsu:                           ; [$8be8]
+  @_notTamazutsu:
     LDA a:CurrentSprites_HitCounter,X
     AND #$02
     BNE @_return
@@ -4046,7 +4046,7 @@ CurrentSprite_UpdateState:                  ; [$8bd2]
     LDA a:SPRITE_UPDATE_HANDLERS,Y
     PHA
 
-  @_return:                                 ; [$8c17]
+  @_return:
     RTS
 
 
@@ -4065,7 +4065,7 @@ CurrentSprite_UpdateState:                  ; [$8bd2]
 ; XREFS:
 ;     CurrentSprite_UpdateFlipMask
 ;
-SPRITES_FACING_TO_FLIPMASK:                 ; [$8c18]
+SPRITES_FACING_TO_FLIPMASK:
     .byte $00                               ; [0]:
     .byte $40                               ; [1]:
 
@@ -4081,7 +4081,7 @@ SPRITES_FACING_TO_FLIPMASK:                 ; [$8c18]
 ; XREFS:
 ;     CurrentSprite_UpdateState
 ;============================================================================
-CurrentSprite_CalculateVisibility:          ; [$8c1a]
+CurrentSprite_CalculateVisibility:
     LDX a:CurrentSpriteIndex
     LDA #$00
     STA Temp_MovingSpriteVisibility
@@ -4117,12 +4117,12 @@ CurrentSprite_CalculateVisibility:          ; [$8c1a]
     CMP #$09
     BNE @LAB_PRG14__8c44
 
-  @LAB_PRG14__8c3e:                         ; [$8c3e]
+  @LAB_PRG14__8c3e:
     LDA Temp_MovingSpriteVisibility
     ORA #$01
     STA Temp_MovingSpriteVisibility
 
-  @LAB_PRG14__8c44:                         ; [$8c44]
+  @LAB_PRG14__8c44:
     LDX a:CurrentSpriteIndex
     LDA CurrentSprites_XPos_Full,X
     CLC
@@ -4137,12 +4137,12 @@ CurrentSprite_CalculateVisibility:          ; [$8c1a]
     CMP #$09
     BNE @LAB_PRG14__8c66
 
-  @LAB_PRG14__8c60:                         ; [$8c60]
+  @LAB_PRG14__8c60:
     LDA Temp_MovingSpriteVisibility
     ORA #$02
     STA Temp_MovingSpriteVisibility
 
-  @LAB_PRG14__8c66:                         ; [$8c66]
+  @LAB_PRG14__8c66:
     LDX a:CurrentSpriteIndex
     LDA a:CurrentSprites_Flags,X
     AND #$01
@@ -4154,14 +4154,14 @@ CurrentSprite_CalculateVisibility:          ; [$8c1a]
     EOR #$03
     JMP Something_SetDAT26
 
-  @LAB_PRG14__8c7d:                         ; [$8c7d]
+  @LAB_PRG14__8c7d:
     LDA Temp_MovingSpriteVisibility
 
     ;
     ; XREFS:
     ;     CurrentSprite_CalculateVisibility
     ;
-Something_SetDAT26:                         ; [$8c7f]
+Something_SetDAT26:
     STA MovingSpriteVisibility
     RTS
 
@@ -4232,7 +4232,7 @@ Something_SetDAT26:                         ; [$8c7f]
 ;     SpriteUpdateHandler_NPC_Walking
 ;     SpriteUpdateHandler_TODO_Garbled10
 ;============================================================================
-CurrentSprite_UpdateFlipMask:               ; [$8c82]
+CurrentSprite_UpdateFlipMask:
     LDA a:CurrentSprites_Flags,X            ; Load flags for this sprite.
     AND #$01                                ; AND for the facing bit.
     TAY                                     ; Y = result
@@ -4314,7 +4314,7 @@ CurrentSprite_UpdateFlipMask:               ; [$8c82]
 ;     SpriteUpdateHandler_NPC_Walking
 ;     SpriteUpdateHandler_TODO_Garbled10
 ;============================================================================
-Sprite_EnterNextAppearancePhase:            ; [$8c8e]
+Sprite_EnterNextAppearancePhase:
     CLC
     LDY a:CurrentSprites_Entities,X
     ADC a:SPRITE_APPEARANCE_PHASE_OFFSETS,Y
@@ -4336,7 +4336,7 @@ Sprite_EnterNextAppearancePhase:            ; [$8c8e]
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::80d9]
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::8125]
 ;============================================================================
-SpriteUpdateHandler_Invisible:              ; [$8c98]
+SpriteUpdateHandler_Invisible:
     LDA #$00
     STA Sprites_PPUOffset
     STA MovingSpriteVisibility
@@ -4354,7 +4354,7 @@ SpriteUpdateHandler_Invisible:              ; [$8c98]
 ; XREFS:
 ;     Sprite_EnterNextAppearancePhase
 ;
-SPRITE_APPEARANCE_PHASE_OFFSETS:            ; [$8c9f]
+SPRITE_APPEARANCE_PHASE_OFFSETS:
     .byte $00                               ; [0]:
     .byte $db                               ; [1]: Dropped: Bread
     .byte $93                               ; [2]: Dropped: Coin
@@ -4476,7 +4476,7 @@ SPRITE_APPEARANCE_PHASE_OFFSETS:            ; [$8c9f]
 ; XREFS:
 ;     SpriteBehavior_BounceAndExpire
 ;============================================================================
-SpriteBehavior_MaybeFallingRocks__ClearEntity: ; [$8d04]
+SpriteBehavior_MaybeFallingRocks__ClearEntity:
     LDA #$ff
     STA a:CurrentSprites_Entities,X
     RTS
@@ -4493,7 +4493,7 @@ SpriteBehavior_MaybeFallingRocks__ClearEntity: ; [$8d04]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a5eb]
 ;============================================================================
-SpriteBehavior_BounceAndExpire:             ; [$8d0a]
+SpriteBehavior_BounceAndExpire:
     JSR Sprite_IsBehaviorNotReady
     BNE @LAB_PRG14__8d22
     LDA #$00
@@ -4504,7 +4504,7 @@ SpriteBehavior_BounceAndExpire:             ; [$8d0a]
     STA a:CurrentSprites_Flags,X
     JSR Sprite_SetBehaviorReady
 
-  @LAB_PRG14__8d22:                         ; [$8d22]
+  @LAB_PRG14__8d22:
     INC a:CurrentSprites_InternalBehaviorStates,X
     BEQ SpriteBehavior_MaybeFallingRocks__ClearEntity
     LDY a:CurrentSprites_Phases,X
@@ -4522,10 +4522,10 @@ SpriteBehavior_BounceAndExpire:             ; [$8d0a]
     AND #$7f
     STA a:CurrentSprites_Flags,X
 
-  @_return1:                                ; [$8d4b]
+  @_return1:
     RTS
 
-  @LAB_PRG14__8d4c:                         ; [$8d4c]
+  @LAB_PRG14__8d4c:
     LDA a:CurrentSprites_BehaviorData3,X
     LDY #$03
     JSR Sprites_CalcYFromGravity
@@ -4540,7 +4540,7 @@ SpriteBehavior_BounceAndExpire:             ; [$8d0a]
     BNE @_return2
     JSR BScript_Action_FlipYDirection
 
-  @_return2:                                ; [$8d6d]
+  @_return2:
     RTS
 
 ;============================================================================
@@ -4555,7 +4555,7 @@ SpriteBehavior_BounceAndExpire:             ; [$8d0a]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::808b]
 ;============================================================================
-SpriteUpdateHandler_Coin:                   ; [$8d6e]
+SpriteUpdateHandler_Coin:
     LDA #$00
     STA CurrentSprite_FlipMask
     LDY #$00
@@ -4564,7 +4564,7 @@ SpriteUpdateHandler_Coin:                   ; [$8d6e]
     BEQ @LAB_PRG14__8d7c
     INY
 
-  @LAB_PRG14__8d7c:                         ; [$8d7c]
+  @LAB_PRG14__8d7c:
     TYA
     JMP Sprite_EnterNextAppearancePhase
 
@@ -4580,7 +4580,7 @@ SpriteUpdateHandler_Coin:                   ; [$8d6e]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::808f]
 ;============================================================================
-SpriteUpdateHandler_Enemy_Raiden:           ; [$8d80]
+SpriteUpdateHandler_Enemy_Raiden:
     JSR CurrentSprite_UpdateFlipMask        ; Update the flip mask for the
                                             ; sprite based on its facing
                                             ; direction.
@@ -4596,7 +4596,7 @@ SpriteUpdateHandler_Enemy_Raiden:           ; [$8d80]
                                             ; phase, giving phases 0 or 1.
     JMP Sprite_EnterNextAppearancePhase     ; Set that as the new phase.
 
-  @_isPhase2:                               ; [$8d96]
+  @_isPhase2:
     LDA a:SpriteUpdateCounter               ; Load the sprite's update
                                             ; counter.
     LSR A                                   ; Divide by 8.
@@ -4620,7 +4620,7 @@ SpriteUpdateHandler_Enemy_Raiden:           ; [$8d80]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a613]
 ;============================================================================
-SpriteBehavior_NecronAides:                 ; [$8da3]
+SpriteBehavior_NecronAides:
     JSR Sprite_IsBehaviorNotReady
     BNE @LAB_PRG14__8db3
     LDA #$00
@@ -4628,7 +4628,7 @@ SpriteBehavior_NecronAides:                 ; [$8da3]
     STA a:CurrentSprites_BehaviorData3,X
     JSR Sprite_SetBehaviorReady
 
-  @LAB_PRG14__8db3:                         ; [$8db3]
+  @LAB_PRG14__8db3:
     LDX a:CurrentSpriteIndex
     LDA a:CurrentSprites_Phases,X
     BMI @LAB_PRG14__8e0e
@@ -4652,19 +4652,19 @@ SpriteBehavior_NecronAides:                 ; [$8da3]
     EOR #$80
     STA a:CurrentSprites_Flags,X
 
-  @LAB_PRG14__8de4:                         ; [$8de4]
+  @LAB_PRG14__8de4:
     LDA a:SpriteUpdateCounter
     CMP #$17
     BEQ @LAB_PRG14__8def
     CMP #$75
     BNE @LAB_PRG14__8df7
 
-  @LAB_PRG14__8def:                         ; [$8def]
+  @LAB_PRG14__8def:
     LDA a:CurrentSprites_Flags,X
     EOR #$80
     STA a:CurrentSprites_Flags,X
 
-  @LAB_PRG14__8df7:                         ; [$8df7]
+  @LAB_PRG14__8df7:
     LDA a:SpriteUpdateCounter
     LSR A
     LSR A
@@ -4676,12 +4676,12 @@ SpriteBehavior_NecronAides:                 ; [$8da3]
     STA a:Arg_DeltaY_Full
     JMP Sprite_CalculateNewVertPos
 
-  @LAB_PRG14__8e0e:                         ; [$8e0e]
+  @LAB_PRG14__8e0e:
     JSR Sprites_SetCurrentSpriteCanMove
     BCC @LAB_PRG14__8e16
     JMP CurrentSprite_HandleFall
 
-  @LAB_PRG14__8e16:                         ; [$8e16]
+  @LAB_PRG14__8e16:
     LDA a:SpriteUpdateCounter
     CMP #$26
     BEQ @LAB_PRG14__8e25
@@ -4690,12 +4690,12 @@ SpriteBehavior_NecronAides:                 ; [$8da3]
     CMP #$93
     BNE @LAB_PRG14__8e2d
 
-  @LAB_PRG14__8e25:                         ; [$8e25]
+  @LAB_PRG14__8e25:
     LDA a:CurrentSprites_Flags,X
     EOR #$01
     STA a:CurrentSprites_Flags,X
 
-  @LAB_PRG14__8e2d:                         ; [$8e2d]
+  @LAB_PRG14__8e2d:
     LDA #$00
     STA a:Arg_DeltaX_Frac
     LDA #$01
@@ -4706,7 +4706,7 @@ SpriteBehavior_NecronAides:                 ; [$8da3]
 ; XREFS:
 ;     SpriteBehavior_NecronAides
 ;
-BYTE_ARRAY_PRG14__8e3a:                     ; [$8e3a]
+BYTE_ARRAY_PRG14__8e3a:
     .byte $ff                               ; [0]:
     .byte $20                               ; [1]:
 
@@ -4714,7 +4714,7 @@ BYTE_ARRAY_PRG14__8e3a:                     ; [$8e3a]
 ; XREFS:
 ;     SpriteBehavior_NecronAides
 ;
-BYTE_ARRAY_PRG14__8e3c:                     ; [$8e3c]
+BYTE_ARRAY_PRG14__8e3c:
     .byte $20                               ; [0]:
     .byte $40                               ; [1]:
     .byte $80                               ; [2]:
@@ -4724,7 +4724,7 @@ BYTE_ARRAY_PRG14__8e3c:                     ; [$8e3c]
 ; XREFS:
 ;     SpriteBehavior_NecronAides
 ;
-BYTE_ARRAY_PRG14__8e40:                     ; [$8e40]
+BYTE_ARRAY_PRG14__8e40:
     .byte $00                               ; [0]:
     .byte $00                               ; [1]:
     .byte $00                               ; [2]:
@@ -4742,7 +4742,7 @@ BYTE_ARRAY_PRG14__8e40:                     ; [$8e40]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::8091]
 ;============================================================================
-SpriteUpdateHandler_Enemy_NecronAides:      ; [$8e44]
+SpriteUpdateHandler_Enemy_NecronAides:
     JSR CurrentSprite_UpdateFlipMask        ; Update the flip mask for the
                                             ; sprite based on its facing
                                             ; direction.
@@ -4754,7 +4754,7 @@ SpriteUpdateHandler_Enemy_NecronAides:      ; [$8e44]
     BMI @_setPhase                          ; If unset, jump.
     LSR A                                   ; Divide again by 2 (total of 8).
 
-  @_setPhase:                               ; [$8e52]
+  @_setPhase:
     AND #$01                                ; Keep the odd/even bit, yielding
                                             ; a phase of 0 or 1.
     JMP Sprite_EnterNextAppearancePhase     ; Set the appearance phase.
@@ -4771,7 +4771,7 @@ SpriteUpdateHandler_Enemy_NecronAides:      ; [$8e44]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::8093]
 ;============================================================================
-SpriteUpdateHandler_Enemy_Zombie:           ; [$8e57]
+SpriteUpdateHandler_Enemy_Zombie:
     JSR CurrentSprite_UpdateFlipMask        ; Update the flip mask for the
                                             ; sprite based on its facing
                                             ; direction.
@@ -4789,7 +4789,7 @@ SpriteUpdateHandler_Enemy_Zombie:           ; [$8e57]
     LDA a:SPRITEBEHAVIOR_ENEMY_ZOMBIE_PHASES,Y
     TAY
 
-  @LAB_PRG14__8e6f:                         ; [$8e6f]
+  @LAB_PRG14__8e6f:
     TYA
     JMP Sprite_EnterNextAppearancePhase
 
@@ -4797,7 +4797,7 @@ SpriteUpdateHandler_Enemy_Zombie:           ; [$8e57]
 ; XREFS:
 ;     SpriteUpdateHandler_Enemy_Zombie
 ;
-SPRITEBEHAVIOR_ENEMY_ZOMBIE_PHASES:         ; [$8e73]
+SPRITEBEHAVIOR_ENEMY_ZOMBIE_PHASES:
     .byte $00                               ; [0]:
     .byte $01                               ; [1]:
     .byte $02                               ; [2]:
@@ -4815,7 +4815,7 @@ SPRITEBEHAVIOR_ENEMY_ZOMBIE_PHASES:         ; [$8e73]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a665]
 ;============================================================================
-SpriteBehavior_BuzzAround:                  ; [$8e77]
+SpriteBehavior_BuzzAround:
     JSR Sprite_IsBehaviorNotReady
     BNE @LAB_PRG14__8e87
     LDA #$00
@@ -4823,7 +4823,7 @@ SpriteBehavior_BuzzAround:                  ; [$8e77]
     STA a:CurrentSprites_BehaviorData2,X
     JSR Sprite_SetBehaviorReady
 
-  @LAB_PRG14__8e87:                         ; [$8e87]
+  @LAB_PRG14__8e87:
     LDA #$00
     STA a:Arg_DeltaX_Frac
     LDA #$02
@@ -4848,7 +4848,7 @@ SpriteBehavior_BuzzAround:                  ; [$8e77]
 ; XREFS:
 ;     SpriteBehavior_BuzzAround
 ;
-SPRITE_BEHAVIOR_BUZZ_AROUND_Y_FRAC:         ; [$8eb0]
+SPRITE_BEHAVIOR_BUZZ_AROUND_Y_FRAC:
     .byte $00                               ; [0]:
     .byte $00                               ; [1]:
     .byte $80                               ; [2]:
@@ -4862,7 +4862,7 @@ SPRITE_BEHAVIOR_BUZZ_AROUND_Y_FRAC:         ; [$8eb0]
 ; XREFS:
 ;     SpriteBehavior_BuzzAround
 ;
-SPRITE_BEHAVIOR_BUZZ_AROUND_X_FRAC:         ; [$8eb8]
+SPRITE_BEHAVIOR_BUZZ_AROUND_X_FRAC:
     .byte $02                               ; [0]:
     .byte $01                               ; [1]:
     .byte $00                               ; [2]:
@@ -4871,7 +4871,7 @@ SPRITE_BEHAVIOR_BUZZ_AROUND_X_FRAC:         ; [$8eb8]
     .byte $00                               ; [5]:
     .byte $00                               ; [6]:
     .byte $01                               ; [7]:
-    .byte $ff,$01                           ; [$8ec0] undefined
+    .byte $ff,$01                           ; undefined
 
 ;============================================================================
 ; TODO: Document SpriteUpdateHandler_Enemy_Hornet
@@ -4885,7 +4885,7 @@ SPRITE_BEHAVIOR_BUZZ_AROUND_X_FRAC:         ; [$8eb8]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::8095]
 ;============================================================================
-SpriteUpdateHandler_Enemy_Hornet:           ; [$8ec2]
+SpriteUpdateHandler_Enemy_Hornet:
     JSR CurrentSprite_UpdateFlipMask
     LDA a:SpriteUpdateCounter
     LSR A
@@ -4905,7 +4905,7 @@ SpriteUpdateHandler_Enemy_Hornet:           ; [$8ec2]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a615]
 ;============================================================================
-SpriteBehavior_Bihoruda:                    ; [$8ecf]
+SpriteBehavior_Bihoruda:
     JSR Sprite_IsBehaviorNotReady
     BNE @LAB_PRG14__8ee1
     LDA #$00
@@ -4914,7 +4914,7 @@ SpriteBehavior_Bihoruda:                    ; [$8ecf]
     STA a:CurrentSprites_BehaviorData3,X
     JSR Sprite_SetBehaviorReady
 
-  @LAB_PRG14__8ee1:                         ; [$8ee1]
+  @LAB_PRG14__8ee1:
     LDA a:CurrentSprites_BehaviorData2,X
     LDY #$02
     JSR Sprites_CalcYFromGravity
@@ -4949,7 +4949,7 @@ SpriteBehavior_Bihoruda:                    ; [$8ecf]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::8097]
 ;============================================================================
-SpriteUpdateHandler_Enemy_Bihoruda:         ; [$8f18]
+SpriteUpdateHandler_Enemy_Bihoruda:
     JSR CurrentSprite_UpdateFlipMask
     LDY #$00
     LDA a:CurrentSprites_BehaviorData2,X
@@ -4960,7 +4960,7 @@ SpriteUpdateHandler_Enemy_Bihoruda:         ; [$8f18]
     BCC @LAB_PRG14__8f2a
     INY
 
-  @LAB_PRG14__8f2a:                         ; [$8f2a]
+  @LAB_PRG14__8f2a:
     TYA
     JMP Sprite_EnterNextAppearancePhase
 
@@ -4976,7 +4976,7 @@ SpriteUpdateHandler_Enemy_Bihoruda:         ; [$8f18]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a617]
 ;============================================================================
-SpriteBehavior_Lilith:                      ; [$8f2e]
+SpriteBehavior_Lilith:
     JSR Sprite_IsBehaviorNotReady
     BNE @LAB_PRG14__8f51
     LDA #$00
@@ -4991,12 +4991,12 @@ SpriteBehavior_Lilith:                      ; [$8f2e]
     JSR Sprite_SetBehaviorReady
     JSR BScript_Action_RandomlyFlipXDirection
 
-  @LAB_PRG14__8f51:                         ; [$8f51]
+  @LAB_PRG14__8f51:
     LDY a:CurrentSprites_Phases,X
     BEQ @LAB_PRG14__8f59
     JMP SpriteBehavior__8f9a
 
-  @LAB_PRG14__8f59:                         ; [$8f59]
+  @LAB_PRG14__8f59:
     LDA #$01
     STA a:Arg_DeltaX_Full
     LDA #$00
@@ -5014,7 +5014,7 @@ SpriteBehavior_Lilith:                      ; [$8f2e]
     BNE @LAB_PRG14__8f83
     JSR BScript_Action_FlipYDirection
 
-  @LAB_PRG14__8f83:                         ; [$8f83]
+  @LAB_PRG14__8f83:
     DEC a:CurrentSprites_InternalBehaviorStates,X
     BNE @_return
     INC a:CurrentSprites_Phases,X
@@ -5024,14 +5024,14 @@ SpriteBehavior_Lilith:                      ; [$8f2e]
     STA a:CurrentSprites_BehaviorData2,X
     STA a:CurrentSprites_BehaviorData3,X
 
-  @_return:                                 ; [$8f99]
+  @_return:
     RTS
 
     ;
     ; XREFS:
     ;     SpriteBehavior_Lilith
     ;
-SpriteBehavior__8f9a:                       ; [$8f9a]
+SpriteBehavior__8f9a:
     LDA a:CurrentSprites_BehaviorData2,X
     LDY #$03
     JSR Sprites_CalcYFromGravity
@@ -5044,7 +5044,7 @@ SpriteBehavior__8f9a:                       ; [$8f9a]
     BNE @LAB_PRG14__8fb7
     JSR BScript_Action_FacePlayerX
 
-  @LAB_PRG14__8fb7:                         ; [$8fb7]
+  @LAB_PRG14__8fb7:
     INC a:CurrentSprites_BehaviorData3,X
     LDA a:CurrentSprites_BehaviorData3,X
     CMP #$27
@@ -5053,21 +5053,21 @@ SpriteBehavior__8f9a:                       ; [$8f9a]
     STA a:CurrentSprites_BehaviorData3,X
     JSR BScript_Action_FacePlayerY
 
-  @LAB_PRG14__8fc9:                         ; [$8fc9]
+  @LAB_PRG14__8fc9:
     LDA #$01
     STA a:Arg_DeltaY_Full
     LDA #$00
     STA a:Arg_DeltaY_Frac
     JMP Sprite_Maybe_TurnAroundIfAtScreenEdgeVert
 
-  @_return:                                 ; [$8fd6]
+  @_return:
     RTS
 
 
 ;============================================================================
 ; MAYBE DEADCODE
 ;============================================================================
-FUN_PRG14__8fd7:                            ; [$8fd7]
+FUN_PRG14__8fd7:
     LDA #$00
 
     ;
@@ -5086,7 +5086,7 @@ FUN_PRG14__8fd7:                            ; [$8fd7]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::8099]
 ;============================================================================
-SpriteUpdateHandler_Enemy_Lilith:           ; [$8fd9]
+SpriteUpdateHandler_Enemy_Lilith:
     JSR CurrentSprite_UpdateFlipMask
     LDA a:SpriteUpdateCounter
     LSR A
@@ -5107,7 +5107,7 @@ SpriteUpdateHandler_Enemy_Lilith:           ; [$8fd9]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a619]
 ;============================================================================
-SpriteBehavior_Yuinaru:                     ; [$8fe7]
+SpriteBehavior_Yuinaru:
     JSR Sprite_IsBehaviorNotReady
     BNE @LAB_PRG14__8ff9
     LDA #$00
@@ -5116,7 +5116,7 @@ SpriteBehavior_Yuinaru:                     ; [$8fe7]
     STA a:CurrentSprites_BehaviorData3,X
     JSR Sprite_SetBehaviorReady
 
-  @LAB_PRG14__8ff9:                         ; [$8ff9]
+  @LAB_PRG14__8ff9:
     LDA a:CurrentSprites_BehaviorData2,X
     LDY #$01
     JSR Sprites_CalcYFromGravity
@@ -5152,7 +5152,7 @@ SpriteBehavior_Yuinaru:                     ; [$8fe7]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::809d]
 ;============================================================================
-SpriteUpdateHandler_Enemy_Yuinaru:          ; [$9033]
+SpriteUpdateHandler_Enemy_Yuinaru:
     JSR CurrentSprite_UpdateFlipMask
     LDY #$00
     LDA a:CurrentSprites_BehaviorData2,X
@@ -5160,7 +5160,7 @@ SpriteUpdateHandler_Enemy_Yuinaru:          ; [$9033]
     BEQ @LAB_PRG14__9040
     INY
 
-  @LAB_PRG14__9040:                         ; [$9040]
+  @LAB_PRG14__9040:
     TYA
     JMP Sprite_EnterNextAppearancePhase
 
@@ -5176,7 +5176,7 @@ SpriteUpdateHandler_Enemy_Yuinaru:          ; [$9033]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::809f]
 ;============================================================================
-SpriteUpdateHandler_Enemy_Snowman:          ; [$9044]
+SpriteUpdateHandler_Enemy_Snowman:
     JSR CurrentSprite_UpdateFlipMask
     LDY #$00
     LDA a:CurrentSprites_Phases,X
@@ -5189,11 +5189,11 @@ SpriteUpdateHandler_Enemy_Snowman:          ; [$9044]
     BNE @LAB_PRG14__9059
     LSR A
 
-  @LAB_PRG14__9059:                         ; [$9059]
+  @LAB_PRG14__9059:
     AND #$01
     TAY
 
-  @LAB_PRG14__905c:                         ; [$905c]
+  @LAB_PRG14__905c:
     TYA
     JMP Sprite_EnterNextAppearancePhase
 
@@ -5209,14 +5209,14 @@ SpriteUpdateHandler_Enemy_Snowman:          ; [$9044]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a61b]
 ;============================================================================
-SpriteBehavior_Nash:                        ; [$9060]
+SpriteBehavior_Nash:
     JSR Sprite_IsBehaviorNotReady
     BNE @LAB_PRG14__906d
     LDA #$78
     STA a:CurrentSprites_BehaviorData2,X
     JSR Sprite_SetBehaviorReady
 
-  @LAB_PRG14__906d:                         ; [$906d]
+  @LAB_PRG14__906d:
     LDY a:CurrentSprites_Phases,X
     BEQ @LAB_PRG14__908f
     DEY
@@ -5228,16 +5228,16 @@ SpriteBehavior_Nash:                        ; [$9060]
     BNE @_return
     JMP FUN_PRG14__a0a0
 
-  @LAB_PRG14__9084:                         ; [$9084]
+  @LAB_PRG14__9084:
     LDA #$00
     STA a:CurrentSprites_Phases,X
     LDA #$78
     STA a:CurrentSprites_BehaviorData2,X
 
-  @_return:                                 ; [$908e]
+  @_return:
     RTS
 
-  @LAB_PRG14__908f:                         ; [$908f]
+  @LAB_PRG14__908f:
     JSR Sprite_SetVisible
     DEC a:CurrentSprites_BehaviorData2,X
     BNE @_return1
@@ -5256,14 +5256,14 @@ SpriteBehavior_Nash:                        ; [$9060]
     CMP #$f0
     BCC @_return1
 
-  @LAB_PRG14__90b5:                         ; [$90b5]
+  @LAB_PRG14__90b5:
     LDA Player_PosX_Block
     SEC
     SBC #$20
     STA CurrentSprites_XPos_Full,X
     RTS
 
-  @LAB_PRG14__90bd:                         ; [$90bd]
+  @LAB_PRG14__90bd:
     LDA Player_PosX_Block
     SEC
     SBC #$20
@@ -5274,10 +5274,10 @@ SpriteBehavior_Nash:                        ; [$9060]
     ADC #$20
     STA CurrentSprites_XPos_Full,X
 
-  @_return1:                                ; [$90cd]
+  @_return1:
     RTS
 
-  @LAB_PRG14__90ce:                         ; [$90ce]
+  @LAB_PRG14__90ce:
     JSR BScript_Action_FacePlayerX
     DEC a:CurrentSprites_BehaviorData2,X
     BNE @_return2
@@ -5285,7 +5285,7 @@ SpriteBehavior_Nash:                        ; [$9060]
     STA a:CurrentSprites_BehaviorData2,X
     INC a:CurrentSprites_Phases,X
 
-  @_return2:                                ; [$90de]
+  @_return2:
     RTS
 
 ;============================================================================
@@ -5300,7 +5300,7 @@ SpriteBehavior_Nash:                        ; [$9060]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::80a1]
 ;============================================================================
-SpriteUpdateHandler_Enemy_Nash:             ; [$90df]
+SpriteUpdateHandler_Enemy_Nash:
     JSR CurrentSprite_UpdateFlipMask
     LDA a:CurrentSprites_Phases,X
     BEQ @_return
@@ -5312,10 +5312,10 @@ SpriteUpdateHandler_Enemy_Nash:             ; [$90df]
     LDY #$00
     BEQ @LAB_PRG14__910b
 
-  @_return:                                 ; [$90f6]
+  @_return:
     RTS
 
-  @LAB_PRG14__90f7:                         ; [$90f7]
+  @LAB_PRG14__90f7:
     LDY #$00
     LDA a:CurrentSprites_BehaviorData2,X
     SEC
@@ -5327,7 +5327,7 @@ SpriteUpdateHandler_Enemy_Nash:             ; [$90df]
     BCS @LAB_PRG14__910b
     LDY #$02
 
-  @LAB_PRG14__910b:                         ; [$910b]
+  @LAB_PRG14__910b:
     TYA
     JMP Sprite_EnterNextAppearancePhase
 
@@ -5343,7 +5343,7 @@ SpriteUpdateHandler_Enemy_Nash:             ; [$90df]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::80a3]
 ;============================================================================
-SpriteUpdateHandler_Enemy_FireGiant:        ; [$910f]
+SpriteUpdateHandler_Enemy_FireGiant:
     JSR CurrentSprite_UpdateFlipMask
     LDY #$02
     LDA a:CurrentSprites_Phases,X
@@ -5355,7 +5355,7 @@ SpriteUpdateHandler_Enemy_FireGiant:        ; [$910f]
     BEQ @LAB_PRG14__9125
     INY
 
-  @LAB_PRG14__9125:                         ; [$9125]
+  @LAB_PRG14__9125:
     TYA
     JMP Sprite_EnterNextAppearancePhase
 
@@ -5372,14 +5372,14 @@ SpriteUpdateHandler_Enemy_FireGiant:        ; [$910f]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a667]
 ;============================================================================
-SpriteBehavior_Ishiisu:                     ; [$9129]
+SpriteBehavior_Ishiisu:
     JSR Sprite_IsBehaviorNotReady
     BNE @LAB_PRG14__9136
     LDA #$00
     STA a:CurrentSprites_Phases,X
     JSR Sprite_SetBehaviorReady
 
-  @LAB_PRG14__9136:                         ; [$9136]
+  @LAB_PRG14__9136:
     LDA a:CurrentSprites_Phases,X
     LSR A
     BCS @LAB_PRG14__9176
@@ -5390,7 +5390,7 @@ SpriteBehavior_Ishiisu:                     ; [$9129]
     EOR #$ff
     ADC #$01
 
-  @LAB_PRG14__9147:                         ; [$9147]
+  @LAB_PRG14__9147:
     CMP #$20
     BCC @LAB_PRG14__915e
     JSR BScript_Action_FacePlayerX
@@ -5401,7 +5401,7 @@ SpriteBehavior_Ishiisu:                     ; [$9129]
     JSR Sprite_MoveHorizAndTurnAroundIfNeeded
     JMP SpriteBehavior_Ishiisu_Something_915b
 
-  @LAB_PRG14__915e:                         ; [$915e]
+  @LAB_PRG14__915e:
     LDA a:CurrentSprites_Flags,X
     AND #$01
     TAY
@@ -5413,10 +5413,10 @@ SpriteBehavior_Ishiisu:                     ; [$9129]
     LDA #$1e
     STA a:CurrentSprites_BehaviorData2,X
 
-  @_return1:                                ; [$9175]
+  @_return1:
     RTS
 
-  @LAB_PRG14__9176:                         ; [$9176]
+  @LAB_PRG14__9176:
     JSR BScript_Action_FacePlayerX
     DEC a:CurrentSprites_BehaviorData2,X
     LDA a:CurrentSprites_BehaviorData2,X
@@ -5425,17 +5425,17 @@ SpriteBehavior_Ishiisu:                     ; [$9129]
     BNE @_return2
     JMP FUN_PRG14__a0a0
 
-  @LAB_PRG14__9188:                         ; [$9188]
+  @LAB_PRG14__9188:
     INC a:CurrentSprites_Phases,X
 
-  @_return2:                                ; [$918b]
+  @_return2:
     RTS
 
 ;
 ; XREFS:
 ;     SpriteBehavior_Ishiisu
 ;
-BYTE_ARRAY_PRG14__918c:                     ; [$918c]
+BYTE_ARRAY_PRG14__918c:
     .byte $40                               ; [0]:
     .byte $00                               ; [1]:
 
@@ -5451,7 +5451,7 @@ BYTE_ARRAY_PRG14__918c:                     ; [$918c]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::80a5]
 ;============================================================================
-SpriteUpdateHandler_Enemy_Ishiisu:          ; [$918e]
+SpriteUpdateHandler_Enemy_Ishiisu:
     JSR CurrentSprite_UpdateFlipMask
     LDA a:CurrentSprites_Phases,X
     LSR A
@@ -5463,14 +5463,14 @@ SpriteUpdateHandler_Enemy_Ishiisu:          ; [$918e]
     LDY #$01
     BNE @LAB_PRG14__91af
 
-  @LAB_PRG14__91a4:                         ; [$91a4]
+  @LAB_PRG14__91a4:
     LDY #$02
     LDA a:CurrentSprites_BehaviorData2,X
     CMP #$14
     BCS @LAB_PRG14__91af
     LDY #$03
 
-  @LAB_PRG14__91af:                         ; [$91af]
+  @LAB_PRG14__91af:
     TYA
     JMP Sprite_EnterNextAppearancePhase
 
@@ -5486,7 +5486,7 @@ SpriteUpdateHandler_Enemy_Ishiisu:          ; [$918e]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a669]
 ;============================================================================
-SpriteBehavior_ExecutionHood:               ; [$91b3]
+SpriteBehavior_ExecutionHood:
     JSR Sprite_IsBehaviorNotReady
     BNE @LAB_PRG14__91c3
     LDA #$00
@@ -5494,7 +5494,7 @@ SpriteBehavior_ExecutionHood:               ; [$91b3]
     STA a:CurrentSprites_Phases,X
     JSR Sprite_SetBehaviorReady
 
-  @LAB_PRG14__91c3:                         ; [$91c3]
+  @LAB_PRG14__91c3:
     LDA a:CurrentSprites_Phases,X
     AND #$03
     CMP #$03
@@ -5518,7 +5518,7 @@ SpriteBehavior_ExecutionHood:               ; [$91b3]
     BNE @LAB_PRG14__91fb
     JSR BScript_Action_FlipYDirection
 
-  @LAB_PRG14__91fb:                         ; [$91fb]
+  @LAB_PRG14__91fb:
     LDA a:CurrentSprites_BehaviorData3,X
     AND #$0f
     BNE @_return1
@@ -5526,10 +5526,10 @@ SpriteBehavior_ExecutionHood:               ; [$91b3]
     LDA #$0f
     STA a:CurrentSprites_BehaviorData2,X
 
-  @_return1:                                ; [$920a]
+  @_return1:
     RTS
 
-  @LAB_PRG14__920b:                         ; [$920b]
+  @LAB_PRG14__920b:
     JSR BScript_Action_FacePlayerX
     DEC a:CurrentSprites_BehaviorData2,X
     BNE @_return2
@@ -5538,7 +5538,7 @@ SpriteBehavior_ExecutionHood:               ; [$91b3]
     STA a:CurrentSprites_BehaviorData3,X
     JMP SpriteBehavior_ExecutionHood__a093
 
-  @_return2:                                ; [$921e]
+  @_return2:
     RTS
 
 ;============================================================================
@@ -5553,7 +5553,7 @@ SpriteBehavior_ExecutionHood:               ; [$91b3]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::80a7]
 ;============================================================================
-SpriteUpdateHandler_Enemy_ExecutionHood:    ; [$921f]
+SpriteUpdateHandler_Enemy_ExecutionHood:
     JSR CurrentSprite_UpdateFlipMask
     LDY #$00
     LDA a:CurrentSprites_Phases,X
@@ -5565,7 +5565,7 @@ SpriteUpdateHandler_Enemy_ExecutionHood:    ; [$921f]
     BEQ @LAB_PRG14__9235
     INY
 
-  @LAB_PRG14__9235:                         ; [$9235]
+  @LAB_PRG14__9235:
     TYA
     JMP Sprite_EnterNextAppearancePhase
 
@@ -5582,7 +5582,7 @@ SpriteUpdateHandler_Enemy_ExecutionHood:    ; [$921f]
 ; XREFS:
 ;     BSCRIPT_ACTIONS [$PRG14::a7a2]
 ;============================================================================
-BScript_Action_CastMagic:                   ; [$9239]
+BScript_Action_CastMagic:
     JSR Sprites_HasMaxOnScreen
     BCS @_return
     LDA a:CurrentSprites_Flags,X
@@ -5600,7 +5600,7 @@ BScript_Action_CastMagic:                   ; [$9239]
     STA a:CurrentSprites_PPUOffsets,Y
     JMP Sprite_Maybe_ResetState
 
-  @_return:                                 ; [$9260]
+  @_return:
     RTS
 
 ;============================================================================
@@ -5615,7 +5615,7 @@ BScript_Action_CastMagic:                   ; [$9239]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::80b1]
 ;============================================================================
-SpriteUpdateHandler_Enemy_Charron:          ; [$9261]
+SpriteUpdateHandler_Enemy_Charron:
     JSR CurrentSprite_UpdateFlipMask
     LDA a:CurrentSprites_Phases,X
     BEQ @LAB_PRG14__927b
@@ -5630,13 +5630,13 @@ SpriteUpdateHandler_Enemy_Charron:          ; [$9261]
     AND #$01
     JMP @LAB_PRG14__927d
 
-  @LAB_PRG14__927b:                         ; [$927b]
+  @LAB_PRG14__927b:
     LDA #$01
 
-  @LAB_PRG14__927d:                         ; [$927d]
+  @LAB_PRG14__927d:
     JMP Sprite_EnterNextAppearancePhase
 
-  @LAB_PRG14__9280:                         ; [$9280]
+  @LAB_PRG14__9280:
     LDA #$02
     BNE @LAB_PRG14__927d
 
@@ -5652,7 +5652,7 @@ SpriteUpdateHandler_Enemy_Charron:          ; [$9261]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a623]
 ;============================================================================
-_thunk_Sprite_ClearBehaviorReadyAndSetSubtypeBit7: ; [$9284]
+_thunk_Sprite_ClearBehaviorReadyAndSetSubtypeBit7:
     JMP Sprite_FinishBehavior
 
 ;============================================================================
@@ -5667,7 +5667,7 @@ _thunk_Sprite_ClearBehaviorReadyAndSetSubtypeBit7: ; [$9284]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::80b5]
 ;============================================================================
-SpriteUpdateHandler_Enemy_Geributa:         ; [$9287]
+SpriteUpdateHandler_Enemy_Geributa:
     JSR CurrentSprite_UpdateFlipMask
     LDY #$02
     LDA a:CurrentSprites_Phases,X
@@ -5678,7 +5678,7 @@ SpriteUpdateHandler_Enemy_Geributa:         ; [$9287]
     BEQ @LAB_PRG14__929b
     INY
 
-  @LAB_PRG14__929b:                         ; [$929b]
+  @LAB_PRG14__929b:
     TYA
     JMP Sprite_EnterNextAppearancePhase
 
@@ -5694,7 +5694,7 @@ SpriteUpdateHandler_Enemy_Geributa:         ; [$9287]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::80b7]
 ;============================================================================
-SpriteUpdateHandler_Enemy_Sugata:           ; [$929f]
+SpriteUpdateHandler_Enemy_Sugata:
     JSR CurrentSprite_UpdateFlipMask
     LDY #$00
     LDA a:SpriteUpdateCounter
@@ -5702,7 +5702,7 @@ SpriteUpdateHandler_Enemy_Sugata:           ; [$929f]
     BEQ @LAB_PRG14__92ac
     INY
 
-  @LAB_PRG14__92ac:                         ; [$92ac]
+  @LAB_PRG14__92ac:
     TYA
     JMP Sprite_EnterNextAppearancePhase
 
@@ -5718,7 +5718,7 @@ SpriteUpdateHandler_Enemy_Sugata:           ; [$929f]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::80b9]
 ;============================================================================
-SpriteUpdateHandler_Enemy_Grimlock:         ; [$92b0]
+SpriteUpdateHandler_Enemy_Grimlock:
     JSR CurrentSprite_UpdateFlipMask
     LDY #$03
     LDA a:CurrentSprites_Phases,X
@@ -5735,7 +5735,7 @@ SpriteUpdateHandler_Enemy_Grimlock:         ; [$92b0]
     BEQ @LAB_PRG14__92cf
     LSR A
 
-  @LAB_PRG14__92cf:                         ; [$92cf]
+  @LAB_PRG14__92cf:
     LSR A
     LSR A
     AND #$03
@@ -5743,7 +5743,7 @@ SpriteUpdateHandler_Enemy_Grimlock:         ; [$92b0]
     LDA a:SPRITE_GRIMLOCK_PHASES,Y
     TAY
 
-  @LAB_PRG14__92d8:                         ; [$92d8]
+  @LAB_PRG14__92d8:
     TYA
     JMP Sprite_EnterNextAppearancePhase
 
@@ -5751,7 +5751,7 @@ SpriteUpdateHandler_Enemy_Grimlock:         ; [$92b0]
 ; XREFS:
 ;     SpriteUpdateHandler_Enemy_Grimlock
 ;
-SPRITE_GRIMLOCK_PHASES:                     ; [$92dc]
+SPRITE_GRIMLOCK_PHASES:
     .byte $00                               ; [0]:
     .byte $01                               ; [1]:
     .byte $02                               ; [2]:
@@ -5769,21 +5769,21 @@ SPRITE_GRIMLOCK_PHASES:                     ; [$92dc]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a627]
 ;============================================================================
-SpriteBehavior_GiantBees:                   ; [$92e0]
+SpriteBehavior_GiantBees:
     JSR Sprite_IsBehaviorNotReady
     BNE @LAB_PRG14__92ed
     LDA #$00
     STA a:CurrentSprites_Phases,X
     JSR Sprite_SetBehaviorReady
 
-  @LAB_PRG14__92ed:                         ; [$92ed]
+  @LAB_PRG14__92ed:
     LDY a:CurrentSprites_Phases,X
     BEQ @LAB_PRG14__92f8
     DEY
     BEQ @LAB_PRG14__932b
     JMP @LAB_PRG14__9360
 
-  @LAB_PRG14__92f8:                         ; [$92f8]
+  @LAB_PRG14__92f8:
     LDA #$00
     STA a:Arg_DeltaY_Frac
     LDA #$04
@@ -5799,10 +5799,10 @@ SpriteBehavior_GiantBees:                   ; [$92e0]
     JSR BScript_Action_FacePlayerX
     JSR BScript_Action_FacePlayerY
 
-  @_return1:                                ; [$931c]
+  @_return1:
     RTS
 
-  @LAB_PRG14__931d:                         ; [$931d]
+  @LAB_PRG14__931d:
     INC a:CurrentSprites_Phases,X
     LDA #$40
     STA a:CurrentSprites_BehaviorData2,X
@@ -5810,7 +5810,7 @@ SpriteBehavior_GiantBees:                   ; [$92e0]
     STA a:CurrentSprites_BehaviorData3,X
     RTS
 
-  @LAB_PRG14__932b:                         ; [$932b]
+  @LAB_PRG14__932b:
     LDA a:CurrentSprites_BehaviorData3,X
     BEQ @LAB_PRG14__931d
     JSR Sprite_CalcDistanceYToPlayer
@@ -5833,10 +5833,10 @@ SpriteBehavior_GiantBees:                   ; [$92e0]
     LDA #$00
     STA a:CurrentSprites_BehaviorData3,X
 
-  @_return2:                                ; [$935f]
+  @_return2:
     RTS
 
-  @LAB_PRG14__9360:                         ; [$9360]
+  @LAB_PRG14__9360:
     JSR BScript_Action_FacePlayerX
     LDA #$c0
     STA a:Arg_DeltaX_Frac
@@ -5859,7 +5859,7 @@ SpriteBehavior_GiantBees:                   ; [$92e0]
     EOR #$80
     STA a:CurrentSprites_Flags,X
 
-  @LAB_PRG14__9397:                         ; [$9397]
+  @LAB_PRG14__9397:
     LDA a:CurrentSprites_BehaviorData3,X
     AND #$7f
     BNE @_return
@@ -5869,7 +5869,7 @@ SpriteBehavior_GiantBees:                   ; [$92e0]
     AND #$7f
     STA a:CurrentSprites_Flags,X
 
-  @_return:                                 ; [$93ab]
+  @_return:
     RTS
 
 ;============================================================================
@@ -5884,7 +5884,7 @@ SpriteBehavior_GiantBees:                   ; [$92e0]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::80bb]
 ;============================================================================
-SpriteUpdateHandler_Enemy_GiantBees:        ; [$93ac]
+SpriteUpdateHandler_Enemy_GiantBees:
     JSR CurrentSprite_UpdateFlipMask
     LDY #$00
     LDA a:SpriteUpdateCounter
@@ -5892,7 +5892,7 @@ SpriteUpdateHandler_Enemy_GiantBees:        ; [$93ac]
     BEQ @LAB_PRG14__93b9
     INY
 
-  @LAB_PRG14__93b9:                         ; [$93b9]
+  @LAB_PRG14__93b9:
     TYA
     JMP Sprite_EnterNextAppearancePhase
 
@@ -5908,7 +5908,7 @@ SpriteUpdateHandler_Enemy_GiantBees:        ; [$93ac]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::80bd]
 ;============================================================================
-SpriteUpdateHandler_Enemy_Myconid:          ; [$93bd]
+SpriteUpdateHandler_Enemy_Myconid:
     JSR CurrentSprite_UpdateFlipMask
     LDA a:CurrentSprites_Phases,X
     CMP #$01
@@ -5920,14 +5920,14 @@ SpriteUpdateHandler_Enemy_Myconid:          ; [$93bd]
     LDA #$00
     JMP Sprite_EnterNextAppearancePhase
 
-  @LAB_PRG14__93d4:                         ; [$93d4]
+  @LAB_PRG14__93d4:
     TAY
     LDA a:SpriteUpdateCounter
     CPY #$05
     BEQ @LAB_PRG14__93dd
     LSR A
 
-  @LAB_PRG14__93dd:                         ; [$93dd]
+  @LAB_PRG14__93dd:
     LSR A
     LSR A
     LSR A
@@ -5946,7 +5946,7 @@ SpriteUpdateHandler_Enemy_Myconid:          ; [$93bd]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a629]
 ;============================================================================
-SpriteBehavior_Naga:                        ; [$93e5]
+SpriteBehavior_Naga:
     JSR Sprite_IsBehaviorNotReady
     BNE @LAB_PRG14__93f5
     LDA #$00
@@ -5954,7 +5954,7 @@ SpriteBehavior_Naga:                        ; [$93e5]
     STA a:CurrentSprites_Phases,X
     JSR Sprite_SetBehaviorReady
 
-  @LAB_PRG14__93f5:                         ; [$93f5]
+  @LAB_PRG14__93f5:
     JSR BScript_Action_FacePlayerX
     LDA a:CurrentSprites_BehaviorData3,X
     LDY #$04
@@ -5973,7 +5973,7 @@ SpriteBehavior_Naga:                        ; [$93e5]
     EOR #$80
     STA a:CurrentSprites_Flags,X
 
-  @LAB_PRG14__9422:                         ; [$9422]
+  @LAB_PRG14__9422:
     JSR Sprite_CalcDistanceYToPlayer
     CMP #$10
     BCC @_return
@@ -5988,7 +5988,7 @@ SpriteBehavior_Naga:                        ; [$93e5]
     PLA
     STA a:CurrentSprites_Flags,X
 
-  @_return:                                 ; [$9441]
+  @_return:
     RTS
 
 ;============================================================================
@@ -6003,7 +6003,7 @@ SpriteBehavior_Naga:                        ; [$93e5]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::80bf]
 ;============================================================================
-SpriteUpdateHandler_Enemy_Naga:             ; [$9442]
+SpriteUpdateHandler_Enemy_Naga:
     JSR CurrentSprite_UpdateFlipMask
     LDY #$00
     LDA a:SpriteUpdateCounter
@@ -6011,7 +6011,7 @@ SpriteUpdateHandler_Enemy_Naga:             ; [$9442]
     BEQ @LAB_PRG14__944f
     INY
 
-  @LAB_PRG14__944f:                         ; [$944f]
+  @LAB_PRG14__944f:
     TYA
     JMP Sprite_EnterNextAppearancePhase
 
@@ -6027,7 +6027,7 @@ SpriteUpdateHandler_Enemy_Naga:             ; [$9442]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::80c1]
 ;============================================================================
-SpriteUpdateHandler_Enemy_Unused29:         ; [$9453]
+SpriteUpdateHandler_Enemy_Unused29:
     JSR CurrentSprite_UpdateFlipMask
     LDY #$03
     LDA a:CurrentSprites_Phases,X
@@ -6040,11 +6040,11 @@ SpriteUpdateHandler_Enemy_Unused29:         ; [$9453]
     BEQ @LAB_PRG14__946c
     LDY #$02
 
-  @LAB_PRG14__946c:                         ; [$946c]
+  @LAB_PRG14__946c:
     TYA
     JMP Sprite_EnterNextAppearancePhase
 
-  @LAB_PRG14__9470:                         ; [$9470]
+  @LAB_PRG14__9470:
     LDY #$00
     LDA a:SpriteUpdateCounter
     AND #$10
@@ -6064,7 +6064,7 @@ SpriteUpdateHandler_Enemy_Unused29:         ; [$9453]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::80c3]
 ;============================================================================
-SpriteUpdateHandler_Enemy_GiantStrider:     ; [$947d]
+SpriteUpdateHandler_Enemy_GiantStrider:
     JSR CurrentSprite_UpdateFlipMask
     LDY #$02
     LDA a:CurrentSprites_Phases,X
@@ -6076,7 +6076,7 @@ SpriteUpdateHandler_Enemy_GiantStrider:     ; [$947d]
     BEQ @LAB_PRG14__9493
     INY
 
-  @LAB_PRG14__9493:                         ; [$9493]
+  @LAB_PRG14__9493:
     TYA
     JMP Sprite_EnterNextAppearancePhase
 
@@ -6092,19 +6092,19 @@ SpriteUpdateHandler_Enemy_GiantStrider:     ; [$947d]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a637]
 ;============================================================================
-SpriteBehavior_SirGawaineWolfman:           ; [$9497]
+SpriteBehavior_SirGawaineWolfman:
     JSR Sprite_IsBehaviorNotReady
     BNE @LAB_PRG14__94a4
     LDA #$00
     STA a:CurrentSprites_Phases,X
     JSR Sprite_SetBehaviorReady
 
-  @LAB_PRG14__94a4:                         ; [$94a4]
+  @LAB_PRG14__94a4:
     JSR Sprites_SetCurrentSpriteCanMove
     BCC @LAB_PRG14__94ac
     JSR CurrentSprite_HandleFall
 
-  @LAB_PRG14__94ac:                         ; [$94ac]
+  @LAB_PRG14__94ac:
     LDA #$00
     STA a:CurrentSprites_Phases,X
     JSR Sprite_CalcDistanceXToPlayer
@@ -6122,10 +6122,10 @@ SpriteBehavior_SirGawaineWolfman:           ; [$9497]
     BEQ @_return1
     INC a:CurrentSprites_Phases,X
 
-  @_return1:                                ; [$94d4]
+  @_return1:
     RTS
 
-  @LAB_PRG14__94d5:                         ; [$94d5]
+  @LAB_PRG14__94d5:
     LDA #$01
     STA a:CurrentSprites_Phases,X
     LDA Player_Flags
@@ -6138,12 +6138,12 @@ SpriteBehavior_SirGawaineWolfman:           ; [$9497]
     BEQ @LAB_PRG14__94ee
     LDY #$02
 
-  @LAB_PRG14__94ee:                         ; [$94ee]
+  @LAB_PRG14__94ee:
     TYA
     STA a:CurrentSprites_Phases,X
     RTS
 
-  @LAB_PRG14__94f3:                         ; [$94f3]
+  @LAB_PRG14__94f3:
     LDA #$00
     STA a:CurrentSprites_Phases,X
     JSR BScript_Action_FacePlayerX
@@ -6157,7 +6157,7 @@ SpriteBehavior_SirGawaineWolfman:           ; [$9497]
     BNE @_return2
     INC a:CurrentSprites_Phases,X
 
-  @_return2:                                ; [$9512]
+  @_return2:
     RTS
 
 ;============================================================================
@@ -6173,7 +6173,7 @@ SpriteBehavior_SirGawaineWolfman:           ; [$9497]
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::80c5]
 ;     thunk_SpriteUpdateHandler_Enemy_SirGawaine_Wolfman
 ;============================================================================
-SpriteUpdateHandler_Enemy_SirGawaine_Wolfman: ; [$9513]
+SpriteUpdateHandler_Enemy_SirGawaine_Wolfman:
     JSR CurrentSprite_UpdateFlipMask
     LDA a:CurrentSprites_Phases,X
     JMP Sprite_EnterNextAppearancePhase
@@ -6190,7 +6190,7 @@ SpriteUpdateHandler_Enemy_SirGawaine_Wolfman: ; [$9513]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::80c7]
 ;============================================================================
-SpriteUpdateHandler_Enemy_Maskman:          ; [$951c]
+SpriteUpdateHandler_Enemy_Maskman:
     JSR CurrentSprite_UpdateFlipMask
     LDY #$04
     LDA a:CurrentSprites_Phases,X
@@ -6202,7 +6202,7 @@ SpriteUpdateHandler_Enemy_Maskman:          ; [$951c]
     BEQ @LAB_PRG14__9531
     INY
 
-  @LAB_PRG14__9531:                         ; [$9531]
+  @LAB_PRG14__9531:
     TYA
     JMP Sprite_EnterNextAppearancePhase
 
@@ -6218,7 +6218,7 @@ SpriteUpdateHandler_Enemy_Maskman:          ; [$951c]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::80c9]
 ;============================================================================
-thunk_SpriteUpdateHandler_Enemy_SirGawaine_Wolfman: ; [$9535]
+thunk_SpriteUpdateHandler_Enemy_SirGawaine_Wolfman:
     JMP SpriteUpdateHandler_Enemy_SirGawaine_Wolfman
 
 ;============================================================================
@@ -6233,7 +6233,7 @@ thunk_SpriteUpdateHandler_Enemy_SirGawaine_Wolfman: ; [$9535]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a62b]
 ;============================================================================
-SpriteBehavior_Yareeka:                     ; [$9538]
+SpriteBehavior_Yareeka:
     JSR Sprite_IsBehaviorNotReady
     BNE @LAB_PRG14__9548
     LDA #$00
@@ -6241,7 +6241,7 @@ SpriteBehavior_Yareeka:                     ; [$9538]
     STA a:CurrentSprites_Phases,X
     JSR Sprite_SetBehaviorReady
 
-  @LAB_PRG14__9548:                         ; [$9548]
+  @LAB_PRG14__9548:
     LDY a:CurrentSprites_Phases,X
     CPY #$02
     BEQ @LAB_PRG14__9580
@@ -6255,10 +6255,10 @@ SpriteBehavior_Yareeka:                     ; [$9538]
     LDA #$40
     STA a:CurrentSprites_BehaviorData2,X
 
-  @_return1:                                ; [$9564]
+  @_return1:
     RTS
 
-  @LAB_PRG14__9565:                         ; [$9565]
+  @LAB_PRG14__9565:
     LDA #$02
     STA a:Arg_DeltaX_Full
     LDA #$00
@@ -6270,10 +6270,10 @@ SpriteBehavior_Yareeka:                     ; [$9538]
     LDA #$40
     STA a:CurrentSprites_BehaviorData2,X
 
-  @LAB_PRG14__957f:                         ; [$957f]
+  @LAB_PRG14__957f:
     RTS
 
-  @LAB_PRG14__9580:                         ; [$9580]
+  @LAB_PRG14__9580:
     JSR FUN_PRG14__9593
     LDA a:CurrentSprites_BehaviorData2,X
     CMP #$80
@@ -6282,7 +6282,7 @@ SpriteBehavior_Yareeka:                     ; [$9538]
     STA a:CurrentSprites_Phases,X
     STA a:CurrentSprites_BehaviorData2,X
 
-  @_return2:                                ; [$9592]
+  @_return2:
     RTS
 
 ;============================================================================
@@ -6299,7 +6299,7 @@ SpriteBehavior_Yareeka:                     ; [$9538]
 ;     LAB_PRG14__96d5 [$PRG14::96d5]
 ;     SpriteBehavior_Yareeka
 ;============================================================================
-FUN_PRG14__9593:                            ; [$9593]
+FUN_PRG14__9593:
     LDA a:CurrentSprites_BehaviorData2,X
     INC a:CurrentSprites_BehaviorData2,X
     LDY #$02
@@ -6323,7 +6323,7 @@ FUN_PRG14__9593:                            ; [$9593]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::80cb]
 ;============================================================================
-SpriteUpdateHandler_Enemy_Yareeka:          ; [$95ae]
+SpriteUpdateHandler_Enemy_Yareeka:
     JSR CurrentSprite_UpdateFlipMask
     LDY #$00
     LDA a:SpriteUpdateCounter
@@ -6331,7 +6331,7 @@ SpriteUpdateHandler_Enemy_Yareeka:          ; [$95ae]
     BEQ @LAB_PRG14__95bc
     LDY #$01
 
-  @LAB_PRG14__95bc:                         ; [$95bc]
+  @LAB_PRG14__95bc:
     TYA
     JMP Sprite_EnterNextAppearancePhase
 
@@ -6347,7 +6347,7 @@ SpriteUpdateHandler_Enemy_Yareeka:          ; [$95ae]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a62d]
 ;============================================================================
-SpriteBehavior_Magman:                      ; [$95c0]
+SpriteBehavior_Magman:
     JSR Sprite_IsBehaviorNotReady
     BNE @LAB_PRG14__95da
     LDA #$3c
@@ -6360,7 +6360,7 @@ SpriteBehavior_Magman:                      ; [$95c0]
     STA CurrentSprites_XPos_Full,X
     JSR Sprite_SetBehaviorReady
 
-  @LAB_PRG14__95da:                         ; [$95da]
+  @LAB_PRG14__95da:
     LDA a:CurrentSprites_Phases,X
     LSR A
     BCS @LAB_PRG14__9602
@@ -6375,7 +6375,7 @@ SpriteBehavior_Magman:                      ; [$95c0]
     BNE @LAB_PRG14__95f7
     LDY #$d0
 
-  @LAB_PRG14__95f7:                         ; [$95f7]
+  @LAB_PRG14__95f7:
     TYA
     CLC
     ADC Player_PosX_Block
@@ -6383,10 +6383,10 @@ SpriteBehavior_Magman:                      ; [$95c0]
     LDA Player_PosY
     STA CurrentSprites_YPos,X
 
-  @_return:                                 ; [$9601]
+  @_return:
     RTS
 
-  @LAB_PRG14__9602:                         ; [$9602]
+  @LAB_PRG14__9602:
     JSR BScript_Action_FacePlayerX
     DEC a:CurrentSprites_BehaviorData2,X
     BNE RETURN_961A
@@ -6403,7 +6403,7 @@ SpriteBehavior_Magman:                      ; [$95c0]
     ;     SpriteBehavior_Magman
     ;     SpriteUpdateHandler_Enemy_Magman
     ;
-RETURN_961A:                                ; [$961a]
+RETURN_961A:
     RTS
 
 ;============================================================================
@@ -6418,7 +6418,7 @@ RETURN_961A:                                ; [$961a]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::80cd]
 ;============================================================================
-SpriteUpdateHandler_Enemy_Magman:           ; [$961b]
+SpriteUpdateHandler_Enemy_Magman:
     JSR CurrentSprite_UpdateFlipMask
     LDA a:CurrentSprites_Phases,X
     LSR A
@@ -6429,7 +6429,7 @@ SpriteUpdateHandler_Enemy_Magman:           ; [$961b]
     BEQ @LAB_PRG14__962e
     INY
 
-  @LAB_PRG14__962e:                         ; [$962e]
+  @LAB_PRG14__962e:
     TYA
     JMP Sprite_EnterNextAppearancePhase
 
@@ -6445,7 +6445,7 @@ SpriteUpdateHandler_Enemy_Magman:           ; [$961b]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a62f]
 ;============================================================================
-SpriteBehavior_EnemyUnused36:               ; [$9632]
+SpriteBehavior_EnemyUnused36:
     JSR Sprite_IsBehaviorNotReady
     BNE @LAB_PRG14__9644
     LDA #$20
@@ -6454,7 +6454,7 @@ SpriteBehavior_EnemyUnused36:               ; [$9632]
     STA a:CurrentSprites_Phases,X
     JSR Sprite_SetBehaviorReady
 
-  @LAB_PRG14__9644:                         ; [$9644]
+  @LAB_PRG14__9644:
     LDA a:CurrentSprites_Phases,X
     AND #$03
     STA a:CurrentSprites_Phases,X
@@ -6473,7 +6473,7 @@ SpriteBehavior_EnemyUnused36:               ; [$9632]
     BNE @LAB_PRG14__9671
     JSR BScript_Action_FlipYDirection
 
-  @LAB_PRG14__9671:                         ; [$9671]
+  @LAB_PRG14__9671:
     LDA a:CurrentSprites_Phases,X
     BNE FUN_PRG14__9699
     LDA #$00
@@ -6488,7 +6488,7 @@ SpriteBehavior_EnemyUnused36:               ; [$9632]
     LDA #$00
     STA a:CurrentSprites_BehaviorData2,X
 
-  @_return:                                 ; [$9692]
+  @_return:
     RTS
 
 ;============================================================================
@@ -6503,7 +6503,7 @@ SpriteBehavior_EnemyUnused36:               ; [$9632]
 ; XREFS:
 ;     FUN_PRG14__9699
 ;============================================================================
-FUN_PRG14__9693:                            ; [$9693]
+FUN_PRG14__9693:
     LDA #$00
     STA a:CurrentSprites_Phases,X
     RTS
@@ -6520,7 +6520,7 @@ FUN_PRG14__9693:                            ; [$9693]
 ; XREFS:
 ;     SpriteBehavior_EnemyUnused36
 ;============================================================================
-FUN_PRG14__9699:                            ; [$9699]
+FUN_PRG14__9699:
     JSR Sprite_CalcDistanceYToPlayer
     CMP #$20
     BCS FUN_PRG14__9693
@@ -6535,10 +6535,10 @@ FUN_PRG14__9699:                            ; [$9699]
     BCC @_return1
     INC a:CurrentSprites_Phases,X
 
-  @_return1:                                ; [$96b7]
+  @_return1:
     RTS
 
-  @LAB_PRG14__96b8:                         ; [$96b8]
+  @LAB_PRG14__96b8:
     LDA #$02
     STA a:Arg_DeltaX_Full
     LDA #$00
@@ -6551,10 +6551,10 @@ FUN_PRG14__9699:                            ; [$9699]
     LDA #$40
     STA a:CurrentSprites_BehaviorData2,X
 
-  @_return2:                                ; [$96d4]
+  @_return2:
     RTS
 
-  @LAB_PRG14__96d5:                         ; [$96d5]
+  @LAB_PRG14__96d5:
     JSR FUN_PRG14__9593
     LDA a:CurrentSprites_BehaviorData2,X
     CMP #$40
@@ -6564,7 +6564,7 @@ FUN_PRG14__9699:                            ; [$9699]
     LDA #$00
     STA a:CurrentSprites_BehaviorData2,X
 
-  @_return3:                                ; [$96e9]
+  @_return3:
     RTS
 
 ;============================================================================
@@ -6579,23 +6579,23 @@ FUN_PRG14__9699:                            ; [$9699]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::80cf]
 ;============================================================================
-SpriteUpdateHandler_Enemy_Unused_CurlyTail: ; [$96ea]
+SpriteUpdateHandler_Enemy_Unused_CurlyTail:
     JSR CurrentSprite_UpdateFlipMask
     LDA a:CurrentSprites_Phases,X
     BNE @LAB_PRG14__96f6
     LDY #$00
     BEQ @LAB_PRG14__96f8
 
-  @LAB_PRG14__96f6:                         ; [$96f6]
+  @LAB_PRG14__96f6:
     LDY #$02
 
-  @LAB_PRG14__96f8:                         ; [$96f8]
+  @LAB_PRG14__96f8:
     LDA a:SpriteUpdateCounter
     AND #$08
     BEQ @LAB_PRG14__9700
     INY
 
-  @LAB_PRG14__9700:                         ; [$9700]
+  @LAB_PRG14__9700:
     TYA
     JMP Sprite_EnterNextAppearancePhase
 
@@ -6611,7 +6611,7 @@ SpriteUpdateHandler_Enemy_Unused_CurlyTail: ; [$96ea]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::80d3]
 ;============================================================================
-SpriteUpdateHandler_Enemy_Ikeda:            ; [$9704]
+SpriteUpdateHandler_Enemy_Ikeda:
     JSR CurrentSprite_UpdateFlipMask
     LDY #$02
     JSR Sprite_GetPreviousSpritePhase
@@ -6623,7 +6623,7 @@ SpriteUpdateHandler_Enemy_Ikeda:            ; [$9704]
     BEQ @LAB_PRG14__9719
     INY
 
-  @LAB_PRG14__9719:                         ; [$9719]
+  @LAB_PRG14__9719:
     TYA
     JMP Sprite_EnterNextAppearancePhase
 
@@ -6639,7 +6639,7 @@ SpriteUpdateHandler_Enemy_Ikeda:            ; [$9704]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a631]
 ;============================================================================
-SpriteBehavior_EnemyUnused39:               ; [$971d]
+SpriteBehavior_EnemyUnused39:
     JSR Sprite_IsBehaviorNotReady
     BNE @LAB_PRG14__972d
     LDA #$00
@@ -6647,12 +6647,12 @@ SpriteBehavior_EnemyUnused39:               ; [$971d]
     STA a:CurrentSprites_BehaviorData2,X
     JSR Sprite_SetBehaviorReady
 
-  @LAB_PRG14__972d:                         ; [$972d]
+  @LAB_PRG14__972d:
     JSR Sprites_SetCurrentSpriteCanMove
     BCC @LAB_PRG14__9735
     JMP CurrentSprite_HandleFall
 
-  @LAB_PRG14__9735:                         ; [$9735]
+  @LAB_PRG14__9735:
     INC a:CurrentSprites_BehaviorData2,X
     LDA a:CurrentSprites_BehaviorData2,X
     CMP #$13
@@ -6664,10 +6664,10 @@ SpriteBehavior_EnemyUnused39:               ; [$971d]
     CMP #$c9
     BNE @LAB_PRG14__974e
 
-  @LAB_PRG14__974b:                         ; [$974b]
+  @LAB_PRG14__974b:
     JSR FUN_PRG14__a0a0
 
-  @LAB_PRG14__974e:                         ; [$974e]
+  @LAB_PRG14__974e:
     JSR BScript_Action_FacePlayerX
     LDA #$40
     STA a:Arg_DeltaX_Frac
@@ -6687,7 +6687,7 @@ SpriteBehavior_EnemyUnused39:               ; [$971d]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::80d5]
 ;============================================================================
-SpriteUpdateHandler_Enemy_MuppetGuy:        ; [$975e]
+SpriteUpdateHandler_Enemy_MuppetGuy:
     JSR CurrentSprite_UpdateFlipMask
     LDY #$00
     LDA a:SpriteUpdateCounter
@@ -6695,7 +6695,7 @@ SpriteUpdateHandler_Enemy_MuppetGuy:        ; [$975e]
     BNE @LAB_PRG14__976c
     LDY #$01
 
-  @LAB_PRG14__976c:                         ; [$976c]
+  @LAB_PRG14__976c:
     TYA
     JMP Sprite_EnterNextAppearancePhase
 
@@ -6711,7 +6711,7 @@ SpriteUpdateHandler_Enemy_MuppetGuy:        ; [$975e]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::80d7]
 ;============================================================================
-SpriteUpdateHandler_Enemy_Lamprey:          ; [$9770]
+SpriteUpdateHandler_Enemy_Lamprey:
     JSR CurrentSprite_UpdateFlipMask
     LDA a:SpriteUpdateCounter
     LSR A
@@ -6731,7 +6731,7 @@ SpriteUpdateHandler_Enemy_Lamprey:          ; [$9770]
 ; XREFS:
 ;     SpriteUpdateHandler_Enemy_Lamprey
 ;
-BYTE_ARRAY_PRG14__978b:                     ; [$978b]
+BYTE_ARRAY_PRG14__978b:
     .byte $00                               ; [0]:
     .byte $01                               ; [1]:
     .byte $01                               ; [2]:
@@ -6745,7 +6745,7 @@ BYTE_ARRAY_PRG14__978b:                     ; [$978b]
 ; XREFS:
 ;     SpriteUpdateHandler_Enemy_Lamprey
 ;
-LAMPREY_HORIZ_FLIP_BITS:                    ; [$9793]
+LAMPREY_HORIZ_FLIP_BITS:
     .byte $00                               ; [0]:
     .byte $00                               ; [1]:
     .byte $40                               ; [2]:
@@ -6767,7 +6767,7 @@ LAMPREY_HORIZ_FLIP_BITS:                    ; [$9793]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::80db]
 ;============================================================================
-SpriteUpdateHandler_Enemy_Monodron:         ; [$979b]
+SpriteUpdateHandler_Enemy_Monodron:
     JSR CurrentSprite_UpdateFlipMask
     JSR Sprite_GetPreviousSpritePhase
     AND #$03
@@ -6779,7 +6779,7 @@ SpriteUpdateHandler_Enemy_Monodron:         ; [$979b]
 ; XREFS:
 ;     SpriteUpdateHandler_Enemy_Monodron
 ;
-SPRITE_MONODRON_APPEARANCE_PHASES:          ; [$97aa]
+SPRITE_MONODRON_APPEARANCE_PHASES:
     .byte $00                               ; [0]:
     .byte $02                               ; [1]:
     .byte $00                               ; [2]:
@@ -6797,7 +6797,7 @@ SPRITE_MONODRON_APPEARANCE_PHASES:          ; [$97aa]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a633]
 ;============================================================================
-SpriteBehavior_EnemyUnused43:               ; [$97ae]
+SpriteBehavior_EnemyUnused43:
     JSR Sprite_IsBehaviorNotReady
     BNE @LAB_PRG14__97be
     LDA #$00
@@ -6805,7 +6805,7 @@ SpriteBehavior_EnemyUnused43:               ; [$97ae]
     STA a:CurrentSprites_Phases,X
     JSR Sprite_SetBehaviorReady
 
-  @LAB_PRG14__97be:                         ; [$97be]
+  @LAB_PRG14__97be:
     JSR BScript_Action_FacePlayerX
     LDA a:CurrentSprites_BehaviorData3,X
     LDY #$04
@@ -6824,14 +6824,14 @@ SpriteBehavior_EnemyUnused43:               ; [$97ae]
     EOR #$80
     STA a:CurrentSprites_Flags,X
 
-  @LAB_PRG14__97eb:                         ; [$97eb]
+  @LAB_PRG14__97eb:
     LDY #$00
     LDA Player_Flags
     AND #$40
     BEQ @LAB_PRG14__97f4
     INY
 
-  @LAB_PRG14__97f4:                         ; [$97f4]
+  @LAB_PRG14__97f4:
     LDA Player_PosX_Block
     CLC
     ADC a:BYTE_ARRAY_PRG14__9851,Y
@@ -6854,7 +6854,7 @@ SpriteBehavior_EnemyUnused43:               ; [$97ae]
     PLA
     STA a:CurrentSprites_Flags,X
 
-  @LAB_PRG14__9820:                         ; [$9820]
+  @LAB_PRG14__9820:
     LDA Player_PosY
     SEC
     SBC #$18
@@ -6880,21 +6880,21 @@ SpriteBehavior_EnemyUnused43:               ; [$97ae]
     PLA
     STA a:CurrentSprites_Flags,X
 
-  @_return:                                 ; [$9850]
+  @_return:
     RTS
 
 ;
 ; XREFS:
 ;     SpriteBehavior_EnemyUnused43
 ;
-BYTE_ARRAY_PRG14__9851:                     ; [$9851]
+BYTE_ARRAY_PRG14__9851:
     .byte $20                               ; [0]:
 
 ;
 ; XREFS:
 ;     SpriteBehavior_EnemyUnused43
 ;
-BYTE_ARRAY_PRG14__9851_1_:                  ; [$9852]
+BYTE_ARRAY_PRG14__9851_1_:
     .byte $e0                               ; [1]:
 
 ;============================================================================
@@ -6909,7 +6909,7 @@ BYTE_ARRAY_PRG14__9851_1_:                  ; [$9852]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::80dd]
 ;============================================================================
-SpriteUpdateHandler_Enemy_Unused_WingedSkeleton: ; [$9853]
+SpriteUpdateHandler_Enemy_Unused_WingedSkeleton:
     JSR CurrentSprite_UpdateFlipMask
     LDY #$00
     LDA a:SpriteUpdateCounter
@@ -6917,7 +6917,7 @@ SpriteUpdateHandler_Enemy_Unused_WingedSkeleton: ; [$9853]
     BEQ @LAB_PRG14__9861
     LDY #$01
 
-  @LAB_PRG14__9861:                         ; [$9861]
+  @LAB_PRG14__9861:
     TYA
     JMP Sprite_EnterNextAppearancePhase
 
@@ -6933,7 +6933,7 @@ SpriteUpdateHandler_Enemy_Unused_WingedSkeleton: ; [$9853]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a635]
 ;============================================================================
-SpriteBehavior_Tamazutsu:                   ; [$9865]
+SpriteBehavior_Tamazutsu:
     JSR Sprite_IsBehaviorNotReady
     BNE @LAB_PRG14__9877
     LDA #$3c
@@ -6942,7 +6942,7 @@ SpriteBehavior_Tamazutsu:                   ; [$9865]
     STA a:CurrentSprites_Phases,X
     JSR Sprite_SetBehaviorReady
 
-  @LAB_PRG14__9877:                         ; [$9877]
+  @LAB_PRG14__9877:
     JSR BScript_Action_FacePlayerX
     LDY a:CurrentSprites_Phases,X
     BEQ @LAB_PRG14__9887
@@ -6952,27 +6952,27 @@ SpriteBehavior_Tamazutsu:                   ; [$9865]
     BEQ @LAB_PRG14__9897
     BNE @LAB_PRG14__989f
 
-  @LAB_PRG14__9887:                         ; [$9887]
+  @LAB_PRG14__9887:
     JSR Sprite_SetVisible
     LDA #$0b
     JMP @LAB_PRG14__98a7
 
-  @LAB_PRG14__988f:                         ; [$988f]
+  @LAB_PRG14__988f:
     JSR Sprite_SetVisible
     LDA #$3c
     JMP @LAB_PRG14__98a7
 
-  @LAB_PRG14__9897:                         ; [$9897]
+  @LAB_PRG14__9897:
     JSR Sprites_HideSprite
     LDA #$0b
     JMP @LAB_PRG14__98a7
 
-  @LAB_PRG14__989f:                         ; [$989f]
+  @LAB_PRG14__989f:
     JSR Sprite_SetVisible
     LDA #$3c
     JMP @LAB_PRG14__98a7
 
-  @LAB_PRG14__98a7:                         ; [$98a7]
+  @LAB_PRG14__98a7:
     DEC a:CurrentSprites_BehaviorData2,X
     BNE RETURN_98B2
     INC a:CurrentSprites_Phases,X
@@ -6983,7 +6983,7 @@ SpriteBehavior_Tamazutsu:                   ; [$9865]
     ;     SpriteBehavior_Tamazutsu
     ;     SpriteUpdateHandler_Enemy_Tamazutsu
     ;
-RETURN_98B2:                                ; [$98b2]
+RETURN_98B2:
     RTS
 
 ;============================================================================
@@ -6998,7 +6998,7 @@ RETURN_98B2:                                ; [$98b2]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::80df]
 ;============================================================================
-SpriteUpdateHandler_Enemy_Tamazutsu:        ; [$98b3]
+SpriteUpdateHandler_Enemy_Tamazutsu:
     LDA a:CurrentSprites_Phases,X
     AND #$03
     STA a:CurrentSprites_Phases,X
@@ -7011,7 +7011,7 @@ SpriteUpdateHandler_Enemy_Tamazutsu:        ; [$98b3]
     BEQ @LAB_PRG14__98e9
     BNE @LAB_PRG14__98f6
 
-  @LAB_PRG14__98cb:                         ; [$98cb]
+  @LAB_PRG14__98cb:
     LDA a:CurrentSprites_BehaviorData2,X
     CMP #$1e
     BCS RETURN_98B2
@@ -7021,7 +7021,7 @@ SpriteUpdateHandler_Enemy_Tamazutsu:        ; [$98b3]
     LDY #$02
     BNE @LAB_PRG14__9900
 
-  @LAB_PRG14__98dc:                         ; [$98dc]
+  @LAB_PRG14__98dc:
     LDA a:CurrentSprites_BehaviorData2,X
     LSR A
     LSR A
@@ -7030,7 +7030,7 @@ SpriteUpdateHandler_Enemy_Tamazutsu:        ; [$98b3]
     TAY
     JMP @LAB_PRG14__9900
 
-  @LAB_PRG14__98e9:                         ; [$98e9]
+  @LAB_PRG14__98e9:
     LDY #$0a
     LDA a:CurrentSprites_BehaviorData2,X
     AND #$08
@@ -7038,7 +7038,7 @@ SpriteUpdateHandler_Enemy_Tamazutsu:        ; [$98b3]
     LDY #$0c
     BNE @LAB_PRG14__9900
 
-  @LAB_PRG14__98f6:                         ; [$98f6]
+  @LAB_PRG14__98f6:
     LDA a:CurrentSprites_BehaviorData2,X
     LSR A
     LSR A
@@ -7046,7 +7046,7 @@ SpriteUpdateHandler_Enemy_Tamazutsu:        ; [$98b3]
     LDA a:BYTE_ARRAY_PRG14__9908,Y
     TAY
 
-  @LAB_PRG14__9900:                         ; [$9900]
+  @LAB_PRG14__9900:
     TYA
     LSR A
     JMP Sprite_EnterNextAppearancePhase
@@ -7055,7 +7055,7 @@ SpriteUpdateHandler_Enemy_Tamazutsu:        ; [$98b3]
 ; XREFS:
 ;     SpriteUpdateHandler_Enemy_Tamazutsu
 ;
-BYTE_ARRAY_PRG14__9905:                     ; [$9905]
+BYTE_ARRAY_PRG14__9905:
     .byte $08                               ; [0]:
     .byte $06                               ; [1]:
     .byte $04                               ; [2]:
@@ -7064,7 +7064,7 @@ BYTE_ARRAY_PRG14__9905:                     ; [$9905]
 ; XREFS:
 ;     SpriteUpdateHandler_Enemy_Tamazutsu
 ;
-BYTE_ARRAY_PRG14__9908:                     ; [$9908]
+BYTE_ARRAY_PRG14__9908:
     .byte $04                               ; [0]:
     .byte $06                               ; [1]:
     .byte $08                               ; [2]:
@@ -7081,7 +7081,7 @@ BYTE_ARRAY_PRG14__9908:                     ; [$9908]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::80a9]
 ;============================================================================
-SpriteUpdateHandler_Boss_Rokusutahn:        ; [$990b]
+SpriteUpdateHandler_Boss_Rokusutahn:
     LDA a:SpriteUpdateCounter
     LSR A
     LSR A
@@ -7102,7 +7102,7 @@ SpriteUpdateHandler_Boss_Rokusutahn:        ; [$990b]
 ; XREFS:
 ;     BScript_Op_SwitchBehavior
 ;============================================================================
-FUN_PRG14__9917:                            ; [$9917]
+FUN_PRG14__9917:
     LDA #$00
     STA a:CurrentSprites_HitBoxTypes,X
     SEC
@@ -7136,7 +7136,7 @@ FUN_PRG14__9917:                            ; [$9917]
 ; XREFS:
 ;     SpriteBehavior_EnemyUnused18__994a
 ;============================================================================
-thunk_FUN_PRG14__9a3c:                      ; [$9947]
+thunk_FUN_PRG14__9a3c:
     JMP FUN_PRG14__9a3c
 
 ;============================================================================
@@ -7151,7 +7151,7 @@ thunk_FUN_PRG14__9a3c:                      ; [$9947]
 ; XREFS:
 ;     CALL_FUN_PRG14__994a [$PRG14::9a2c]
 ;============================================================================
-SpriteBehavior_EnemyUnused18__994a:         ; [$994a]
+SpriteBehavior_EnemyUnused18__994a:
     LDA a:CurrentSprites_Phases,X
     CMP #$03
     BNE thunk_FUN_PRG14__9a3c
@@ -7168,10 +7168,10 @@ SpriteBehavior_EnemyUnused18__994a:         ; [$994a]
     STA a:CurrentSprites_BehaviorData2,X
     INC a:CurrentSprites_InternalBehaviorStates,X
 
-  @_return:                                 ; [$996e]
+  @_return:
     RTS
 
-  @LAB_PRG14__996f:                         ; [$996f]
+  @LAB_PRG14__996f:
     DEC a:Sprite12BodyPartHandler_2_
     INC a:Sprite12BodyPartHandler_5_
     DEC a:CurrentSprites_BehaviorData2,X
@@ -7180,17 +7180,17 @@ SpriteBehavior_EnemyUnused18__994a:         ; [$994a]
     STA a:CurrentSprites_BehaviorData2,X
     INC a:CurrentSprites_InternalBehaviorStates,X
 
-  @_return1:                                ; [$9982]
+  @_return1:
     RTS
 
-  @LAB_PRG14__9983:                         ; [$9983]
+  @LAB_PRG14__9983:
     DEC a:CurrentSprites_BehaviorData2,X
     BNE @_return2
     INC a:CurrentSprites_InternalBehaviorStates,X
     LDA #$08
     STA a:CurrentSprites_BehaviorData2,X
 
-  @_return2:                                ; [$9990]
+  @_return2:
     RTS
 
 ;============================================================================
@@ -7205,7 +7205,7 @@ SpriteBehavior_EnemyUnused18__994a:         ; [$994a]
 ; XREFS:
 ;     CALL_FUN_PRG14__9a2f [$PRG14::9a2f]
 ;============================================================================
-SpriteBehavior_EnemyUnused18__9991:         ; [$9991]
+SpriteBehavior_EnemyUnused18__9991:
     LDA a:CurrentSprites_BehaviorData2,X
     BEQ Maybe_SpriteBody__99f3
     LDA a:CurrentSprites_InternalBehaviorStates,X
@@ -7225,7 +7225,7 @@ SpriteBehavior_EnemyUnused18__9991:         ; [$9991]
     STA a:Something_UnusedSprite_ScreenBufferOffset
     JMP @LAB_PRG14__99d1
 
-  @LAB_PRG14__99b6:                         ; [$99b6]
+  @LAB_PRG14__99b6:
     LSR A
     LSR A
     LSR A
@@ -7244,13 +7244,13 @@ SpriteBehavior_EnemyUnused18__9991:         ; [$9991]
     ORA Temp_00
     STA a:Something_UnusedSprite_ScreenBufferOffset
 
-  @LAB_PRG14__99d1:                         ; [$99d1]
+  @LAB_PRG14__99d1:
     LDY Area_CurrentArea
     LDA a:BYTE_ARRAY_PRG14__99ef,Y
     STA a:Something_UnusedSprite_BlockOffset
     JSR SpriteBehavior_EnemyUnused18_SomethingSetBlocks
 
-  @LAB_PRG14__99dc:                         ; [$99dc]
+  @LAB_PRG14__99dc:
     LDX a:CurrentSpriteIndex
     INC a:CurrentSprites_InternalBehaviorStates,X
     LDA a:CurrentSprites_InternalBehaviorStates,X
@@ -7259,14 +7259,14 @@ SpriteBehavior_EnemyUnused18__9991:         ; [$9991]
     LDA #$ff
     STA a:CurrentSprites_Entities,X
 
-  @_return:                                 ; [$99ee]
+  @_return:
     RTS
 
 ;
 ; XREFS:
 ;     SpriteBehavior_EnemyUnused18__9991
 ;
-BYTE_ARRAY_PRG14__99ef:                     ; [$99ef]
+BYTE_ARRAY_PRG14__99ef:
     .byte $00                               ; [0]:
     .byte $08                               ; [1]:
     .byte $00                               ; [2]:
@@ -7284,7 +7284,7 @@ BYTE_ARRAY_PRG14__99ef:                     ; [$99ef]
 ; XREFS:
 ;     SpriteBehavior_EnemyUnused18__9991
 ;============================================================================
-Maybe_SpriteBody__99f3:                     ; [$99f3]
+Maybe_SpriteBody__99f3:
     LDY #$03
     LDA CurrentSprites_XPos_Full,X
     CLC
@@ -7294,7 +7294,7 @@ Maybe_SpriteBody__99f3:                     ; [$99f3]
     INC a:Sprite12BodyPartHandler
     DEY
 
-  @LAB_PRG14__9a03:                         ; [$9a03]
+  @LAB_PRG14__9a03:
     LDA CurrentSprites_XPos_Full,X
     CLC
     ADC #$1f
@@ -7303,7 +7303,7 @@ Maybe_SpriteBody__99f3:                     ; [$99f3]
     INC a:Sprite12BodyPartHandler_1_
     DEY
 
-  @LAB_PRG14__9a11:                         ; [$9a11]
+  @LAB_PRG14__9a11:
     LDA CurrentSprites_XPos_Full,X
     CLC
     ADC #$2f
@@ -7312,28 +7312,28 @@ Maybe_SpriteBody__99f3:                     ; [$99f3]
     INC a:Sprite12BodyPartHandler_2_
     DEY
 
-  @LAB_PRG14__9a1f:                         ; [$9a1f]
+  @LAB_PRG14__9a1f:
     CPY #$03
     BNE @LAB_PRG14__9a2b
     INC a:CurrentSprites_BehaviorData2,X
     LDA #$00
     STA a:CurrentSprites_InternalBehaviorStates,X
 
-  @LAB_PRG14__9a2b:                         ; [$9a2b]
+  @LAB_PRG14__9a2b:
     RTS
 
     ;
     ; XREFS:
     ;     SpriteBehavior_EnemyUnused18
     ;
-CALL_FUN_PRG14__994a:                       ; [$9a2c]
+CALL_FUN_PRG14__994a:
     JMP SpriteBehavior_EnemyUnused18__994a
 
     ;
     ; XREFS:
     ;     SpriteBehavior_EnemyUnused18
     ;
-CALL_FUN_PRG14__9a2f:                       ; [$9a2f]
+CALL_FUN_PRG14__9a2f:
     JMP SpriteBehavior_EnemyUnused18__9991
 
 ;============================================================================
@@ -7348,7 +7348,7 @@ CALL_FUN_PRG14__9a2f:                       ; [$9a2f]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a5f3]
 ;============================================================================
-SpriteBehavior_EnemyUnused18:               ; [$9a32]
+SpriteBehavior_EnemyUnused18:
     LDY a:CurrentSprites_Phases,X
     BMI CALL_FUN_PRG14__9a2f
     LDA a:CurrentSprites_BehaviorData3,X
@@ -7370,7 +7370,7 @@ SpriteBehavior_EnemyUnused18:               ; [$9a32]
 ; XREFS:
 ;     thunk_FUN_PRG14__9a3c
 ;============================================================================
-FUN_PRG14__9a3c:                            ; [$9a3c]
+FUN_PRG14__9a3c:
     LDA a:CurrentSprites_Phases,X
     AND #$03
     STA a:CurrentSprites_Phases,X
@@ -7386,7 +7386,7 @@ FUN_PRG14__9a3c:                            ; [$9a3c]
 ; XREFS:
 ;     FUN_PRG14__9a3c
 ;
-MAYBE_BODY_HANDLERS:                        ; [$9a4f]
+MAYBE_BODY_HANDLERS:
     pointer Maybe_BodyHandler__9a57-1       ; [0]:
     pointer Maybe_BodyHandler__9a7a-1       ; [1]:
     pointer Maybe_BodyHandler__9a7a-1       ; [2]:
@@ -7405,7 +7405,7 @@ MAYBE_BODY_HANDLERS:                        ; [$9a4f]
 ;     MAYBE_BODY_HANDLERS [$PRG14::9a4f]
 ;     MAYBE_BODY_HANDLERS [$PRG14::9a55]
 ;============================================================================
-Maybe_BodyHandler__9a57:                    ; [$9a57]
+Maybe_BodyHandler__9a57:
     JSR FUN_PRG14__9a87
     LDX a:BYTE_ARRAY_PRG14__9a91,Y
     DEX
@@ -7427,7 +7427,7 @@ Maybe_BodyHandler__9a57:                    ; [$9a57]
 ; XREFS:
 ;     Maybe_BodyHandler__9a7a
 ;============================================================================
-FUN_PRG14__9a61:                            ; [$9a61]
+FUN_PRG14__9a61:
     LDX a:CurrentSpriteIndex
     INC a:CurrentSprites_BehaviorData2,X
     LDA a:CurrentSprites_BehaviorData2,X
@@ -7438,7 +7438,7 @@ FUN_PRG14__9a61:                            ; [$9a61]
     STA a:CurrentSprites_BehaviorData2,X
     JMP FUN_PRG14__9aa1
 
-  @_return:                                 ; [$9a79]
+  @_return:
     RTS
 
 ;============================================================================
@@ -7454,7 +7454,7 @@ FUN_PRG14__9a61:                            ; [$9a61]
 ;     MAYBE_BODY_HANDLERS [$PRG14::9a51]
 ;     MAYBE_BODY_HANDLERS [$PRG14::9a53]
 ;============================================================================
-Maybe_BodyHandler__9a7a:                    ; [$9a7a]
+Maybe_BodyHandler__9a7a:
     JSR FUN_PRG14__9a87
     LDX a:BYTE_ARRAY_PRG14__9a99,Y
     DEX
@@ -7474,7 +7474,7 @@ Maybe_BodyHandler__9a7a:                    ; [$9a7a]
 ;     Maybe_BodyHandler__9a57
 ;     Maybe_BodyHandler__9a7a
 ;============================================================================
-FUN_PRG14__9a87:                            ; [$9a87]
+FUN_PRG14__9a87:
     LDA a:CurrentSprites_BehaviorData2,X
     LSR A
     LSR A
@@ -7487,7 +7487,7 @@ FUN_PRG14__9a87:                            ; [$9a87]
 ; XREFS:
 ;     Maybe_BodyHandler__9a57
 ;
-BYTE_ARRAY_PRG14__9a91:                     ; [$9a91]
+BYTE_ARRAY_PRG14__9a91:
     .byte $00                               ; [0]:
     .byte $01                               ; [1]:
     .byte $02                               ; [2]:
@@ -7501,7 +7501,7 @@ BYTE_ARRAY_PRG14__9a91:                     ; [$9a91]
 ; XREFS:
 ;     Maybe_BodyHandler__9a7a
 ;
-BYTE_ARRAY_PRG14__9a99:                     ; [$9a99]
+BYTE_ARRAY_PRG14__9a99:
     .byte $00                               ; [0]:
     .byte $03                               ; [1]:
     .byte $03                               ; [2]:
@@ -7523,7 +7523,7 @@ BYTE_ARRAY_PRG14__9a99:                     ; [$9a99]
 ; XREFS:
 ;     FUN_PRG14__9a61
 ;============================================================================
-FUN_PRG14__9aa1:                            ; [$9aa1]
+FUN_PRG14__9aa1:
     LDA CurrentSprites_XPos_Full,X
     SEC
     SBC Player_PosX_Block
@@ -7531,7 +7531,7 @@ FUN_PRG14__9aa1:                            ; [$9aa1]
     EOR #$ff
     ADC #$01
 
-  @LAB_PRG14__9aac:                         ; [$9aac]
+  @LAB_PRG14__9aac:
     CMP #$40
     BCS @LAB_PRG14__9ac0
     LDA #$01
@@ -7542,7 +7542,7 @@ FUN_PRG14__9aa1:                            ; [$9aa1]
     STA a:CurrentSprites_BehaviorData2,X
     RTS
 
-  @LAB_PRG14__9ac0:                         ; [$9ac0]
+  @LAB_PRG14__9ac0:
     LDA #$00
     STA a:CurrentSprites_BehaviorData3,X
     RTS
@@ -7556,7 +7556,7 @@ FUN_PRG14__9aa1:                            ; [$9aa1]
 ; OUTPUTS:
 ;     TODO
 ;============================================================================
-FUN_PRG14__9ac6:                            ; [$9ac6]
+FUN_PRG14__9ac6:
     LDA #$80
     STA a:CurrentSprites_Phases,X
     LDA #$00
@@ -7580,7 +7580,7 @@ FUN_PRG14__9ac6:                            ; [$9ac6]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::80ab]
 ;============================================================================
-SpriteUpdateHandler_Enemy_Unused_SnakeRoundPart: ; [$9adc]
+SpriteUpdateHandler_Enemy_Unused_SnakeRoundPart:
     JSR CurrentSprite_UpdateFlipMask
     LDA #$04
     JSR Sprite_EnterNextAppearancePhase
@@ -7618,14 +7618,14 @@ SpriteUpdateHandler_Enemy_Unused_SnakeRoundPart: ; [$9adc]
     LDY #$03
     BNE @LAB_PRG14__9b41
 
-  @LAB_PRG14__9b36:                         ; [$9b36]
+  @LAB_PRG14__9b36:
     LDY #$00
     LDA a:SpriteUpdateCounter
     AND #$08
     BEQ @LAB_PRG14__9b41
     LDY #$01
 
-  @LAB_PRG14__9b41:                         ; [$9b41]
+  @LAB_PRG14__9b41:
     TYA
     JMP Sprite_EnterNextAppearancePhase
 
@@ -7641,7 +7641,7 @@ SpriteUpdateHandler_Enemy_Unused_SnakeRoundPart: ; [$9adc]
 ; XREFS:
 ;     SpriteBehavior_Ripasheiku
 ;============================================================================
-SpriteBehavior_Ripasheiku_CastMagicOrUpdatePos: ; [$9b45]
+SpriteBehavior_Ripasheiku_CastMagicOrUpdatePos:
     LDA a:SpriteUpdateCounter
     AND #$3f
     CMP #$20
@@ -7659,7 +7659,7 @@ SpriteBehavior_Ripasheiku_CastMagicOrUpdatePos: ; [$9b45]
     STA a:CurrentSprite_Arg_CastMagicY
     JSR Sprite_CastMagic
 
-  @LAB_PRG14__9b68:                         ; [$9b68]
+  @LAB_PRG14__9b68:
     JSR BScript_Action_FacePlayerX
     DEC a:CurrentSprites_BehaviorData2,X
     BNE @_return
@@ -7670,14 +7670,14 @@ SpriteBehavior_Ripasheiku_CastMagicOrUpdatePos: ; [$9b45]
     STA a:CurrentSprites_BehaviorData3,X
     JSR BScript_Action_FacePlayerX
 
-  @_return:                                 ; [$9b80]
+  @_return:
     RTS
 
 ;
 ; XREFS:
 ;     SpriteBehavior_Ripasheiku_CastMagicOrUpdatePos
 ;
-BYTE_ARRAY_PRG14__9b81:                     ; [$9b81]
+BYTE_ARRAY_PRG14__9b81:
     .byte $10                               ; [0]:
     .byte $00                               ; [1]:
 
@@ -7693,7 +7693,7 @@ BYTE_ARRAY_PRG14__9b81:                     ; [$9b81]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a5fb]
 ;============================================================================
-SpriteBehavior_Ripasheiku:                  ; [$9b83]
+SpriteBehavior_Ripasheiku:
     LDA a:Sprite_IsBehaviorNotReady
     BNE @LAB_PRG14__9b9a
     LDA #$03
@@ -7704,7 +7704,7 @@ SpriteBehavior_Ripasheiku:                  ; [$9b83]
     STA a:CurrentSprites_Phases,X
     JSR Sprite_SetBehaviorReady
 
-  @LAB_PRG14__9b9a:                         ; [$9b9a]
+  @LAB_PRG14__9b9a:
     LDY a:CurrentSprites_Phases,X
     BEQ @LAB_PRG14__9ba8
     DEY
@@ -7713,7 +7713,7 @@ SpriteBehavior_Ripasheiku:                  ; [$9b83]
     BNE SpriteBehavior_Ripasheiku_CastMagicOrUpdatePos
     JMP @LAB_PRG14__9c0e
 
-  @LAB_PRG14__9ba8:                         ; [$9ba8]
+  @LAB_PRG14__9ba8:
     JSR BScript_Action_FacePlayerX
     DEC a:CurrentSprites_BehaviorData2,X
     BNE @_return
@@ -7722,10 +7722,10 @@ SpriteBehavior_Ripasheiku:                  ; [$9b83]
     STA a:CurrentSprites_BehaviorData2,X
     STA a:CurrentSprites_BehaviorData3,X
 
-  @_return:                                 ; [$9bbb]
+  @_return:
     RTS
 
-  @LAB_PRG14__9bbc:                         ; [$9bbc]
+  @LAB_PRG14__9bbc:
     JSR Sprite_MoveHorizOneBlockOrTurnAround
     LDA a:CurrentSprites_Flags,X
     AND #$7f
@@ -7741,13 +7741,13 @@ SpriteBehavior_Ripasheiku:                  ; [$9b83]
     STA a:Arg_DeltaY_Frac
     BEQ @LAB_PRG14__9be8
 
-  @LAB_PRG14__9bde:                         ; [$9bde]
+  @LAB_PRG14__9bde:
     LDY #$03
     JSR Sprites_CalcYFromGravity
     LDY #$05
     JSR Sprites_CalcVerticalSpriteMovement
 
-  @LAB_PRG14__9be8:                         ; [$9be8]
+  @LAB_PRG14__9be8:
     JSR Sprite_MoveVertical
     BCS @_return2
     INC a:CurrentSprites_BehaviorData3,X
@@ -7757,13 +7757,13 @@ SpriteBehavior_Ripasheiku:                  ; [$9b83]
     LDA #$ff
     STA a:CurrentSprites_BehaviorData3,X
 
-  @_return1:                                ; [$9bfc]
+  @_return1:
     RTS
 
-  @_return2:                                ; [$9bfd]
+  @_return2:
     RTS
 
-  @LAB_PRG14__9bfe:                         ; [$9bfe]
+  @LAB_PRG14__9bfe:
     LDA #$00
     STA a:CurrentSprites_BehaviorData2,X
     LDA #$ff
@@ -7771,7 +7771,7 @@ SpriteBehavior_Ripasheiku:                  ; [$9b83]
     INC a:CurrentSprites_Phases,X
     JMP BScript_Action_FacePlayerX
 
-  @LAB_PRG14__9c0e:                         ; [$9c0e]
+  @LAB_PRG14__9c0e:
     JSR Sprite_MoveHorizOneBlockOrTurnAround
     LDA a:CurrentSprites_Flags,X
     ORA #$80
@@ -7787,7 +7787,7 @@ SpriteBehavior_Ripasheiku:                  ; [$9b83]
     STA a:CurrentSprites_BehaviorData3,X
     BCS @_return3
 
-  @LAB_PRG14__9c31:                         ; [$9c31]
+  @LAB_PRG14__9c31:
     INC a:CurrentSprites_Phases,X
     LDA #$00
     STA a:CurrentSprites_BehaviorData2,X
@@ -7795,7 +7795,7 @@ SpriteBehavior_Ripasheiku:                  ; [$9b83]
     STA a:CurrentSprites_InternalBehaviorStates,X
     JSR BScript_Action_FacePlayerX
 
-  @_return3:                                ; [$9c42]
+  @_return3:
     RTS
 
 ;============================================================================
@@ -7810,7 +7810,7 @@ SpriteBehavior_Ripasheiku:                  ; [$9b83]
 ; XREFS:
 ;     SpriteBehavior_Ripasheiku
 ;============================================================================
-Sprite_MoveHorizOneBlockOrTurnAround:       ; [$9c43]
+Sprite_MoveHorizOneBlockOrTurnAround:
     LDA #$01
     STA a:Arg_DeltaX_Full
     LDA #$00
@@ -7830,7 +7830,7 @@ Sprite_MoveHorizOneBlockOrTurnAround:       ; [$9c43]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::80e1]
 ;============================================================================
-SpriteUpdateHandler_Boss_Ripasheiku:        ; [$9c51]
+SpriteUpdateHandler_Boss_Ripasheiku:
     JSR CurrentSprite_UpdateFlipMask
     LDY #$00
     LDA a:CurrentSprites_Phases,X
@@ -7843,11 +7843,11 @@ SpriteUpdateHandler_Boss_Ripasheiku:        ; [$9c51]
     BEQ @LAB_PRG14__9c6a
     LDY #$02
 
-  @LAB_PRG14__9c6a:                         ; [$9c6a]
+  @LAB_PRG14__9c6a:
     TYA
     JMP Sprite_EnterNextAppearancePhase
 
-  @LAB_PRG14__9c6e:                         ; [$9c6e]
+  @LAB_PRG14__9c6e:
     LDY #$01
     LDA a:SpriteUpdateCounter
     AND #$20
@@ -7867,7 +7867,7 @@ SpriteUpdateHandler_Boss_Ripasheiku:        ; [$9c51]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::80e3]
 ;============================================================================
-SpriteUpdateHandler_Boss_Zoradohna:         ; [$9c7b]
+SpriteUpdateHandler_Boss_Zoradohna:
     JSR CurrentSprite_UpdateFlipMask
     LDA a:SpriteUpdateCounter
     LSR A
@@ -7888,7 +7888,7 @@ SpriteUpdateHandler_Boss_Zoradohna:         ; [$9c7b]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a5ff]
 ;============================================================================
-SpriteBehavior_Borabohra:                   ; [$9c89]
+SpriteBehavior_Borabohra:
     JSR Sprite_IsBehaviorNotReady
     BNE @LAB_PRG14__9c9e
     LDA #$02
@@ -7898,7 +7898,7 @@ SpriteBehavior_Borabohra:                   ; [$9c89]
     STA a:CurrentSprites_Phases,X
     JSR Sprite_SetBehaviorReady
 
-  @LAB_PRG14__9c9e:                         ; [$9c9e]
+  @LAB_PRG14__9c9e:
     LDA a:CurrentSprites_Phases,X
     LSR A
     BCS @LAB_PRG14__9cb5
@@ -7909,10 +7909,10 @@ SpriteBehavior_Borabohra:                   ; [$9c89]
     INC a:CurrentSprites_Phases,X
     JSR BScript_Action_FacePlayerX
 
-  @_return1:                                ; [$9cb4]
+  @_return1:
     RTS
 
-  @LAB_PRG14__9cb5:                         ; [$9cb5]
+  @LAB_PRG14__9cb5:
     LDA a:CurrentSprites_BehaviorData2,X
     LDY #$02
     JSR Sprites_CalcYFromGravity
@@ -7924,7 +7924,7 @@ SpriteBehavior_Borabohra:                   ; [$9c89]
     BNE @_return2
     JSR BScript_Action_FacePlayerX
 
-  @_return2:                                ; [$9ccf]
+  @_return2:
     RTS
 
 ;============================================================================
@@ -7939,7 +7939,7 @@ SpriteBehavior_Borabohra:                   ; [$9c89]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::80e5]
 ;============================================================================
-SpriteUpdateHandler_Boss_Borabohra:         ; [$9cd0]
+SpriteUpdateHandler_Boss_Borabohra:
     JSR CurrentSprite_UpdateFlipMask
     LDA a:CurrentSprites_Phases,X
     LSR A
@@ -7950,7 +7950,7 @@ SpriteUpdateHandler_Boss_Borabohra:         ; [$9cd0]
     TAY
     JMP @LAB_PRG14__9ced
 
-  @LAB_PRG14__9ce2:                         ; [$9ce2]
+  @LAB_PRG14__9ce2:
     LDA a:SpriteUpdateCounter
     LSR A
     LSR A
@@ -7959,7 +7959,7 @@ SpriteUpdateHandler_Boss_Borabohra:         ; [$9cd0]
     ADC #$08
     TAY
 
-  @LAB_PRG14__9ced:                         ; [$9ced]
+  @LAB_PRG14__9ced:
     TYA
     LSR A
     JMP Sprite_EnterNextAppearancePhase
@@ -7977,7 +7977,7 @@ SpriteUpdateHandler_Boss_Borabohra:         ; [$9cd0]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a601]
 ;============================================================================
-SpriteBehavior_Pakukame:                    ; [$9cf2]
+SpriteBehavior_Pakukame:
     JSR Sprite_IsBehaviorNotReady
     BNE @LAB_PRG14__9d07
     LDA #$00
@@ -7987,7 +7987,7 @@ SpriteBehavior_Pakukame:                    ; [$9cf2]
     STA a:CurrentSprites_HitBoxTypes,X
     JSR Sprite_SetBehaviorReady
 
-  @LAB_PRG14__9d07:                         ; [$9d07]
+  @LAB_PRG14__9d07:
     LDA a:CurrentSprites_Phases,X
     CMP #$01
     BCS @LAB_PRG14__9d2b
@@ -8003,10 +8003,10 @@ SpriteBehavior_Pakukame:                    ; [$9cf2]
     LDA #$12
     JSR Sound_PlayEffect
 
-  @_return1:                                ; [$9d2a]
+  @_return1:
     RTS
 
-  @LAB_PRG14__9d2b:                         ; [$9d2b]
+  @LAB_PRG14__9d2b:
     LDA a:SpriteUpdateCounter
     AND #$07
     BNE @_return2
@@ -8018,10 +8018,10 @@ SpriteBehavior_Pakukame:                    ; [$9cf2]
     STA a:CurrentSprites_Phases,X
     STA a:CurrentSprites_BehaviorData2,X
 
-  @_return2:                                ; [$9d44]
+  @_return2:
     RTS
 
-  @LAB_PRG14__9d45:                         ; [$9d45]
+  @LAB_PRG14__9d45:
     CMP #$03
     BNE @_return2
     JSR Sprites_HasMaxOnScreen
@@ -8056,12 +8056,12 @@ SpriteBehavior_Pakukame:                    ; [$9cf2]
 ; XREFS:
 ;     SpriteBehavior_Pakukame
 ;============================================================================
-SpriteBehavior_Pakukame__9d78:              ; [$9d78]
+SpriteBehavior_Pakukame__9d78:
     LDY #$07
     LDA #$00
     STA Temp_00
 
-  @LAB_PRG14__9d7e:                         ; [$9d7e]
+  @LAB_PRG14__9d7e:
     LDA a:CurrentSprites_Entities,Y
     CMP #$09
     BNE @LAB_PRG14__9d8f
@@ -8072,7 +8072,7 @@ SpriteBehavior_Pakukame__9d78:              ; [$9d78]
     SEC
     RTS
 
-  @LAB_PRG14__9d8f:                         ; [$9d8f]
+  @LAB_PRG14__9d8f:
     DEY
     BPL @LAB_PRG14__9d7e
     CLC
@@ -8090,14 +8090,14 @@ SpriteBehavior_Pakukame__9d78:              ; [$9d78]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::80e7]
 ;============================================================================
-SpriteUpdateHandler_Boss_Pakukame:          ; [$9d94]
+SpriteUpdateHandler_Boss_Pakukame:
     LDY #$00
     LDA a:CurrentSprites_Phases,X
     BEQ @LAB_PRG14__9d9f
     LDY a:CurrentSprites_Phases,X
     DEY
 
-  @LAB_PRG14__9d9f:                         ; [$9d9f]
+  @LAB_PRG14__9d9f:
     LDA a:BYTE_ARRAY_PRG14__9da5,Y
     JMP Sprite_EnterNextAppearancePhase
 
@@ -8105,7 +8105,7 @@ SpriteUpdateHandler_Boss_Pakukame:          ; [$9d94]
 ; XREFS:
 ;     SpriteUpdateHandler_Boss_Pakukame
 ;
-BYTE_ARRAY_PRG14__9da5:                     ; [$9da5]
+BYTE_ARRAY_PRG14__9da5:
     .byte $00                               ; [0]:
     .byte $01                               ; [1]:
     .byte $02                               ; [2]:
@@ -8124,7 +8124,7 @@ BYTE_ARRAY_PRG14__9da5:                     ; [$9da5]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a603]
 ;============================================================================
-SpriteBehavior_Zorugeriru:                  ; [$9da9]
+SpriteBehavior_Zorugeriru:
     JSR Sprite_IsBehaviorNotReady
     BNE @LAB_PRG14__9dbe
     LDA #$04
@@ -8134,7 +8134,7 @@ SpriteBehavior_Zorugeriru:                  ; [$9da9]
     STA a:CurrentSprites_Phases,X
     JSR Sprite_SetBehaviorReady
 
-  @LAB_PRG14__9dbe:                         ; [$9dbe]
+  @LAB_PRG14__9dbe:
     LDA a:CurrentSprites_Phases,X
     LSR A
     BCS @LAB_PRG14__9de1
@@ -8150,10 +8150,10 @@ SpriteBehavior_Zorugeriru:                  ; [$9da9]
     LDA #$00
     STA a:CurrentSprites_BehaviorData2,X
 
-  @_return1:                                ; [$9de0]
+  @_return1:
     RTS
 
-  @LAB_PRG14__9de1:                         ; [$9de1]
+  @LAB_PRG14__9de1:
     INC a:CurrentSprites_BehaviorData2,X
     LDA a:CurrentSprites_BehaviorData2,X
     CMP #$20
@@ -8163,7 +8163,7 @@ SpriteBehavior_Zorugeriru:                  ; [$9da9]
     STA a:CurrentSprites_BehaviorData2,X
     JMP SpriteBehavior_Zorugeriru__9e13
 
-  @_return2:                                ; [$9df6]
+  @_return2:
     RTS
 
 ;============================================================================
@@ -8178,12 +8178,12 @@ SpriteBehavior_Zorugeriru:                  ; [$9da9]
 ; XREFS:
 ;     SpriteBehavior_Zorugeriru
 ;============================================================================
-SpriteBehavior_Zorugeriru__9df7:            ; [$9df7]
+SpriteBehavior_Zorugeriru__9df7:
     LDY #$07
     LDA #$00
     STA Temp_00
 
-  @LAB_PRG14__9dfd:                         ; [$9dfd]
+  @LAB_PRG14__9dfd:
     LDA a:CurrentSprites_Entities,Y
     CMP #$03
     BNE @LAB_PRG14__9e0e
@@ -8194,7 +8194,7 @@ SpriteBehavior_Zorugeriru__9df7:            ; [$9df7]
     SEC
     RTS
 
-  @LAB_PRG14__9e0e:                         ; [$9e0e]
+  @LAB_PRG14__9e0e:
     DEY
     BPL @LAB_PRG14__9dfd
     CLC
@@ -8203,7 +8203,7 @@ SpriteBehavior_Zorugeriru__9df7:            ; [$9df7]
     ; XREFS:
     ;     SpriteBehavior_Zorugeriru__9e13
     ;
-RETURN_9E12:                                ; [$9e12]
+RETURN_9E12:
     RTS
 
 ;============================================================================
@@ -8219,7 +8219,7 @@ RETURN_9E12:                                ; [$9e12]
 ; XREFS:
 ;     SpriteBehavior_Zorugeriru
 ;============================================================================
-SpriteBehavior_Zorugeriru__9e13:            ; [$9e13]
+SpriteBehavior_Zorugeriru__9e13:
     JSR Sprites_HasMaxOnScreen
     BCS RETURN_9E12
     LDA #$03
@@ -8241,7 +8241,7 @@ SpriteBehavior_Zorugeriru__9e13:            ; [$9e13]
     SEC
     SBC #$10
 
-  @LAB_PRG14__9e3e:                         ; [$9e3e]
+  @LAB_PRG14__9e3e:
     STA a:CurrentSprites_XPos_Full,Y
     LDA #$20
     STA a:CurrentSprites_YPos,Y
@@ -8261,7 +8261,7 @@ SpriteBehavior_Zorugeriru__9e13:            ; [$9e13]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::80e9]
 ;============================================================================
-SpriteUpdateHandler_Boss_Zorugeriru:        ; [$9e4f]
+SpriteUpdateHandler_Boss_Zorugeriru:
     JSR CurrentSprite_UpdateFlipMask
     LDY #$00
     LDA a:CurrentSprites_Phases,X
@@ -8274,7 +8274,7 @@ SpriteUpdateHandler_Boss_Zorugeriru:        ; [$9e4f]
     AND #$03
     TAY
 
-  @LAB_PRG14__9e63:                         ; [$9e63]
+  @LAB_PRG14__9e63:
     LDA a:BYTE_ARRAY_PRG14__9e69,Y
     JMP Sprite_EnterNextAppearancePhase
 
@@ -8282,7 +8282,7 @@ SpriteUpdateHandler_Boss_Zorugeriru:        ; [$9e4f]
 ; XREFS:
 ;     SpriteUpdateHandler_Boss_Zorugeriru
 ;
-BYTE_ARRAY_PRG14__9e69:                     ; [$9e69]
+BYTE_ARRAY_PRG14__9e69:
     .byte $00                               ; [0]:
     .byte $01                               ; [1]:
     .byte $02                               ; [2]:
@@ -8300,7 +8300,7 @@ BYTE_ARRAY_PRG14__9e69:                     ; [$9e69]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a5ed]
 ;============================================================================
-SpriteBehavior_Garbled3:                    ; [$9e6d]
+SpriteBehavior_Garbled3:
     JSR Sprite_IsBehaviorNotReady
     BNE @LAB_PRG14__9e82
     LDA #$00
@@ -8310,7 +8310,7 @@ SpriteBehavior_Garbled3:                    ; [$9e6d]
     STA a:CurrentSprites_Phases,X
     JSR Sprite_SetBehaviorReady
 
-  @LAB_PRG14__9e82:                         ; [$9e82]
+  @LAB_PRG14__9e82:
     LDY a:CurrentSprites_Phases,X
     DEY
     BEQ @LAB_PRG14__9ebc
@@ -8331,17 +8331,17 @@ SpriteBehavior_Garbled3:                    ; [$9e6d]
     DEC a:CurrentSprites_BehaviorData3,X
     RTS
 
-  @LAB_PRG14__9eae:                         ; [$9eae]
+  @LAB_PRG14__9eae:
     INC a:CurrentSprites_Phases,X
     LDA #$05
     STA a:CurrentSprites_BehaviorData2,X
     LDA #$07
     JSR Sound_PlayEffect
 
-  @_return1:                                ; [$9ebb]
+  @_return1:
     RTS
 
-  @LAB_PRG14__9ebc:                         ; [$9ebc]
+  @LAB_PRG14__9ebc:
     LDA a:CurrentSprites_BehaviorData2,X
     AND #$01
     ASL A
@@ -8357,16 +8357,16 @@ SpriteBehavior_Garbled3:                    ; [$9e6d]
     STA a:CurrentSprites_BehaviorData2,X
     INC a:CurrentSprites_Phases,X
 
-  @_return2:                                ; [$9ed8]
+  @_return2:
     RTS
 
-  @LAB_PRG14__9ed9:                         ; [$9ed9]
+  @LAB_PRG14__9ed9:
     DEC a:CurrentSprites_BehaviorData2,X
     BNE @_return3
     LDA #$ff
     STA a:CurrentSprites_Entities,X
 
-  @_return3:                                ; [$9ee3]
+  @_return3:
     RTS
 
 ;============================================================================
@@ -8381,7 +8381,7 @@ SpriteBehavior_Garbled3:                    ; [$9e6d]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::808d]
 ;============================================================================
-SpriteUpdateHandler_Garbled03:              ; [$9ee4]
+SpriteUpdateHandler_Garbled03:
     JSR CurrentSprite_UpdateFlipMask
     LDY #$03
     LDA a:CurrentSprites_Phases,X
@@ -8395,7 +8395,7 @@ SpriteUpdateHandler_Garbled03:              ; [$9ee4]
     BCS @LAB_PRG14__9eff
     LDY #$05
 
-  @LAB_PRG14__9eff:                         ; [$9eff]
+  @LAB_PRG14__9eff:
     TYA
     JMP Sprite_EnterNextAppearancePhase
 
@@ -8411,7 +8411,7 @@ SpriteUpdateHandler_Garbled03:              ; [$9ee4]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a605]
 ;============================================================================
-SpriteBehavior_KingGrieve:                  ; [$9f03]
+SpriteBehavior_KingGrieve:
     JSR Sprite_IsBehaviorNotReady
     BNE @LAB_PRG14__9f1d
     LDA #$05
@@ -8423,7 +8423,7 @@ SpriteBehavior_KingGrieve:                  ; [$9f03]
     STA a:CurrentSprites_Phases,X
     JSR Sprite_SetBehaviorReady
 
-  @LAB_PRG14__9f1d:                         ; [$9f1d]
+  @LAB_PRG14__9f1d:
     LDA a:CurrentSprites_Phases,X
     AND #$03
     TAY
@@ -8434,7 +8434,7 @@ SpriteBehavior_KingGrieve:                  ; [$9f03]
     BEQ SpriteBehavior_KingGrieve_MoveDown
     JMP SpriteBehavior_KingGrieve_9f86
 
-  @LAB_PRG14__9f2e:                         ; [$9f2e]
+  @LAB_PRG14__9f2e:
     LDA #$01
     STA a:Arg_DeltaX_Full
     LDA #$00
@@ -8455,7 +8455,7 @@ SpriteBehavior_KingGrieve:                  ; [$9f03]
     BCC @LAB_PRG14__9f5c
     RTS
 
-  @LAB_PRG14__9f5c:                         ; [$9f5c]
+  @LAB_PRG14__9f5c:
     INC a:CurrentSprites_Phases,X
     LDA #$3c
     STA a:CurrentSprites_BehaviorData2,X
@@ -8473,7 +8473,7 @@ SpriteBehavior_KingGrieve:                  ; [$9f03]
 ; XREFS:
 ;     SpriteBehavior_KingGrieve
 ;============================================================================
-SpriteBehavior_KingGrieve_9f65:             ; [$9f65]
+SpriteBehavior_KingGrieve_9f65:
     LDA a:SpriteUpdateCounter
     AND #$0f
     BNE SpriteBehavior_KingGrieve_9f86
@@ -8507,7 +8507,7 @@ SpriteBehavior_KingGrieve_9f65:             ; [$9f65]
 ;     SpriteBehavior_KingGrieve
 ;     SpriteBehavior_KingGrieve_9f65
 ;============================================================================
-SpriteBehavior_KingGrieve_9f86:             ; [$9f86]
+SpriteBehavior_KingGrieve_9f86:
     JSR BScript_Action_FacePlayerX
     DEC a:CurrentSprites_BehaviorData2,X
     BNE @LAB_PRG14__9f9b
@@ -8517,14 +8517,14 @@ SpriteBehavior_KingGrieve_9f86:             ; [$9f86]
     LDA #$00
     STA a:CurrentSprites_BehaviorData2,X
 
-  @LAB_PRG14__9f9b:                         ; [$9f9b]
+  @LAB_PRG14__9f9b:
     RTS
 
 ;
 ; XREFS:
 ;     SpriteBehavior_KingGrieve_9f65
 ;
-BYTE_ARRAY_PRG14__9f9c:                     ; [$9f9c]
+BYTE_ARRAY_PRG14__9f9c:
     .byte $00                               ; [0]:
     .byte $30                               ; [1]:
 
@@ -8540,7 +8540,7 @@ BYTE_ARRAY_PRG14__9f9c:                     ; [$9f9c]
 ; XREFS:
 ;     SpriteBehavior_KingGrieve
 ;============================================================================
-SpriteBehavior_KingGrieve_MoveDown:         ; [$9f9e]
+SpriteBehavior_KingGrieve_MoveDown:
     LDA a:CurrentSprites_Flags,X
     AND #$7f
     STA a:CurrentSprites_Flags,X
@@ -8554,12 +8554,12 @@ SpriteBehavior_KingGrieve_MoveDown:         ; [$9f9e]
     CMP #$10
     BCS @LAB_PRG14__9fc3
 
-  @LAB_PRG14__9fbb:                         ; [$9fbb]
+  @LAB_PRG14__9fbb:
     INC a:CurrentSprites_Phases,X
     LDA #$1e
     STA a:CurrentSprites_BehaviorData2,X
 
-  @LAB_PRG14__9fc3:                         ; [$9fc3]
+  @LAB_PRG14__9fc3:
     RTS
 
 ;============================================================================
@@ -8574,7 +8574,7 @@ SpriteBehavior_KingGrieve_MoveDown:         ; [$9f9e]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::80eb]
 ;============================================================================
-SpriteUpdateHandler_Boss_KingGrieve:        ; [$9fc4]
+SpriteUpdateHandler_Boss_KingGrieve:
     JSR CurrentSprite_UpdateFlipMask
     LDY #$02
     LDA a:CurrentSprites_Phases,X
@@ -8587,7 +8587,7 @@ SpriteUpdateHandler_Boss_KingGrieve:        ; [$9fc4]
     AND #$03
     TAY
 
-  @LAB_PRG14__9fd9:                         ; [$9fd9]
+  @LAB_PRG14__9fd9:
     LDA a:BYTE_ARRAY_PRG14__9fdf,Y
     JMP Sprite_EnterNextAppearancePhase
 
@@ -8595,7 +8595,7 @@ SpriteUpdateHandler_Boss_KingGrieve:        ; [$9fc4]
 ; XREFS:
 ;     SpriteUpdateHandler_Boss_KingGrieve
 ;
-BYTE_ARRAY_PRG14__9fdf:                     ; [$9fdf]
+BYTE_ARRAY_PRG14__9fdf:
     .byte $00                               ; [0]:
     .byte $01                               ; [1]:
 
@@ -8603,7 +8603,7 @@ BYTE_ARRAY_PRG14__9fdf:                     ; [$9fdf]
 ; XREFS:
 ;     SpriteUpdateHandler_Boss_KingGrieve
 ;
-BYTE_ARRAY_PRG14__9fdf_2_:                  ; [$9fe1]
+BYTE_ARRAY_PRG14__9fdf_2_:
     .byte $02                               ; [2]:
     .byte $01                               ; [3]:
 
@@ -8619,7 +8619,7 @@ BYTE_ARRAY_PRG14__9fdf_2_:                  ; [$9fe1]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a607]
 ;============================================================================
-SpriteBehavior_ShadowEura:                  ; [$9fe3]
+SpriteBehavior_ShadowEura:
     JSR Sprite_IsBehaviorNotReady
     BNE @LAB_PRG14__a007
     LDA #$06
@@ -8635,7 +8635,7 @@ SpriteBehavior_ShadowEura:                  ; [$9fe3]
     LDA #$0a
     STA Music_Current
 
-  @LAB_PRG14__a007:                         ; [$a007]
+  @LAB_PRG14__a007:
     JSR BScript_Action_FacePlayerX
     LDA a:CurrentSprites_Phases,X
     LSR A
@@ -8651,17 +8651,17 @@ SpriteBehavior_ShadowEura:                  ; [$9fe3]
     LDA #$00
     STA a:CurrentSprites_InternalBehaviorStates,X
 
-  @LAB_PRG14__a029:                         ; [$a029]
+  @LAB_PRG14__a029:
     PHA
     CMP #$03
     BEQ @LAB_PRG14__a032
     CMP #$08
     BNE @LAB_PRG14__a035
 
-  @LAB_PRG14__a032:                         ; [$a032]
+  @LAB_PRG14__a032:
     JSR SpriteBehavior_ShadowEura__a077
 
-  @LAB_PRG14__a035:                         ; [$a035]
+  @LAB_PRG14__a035:
     PLA
     TAY
     LDA a:BYTE_ARRAY_PRG14__a064,Y
@@ -8675,10 +8675,10 @@ SpriteBehavior_ShadowEura:                  ; [$9fe3]
     LDA #$1e
     STA a:CurrentSprites_BehaviorData2,X
 
-  @LAB_PRG14__a052:                         ; [$a052]
+  @LAB_PRG14__a052:
     RTS
 
-  @LAB_PRG14__a053:                         ; [$a053]
+  @LAB_PRG14__a053:
     JSR BScript_Action_FacePlayerX
     DEC a:CurrentSprites_BehaviorData2,X
     BNE @_return
@@ -8686,14 +8686,14 @@ SpriteBehavior_ShadowEura:                  ; [$9fe3]
     LDA #$14
     STA a:CurrentSprites_BehaviorData2,X
 
-  @_return:                                 ; [$a063]
+  @_return:
     RTS
 
 ;
 ; XREFS:
 ;     SpriteBehavior_ShadowEura
 ;
-BYTE_ARRAY_PRG14__a064:                     ; [$a064]
+BYTE_ARRAY_PRG14__a064:
     .byte $00                               ; [0]:
     .byte $00                               ; [1]:
     .byte $08                               ; [2]:
@@ -8717,7 +8717,7 @@ BYTE_ARRAY_PRG14__a064:                     ; [$a064]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::80ed]
 ;============================================================================
-SpriteUpdateHandler_Boss_ShadowEura:        ; [$a06e]
+SpriteUpdateHandler_Boss_ShadowEura:
     JSR CurrentSprite_UpdateFlipMask
     LDA a:CurrentSprites_InternalBehaviorStates,X
     JMP Sprite_EnterNextAppearancePhase
@@ -8734,7 +8734,7 @@ SpriteUpdateHandler_Boss_ShadowEura:        ; [$a06e]
 ; XREFS:
 ;     SpriteBehavior_ShadowEura
 ;============================================================================
-SpriteBehavior_ShadowEura__a077:            ; [$a077]
+SpriteBehavior_ShadowEura__a077:
     LDA a:CurrentSprites_Flags,X
     AND #$01
     TAY
@@ -8752,7 +8752,7 @@ SpriteBehavior_ShadowEura__a077:            ; [$a077]
 ; XREFS:
 ;     SpriteBehavior_ShadowEura__a077
 ;
-BYTE_ARRAY_PRG14__a091:                     ; [$a091]
+BYTE_ARRAY_PRG14__a091:
     .byte $00                               ; [0]:
     .byte $20                               ; [1]:
 
@@ -8769,7 +8769,7 @@ BYTE_ARRAY_PRG14__a091:                     ; [$a091]
 ; XREFS:
 ;     SpriteBehavior_ExecutionHood
 ;============================================================================
-SpriteBehavior_ExecutionHood__a093:         ; [$a093]
+SpriteBehavior_ExecutionHood__a093:
     JSR Sprites_HasMaxOnScreen
     BCS RETURN_A0CA
     LDA CurrentSprites_YPos,X
@@ -8791,7 +8791,7 @@ SpriteBehavior_ExecutionHood__a093:         ; [$a093]
 ;     SpriteBehavior_Ishiisu
 ;     SpriteBehavior_Nash
 ;============================================================================
-FUN_PRG14__a0a0:                            ; [$a0a0]
+FUN_PRG14__a0a0:
     JSR Sprites_HasMaxOnScreen
     BCS RETURN_A0CA
     LDA CurrentSprites_YPos,X
@@ -8816,7 +8816,7 @@ FUN_PRG14__a0a0:                            ; [$a0a0]
 ; XREFS:
 ;     SpriteBehavior_ExecutionHood__a093
 ;============================================================================
-SpriteBehavior_ExecutionHood__a0ad:         ; [$a0ad]
+SpriteBehavior_ExecutionHood__a0ad:
     LDA #$51
     STA a:CurrentSprites_Entities,Y
     LDA CurrentSprites_XPos_Full,X
@@ -8835,7 +8835,7 @@ SpriteBehavior_ExecutionHood__a0ad:         ; [$a0ad]
     ;     FUN_PRG14__a0a0
     ;     SpriteBehavior_ExecutionHood__a093
     ;
-RETURN_A0CA:                                ; [$a0ca]
+RETURN_A0CA:
     RTS
 
 ;============================================================================
@@ -8851,12 +8851,12 @@ RETURN_A0CA:                                ; [$a0ca]
 ;     SPRITE_BEHAVIORS [$PRG14::a61d]
 ;     _thunk_SpriteBehavior__a0cb
 ;============================================================================
-SpriteBehavior_EnemyMagic:                  ; [$a0cb]
+SpriteBehavior_EnemyMagic:
     JSR Sprite_IsBehaviorNotReady
     BNE @LAB_PRG14__a0d3
     JSR Sprite_SetBehaviorReady
 
-  @LAB_PRG14__a0d3:                         ; [$a0d3]
+  @LAB_PRG14__a0d3:
     LDA #$02
     STA a:Arg_DeltaX_Full
     LDA #$00
@@ -8866,7 +8866,7 @@ SpriteBehavior_EnemyMagic:                  ; [$a0cb]
     LDA #$ff
     STA a:CurrentSprites_Entities,X
 
-  @_return:                                 ; [$a0e7]
+  @_return:
     RTS
 
 ;============================================================================
@@ -8881,7 +8881,7 @@ SpriteBehavior_EnemyMagic:                  ; [$a0cb]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::8129]
 ;============================================================================
-SpriteUpdateHandler_Magic_81:               ; [$a0e8]
+SpriteUpdateHandler_Magic_81:
     LDA #$00
     STA CurrentSprite_FlipMask
     LDA a:SpriteUpdateCounter
@@ -8904,7 +8904,7 @@ SpriteUpdateHandler_Magic_81:               ; [$a0e8]
 ;     SpriteBehavior_KingGrieve_9f65
 ;     SpriteBehavior_Ripasheiku_CastMagicOrUpdatePos
 ;============================================================================
-Sprite_CastMagic:                           ; [$a0f6]
+Sprite_CastMagic:
     JSR Sprites_HasMaxOnScreen
     BCS @_return
     LDA #$0a
@@ -8920,7 +8920,7 @@ Sprite_CastMagic:                           ; [$a0f6]
     STA a:CurrentSprites_PPUOffsets,Y
     JMP Sprite_Maybe_ResetState
 
-  @_return:                                 ; [$a11c]
+  @_return:
     RTS
 
 ;============================================================================
@@ -8935,7 +8935,7 @@ Sprite_CastMagic:                           ; [$a0f6]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a61f]
 ;============================================================================
-_thunk_SpriteBehavior__a0cb:                ; [$a11d]
+_thunk_SpriteBehavior__a0cb:
     JMP SpriteBehavior_EnemyMagic
 
 ;============================================================================
@@ -8950,7 +8950,7 @@ _thunk_SpriteBehavior__a0cb:                ; [$a11d]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::809b]
 ;============================================================================
-SpriteUpdateHandler_TODO_Garbled10:         ; [$a120]
+SpriteUpdateHandler_TODO_Garbled10:
     JSR CurrentSprite_UpdateFlipMask
     LDA a:SpriteUpdateCounter
     LSR A
@@ -8971,7 +8971,7 @@ SpriteUpdateHandler_TODO_Garbled10:         ; [$a120]
 ; XREFS:
 ;     SpriteBehavior_ShadowEura__a077
 ;============================================================================
-SpriteBehavior_ShadowEura__a12d:            ; [$a12d]
+SpriteBehavior_ShadowEura__a12d:
     JSR Sprites_HasMaxOnScreen
     BCS @_return
     LDA #$53
@@ -8987,7 +8987,7 @@ SpriteBehavior_ShadowEura__a12d:            ; [$a12d]
     STA a:CurrentSprites_PPUOffsets,Y
     JMP Sprite_Maybe_ResetState
 
-  @_return:                                 ; [$a153]
+  @_return:
     RTS
 
 ;============================================================================
@@ -9002,7 +9002,7 @@ SpriteBehavior_ShadowEura__a12d:            ; [$a12d]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a621]
 ;============================================================================
-SpriteBehavior_Unknown_29:                  ; [$a154]
+SpriteBehavior_Unknown_29:
     JSR Sprite_IsBehaviorNotReady
     BNE @LAB_PRG14__a183
     LDA #$00
@@ -9023,7 +9023,7 @@ SpriteBehavior_Unknown_29:                  ; [$a154]
     STA a:CurrentSprites_Flags,X
     JSR Sprite_SetBehaviorReady
 
-  @LAB_PRG14__a183:                         ; [$a183]
+  @LAB_PRG14__a183:
     LDA a:CurrentSprites_BehaviorState_XFull,X
     STA a:Arg_DeltaX_Full
     LDA a:CurrentSprites_BehaviorState_XFrac,X
@@ -9046,10 +9046,10 @@ SpriteBehavior_Unknown_29:                  ; [$a154]
     LDA #$00
     STA a:CurrentSprites_InternalBehaviorStates,X
 
-  @_return:                                 ; [$a1bb]
+  @_return:
     RTS
 
-  @LAB_PRG14__a1bc:                         ; [$a1bc]
+  @LAB_PRG14__a1bc:
     LDA #$ff
     STA a:CurrentSprites_Entities,X
     RTS
@@ -9066,7 +9066,7 @@ SpriteBehavior_Unknown_29:                  ; [$a154]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::812d]
 ;============================================================================
-SpriteUpdateHandler_Magic_83:               ; [$a1c2]
+SpriteUpdateHandler_Magic_83:
     LDA #$00
     STA CurrentSprite_FlipMask
     LDA a:CurrentSprites_InternalBehaviorStates,X
@@ -9082,7 +9082,7 @@ SpriteUpdateHandler_Magic_83:               ; [$a1c2]
 ; OUTPUTS:
 ;     TODO
 ;============================================================================
-FUN_PRG14__a1cc:                            ; [$a1cc]
+FUN_PRG14__a1cc:
     JSR Sprites_HasMaxOnScreen
     BCS @_return
     LDA #$54
@@ -9099,7 +9099,7 @@ FUN_PRG14__a1cc:                            ; [$a1cc]
     STA a:CurrentSprites_PPUOffsets,Y
     JMP Sprite_Maybe_ResetState
 
-  @_return:                                 ; [$a1f4]
+  @_return:
     RTS
 
 ;============================================================================
@@ -9114,7 +9114,7 @@ FUN_PRG14__a1cc:                            ; [$a1cc]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::812f]
 ;============================================================================
-SpriteUpdateHandler_EnemyMagic:             ; [$a1f5]
+SpriteUpdateHandler_EnemyMagic:
     JSR CurrentSprite_UpdateFlipMask
     LDA a:SpriteUpdateCounter
     LSR A
@@ -9140,7 +9140,7 @@ SpriteUpdateHandler_EnemyMagic:             ; [$a1f5]
 ;     SpriteBehavior_Zorugeriru__9e13
 ;     Sprite_CastMagic
 ;============================================================================
-Sprite_Maybe_ResetState:                    ; [$a202]
+Sprite_Maybe_ResetState:
     TXA
     PHA
     LDA a:CurrentSprites_Entities,Y
@@ -9190,10 +9190,10 @@ Sprite_Maybe_ResetState:                    ; [$a202]
 ;     Sprite_CastMagic
 ;     Sprite_HandleDeathDropIfPossible
 ;============================================================================
-Sprites_HasMaxOnScreen:                     ; [$a236]
+Sprites_HasMaxOnScreen:
     LDY #$07                                ; Y = 7 (our loop counter)
 
-  @_loop:                                   ; [$a238]
+  @_loop:
     LDA a:CurrentSprites_Entities,Y         ; A = sprite entity at X
     CMP #$ff                                ; Is it 0xFF (unpopulated)?
     BNE @_isPopulated                       ; If not, jump to prepare the
@@ -9206,7 +9206,7 @@ Sprites_HasMaxOnScreen:                     ; [$a236]
     CLC                                     ; Set C = 0
     RTS                                     ; And return it.
 
-  @_isPopulated:                            ; [$a241]
+  @_isPopulated:
     DEY                                     ; Y--
     BPL @_loop                              ; If >= 0, loop.
 
@@ -9229,7 +9229,7 @@ Sprites_HasMaxOnScreen:                     ; [$a236]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a639]
 ;============================================================================
-SpriteBehavior_Ointment:                    ; [$a246]
+SpriteBehavior_Ointment:
     JSR Sprite_IsBehaviorNotReady
     BNE Sprite_FallIfNeeded
     LDA a:DurationOintment
@@ -9251,7 +9251,7 @@ SpriteBehavior_Ointment:                    ; [$a246]
 ; XREFS:
 ;     SpriteBehavior_Glove
 ;============================================================================
-SpriteBehavior_a25f_ClearEntity:            ; [$a250]
+SpriteBehavior_a25f_ClearEntity:
     LDA #$ff
     STA a:CurrentSprites_Entities,X
     RTS
@@ -9269,7 +9269,7 @@ SpriteBehavior_a25f_ClearEntity:            ; [$a250]
 ;     SpriteBehavior_Glove
 ;     SpriteBehavior_Ointment
 ;============================================================================
-Sprite_SetReadyAndFallIfNeeded:             ; [$a256]
+Sprite_SetReadyAndFallIfNeeded:
     JSR Sprite_SetBehaviorReady
 
     ;
@@ -9289,7 +9289,7 @@ Sprite_SetReadyAndFallIfNeeded:             ; [$a256]
 ;     SpriteBehavior_Glove
 ;     SpriteBehavior_Ointment
 ;============================================================================
-Sprite_FallIfNeeded:                        ; [$a259]
+Sprite_FallIfNeeded:
     JSR Sprites_SetCurrentSpriteCanMove
     JMP CurrentSprite_HandleFall
 
@@ -9305,7 +9305,7 @@ Sprite_FallIfNeeded:                        ; [$a259]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a63b]
 ;============================================================================
-SpriteBehavior_Glove:                       ; [$a25f]
+SpriteBehavior_Glove:
     JSR Sprite_IsBehaviorNotReady
     BNE Sprite_FallIfNeeded
     LDA a:DurationGlove
@@ -9330,7 +9330,7 @@ SpriteBehavior_Glove:                       ; [$a25f]
 ;     thunk1_SpriteUpdateHandler_NPC_Walking
 ;     thunk2_SpriteUpdateHandler_NPC_Walking
 ;============================================================================
-SpriteUpdateHandler_NPC_Walking:            ; [$a26b]
+SpriteUpdateHandler_NPC_Walking:
     JSR CurrentSprite_UpdateFlipMask
     LDY #$00
     LDA a:CurrentSprites_Phases,X
@@ -9343,7 +9343,7 @@ SpriteUpdateHandler_NPC_Walking:            ; [$a26b]
     AND #$03
     TAY
 
-  @LAB_PRG14__a280:                         ; [$a280]
+  @LAB_PRG14__a280:
     LDA a:BYTE_ARRAY_PRG14__a286,Y
     JMP Sprite_EnterNextAppearancePhase
 
@@ -9351,7 +9351,7 @@ SpriteUpdateHandler_NPC_Walking:            ; [$a26b]
 ; XREFS:
 ;     SpriteUpdateHandler_NPC_Walking
 ;
-BYTE_ARRAY_PRG14__a286:                     ; [$a286]
+BYTE_ARRAY_PRG14__a286:
     .byte $00                               ; [0]:
     .byte $01                               ; [1]:
     .byte $00                               ; [2]:
@@ -9369,7 +9369,7 @@ BYTE_ARRAY_PRG14__a286:                     ; [$a286]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::80f1]
 ;============================================================================
-thunk1_SpriteUpdateHandler_NPC_Walking:     ; [$a28a]
+thunk1_SpriteUpdateHandler_NPC_Walking:
     JMP SpriteUpdateHandler_NPC_Walking
 
 ;============================================================================
@@ -9384,7 +9384,7 @@ thunk1_SpriteUpdateHandler_NPC_Walking:     ; [$a28a]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::80f3]
 ;============================================================================
-thunk2_SpriteUpdateHandler_NPC_Walking:     ; [$a28d]
+thunk2_SpriteUpdateHandler_NPC_Walking:
     JMP SpriteUpdateHandler_NPC_Walking
 
 ;============================================================================
@@ -9399,7 +9399,7 @@ thunk2_SpriteUpdateHandler_NPC_Walking:     ; [$a28d]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::80f5]
 ;============================================================================
-SpriteUpdateHandler_NPC_ArmorSalesman:      ; [$a290]
+SpriteUpdateHandler_NPC_ArmorSalesman:
     LDA #$00
     STA CurrentSprite_FlipMask
     LDA a:SpriteUpdateCounter
@@ -9422,7 +9422,7 @@ SpriteUpdateHandler_NPC_ArmorSalesman:      ; [$a290]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::80f7]
 ;============================================================================
-SpriteUpdateHandler_NPC_MartialArts:        ; [$a2a0]
+SpriteUpdateHandler_NPC_MartialArts:
     JSR CurrentSprite_UpdateFlipMask
     LDA a:SpriteUpdateCounter
     LSR A
@@ -9444,7 +9444,7 @@ SpriteUpdateHandler_NPC_MartialArts:        ; [$a2a0]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::80f9]
 ;============================================================================
-SpriteUpdateHandler_NPC_Priest:             ; [$a2af]
+SpriteUpdateHandler_NPC_Priest:
     JSR CurrentSprite_UpdateFlipMask
     LDA a:SpriteUpdateCounter
     LSR A
@@ -9466,7 +9466,7 @@ SpriteUpdateHandler_NPC_Priest:             ; [$a2af]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::80fb]
 ;============================================================================
-SpriteUpdateHandler_NPC_King:               ; [$a2be]
+SpriteUpdateHandler_NPC_King:
     LDA #$40
     STA CurrentSprite_FlipMask
     LDY a:CurrentSprites_Phases,X
@@ -9485,7 +9485,7 @@ SpriteUpdateHandler_NPC_King:               ; [$a2be]
 ; XREFS:
 ;     SpriteUpdateHandler_NPC_King
 ;
-BYTE_ARRAY_PRG14__a2d6:                     ; [$a2d6]
+BYTE_ARRAY_PRG14__a2d6:
     .byte $00                               ; [0]:
     .byte $02                               ; [1]:
 
@@ -9501,7 +9501,7 @@ BYTE_ARRAY_PRG14__a2d6:                     ; [$a2d6]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::80fd]
 ;============================================================================
-SpriteUpdateHandler_NPC_MagicTeacher:       ; [$a2d8]
+SpriteUpdateHandler_NPC_MagicTeacher:
     JSR CurrentSprite_UpdateFlipMask
     LDA a:SpriteUpdateCounter
     LSR A
@@ -9526,7 +9526,7 @@ SpriteUpdateHandler_NPC_MagicTeacher:       ; [$a2d8]
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::8103]
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::8105]
 ;============================================================================
-SpriteUpdateHandler_NPC_KeySalesman_Others: ; [$a2e7]
+SpriteUpdateHandler_NPC_KeySalesman_Others:
     LDA #$40
     STA CurrentSprite_FlipMask
 
@@ -9548,7 +9548,7 @@ SpriteUpdateHandler_NPC_KeySalesman_Others: ; [$a2e7]
 ;     SpriteUpdateHandler_NPC_Doctor
 ;     SpriteUpdateHandler_NPC_MeatSalesman_Others
 ;============================================================================
-FUN_PRG14__a2eb:                            ; [$a2eb]
+FUN_PRG14__a2eb:
     LDA a:SpriteUpdateCounter
     LSR A
     LSR A
@@ -9569,7 +9569,7 @@ FUN_PRG14__a2eb:                            ; [$a2eb]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::810d]
 ;============================================================================
-SpriteUpdateHandler_NPC_Doctor:             ; [$a2f7]
+SpriteUpdateHandler_NPC_Doctor:
     LDA #$00
     STA CurrentSprite_FlipMask
     JMP FUN_PRG14__a2eb
@@ -9590,7 +9590,7 @@ SpriteUpdateHandler_NPC_Doctor:             ; [$a2f7]
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::810f]
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::8111]
 ;============================================================================
-SpriteUpdateHandler_NPC_MeatSalesman_Others: ; [$a2fe]
+SpriteUpdateHandler_NPC_MeatSalesman_Others:
     JSR CurrentSprite_UpdateFlipMask
     JMP FUN_PRG14__a2eb
 
@@ -9607,7 +9607,7 @@ SpriteUpdateHandler_NPC_MeatSalesman_Others: ; [$a2fe]
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::8113]
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::8115]
 ;============================================================================
-SpriteUpdateHandler_Enemy_UnusedEyeball_Zozura: ; [$a304]
+SpriteUpdateHandler_Enemy_UnusedEyeball_Zozura:
     JSR CurrentSprite_UpdateFlipMask
     JMP FUN_PRG14__a2eb
 
@@ -9636,7 +9636,7 @@ SpriteUpdateHandler_Enemy_UnusedEyeball_Zozura: ; [$a304]
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::8145]
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::8147]
 ;============================================================================
-SpriteUpdateHandler_Item_Standard:          ; [$a30a]
+SpriteUpdateHandler_Item_Standard:
     LDA #$00
     STA CurrentSprite_FlipMask
     LDA #$00
@@ -9654,7 +9654,7 @@ SpriteUpdateHandler_Item_Standard:          ; [$a30a]
 ; XREFS:
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::8089]
 ;============================================================================
-SpriteUpdateHandler_Bread:                  ; [$a313]
+SpriteUpdateHandler_Bread:
     LDA #$00
     STA Sprites_PPUOffset
     STA CurrentSprite_FlipMask
@@ -9673,19 +9673,19 @@ SpriteUpdateHandler_Bread:                  ; [$a313]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a659]
 ;============================================================================
-SpriteBehavior_Fountain:                    ; [$a31e]
+SpriteBehavior_Fountain:
     JSR Sprite_IsBehaviorNotReady
     BNE @_checkQuest
     JSR Sprites_MaybeResetPhaseAndEnable
 
-  @_checkQuest:                             ; [$a326]
+  @_checkQuest:
     LDA a:Quests
     AND #$07
     CMP #$07
     BNE @_setVisible
     JMP Sprites_HideSprite
 
-  @_setVisible:                             ; [$a332]
+  @_setVisible:
     JMP Sprite_SetVisible
 
 ;============================================================================
@@ -9701,7 +9701,7 @@ SpriteBehavior_Fountain:                    ; [$a31e]
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::812b]
 ;     SpriteUpdateHandler_Effect_Spring
 ;============================================================================
-SpriteUpdateHandler_Effect_Fountain:        ; [$a335]
+SpriteUpdateHandler_Effect_Fountain:
     LDA #$00
     STA CurrentSprite_FlipMask
     LDA a:SpriteUpdateCounter
@@ -9716,7 +9716,7 @@ SpriteUpdateHandler_Effect_Fountain:        ; [$a335]
 ; XREFS:
 ;     SpriteUpdateHandler_Effect_Fountain
 ;
-SPRITE_FOUNTAIN_PHASES:                     ; [$a347]
+SPRITE_FOUNTAIN_PHASES:
     .byte $04                               ; [0]:
     .byte $05                               ; [1]:
     .byte $06                               ; [2]:
@@ -9739,7 +9739,7 @@ SPRITE_FOUNTAIN_PHASES:                     ; [$a347]
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::8139]
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::813b]
 ;============================================================================
-SpriteUpdateHandler_Item_Special:           ; [$a34b]
+SpriteUpdateHandler_Item_Special:
     LDA #$00
     STA CurrentSprite_FlipMask
     LDA #$00
@@ -9757,7 +9757,7 @@ SpriteUpdateHandler_Item_Special:           ; [$a34b]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a63d]
 ;============================================================================
-SpriteBehavior_BattleSuitDroppedByZoradohna: ; [$a354]
+SpriteBehavior_BattleSuitDroppedByZoradohna:
     JSR Sprite_IsBehaviorNotReady
     BNE @_checkOnScreen
     LDA a:SelectedArmor
@@ -9765,7 +9765,7 @@ SpriteBehavior_BattleSuitDroppedByZoradohna: ; [$a354]
     BEQ Sprites_ClearAllEntities
     LDY a:NumberOfArmors
 
-  @_checkArmorLoop:                         ; [$a363]
+  @_checkArmorLoop:
     DEY
     BMI @_setReady
     LDA a:ArmorInventory,Y
@@ -9773,18 +9773,18 @@ SpriteBehavior_BattleSuitDroppedByZoradohna: ; [$a354]
     BEQ Sprites_ClearAllEntities
     BNE @_checkArmorLoop
 
-  @_setReady:                               ; [$a36f]
+  @_setReady:
     LDA #$00
     STA a:CurrentSprites_Phases,X
     JSR Sprite_SetBehaviorReady
 
-  @_checkOnScreen:                          ; [$a377]
+  @_checkOnScreen:
     LDA #$2e
     JSR Maybe_IsSpriteEntityNotOnScreen
     BCC @_setVisible
     JMP Sprites_HideSprite
 
-  @_setVisible:                             ; [$a381]
+  @_setVisible:
     JMP Sprite_SetVisible
 
 ;============================================================================
@@ -9799,7 +9799,7 @@ SpriteBehavior_BattleSuitDroppedByZoradohna: ; [$a354]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a63f]
 ;============================================================================
-SpriteBehavior_BattleHelmetDroppedByZoradohna: ; [$a384]
+SpriteBehavior_BattleHelmetDroppedByZoradohna:
     JSR Sprite_IsBehaviorNotReady
     BNE @_checkOnScreen
     LDA a:SelectedShield
@@ -9807,7 +9807,7 @@ SpriteBehavior_BattleHelmetDroppedByZoradohna: ; [$a384]
     BEQ Sprites_ClearAllEntities
     LDY a:NumberOfShields
 
-  @_checkShieldLoop:                        ; [$a393]
+  @_checkShieldLoop:
     DEY
     BMI @_setReady
     LDA a:ShieldInventory,Y
@@ -9815,18 +9815,18 @@ SpriteBehavior_BattleHelmetDroppedByZoradohna: ; [$a384]
     BEQ Sprites_ClearAllEntities
     BNE @_checkShieldLoop
 
-  @_setReady:                               ; [$a39f]
+  @_setReady:
     LDA #$00
     STA a:CurrentSprites_Phases,X
     JSR Sprite_SetBehaviorReady
 
-  @_checkOnScreen:                          ; [$a3a7]
+  @_checkOnScreen:
     LDA #$2e
     JSR Maybe_IsSpriteEntityNotOnScreen
     BCC @_setVisible
     JMP Sprites_HideSprite
 
-  @_setVisible:                             ; [$a3b1]
+  @_setVisible:
     JMP Sprite_SetVisible
 
 ;============================================================================
@@ -9843,10 +9843,10 @@ SpriteBehavior_BattleHelmetDroppedByZoradohna: ; [$a384]
 ;     SpriteBehavior_BattleSuitDroppedByZoradohna
 ;     SpriteBehavior_DragonSlayerDroppedByKingGrieve
 ;============================================================================
-Sprites_ClearAllEntities:                   ; [$a3b4]
+Sprites_ClearAllEntities:
     LDY #$07
 
-  @_loop:                                   ; [$a3b6]
+  @_loop:
     LDA #$ff
     STA a:CurrentSprites_Entities,Y
     DEY
@@ -9865,7 +9865,7 @@ Sprites_ClearAllEntities:                   ; [$a3b4]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a641]
 ;============================================================================
-SpriteBehavior_DragonSlayerDroppedByKingGrieve: ; [$a3bf]
+SpriteBehavior_DragonSlayerDroppedByKingGrieve:
     JSR Sprite_IsBehaviorNotReady
     BNE @_checkOnScreen
     LDA a:Player_CurWeapon
@@ -9873,7 +9873,7 @@ SpriteBehavior_DragonSlayerDroppedByKingGrieve: ; [$a3bf]
     BEQ Sprites_ClearAllEntities
     LDY a:NumberOfWeapons
 
-  @_checkWeaponLoop:                        ; [$a3ce]
+  @_checkWeaponLoop:
     DEY
     BMI @_setReady
     LDA a:WeaponInventory,Y
@@ -9881,18 +9881,18 @@ SpriteBehavior_DragonSlayerDroppedByKingGrieve: ; [$a3bf]
     BEQ Sprites_ClearAllEntities
     BNE @_checkWeaponLoop
 
-  @_setReady:                               ; [$a3da]
+  @_setReady:
     LDA #$00
     STA a:CurrentSprites_Phases,X
     JSR Sprite_SetBehaviorReady
 
-  @_checkOnScreen:                          ; [$a3e2]
+  @_checkOnScreen:
     LDA #$32
     JSR Maybe_IsSpriteEntityNotOnScreen
     BCC @_setVisible
     JMP Sprites_HideSprite
 
-  @_setVisible:                             ; [$a3ec]
+  @_setVisible:
     JMP Sprite_SetVisible
 
 ;============================================================================
@@ -9907,7 +9907,7 @@ SpriteBehavior_DragonSlayerDroppedByKingGrieve: ; [$a3bf]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a643]
 ;============================================================================
-SpriteBehavior_MattockDroppedFromRipasheiku: ; [$a3ef]
+SpriteBehavior_MattockDroppedFromRipasheiku:
     JSR Sprite_IsBehaviorNotReady
     BNE @_checkOnScreen
     LDA a:Quests
@@ -9915,18 +9915,18 @@ SpriteBehavior_MattockDroppedFromRipasheiku: ; [$a3ef]
     BEQ @_setReady
     JMP Sprites_Remove
 
-  @_setReady:                               ; [$a3fe]
+  @_setReady:
     LDA #$00
     STA a:CurrentSprites_Phases,X
     JSR Sprite_SetBehaviorReady
 
-  @_checkOnScreen:                          ; [$a406]
+  @_checkOnScreen:
     LDA #$2d
     JSR Maybe_IsSpriteEntityNotOnScreen
     BCC @_setVisible
     JMP Sprites_HideSprite
 
-  @_setVisible:                             ; [$a410]
+  @_setVisible:
     JMP Sprite_SetVisible
 
 
@@ -9944,7 +9944,7 @@ SpriteBehavior_MattockDroppedFromRipasheiku: ; [$a3ef]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a645]
 ;============================================================================
-SpriteBehavior_WingBootsDroppedByZorugeriru: ; [$a413]
+SpriteBehavior_WingBootsDroppedByZorugeriru:
     JSR Sprite_IsBehaviorNotReady           ; Is the sprite behavior
                                             ; disabled?
     BNE @_checkOnScreen
@@ -9953,18 +9953,18 @@ SpriteBehavior_WingBootsDroppedByZorugeriru: ; [$a413]
     BEQ @_setReady
     JMP Sprites_Remove
 
-  @_setReady:                               ; [$a422]
+  @_setReady:
     LDA #$00
     STA a:CurrentSprites_Phases,X
     JSR Sprite_SetBehaviorReady
 
-  @_checkOnScreen:                          ; [$a42a]
+  @_checkOnScreen:
     LDA #$31
     JSR Maybe_IsSpriteEntityNotOnScreen
     BCC @_setVisible
     JMP Sprites_HideSprite
 
-  @_setVisible:                             ; [$a434]
+  @_setVisible:
     JMP Sprite_SetVisible
 
 ;============================================================================
@@ -9979,7 +9979,7 @@ SpriteBehavior_WingBootsDroppedByZorugeriru: ; [$a413]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a647]
 ;============================================================================
-SpriteBehavior_BlackOnyxDropFromZoradohna:  ; [$a437]
+SpriteBehavior_BlackOnyxDropFromZoradohna:
     JSR Sprite_IsBehaviorNotReady
     BNE @_checkOnScreen
     LDA a:SpecialItems
@@ -9987,18 +9987,18 @@ SpriteBehavior_BlackOnyxDropFromZoradohna:  ; [$a437]
     BEQ @_setReady
     JMP Sprites_Remove
 
-  @_setReady:                               ; [$a446]
+  @_setReady:
     LDA #$00
     STA a:CurrentSprites_Phases,X
     JSR Sprite_SetBehaviorReady
 
-  @_checkOnScreen:                          ; [$a44e]
+  @_checkOnScreen:
     LDA #$2e
     JSR Maybe_IsSpriteEntityNotOnScreen
     BCC @_setVisible
     JMP Sprites_HideSprite
 
-  @_setVisible:                             ; [$a458]
+  @_setVisible:
     JMP Sprite_SetVisible
 
 ;============================================================================
@@ -10013,7 +10013,7 @@ SpriteBehavior_BlackOnyxDropFromZoradohna:  ; [$a437]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a649]
 ;============================================================================
-SpriteBehavior_PendantDroppedFromRipasheiku: ; [$a45b]
+SpriteBehavior_PendantDroppedFromRipasheiku:
     JSR Sprite_IsBehaviorNotReady
     BNE @_checkOnScreen
     LDA a:SpecialItems
@@ -10021,18 +10021,18 @@ SpriteBehavior_PendantDroppedFromRipasheiku: ; [$a45b]
     BEQ @_setReady
     JMP Sprites_Remove
 
-  @_setReady:                               ; [$a46a]
+  @_setReady:
     LDA #$00
     STA a:CurrentSprites_Phases,X
     JSR Sprite_SetBehaviorReady
 
-  @_checkOnScreen:                          ; [$a472]
+  @_checkOnScreen:
     LDA #$2d
     JSR Maybe_IsSpriteEntityNotOnScreen
     BCC @_setVisible
     JMP Sprites_HideSprite
 
-  @_setVisible:                             ; [$a47c]
+  @_setVisible:
     JMP Sprite_SetVisible
 
 ;============================================================================
@@ -10047,13 +10047,13 @@ SpriteBehavior_PendantDroppedFromRipasheiku: ; [$a45b]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a661]
 ;============================================================================
-SpriteBehavior_ShowMagicalRod:              ; [$a47f]
+SpriteBehavior_ShowMagicalRod:
     LDA a:SpecialItems
     AND #$04
     BEQ @_return
     JMP Sprites_Remove
 
-  @_return:                                 ; [$a489]
+  @_return:
     RTS
 
 ;============================================================================
@@ -10068,17 +10068,17 @@ SpriteBehavior_ShowMagicalRod:              ; [$a47f]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a64b]
 ;============================================================================
-SpriteBehavior_RandomlyShowItem_50:         ; [$a48a]
+SpriteBehavior_RandomlyShowItem_50:
     JSR Sprite_IsBehaviorNotReady
     BNE @LAB_PRG14__a49a
     JSR Screen_Is3Of4Visits
     BCC @LAB_PRG14__a497
     JMP Sprites_Remove
 
-  @LAB_PRG14__a497:                         ; [$a497]
+  @LAB_PRG14__a497:
     JSR Sprites_MaybeResetPhaseAndEnable
 
-  @LAB_PRG14__a49a:                         ; [$a49a]
+  @LAB_PRG14__a49a:
     JMP Sprite_ShowIfNoEnemies
 
 ;============================================================================
@@ -10093,17 +10093,17 @@ SpriteBehavior_RandomlyShowItem_50:         ; [$a48a]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a64d]
 ;============================================================================
-SpriteBehavior_RandomlyShowItem_51:         ; [$a49d]
+SpriteBehavior_RandomlyShowItem_51:
     JSR Sprite_IsBehaviorNotReady
     BNE @LAB_PRG14__a4ad
     JSR Screen_Is3Of4Visits
     BCC @LAB_PRG14__a4aa
     JMP Sprites_Remove
 
-  @LAB_PRG14__a4aa:                         ; [$a4aa]
+  @LAB_PRG14__a4aa:
     JSR Sprites_MaybeResetPhaseAndEnable
 
-  @LAB_PRG14__a4ad:                         ; [$a4ad]
+  @LAB_PRG14__a4ad:
     JMP Sprite_ShowIfNoEnemies
 
 ;============================================================================
@@ -10118,17 +10118,17 @@ SpriteBehavior_RandomlyShowItem_51:         ; [$a49d]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a64f]
 ;============================================================================
-SpriteBehavior_RandomlyShowItem_52:         ; [$a4b0]
+SpriteBehavior_RandomlyShowItem_52:
     JSR Sprite_IsBehaviorNotReady
     BNE @LAB_PRG14__a4c0
     JSR Screen_Is3Of4Visits
     BCC @LAB_PRG14__a4bd
     JMP Sprites_Remove
 
-  @LAB_PRG14__a4bd:                         ; [$a4bd]
+  @LAB_PRG14__a4bd:
     JSR Sprites_MaybeResetPhaseAndEnable
 
-  @LAB_PRG14__a4c0:                         ; [$a4c0]
+  @LAB_PRG14__a4c0:
     JMP Sprite_ShowIfNoEnemies
 
 ;============================================================================
@@ -10143,17 +10143,17 @@ SpriteBehavior_RandomlyShowItem_52:         ; [$a4b0]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a651]
 ;============================================================================
-SpriteBehavior_RandomlyShowItem_53:         ; [$a4c3]
+SpriteBehavior_RandomlyShowItem_53:
     JSR Sprite_IsBehaviorNotReady
     BNE @LAB_PRG14__a4d3
     JSR Screen_Is3Of4Visits
     BCC @LAB_PRG14__a4d0
     JMP Sprites_Remove
 
-  @LAB_PRG14__a4d0:                         ; [$a4d0]
+  @LAB_PRG14__a4d0:
     JSR Sprites_MaybeResetPhaseAndEnable
 
-  @LAB_PRG14__a4d3:                         ; [$a4d3]
+  @LAB_PRG14__a4d3:
     JMP Sprite_ShowIfNoEnemies
 
 ;============================================================================
@@ -10168,17 +10168,17 @@ SpriteBehavior_RandomlyShowItem_53:         ; [$a4c3]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a653]
 ;============================================================================
-SpriteBehavior_RandomlyShowItem_54:         ; [$a4d6]
+SpriteBehavior_RandomlyShowItem_54:
     JSR Sprite_IsBehaviorNotReady
     BNE @LAB_PRG14__a4e6
     JSR Screen_Is3Of4Visits
     BCC @LAB_PRG14__a4e3
     JMP Sprites_Remove
 
-  @LAB_PRG14__a4e3:                         ; [$a4e3]
+  @LAB_PRG14__a4e3:
     JSR Sprites_MaybeResetPhaseAndEnable
 
-  @LAB_PRG14__a4e6:                         ; [$a4e6]
+  @LAB_PRG14__a4e6:
     JMP Sprite_ShowIfNoEnemies
 
 ;============================================================================
@@ -10193,17 +10193,17 @@ SpriteBehavior_RandomlyShowItem_54:         ; [$a4d6]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a657]
 ;============================================================================
-SpriteBehavior_RandomlyShowItem_56:         ; [$a4e9]
+SpriteBehavior_RandomlyShowItem_56:
     JSR Sprite_IsBehaviorNotReady
     BNE @LAB_PRG14__a4f9
     JSR Screen_Is3Of4Visits
     BCC @LAB_PRG14__a4f6
     JMP Sprites_Remove
 
-  @LAB_PRG14__a4f6:                         ; [$a4f6]
+  @LAB_PRG14__a4f6:
     JSR Sprites_MaybeResetPhaseAndEnable
 
-  @LAB_PRG14__a4f9:                         ; [$a4f9]
+  @LAB_PRG14__a4f9:
     JMP Sprite_ShowIfNoEnemies
 
 ;============================================================================
@@ -10218,17 +10218,17 @@ SpriteBehavior_RandomlyShowItem_56:         ; [$a4e9]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a655]
 ;============================================================================
-SpriteBehavior_RandomlyShowItem_55:         ; [$a4fc]
+SpriteBehavior_RandomlyShowItem_55:
     JSR Sprite_IsBehaviorNotReady
     BNE @LAB_PRG14__a50c
     JSR Screen_Is3Of4Visits
     BCC @LAB_PRG14__a509
     JMP Sprites_Remove
 
-  @LAB_PRG14__a509:                         ; [$a509]
+  @LAB_PRG14__a509:
     JSR Sprites_MaybeResetPhaseAndEnable
 
-  @LAB_PRG14__a50c:                         ; [$a50c]
+  @LAB_PRG14__a50c:
     JMP Sprite_ShowIfNoEnemies
     RTS
 
@@ -10262,13 +10262,13 @@ SpriteBehavior_RandomlyShowItem_55:         ; [$a4fc]
 ;     SpriteBehavior_RandomlyShowItem_55
 ;     SpriteBehavior_RandomlyShowItem_56
 ;============================================================================
-Sprite_ShowIfNoEnemies:                     ; [$a510]
+Sprite_ShowIfNoEnemies:
     JSR Sprites_HasAnyEnemyOnScreen         ; Are there any enemies on
                                             ; screen?
     BCC @_hideSprite                        ; If so, jump to hide the sprite.
     JMP Sprite_SetVisible                   ; Else, show the sprite.
 
-  @_hideSprite:                             ; [$a518]
+  @_hideSprite:
     JMP Sprites_HideSprite                  ; Hide the sprite.
 
 ;============================================================================
@@ -10293,7 +10293,7 @@ Sprite_ShowIfNoEnemies:                     ; [$a510]
 ;     SpriteBehavior_SpringOfJoker
 ;     SpriteBehavior_SpringOfSky
 ;============================================================================
-Sprites_MaybeResetPhaseAndEnable:           ; [$a51b]
+Sprites_MaybeResetPhaseAndEnable:
     LDA #$00
     STA a:CurrentSprites_Phases,X
     JMP Sprite_SetBehaviorReady
@@ -10325,7 +10325,7 @@ Sprites_MaybeResetPhaseAndEnable:           ; [$a51b]
 ;     SpriteBehavior_ShowMagicalRod
 ;     SpriteBehavior_WingBootsDroppedByZorugeriru
 ;============================================================================
-Sprites_Remove:                             ; [$a523]
+Sprites_Remove:
     LDA #$ff
     STA a:CurrentSprites_Entities,X         ; Unset the sprite entity.
     RTS
@@ -10360,7 +10360,7 @@ Sprites_Remove:                             ; [$a523]
 ;     SpriteBehavior_RandomlyShowItem_55
 ;     SpriteBehavior_RandomlyShowItem_56
 ;============================================================================
-Screen_Is3Of4Visits:                        ; [$a529]
+Screen_Is3Of4Visits:
     INC a:Screen_TrackedVisitCount          ; Increment the visit count.
     LDA a:Screen_TrackedVisitCount          ; Load it.
     CMP #$04                                ; Is it < 4?
@@ -10370,7 +10370,7 @@ Screen_Is3Of4Visits:                        ; [$a529]
     CLC                                     ; Set C = 0 (false result).
     RTS
 
-  @_returnTrue:                             ; [$a53a]
+  @_returnTrue:
     SEC                                     ; Set C = 1 (true result).
     RTS
 
@@ -10397,10 +10397,10 @@ Screen_Is3Of4Visits:                        ; [$a529]
 ; XREFS:
 ;     Sprite_ShowIfNoEnemies
 ;============================================================================
-Sprites_HasAnyEnemyOnScreen:                ; [$a53c]
+Sprites_HasAnyEnemyOnScreen:
     LDY #$07                                ; Y = 7 (loop counter)
 
-  @_loop:                                   ; [$a53e]
+  @_loop:
     LDA a:CurrentSprites_Entities,Y         ; A = Sprite entity at Y
     CMP #$ff                                ; Is it unset?
     BEQ @_prepareNextLoop                   ; If it's set, jump to prepare
@@ -10414,7 +10414,7 @@ Sprites_HasAnyEnemyOnScreen:                ; [$a53c]
     SEC                                     ; Set C = 1 (true result).
     RTS
 
-  @_prepareNextLoop:                        ; [$a550]
+  @_prepareNextLoop:
     DEY                                     ; Y--
     BPL @_loop                              ; If Y >= 0, loop.
     LDX a:CurrentSpriteIndex                ; Else, restore the X register.
@@ -10433,12 +10433,12 @@ Sprites_HasAnyEnemyOnScreen:                ; [$a53c]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a65b]
 ;============================================================================
-SpriteBehavior_SpringOfFortress:            ; [$a558]
+SpriteBehavior_SpringOfFortress:
     JSR Sprite_IsBehaviorNotReady
     BNE @LAB_PRG14__a560
     JSR Sprites_MaybeResetPhaseAndEnable
 
-  @LAB_PRG14__a560:                         ; [$a560]
+  @LAB_PRG14__a560:
     LDA a:CurrentSprites_Phases,X
     BNE SpriteBehavior_Springs_UpdateFlowing
     LDA a:Quests
@@ -10458,12 +10458,12 @@ SpriteBehavior_SpringOfFortress:            ; [$a558]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a65d]
 ;============================================================================
-SpriteBehavior_SpringOfSky:                 ; [$a56f]
+SpriteBehavior_SpringOfSky:
     JSR Sprite_IsBehaviorNotReady
     BNE @LAB_PRG14__a577
     JSR Sprites_MaybeResetPhaseAndEnable
 
-  @LAB_PRG14__a577:                         ; [$a577]
+  @LAB_PRG14__a577:
     LDA a:CurrentSprites_Phases,X
     BNE SpriteBehavior_Springs_UpdateFlowing
     LDA a:Quests
@@ -10483,12 +10483,12 @@ SpriteBehavior_SpringOfSky:                 ; [$a56f]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a65f]
 ;============================================================================
-SpriteBehavior_SpringOfJoker:               ; [$a586]
+SpriteBehavior_SpringOfJoker:
     JSR Sprite_IsBehaviorNotReady
     BNE @LAB_PRG14__a58e
     JSR Sprites_MaybeResetPhaseAndEnable
 
-  @LAB_PRG14__a58e:                         ; [$a58e]
+  @LAB_PRG14__a58e:
     LDA a:CurrentSprites_Phases,X
     BNE SpriteBehavior_Springs_UpdateFlowing
     LDA a:Quests
@@ -10510,7 +10510,7 @@ SpriteBehavior_SpringOfJoker:               ; [$a586]
 ;     SpriteBehavior_SpringOfJoker
 ;     SpriteBehavior_SpringOfSky
 ;============================================================================
-SpriteBehavior_Springs_UpdateFlowing:       ; [$a59d]
+SpriteBehavior_Springs_UpdateFlowing:
     JSR Sprites_HideSprite
     LDA a:CurrentSprites_Phases,X
     BNE @LAB_PRG14__a5b0
@@ -10519,7 +10519,7 @@ SpriteBehavior_Springs_UpdateFlowing:       ; [$a59d]
     STA a:CurrentSprites_BehaviorData2,X
     STA a:CurrentSprites_BehaviorData3,X
 
-  @LAB_PRG14__a5b0:                         ; [$a5b0]
+  @LAB_PRG14__a5b0:
     LDA a:CurrentSprites_Phases,X
     CMP #$01
     BNE Sprite_SetPhase2
@@ -10537,7 +10537,7 @@ SpriteBehavior_Springs_UpdateFlowing:       ; [$a59d]
     ;     SpriteBehavior_Springs_UpdateFlowing
     ;     SpriteUpdateHandler_Effect_Spring
     ;
-RETURN_A5CB:                                ; [$a5cb]
+RETURN_A5CB:
     RTS
 
 ;============================================================================
@@ -10552,7 +10552,7 @@ RETURN_A5CB:                                ; [$a5cb]
 ; XREFS:
 ;     SpriteBehavior_Springs_UpdateFlowing
 ;============================================================================
-Sprite_SetPhase2:                           ; [$a5cc]
+Sprite_SetPhase2:
     LDA #$02
     STA a:CurrentSprites_Phases,X
     RTS
@@ -10571,14 +10571,14 @@ Sprite_SetPhase2:                           ; [$a5cc]
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::814b]
 ;     SPRITE_UPDATE_HANDLERS [$PRG14::814d]
 ;============================================================================
-SpriteUpdateHandler_Effect_Spring:          ; [$a5d2]
+SpriteUpdateHandler_Effect_Spring:
     LDA a:CurrentSprites_Phases,X
     BEQ RETURN_A5CB
     CMP #$01
     BEQ @LAB_PRG14__a5de
     JMP SpriteUpdateHandler_Effect_Fountain
 
-  @LAB_PRG14__a5de:                         ; [$a5de]
+  @LAB_PRG14__a5de:
     JSR CurrentSprite_UpdateFlipMask
     LDA a:CurrentSprites_BehaviorData2,X
     JMP Sprite_EnterNextAppearancePhase
@@ -10587,7 +10587,7 @@ SpriteUpdateHandler_Effect_Spring:          ; [$a5d2]
 ; XREFS:
 ;     Sprites_UpdateBehavior
 ;
-SPRITE_BEHAVIORS:                           ; [$a5e7]
+SPRITE_BEHAVIORS:
     pointer SpriteBehavior_MoveTowardPlayer-1 ; [0]: Common
     pointer SpriteBehavior_Wait-1           ; [1]: Common
     pointer SpriteBehavior_BounceAndExpire-1 ; [2]: Item: Dropped coin
@@ -10675,7 +10675,7 @@ SPRITE_BEHAVIORS:                           ; [$a5e7]
 ; XREFS:
 ;     LAB_PRG14__802e [$PRG14::802e]
 ;============================================================================
-Sprites_UpdateBehavior:                     ; [$a66b]
+Sprites_UpdateBehavior:
     LDA a:DurationHourGlass
     BMI @LAB_PRG14__a679
     LDY a:CurrentSprites_Entities,X
@@ -10694,7 +10694,7 @@ Sprites_UpdateBehavior:                     ; [$a66b]
     ; Set the currently-processing sprite behavior address to
     ; the one from the current sprites map.
     ;
-  @LAB_PRG14__a679:                         ; [$a679]
+  @LAB_PRG14__a679:
     LDX a:CurrentSpriteIndex
     LDA a:CurrentSprites_BehaviorAddrs_L,X
     STA Sprites_ReadInfoAddr
@@ -10721,7 +10721,7 @@ Sprites_UpdateBehavior:                     ; [$a66b]
     ; Update the map of current sprites to sprite behavior addresses
     ; with the updated address.
     ;
-  @_updateCurrentSprites:                   ; [$a6a1]
+  @_updateCurrentSprites:
     LDX a:CurrentSpriteIndex
     LDA Sprites_ReadInfoAddr
     STA a:CurrentSprites_BehaviorAddrs_L,X
@@ -10746,7 +10746,7 @@ Sprites_UpdateBehavior:                     ; [$a66b]
 ;     SPRITE_BEHAVIORS [$PRG14::a5fd]
 ;     Sprites_CountdownBehavior
 ;============================================================================
-SpriteBehavior_Return:                      ; [$a6ae]
+SpriteBehavior_Return:
     RTS
 
 ;============================================================================
@@ -10767,7 +10767,7 @@ SpriteBehavior_Return:                      ; [$a6ae]
 ;     SpriteBehavior_WalkForward
 ;     SpriteBehavior__a91e
 ;============================================================================
-Sprites_CountdownBehavior:                  ; [$a6af]
+Sprites_CountdownBehavior:
     LDA a:CurrentSprites_BehaviorArg1,X
     BEQ SpriteBehavior_Return
     DEC a:CurrentSprites_BehaviorArg1,X
@@ -10794,7 +10794,7 @@ Sprites_CountdownBehavior:                  ; [$a6af]
 ;     Sprites_Maybe_Skip2AndLoadNextAction
 ;     Sprites_UpdateBehavior
 ;============================================================================
-BScripts_LoadNextOp:                        ; [$a6bc]
+BScripts_LoadNextOp:
     LDY #$00
     LDA (Sprites_ReadInfoAddr),Y
     CMP #$ff
@@ -10807,7 +10807,7 @@ BScripts_LoadNextOp:                        ; [$a6bc]
     PHA
     RTS
 
-  @LAB_PRG14__a6cf:                         ; [$a6cf]
+  @LAB_PRG14__a6cf:
     LDA a:CurrentSprites_Behaviors,X
     AND #$7f
     STA a:CurrentSprites_Behaviors,X
@@ -10817,7 +10817,7 @@ BScripts_LoadNextOp:                        ; [$a6bc]
 ; XREFS:
 ;     BScripts_LoadNextOp
 ;
-BSCRIPT_OP_HANDLERS:                        ; [$a6d8]
+BSCRIPT_OP_HANDLERS:
     pointer BScript_Op_SwitchBehavior-1     ; [0]:
     pointer BScript_Op_MaybeDisableAndGoTo-1 ; [1]:
     pointer BScript_Op_RunAction-1          ; [2]:
@@ -10839,12 +10839,12 @@ BSCRIPT_OP_HANDLERS:                        ; [$a6d8]
 ; XREFS:
 ;     BSCRIPT_OP_HANDLERS [$PRG14::a6e6]
 ;============================================================================
-BScript_Op_SetPhase:                        ; [$a6e8]
+BScript_Op_SetPhase:
     LDA a:CurrentSprites_Behaviors,X
     BMI @LAB_PRG14__a6f0
     JMP RETURN_A771
 
-  @LAB_PRG14__a6f0:                         ; [$a6f0]
+  @LAB_PRG14__a6f0:
     LDY #$01
     LDA (Sprites_ReadInfoAddr),Y
     STA a:CurrentSprites_Phases,X
@@ -10864,12 +10864,12 @@ BScript_Op_SetPhase:                        ; [$a6e8]
 ; XREFS:
 ;     BSCRIPT_OP_HANDLERS [$PRG14::a6d8]
 ;============================================================================
-BScript_Op_SwitchBehavior:                  ; [$a6ff]
+BScript_Op_SwitchBehavior:
     LDA a:CurrentSprites_Behaviors,X
     BMI @LAB_PRG14__a707
     JMP RETURN_A771
 
-  @LAB_PRG14__a707:                         ; [$a707]
+  @LAB_PRG14__a707:
     INC a:CurrentSprites_Phases,X
     LDA #$01
     JSR Sprites_IncrementScriptAddr
@@ -10886,7 +10886,7 @@ BScript_Op_SwitchBehavior:                  ; [$a6ff]
     BNE @_return
     JMP FUN_PRG14__9917
 
-  @_return:                                 ; [$a72b]
+  @_return:
     RTS
 
 ;============================================================================
@@ -10901,7 +10901,7 @@ BScript_Op_SwitchBehavior:                  ; [$a6ff]
 ; XREFS:
 ;     BSCRIPT_OP_HANDLERS [$PRG14::a6da]
 ;============================================================================
-BScript_Op_MaybeDisableAndGoTo:             ; [$a72c]
+BScript_Op_MaybeDisableAndGoTo:
     LDA a:CurrentSprites_Behaviors,X
     BMI Sprites_MaybeDisableAndGoTo
     JMP RETURN_A771
@@ -10918,7 +10918,7 @@ BScript_Op_MaybeDisableAndGoTo:             ; [$a72c]
 ; XREFS:
 ;     BScript_Op_MaybeDisableAndGoTo
 ;============================================================================
-Sprites_MaybeDisableAndGoTo:                ; [$a734]
+Sprites_MaybeDisableAndGoTo:
     LDA #$01
     JSR Sprites_IncrementScriptAddr
     LDY #$00
@@ -10944,12 +10944,12 @@ Sprites_MaybeDisableAndGoTo:                ; [$a734]
 ; XREFS:
 ;     BSCRIPT_OP_HANDLERS [$PRG14::a6e2]
 ;============================================================================
-BScript_Op_GoTo:                            ; [$a74c]
+BScript_Op_GoTo:
     LDA a:CurrentSprites_Behaviors,X
     BMI @LAB_PRG14__a754
     JMP RETURN_A771
 
-  @LAB_PRG14__a754:                         ; [$a754]
+  @LAB_PRG14__a754:
     LDA #$01
     JSR Sprites_IncrementScriptAddr
     LDY #$00
@@ -10973,7 +10973,7 @@ BScript_Op_GoTo:                            ; [$a74c]
     ;     BScript_Op_SetPhase
     ;     BScript_Op_SwitchBehavior
     ;
-RETURN_A771:                                ; [$a771]
+RETURN_A771:
     RTS
 
 ;============================================================================
@@ -10988,7 +10988,7 @@ RETURN_A771:                                ; [$a771]
 ; XREFS:
 ;     BSCRIPT_OP_HANDLERS [$PRG14::a6dc]
 ;============================================================================
-BScript_Op_RunAction:                       ; [$a772]
+BScript_Op_RunAction:
     LDA a:CurrentSprites_Behaviors,X
     BPL RETURN_A771
     LDY #$01
@@ -11014,7 +11014,7 @@ BScript_Op_RunAction:                       ; [$a772]
 ; OUTPUTS:
 ;     TODO
 ;============================================================================
-Sprites_Maybe_Skip2AndLoadNextAction:       ; [$a78c]
+Sprites_Maybe_Skip2AndLoadNextAction:
     LDA #$02
     JSR Sprites_IncrementScriptAddr
     JMP BScripts_LoadNextOp
@@ -11023,7 +11023,7 @@ Sprites_Maybe_Skip2AndLoadNextAction:       ; [$a78c]
 ; XREFS:
 ;     BScript_Op_RunAction
 ;
-BSCRIPT_ACTIONS:                            ; [$a794]
+BSCRIPT_ACTIONS:
     pointer BScript_Action_FacePlayerX-1    ; [0]: Face Player (X)
     pointer BScript_Action_FlipXDirection-1 ; [1]: Flip X Direction
     pointer BScript_Action_FacePlayerY-1    ; [2]: Face Player (Y)
@@ -11044,7 +11044,7 @@ BSCRIPT_ACTIONS:                            ; [$a794]
 ; XREFS:
 ;     BSCRIPT_ACTIONS [$PRG14::a7a0]
 ;============================================================================
-BScript_Action_RiseUp:                      ; [$a7a4]
+BScript_Action_RiseUp:
     LDA a:CurrentSprites_Flags,X            ; Load the sprite's flags.
     AND #$7f                                ; Clear the Falling bit.
     STA a:CurrentSprites_Flags,X            ; Store it.
@@ -11061,7 +11061,7 @@ BScript_Action_RiseUp:                      ; [$a7a4]
 ;     BSCRIPT_ACTIONS [$PRG14::a79c]
 ;     SpriteBehavior_Lilith
 ;============================================================================
-BScript_Action_RandomlyFlipXDirection:      ; [$a7ad]
+BScript_Action_RandomlyFlipXDirection:
     JSR GetRandom                           ; Load a random value.
     LDX a:CurrentSpriteIndex                ; X = Current sprite index.
     CMP #$80                                ; Is the random value < 128?
@@ -11072,7 +11072,7 @@ BScript_Action_RandomlyFlipXDirection:      ; [$a7ad]
     STA a:CurrentSprites_Flags,X            ; Store it.
     RTS
 
-  @_setFaceRight:                           ; [$a7c0]
+  @_setFaceRight:
     LDA a:CurrentSprites_Flags,X            ; Load the sprite flags.
     ORA #$01                                ; Set the Facing Right bit.
     STA a:CurrentSprites_Flags,X            ; Store it.
@@ -11088,7 +11088,7 @@ BScript_Action_RandomlyFlipXDirection:      ; [$a7ad]
 ; XREFS:
 ;     BSCRIPT_ACTIONS [$PRG14::a79e]
 ;============================================================================
-BScript_Action_RandomlyFlipYDirection:      ; [$a7c9]
+BScript_Action_RandomlyFlipYDirection:
     JSR GetRandom                           ; Load a random value.
     LDX a:CurrentSpriteIndex                ; X = Current sprite index.
     CMP #$80                                ; Is the random value < 128?
@@ -11098,7 +11098,7 @@ BScript_Action_RandomlyFlipYDirection:      ; [$a7c9]
     STA a:CurrentSprites_Flags,X            ; Store it.
     RTS
 
-  @_setFalling:                             ; [$a7dc]
+  @_setFalling:
     LDA a:CurrentSprites_Flags,X            ; Load the sprite flags.
     ORA #$80                                ; Set the falling bit.
     STA a:CurrentSprites_Flags,X            ; Store it.
@@ -11124,7 +11124,7 @@ BScript_Action_RandomlyFlipYDirection:      ; [$a7c9]
 ; XREFS:
 ;     BSCRIPT_OP_HANDLERS [$PRG14::a6de]
 ;============================================================================
-BScript_Op_CheckDistanceToPlayer:           ; [$a7e5]
+BScript_Op_CheckDistanceToPlayer:
     LDY #$01                                ; Y = 1 (op direction argument)
     LDA (Sprites_ReadInfoAddr),Y            ; Read the direction to check.
     ASL A                                   ; Convert to a word boundary for
@@ -11155,7 +11155,7 @@ BScript_Op_CheckDistanceToPlayer:           ; [$a7e5]
 ; XREFS:
 ;     BScript_Op_CheckDistanceToPlayer
 ;
-SPRITEOP_CHECKDISTANCETOPLAYER_SUBCOMMANDS: ; [$a7f4]
+SPRITEOP_CHECKDISTANCETOPLAYER_SUBCOMMANDS:
     pointer SpriteOp_CheckDistanceToPlayer_X-1 ; [0]:
     pointer SpriteOp_CheckDistanceToPlayer_Y-1 ; [1]:
 
@@ -11192,7 +11192,7 @@ SPRITEOP_CHECKDISTANCETOPLAYER_SUBCOMMANDS: ; [$a7f4]
 ;     SPRITEOP_CHECKDISTANCETOPLAYER_SUBCOMMANDS
 ;     [$PRG14::a7f4]
 ;============================================================================
-SpriteOp_CheckDistanceToPlayer_X:           ; [$a7f8]
+SpriteOp_CheckDistanceToPlayer_X:
     LDA a:CurrentSprites_Behaviors,X        ; A = Sprite behavior
     BPL @_checkDistance                     ; If the behavior is ready, jump
                                             ; to check.
@@ -11212,7 +11212,7 @@ SpriteOp_CheckDistanceToPlayer_X:           ; [$a7f8]
     ; jumping to code that sets the address for one of the
     ; script jump address destinations.
     ;
-  @_checkDistance:                          ; [$a805]
+  @_checkDistance:
     JSR Sprite_CalcDistanceXToPlayer        ; Calculate the distance between
                                             ; the sprite and player.
     LDY #$02                                ; Y = 2 (op distance argument)
@@ -11242,7 +11242,7 @@ SpriteOp_CheckDistanceToPlayer_X:           ; [$a7f8]
     ; The calculated distance is < the distance argument.
     ; Choose the first address.
     ;
-  @_isLessThan:                             ; [$a81d]
+  @_isLessThan:
     INY                                     ; Y++ (3)
     LDA (Sprites_ReadInfoAddr),Y            ; A = lower byte of jump address.
     PHA                                     ; Push to the stack.
@@ -11288,7 +11288,7 @@ SpriteOp_CheckDistanceToPlayer_X:           ; [$a7f8]
 ;     SPRITEOP_CHECKDISTANCETOPLAYER_SUBCOMMANDS
 ;     [$PRG14::a7f6]
 ;============================================================================
-SpriteOp_CheckDistanceToPlayer_Y:           ; [$a82a]
+SpriteOp_CheckDistanceToPlayer_Y:
     LDA a:CurrentSprites_Behaviors,X        ; A = Sprite behavior
     BPL @_checkDistance                     ; If the behavior is ready, jump
                                             ; to check.
@@ -11308,7 +11308,7 @@ SpriteOp_CheckDistanceToPlayer_Y:           ; [$a82a]
     ; a value for Y, which will be the offset to the jump address
     ; - 1.
     ;
-  @_checkDistance:                          ; [$a837]
+  @_checkDistance:
     JSR Sprite_CalcDistanceYToPlayer        ; Calculate the distance between
                                             ; the sprite and player.
     LDY #$02                                ; Y = 2 (op distance argument)
@@ -11327,7 +11327,7 @@ SpriteOp_CheckDistanceToPlayer_Y:           ; [$a82a]
     ;
     ; Load the jump address for the script based on Y above.
     ;
-  @_isLessThan:                             ; [$a842]
+  @_isLessThan:
     INY                                     ; Y++ (target jump address)
     LDA (Sprites_ReadInfoAddr),Y            ; A = lower byte of jump address.
     PHA                                     ; Push to the stack.
@@ -11368,7 +11368,7 @@ SpriteOp_CheckDistanceToPlayer_Y:           ; [$a82a]
 ; XREFS:
 ;     BSCRIPT_OP_HANDLERS [$PRG14::a6e4]
 ;============================================================================
-BScript_Op_AddToSpriteData:                 ; [$a84f]
+BScript_Op_AddToSpriteData:
     ;
     ; Load the address from parameter 1.
     ;
@@ -11424,7 +11424,7 @@ BScript_Op_AddToSpriteData:                 ; [$a84f]
 ; XREFS:
 ;     BSCRIPT_OP_HANDLERS [$PRG14::a6e0]
 ;============================================================================
-BScript_Op_FinishBehavior:                  ; [$a86e]
+BScript_Op_FinishBehavior:
     LDA #$01                                ; A = 1 (number of bytes to skip)
     JSR Sprites_IncrementScriptAddr         ; Skip over the byte.
     JSR Sprite_FinishBehavior               ; Finish the current behavior.
@@ -11464,7 +11464,7 @@ BScript_Op_FinishBehavior:                  ; [$a86e]
 ;     Sprites_MaybeDisableAndGoTo
 ;     Sprites_Maybe_Skip2AndLoadNextAction
 ;============================================================================
-Sprites_IncrementScriptAddr:                ; [$a879]
+Sprites_IncrementScriptAddr:
     CLC                                     ; C = 0
     ADC Sprites_ReadInfoAddr                ; A = offset + lower byte of the
                                             ; behavior address If overflow, C
@@ -11553,7 +11553,7 @@ Sprites_IncrementScriptAddr:                ; [$a879]
 ;     SpriteBehavior_Zorugeriru
 ;     SpriteBehavior__a8d7
 ;============================================================================
-Sprite_IsBehaviorNotReady:                  ; [$a885]
+Sprite_IsBehaviorNotReady:
     LDA a:CurrentSprites_Flags,X            ; Load the sprite's flags.
     AND #$40                                ; Set Z = ready not set.
     RTS
@@ -11582,7 +11582,7 @@ Sprite_IsBehaviorNotReady:                  ; [$a885]
 ;     Sprite_ReplaceWithMattock
 ;     Sprite_SetDeathEntity
 ;============================================================================
-Sprite_SetBehaviorNotReady:                 ; [$a88b]
+Sprite_SetBehaviorNotReady:
     LDA a:CurrentSprites_Flags,X            ; Load the sprite's flags.
     AND #$bf                                ; Clear the Ready flag.
     STA a:CurrentSprites_Flags,X            ; Store it.
@@ -11656,7 +11656,7 @@ Sprite_SetBehaviorNotReady:                 ; [$a88b]
 ;     Sprite_SetReadyAndFallIfNeeded
 ;     Sprites_MaybeResetPhaseAndEnable
 ;============================================================================
-Sprite_SetBehaviorReady:                    ; [$a894]
+Sprite_SetBehaviorReady:
     LDA a:CurrentSprites_Flags,X            ; Load the sprite's flags.
     ORA #$40                                ; Set the Ready flag.
     STA a:CurrentSprites_Flags,X            ; Store it.
@@ -11666,7 +11666,7 @@ Sprite_SetBehaviorReady:                    ; [$a894]
 ;============================================================================
 ; MAYBE DEADCODE
 ;============================================================================
-CurrentSpriteFlags_SetBit5:                 ; [$a89d]
+CurrentSpriteFlags_SetBit5:
     LDA a:CurrentSprites_Flags,X
     ORA #$20
     STA a:CurrentSprites_Flags,X
@@ -11676,7 +11676,7 @@ CurrentSpriteFlags_SetBit5:                 ; [$a89d]
 ;============================================================================
 ; MAYBE DEADCODE
 ;============================================================================
-Sprite_ClearFlags:                          ; [$a8a6]
+Sprite_ClearFlags:
     LDA #$00
     STA a:CurrentSprites_Flags,X
     RTS
@@ -11699,7 +11699,7 @@ Sprite_ClearFlags:                          ; [$a8a6]
 ;     Sprites_MaybeDisableAndGoTo
 ;     _thunk_Sprite_ClearBehaviorReadyAndSetSubtypeBit7
 ;============================================================================
-Sprite_FinishBehavior:                      ; [$a8ac]
+Sprite_FinishBehavior:
     JSR Sprite_SetBehaviorNotReady
     LDA a:CurrentSprites_Behaviors,X
     ORA #$80
@@ -11726,7 +11726,7 @@ Sprite_FinishBehavior:                      ; [$a8ac]
 ;     SpriteUpdateHandler_Enemy_Monodron
 ;     SpriteUpdateHandler_Enemy_Zombie
 ;============================================================================
-Sprite_GetPreviousSpritePhase:              ; [$a8b8]
+Sprite_GetPreviousSpritePhase:
     LDA a:CurrentSprites_Phases,X           ; Load the current phase.
     SEC
     SBC #$01                                ; Subtract 1
@@ -11763,7 +11763,7 @@ Sprite_GetPreviousSpritePhase:              ; [$a8b8]
 ;     SpriteBehavior_WingBootsDroppedByZorugeriru
 ;     Sprite_ShowIfNoEnemies
 ;============================================================================
-Sprite_SetVisible:                          ; [$a8bf]
+Sprite_SetVisible:
     LDA a:CurrentSprites_Flags,X            ; Load the sprite's flags.
     ORA #$10                                ; Set the visibility flag.
     STA a:CurrentSprites_Flags,X            ; And save it.
@@ -11791,7 +11791,7 @@ Sprite_SetVisible:                          ; [$a8bf]
 ;     Player_HitSpriteWithWeapon
 ;     Sprite_CheckHitByCastMagic
 ;============================================================================
-Sprites_IsSpriteHidden:                     ; [$a8c8]
+Sprites_IsSpriteHidden:
     LDA a:CurrentSprites_Flags,X            ; Load the sprite's flags.
     AND #$10                                ; Check the visible flag.
     RTS                                     ; And return Z.
@@ -11825,7 +11825,7 @@ Sprites_IsSpriteHidden:                     ; [$a8c8]
 ;     SpriteBehavior_WingBootsDroppedByZorugeriru
 ;     Sprite_ShowIfNoEnemies
 ;============================================================================
-Sprites_HideSprite:                         ; [$a8ce]
+Sprites_HideSprite:
     LDA a:CurrentSprites_Flags,X            ; Load the flags for the given
                                             ; sprite.
     AND #$ef                                ; Clear the visible flag.
@@ -11844,7 +11844,7 @@ Sprites_HideSprite:                         ; [$a8ce]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a60f]
 ;============================================================================
-SpriteBehavior__a8d7:                       ; [$a8d7]
+SpriteBehavior__a8d7:
     JSR Sprite_IsBehaviorNotReady
     BNE SpriteBehavior__a91e
     LDY #$00
@@ -11873,7 +11873,7 @@ SpriteBehavior__a8d7:                       ; [$a8d7]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a5e7]
 ;============================================================================
-SpriteBehavior_MoveTowardPlayer:            ; [$a8fc]
+SpriteBehavior_MoveTowardPlayer:
     JSR Sprite_IsBehaviorNotReady
     BNE SpriteBehavior__a91e
     LDY #$00
@@ -11906,7 +11906,7 @@ SpriteBehavior_MoveTowardPlayer:            ; [$a8fc]
 ;     SpriteBehavior_MoveTowardPlayer
 ;     SpriteBehavior__a8d7
 ;============================================================================
-SpriteBehavior__a91e:                       ; [$a91e]
+SpriteBehavior__a91e:
     JSR Sprites_SetCurrentSpriteCanMove
     BCC @LAB_PRG14__a92e
     JSR CurrentSprite_HandleFall
@@ -11915,7 +11915,7 @@ SpriteBehavior__a91e:                       ; [$a91e]
     BEQ @LAB_PRG14__a92e
     RTS
 
-  @LAB_PRG14__a92e:                         ; [$a92e]
+  @LAB_PRG14__a92e:
     LDA a:CurrentSprites_BehaviorData2,X
     STA a:Arg_DeltaX_Frac
     LDA a:CurrentSprites_BehaviorData3,X
@@ -11936,7 +11936,7 @@ SpriteBehavior__a91e:                       ; [$a91e]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a5ef]
 ;============================================================================
-SpriteBehavior_WalkForward:                 ; [$a941]
+SpriteBehavior_WalkForward:
     JSR Sprite_IsBehaviorNotReady
     BNE @LAB_PRG14__a95b
     LDY #$00
@@ -11949,13 +11949,13 @@ SpriteBehavior_WalkForward:                 ; [$a941]
     JSR Sprites_IncrementScriptAddr
     JSR Sprite_SetBehaviorReady
 
-  @LAB_PRG14__a95b:                         ; [$a95b]
+  @LAB_PRG14__a95b:
     JSR Sprites_SetCurrentSpriteCanMove
     BCC @LAB_PRG14__a966
     JSR BScript_Action_FlipXDirection
     JMP CurrentSprite_HandleFall
 
-  @LAB_PRG14__a966:                         ; [$a966]
+  @LAB_PRG14__a966:
     LDA a:CurrentSprites_BehaviorData2,X
     STA a:Arg_DeltaX_Frac
     LDA a:CurrentSprites_BehaviorData3,X
@@ -11975,12 +11975,12 @@ SpriteBehavior_WalkForward:                 ; [$a941]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a611]
 ;============================================================================
-SpriteBehavior_Fall:                        ; [$a978]
+SpriteBehavior_Fall:
     JSR Sprite_IsBehaviorNotReady
     BNE @LAB_PRG14__a980
     JSR Sprite_SetBehaviorReady
 
-  @LAB_PRG14__a980:                         ; [$a980]
+  @LAB_PRG14__a980:
     JSR Sprites_SetCurrentSpriteCanMove
     BCC Call_Sprites_CountdownBehavior
     JSR CurrentSprite_HandleFall
@@ -11998,7 +11998,7 @@ SpriteBehavior_Fall:                        ; [$a978]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a5e9]
 ;============================================================================
-SpriteBehavior_Wait:                        ; [$a98b]
+SpriteBehavior_Wait:
     JSR Sprite_IsBehaviorNotReady
     BNE Call_Sprites_CountdownBehavior
     JSR Sprite_SetBehaviorReady
@@ -12008,7 +12008,7 @@ SpriteBehavior_Wait:                        ; [$a98b]
     ;     SpriteBehavior_Fall
     ;     SpriteBehavior_Wait
     ;
-Call_Sprites_CountdownBehavior:             ; [$a993]
+Call_Sprites_CountdownBehavior:
     JMP Sprites_CountdownBehavior
     RTS
 
@@ -12024,7 +12024,7 @@ Call_Sprites_CountdownBehavior:             ; [$a993]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a609]
 ;============================================================================
-SpriteBehavior_SomethingEyeball_17:         ; [$a997]
+SpriteBehavior_SomethingEyeball_17:
     JSR Sprite_IsBehaviorNotReady
     BNE @_ready
     LDY #$00
@@ -12043,7 +12043,7 @@ SpriteBehavior_SomethingEyeball_17:         ; [$a997]
     JSR Sprites_IncrementScriptAddr
     JSR Sprite_SetBehaviorReady
 
-  @_ready:                                  ; [$a9bd]
+  @_ready:
     LDA a:CurrentSprites_BehaviorState_XFrac,X
     STA a:Arg_DeltaX_Frac
     LDA a:CurrentSprites_BehaviorState_XFull,X
@@ -12068,7 +12068,7 @@ SpriteBehavior_SomethingEyeball_17:         ; [$a997]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a5f9]
 ;============================================================================
-SpriteBehavior_Hop:                         ; [$a9de]
+SpriteBehavior_Hop:
     JSR Sprite_IsBehaviorNotReady
     BNE @LAB_PRG14__aa14
     LDY #$00
@@ -12092,7 +12092,7 @@ SpriteBehavior_Hop:                         ; [$a9de]
     LDA a:SPRITE_BEHAVIOUR_HOP_START_TICKS,Y
     STA a:CurrentSprites_BehaviorData3,X
 
-  @LAB_PRG14__aa14:                         ; [$aa14]
+  @LAB_PRG14__aa14:
     LDA a:CurrentSprites_BehaviorState_XFull,X
     STA a:Arg_DeltaX_Full
     LDA a:CurrentSprites_BehaviorState_XFrac,X
@@ -12115,7 +12115,7 @@ SpriteBehavior_Hop:                         ; [$a9de]
     BPL @LAB_PRG14__aa49
     JMP Sprite_FinishBehavior
 
-  @LAB_PRG14__aa49:                         ; [$aa49]
+  @LAB_PRG14__aa49:
     INC a:CurrentSprites_BehaviorData3,X
     LDY a:CurrentSprites_InternalBehaviorStates,X
     LDA a:SPRITE_BEHAVIOR_HOP_GRAVITY,Y
@@ -12132,21 +12132,21 @@ SpriteBehavior_Hop:                         ; [$a9de]
     ;
     JMP BScript_Action_FlipYDirection
 
-  @LAB_PRG14__aa63:                         ; [$aa63]
+  @LAB_PRG14__aa63:
     LDY a:CurrentSprites_InternalBehaviorStates,X
     LDA a:CurrentSprites_BehaviorData3,X
     CMP a:SPRITE_BEHAVIOR_HOP_GROUND_TICKS,Y
     BCC @_return
     DEC a:CurrentSprites_BehaviorData3,X
 
-  @_return:                                 ; [$aa71]
+  @_return:
     RTS
 
 ;
 ; XREFS:
 ;     SpriteBehavior_Hop
 ;
-SPRITE_BEHAVIOUR_HOP_START_TICKS:           ; [$aa72]
+SPRITE_BEHAVIOUR_HOP_START_TICKS:
     .byte $40                               ; [0]:
     .byte $20                               ; [1]:
     .byte $10                               ; [2]: Monodron
@@ -12157,7 +12157,7 @@ SPRITE_BEHAVIOUR_HOP_START_TICKS:           ; [$aa72]
 ; XREFS:
 ;     SpriteBehavior_Hop
 ;
-SPRITE_BEHAVIOR_HOP_GRAVITY:                ; [$aa77]
+SPRITE_BEHAVIOR_HOP_GRAVITY:
     .byte $02                               ; [0]:
     .byte $03                               ; [1]:
     .byte $04                               ; [2]:
@@ -12168,7 +12168,7 @@ SPRITE_BEHAVIOR_HOP_GRAVITY:                ; [$aa77]
 ; XREFS:
 ;     SpriteBehavior_Hop
 ;
-SPRITE_BEHAVIOR_HOP_JUMP_STRENGTH:          ; [$aa7c]
+SPRITE_BEHAVIOR_HOP_JUMP_STRENGTH:
     .byte $04                               ; [0]:
     .byte $05                               ; [1]:
     .byte $06                               ; [2]:
@@ -12179,7 +12179,7 @@ SPRITE_BEHAVIOR_HOP_JUMP_STRENGTH:          ; [$aa7c]
 ; XREFS:
 ;     SpriteBehavior_Hop
 ;
-SPRITE_BEHAVIOR_HOP_GROUND_TICKS:           ; [$aa81]
+SPRITE_BEHAVIOR_HOP_GROUND_TICKS:
     .byte $c0                               ; [0]:
     .byte $60                               ; [1]:
     .byte $30                               ; [2]:
@@ -12198,7 +12198,7 @@ SPRITE_BEHAVIOR_HOP_GROUND_TICKS:           ; [$aa81]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a60b]
 ;============================================================================
-SpriteBehavior_SomethingZoradohna_18:       ; [$aa86]
+SpriteBehavior_SomethingZoradohna_18:
     JSR Sprite_IsBehaviorNotReady
     BNE @LAB_PRG14__aaae
     LDY #$00
@@ -12217,7 +12217,7 @@ SpriteBehavior_SomethingZoradohna_18:       ; [$aa86]
     ORA #$80
     STA a:CurrentSprites_Flags,X
 
-  @LAB_PRG14__aaae:                         ; [$aaae]
+  @LAB_PRG14__aaae:
     LDA a:CurrentSprites_BehaviorState_XFull,X
     STA a:Arg_DeltaX_Full
     LDA a:CurrentSprites_BehaviorState_XFrac,X
@@ -12245,14 +12245,14 @@ SpriteBehavior_SomethingZoradohna_18:       ; [$aa86]
     BNE @LAB_PRG14__aaef
     JMP BScript_Action_FlipYDirection
 
-  @LAB_PRG14__aaef:                         ; [$aaef]
+  @LAB_PRG14__aaef:
     JMP Sprites_CountdownBehavior
 
 ;
 ; XREFS:
 ;     SpriteBehavior_SomethingZoradohna_18
 ;
-BYTE_ARRAY_PRG14__aaf2:                     ; [$aaf2]
+BYTE_ARRAY_PRG14__aaf2:
     .byte $03                               ; [0]:
     .byte $04                               ; [1]:
     .byte $05                               ; [2]:
@@ -12262,7 +12262,7 @@ BYTE_ARRAY_PRG14__aaf2:                     ; [$aaf2]
 ; XREFS:
 ;     SpriteBehavior_SomethingZoradohna_18
 ;
-BYTE_ARRAY_PRG14__aaf6:                     ; [$aaf6]
+BYTE_ARRAY_PRG14__aaf6:
     .byte $03                               ; [0]:
     .byte $05                               ; [1]:
     .byte $05                               ; [2]:
@@ -12280,7 +12280,7 @@ BYTE_ARRAY_PRG14__aaf6:                     ; [$aaf6]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a60d]
 ;============================================================================
-SpriteBehavior_MoveVertically:              ; [$aafa]
+SpriteBehavior_MoveVertically:
     JSR Sprite_IsBehaviorNotReady
     BNE @LAB_PRG14__ab14
     LDY #$00
@@ -12293,7 +12293,7 @@ SpriteBehavior_MoveVertically:              ; [$aafa]
     JSR Sprites_IncrementScriptAddr
     JSR Sprite_SetBehaviorReady
 
-  @LAB_PRG14__ab14:                         ; [$ab14]
+  @LAB_PRG14__ab14:
     LDA a:CurrentSprites_BehaviorState_YFrac,X
     STA a:Arg_DeltaY_Frac
     LDA a:CurrentSprites_BehaviorState_YFull,X
@@ -12311,7 +12311,7 @@ SpriteBehavior_MoveVertically:              ; [$aafa]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a625]
 ;============================================================================
-SpriteBehavior_FlashScreenHitPlayer:        ; [$ab26]
+SpriteBehavior_FlashScreenHitPlayer:
     JSR Sprite_IsBehaviorNotReady
     BNE @LAB_PRG14__ab39
     LDA #$02
@@ -12321,7 +12321,7 @@ SpriteBehavior_FlashScreenHitPlayer:        ; [$ab26]
     STA PPU_Mask
     JSR Sprite_SetBehaviorReady
 
-  @LAB_PRG14__ab39:                         ; [$ab39]
+  @LAB_PRG14__ab39:
     DEC a:CurrentSprites_BehaviorData2,X
     BNE @_return
     LDA PPU_Mask
@@ -12342,7 +12342,7 @@ SpriteBehavior_FlashScreenHitPlayer:        ; [$ab26]
     LDX a:CurrentSpriteIndex
     JMP Sprite_FinishBehavior
 
-  @_return:                                 ; [$ab66]
+  @_return:
     RTS
 
 ;============================================================================
@@ -12357,7 +12357,7 @@ SpriteBehavior_FlashScreenHitPlayer:        ; [$ab26]
 ; XREFS:
 ;     SPRITE_BEHAVIORS [$PRG14::a663]
 ;============================================================================
-SpriteBehavior_BossDeath:                   ; [$ab67]
+SpriteBehavior_BossDeath:
     JSR Sprite_IsBehaviorNotReady
     BNE @LAB_PRG14__ab77
     LDA #$00
@@ -12365,7 +12365,7 @@ SpriteBehavior_BossDeath:                   ; [$ab67]
     STA a:CurrentSprites_Phases,X
     JSR Sprite_SetBehaviorReady
 
-  @LAB_PRG14__ab77:                         ; [$ab77]
+  @LAB_PRG14__ab77:
     INC a:CurrentSprites_BehaviorData2,X
     LDA a:CurrentSprites_BehaviorData2,X
     CMP #$08
@@ -12391,10 +12391,10 @@ SpriteBehavior_BossDeath:                   ; [$ab67]
     BCS @_return
     JMP Sprite_HandleDeathDropIfPossible
 
-  @_return:                                 ; [$abaf]
+  @_return:
     RTS
 
-  @LAB_PRG14__abb0:                         ; [$abb0]
+  @LAB_PRG14__abb0:
     LDA #$ff
     STA a:CurrentSprites_Entities,X
     RTS
@@ -12403,7 +12403,7 @@ SpriteBehavior_BossDeath:                   ; [$ab67]
 ; XREFS:
 ;     SpriteBehavior_BossDeath
 ;
-BYTE_ARRAY_PRG14__abb6:                     ; [$abb6]
+BYTE_ARRAY_PRG14__abb6:
     .byte $00                               ; [0]:
     .byte $20                               ; [1]:
     .byte $f0                               ; [2]:
@@ -12420,7 +12420,7 @@ BYTE_ARRAY_PRG14__abb6:                     ; [$abb6]
 ; XREFS:
 ;     SpriteBehavior_BossDeath
 ;
-BYTE_ARRAY_PRG14__abc1:                     ; [$abc1]
+BYTE_ARRAY_PRG14__abc1:
     .byte $00                               ; [0]:
     .byte $20                               ; [1]:
     .byte $f0                               ; [2]:
@@ -12446,14 +12446,14 @@ BYTE_ARRAY_PRG14__abc1:                     ; [$abc1]
 ;     SPRITE_BEHAVIORS [$PRG14::a5f5]
 ;     SPRITE_BEHAVIORS [$PRG14::a5f7]
 ;============================================================================
-SpriteBehavior_EnemyDeath:                  ; [$abcc]
+SpriteBehavior_EnemyDeath:
     JSR Sprite_IsBehaviorNotReady
     BNE @LAB_PRG14__abd9
     LDA #$00
     STA a:CurrentSprites_BehaviorData2,X
     JSR Sprite_SetBehaviorReady
 
-  @LAB_PRG14__abd9:                         ; [$abd9]
+  @LAB_PRG14__abd9:
     INC a:CurrentSprites_BehaviorData2,X
     LDA a:CurrentSprites_BehaviorData2,X
     CMP #$08
@@ -12462,7 +12462,7 @@ SpriteBehavior_EnemyDeath:                  ; [$abcc]
     LDA #$ff
     STA a:CurrentSprites_Entities,X
 
-  @LAB_PRG14__abeb:                         ; [$abeb]
+  @LAB_PRG14__abeb:
     RTS
 
 
@@ -12482,7 +12482,7 @@ SpriteBehavior_EnemyDeath:                  ; [$abcc]
 ;     Player_HitEnemyWithMagic
 ;     Player_HitSpriteWithWeapon
 ;============================================================================
-Sprite_ShowBigEnemyDeathByMagicOrWeapon:    ; [$abec]
+Sprite_ShowBigEnemyDeathByMagicOrWeapon:
     LDA #$64                                ; 0x64 == Boss death effect.
     JMP Sprite_SetDeathEntity               ; Replace the enemy with it.
 
@@ -12502,7 +12502,7 @@ Sprite_ShowBigEnemyDeathByMagicOrWeapon:    ; [$abec]
 ; XREFS:
 ;     Player_HitSpriteWithWeapon
 ;============================================================================
-Sprite_ShowNormalEnemyDeathByWeapon:        ; [$abf1]
+Sprite_ShowNormalEnemyDeathByWeapon:
     LDA #$13                                ; 0x13 == Enemy death effect.
     JMP Sprite_SetDeathEntity               ; Replace the enemy with it.
 
@@ -12523,7 +12523,7 @@ Sprite_ShowNormalEnemyDeathByWeapon:        ; [$abf1]
 ; XREFS:
 ;     Player_HitEnemyWithMagic
 ;============================================================================
-Sprite_ShowNormalEnemyDeathByMagic:         ; [$abf6]
+Sprite_ShowNormalEnemyDeathByMagic:
     LDA #$14
 
     ;
@@ -12544,7 +12544,7 @@ Sprite_ShowNormalEnemyDeathByMagic:         ; [$abf6]
 ;     Sprite_ShowBigEnemyDeathByMagicOrWeapon
 ;     Sprite_ShowNormalEnemyDeathByWeapon
 ;============================================================================
-Sprite_SetDeathEntity:                      ; [$abf8]
+Sprite_SetDeathEntity:
     PHA
     LDA a:CurrentSprites_Entities,X
     STA a:CurrentSprites_InternalBehaviorStates,X
@@ -12588,7 +12588,7 @@ Sprite_SetDeathEntity:                      ; [$abf8]
 ;     SpriteBehavior_BossDeath
 ;     SpriteBehavior_EnemyDeath
 ;============================================================================
-Sprite_HandleDeathDropIfPossible:           ; [$ac21]
+Sprite_HandleDeathDropIfPossible:
     JSR Sprites_HasMaxOnScreen              ; Check if there's room for
                                             ; sprites on the screen.
     BCS @_return                            ; If not, return.
@@ -12598,7 +12598,7 @@ Sprite_HandleDeathDropIfPossible:           ; [$ac21]
     LDX a:CurrentSpriteIndex                ; Restore the current sprite
                                             ; index to X.
 
-  @_return:                                 ; [$ac2c]
+  @_return:
     RTS
 
 ;============================================================================
@@ -12614,7 +12614,7 @@ Sprite_HandleDeathDropIfPossible:           ; [$ac21]
 ; XREFS:
 ;     Sprite_HandleDeathDropIfPossible
 ;============================================================================
-Sprite_RunDeathDropHandler:                 ; [$ac2d]
+Sprite_RunDeathDropHandler:
     STY Temp_00                             ; Store the new sprite entity
                                             ; temporarily.
     LDY a:CurrentSprites_InternalBehaviorStates,X ; Load the internal
@@ -12646,14 +12646,14 @@ Sprite_RunDeathDropHandler:                 ; [$ac2d]
     INY
     INY
 
-  @LAB_PRG14__ac66:                         ; [$ac66]
+  @LAB_PRG14__ac66:
     LDA a:SPRITE_DROP_HANDLERS+1,Y
     PHA
     LDA a:SPRITE_DROP_HANDLERS,Y
     PHA
     LDY Temp_00
 
-  @_return:                                 ; [$ac70]
+  @_return:
     RTS
 
 
@@ -12669,17 +12669,15 @@ Sprite_RunDeathDropHandler:                 ; [$ac2d]
 ; XREFS:
 ;     Sprite_RunDeathDropHandler
 ;
-SPRITE_DROP_HANDLERS:                       ; [$ac71]
+SPRITE_DROP_HANDLERS:
     pointer Sprites_ReplaceWithCoinDrop-1   ; Sprites_ReplaceWithCoinDrop
-                                            ; [$PRG14::ac71]
 
 ;
 ; XREFS:
 ;     Sprite_RunDeathDropHandler
 ;
-SPRITE_DROP_HANDLERS_LAST:                  ; [$ac73]
+SPRITE_DROP_HANDLERS_LAST:
     pointer Sprite_ReplaceWithBreadDrop-1   ; Sprite_ReplaceWithBreadDrop
-                                            ; [$PRG14::ac73]
 
 
 ;============================================================================
@@ -12705,7 +12703,7 @@ SPRITE_DROP_HANDLERS_LAST:                  ; [$ac73]
 ; XREFS:
 ;     SPRITE_DROP_HANDLERS [$PRG14::ac71]
 ;============================================================================
-Sprites_ReplaceWithCoinDrop:                ; [$ac75]
+Sprites_ReplaceWithCoinDrop:
     LDA #$10
     JSR Sound_PlayEffect
     TYA
@@ -12748,7 +12746,7 @@ Sprites_ReplaceWithCoinDrop:                ; [$ac75]
 ; XREFS:
 ;     Sprite_ReplaceWithBreadDrop
 ;============================================================================
-Sprite_ReplaceWithDroppedItem:              ; [$ac7e]
+Sprite_ReplaceWithDroppedItem:
     ;
     ; Set the sprite entity.
     ;
@@ -12817,7 +12815,7 @@ Sprite_ReplaceWithDroppedItem:              ; [$ac7e]
 ; XREFS:
 ;     SPRITE_DROP_HANDLERS_LAST [$PRG14::ac73]
 ;============================================================================
-Sprite_ReplaceWithBreadDrop:                ; [$ac9f]
+Sprite_ReplaceWithBreadDrop:
     TYA                                     ; A = Y (sprite index)
     TAX                                     ; X = A
     LDA #$01                                ; A = 1
@@ -12827,7 +12825,7 @@ Sprite_ReplaceWithBreadDrop:                ; [$ac9f]
 ;============================================================================
 ; MAYBE DEADCODE
 ;============================================================================
-Sprite_ReplaceWithMattock:                  ; [$aca6]
+Sprite_ReplaceWithMattock:
     JSR @_Sprites_ReplaceWithMattock_HasMaxOnScreen ; Check if all sprite
                                                     ; slots are populated.
     BCS @_return                            ; If so, return.
@@ -12890,7 +12888,7 @@ Sprite_ReplaceWithMattock:                  ; [$aca6]
     JMP Sprite_SetBehaviorNotReady          ; Disable behaviors for the
                                             ; sprite.
 
-  @_return:                                 ; [$acdc]
+  @_return:
     RTS
 
 
@@ -12914,10 +12912,10 @@ Sprite_ReplaceWithMattock:                  ; [$aca6]
 ; XREFS:
 ;     Sprite_ReplaceWithMattock
 ;============================================================================
-  @_Sprites_ReplaceWithMattock_HasMaxOnScreen: ; [$acdd]
+  @_Sprites_ReplaceWithMattock_HasMaxOnScreen:
     LDX #$07                                ; X = 7 (our loop counter)
 
-  @_loop:                                   ; [$acdf]
+  @_loop:
     LDA a:CurrentSprites_Entities,X         ; A = sprite entity at X
     CMP #$ff                                ; Is it 0xFF (unpopulated)?
     BNE @_isPopulated                       ; If not, jump to prepare the
@@ -12930,7 +12928,7 @@ Sprite_ReplaceWithMattock:                  ; [$aca6]
     CLC                                     ; Set C = 0
     RTS                                     ; And return it.
 
-  @_isPopulated:                            ; [$ace8]
+  @_isPopulated:
     DEX                                     ; X--
     BPL @_loop                              ; If >= 0, loop.
 
@@ -12955,7 +12953,7 @@ Sprite_ReplaceWithMattock:                  ; [$aca6]
 ; XREFS:
 ;     Sprite_RunDeathDropHandler
 ;
-SPRITE_DROP_VALUES:                         ; [$aced]
+SPRITE_DROP_VALUES:
     .byte $0a                               ; [0]:
     .byte $0f                               ; [1]:
     .byte $12                               ; [2]:
@@ -13033,21 +13031,21 @@ SPRITE_DROP_VALUES:                         ; [$aced]
 ; XREFS:
 ;     Sprites_PopulateNextAvailableSprite
 ;
-SPRITE_BSCRIPTS:                            ; [$ad2d]
+SPRITE_BSCRIPTS:
     pointer BSCRIPTS_NOOP                   ; [0]:
 
 ;
 ; XREFS:
 ;     Sprite_ReplaceWithDroppedItem
 ;
-SPRITE_BSCRIPTS_1_:                         ; [$ad2f]
+SPRITE_BSCRIPTS_1_:
     pointer BSCRIPTS_OBJ_BREAD              ; [1]: Dropped: Bread
 
 ;
 ; XREFS:
 ;     Sprite_ReplaceWithDroppedItem
 ;
-SPRITE_BSCRIPTS_2_:                         ; [$ad31]
+SPRITE_BSCRIPTS_2_:
     pointer BSCRIPTS_OBJ_COIN               ; [2]: Dropped: Coin
     pointer SPRITE_BEHAVIORS_GARBLED_03     ; [3]: Enemy: ?
     pointer BSCRIPTS_ENEMY_RAIDEN           ; [4]: Enemy: Raiden
@@ -13071,14 +13069,14 @@ SPRITE_BSCRIPTS_2_:                         ; [$ad31]
 ; XREFS:
 ;     Sprite_SetDeathEntity
 ;
-SPRITE_BSCRIPTS_19_:                        ; [$ad53]
+SPRITE_BSCRIPTS_19_:
     pointer BSCRIPTS_LIGHTNING_BALL_19      ; [19]: Effect: Enemy death
 
 ;
 ; XREFS:
 ;     Sprite_SetDeathEntity
 ;
-SPRITE_BSCRIPTS_20_:                        ; [$ad55]
+SPRITE_BSCRIPTS_20_:
     pointer BSCRIPTS_ENEMY_CHARRON          ; [20]: Effect: Lightning ball
     pointer BSCRIPTS_ENEMY_UNUSED_21        ; [21]: Enemy: Charron
     pointer BSCRIPTS_NOOP                   ; [22]: Enemy: ? (Unused)
@@ -13149,14 +13147,14 @@ SPRITE_BSCRIPTS_20_:                        ; [$ad55]
 ; XREFS:
 ;     Sprite_ReplaceWithMattock
 ;
-SPRITE_BSCRIPTS_80_:                        ; [$adcd]
+SPRITE_BSCRIPTS_80_:
     pointer BSCRIPTS_OBJ_MATTOCK            ; [80]: Item: Mattock
 
 ;
 ; XREFS:
 ;     Sprite_Maybe_ResetState
 ;
-SPRITE_BSCRIPTS_81_:                        ; [$adcf]
+SPRITE_BSCRIPTS_81_:
     pointer BSCRIPTS_GARBLED_81             ; [81]: Magic: ?
     pointer BSCRIPTS_FOUNTAIN               ; [82]: Effect: Fountain
     pointer SPRITE_BEHAVIORS_UNKNOWN_83     ; [83]: Magic: ?
@@ -13197,7 +13195,7 @@ SPRITE_BSCRIPTS_81_:                        ; [$adcf]
 ;     SPRITE_BSCRIPTS [$PRG14::ad77]
 ;     SPRITE_BSCRIPTS [$PRG14::ad7f]
 ;
-BSCRIPTS_NOOP:                              ; [$adf7]
+BSCRIPTS_NOOP:
     .byte SPRITE_OP_END_SCRIPT              ; Op: End script
 
 
@@ -13212,7 +13210,7 @@ BSCRIPTS_NOOP:                              ; [$adf7]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ad2f]
 ;
-BSCRIPTS_OBJ_BREAD:                         ; [$adf8]
+BSCRIPTS_OBJ_BREAD:
     .byte SPRITE_OP_SWITCH_BEHAVIOR         ; Op: Switch behavior
     .byte SPRITE_BEHAVIOR_HOP               ; |- Hop
     .byte $00                               ; |- (unused)
@@ -13236,10 +13234,10 @@ BSCRIPTS_OBJ_BREAD:                         ; [$adf8]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ad33]
 ;
-SPRITE_BEHAVIORS_GARBLED_03:                ; [$ae02]
+SPRITE_BEHAVIORS_GARBLED_03:
     .byte SPRITE_OP_SWITCH_BEHAVIOR         ; Op: Switch behavior
-    .byte SPRITE_BEHAVIOR_GARBLED_3         ; [$ae03] SpriteBehavior
-    .byte $00                               ; [$ae04] byte
+    .byte SPRITE_BEHAVIOR_GARBLED_3         ; SpriteBehavior
+    .byte $00                               ; byte
 
     .byte SPRITE_OP_END_SCRIPT              ; Op: End script
 
@@ -13255,10 +13253,10 @@ SPRITE_BEHAVIORS_GARBLED_03:                ; [$ae02]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::add3]
 ;
-SPRITE_BEHAVIORS_UNKNOWN_83:                ; [$ae06]
-    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; [$ae06] SpriteOp
-    .byte SPRITE_BEHAVIOR_UNKNOWN_29        ; [$ae07] SpriteBehavior
-    .byte $00                               ; [$ae08] byte
+SPRITE_BEHAVIORS_UNKNOWN_83:
+    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; SpriteOp
+    .byte SPRITE_BEHAVIOR_UNKNOWN_29        ; SpriteBehavior
+    .byte $00                               ; byte
 
     .byte SPRITE_OP_END_SCRIPT              ; Op: End script
 
@@ -13274,7 +13272,7 @@ SPRITE_BEHAVIORS_UNKNOWN_83:                ; [$ae06]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ad3b]
 ;
-BSCRIPTS_ENEMY_HORNET:                      ; [$ae0a]
+BSCRIPTS_ENEMY_HORNET:
     .byte SPRITE_OP_SWITCH_BEHAVIOR         ; Op: Switch behavior
     .byte SPRITE_BEHAVIOR_BUZZ_AROUND       ; |- Buzz around
     .byte $00                               ; '- (unused)
@@ -13292,10 +13290,10 @@ BSCRIPTS_ENEMY_HORNET:                      ; [$ae0a]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ad3d]
 ;
-BSCRIPTS_ENEMY_BIHORUDA:                    ; [$ae0e]
+BSCRIPTS_ENEMY_BIHORUDA:
     .byte SPRITE_OP_SWITCH_BEHAVIOR         ; Op: Switch behavior
-    .byte SPRITE_BEHAVIOR_BIHORUDA          ; [$ae0f] SpriteBehavior
-    .byte $00                               ; [$ae10] byte
+    .byte SPRITE_BEHAVIOR_BIHORUDA          ; SpriteBehavior
+    .byte $00                               ; byte
 
     .byte SPRITE_OP_END_SCRIPT              ; Op: End script
 
@@ -13311,10 +13309,10 @@ BSCRIPTS_ENEMY_BIHORUDA:                    ; [$ae0e]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ad3f]
 ;
-BSCRIPTS_ENEMY_LILITH:                      ; [$ae12]
+BSCRIPTS_ENEMY_LILITH:
     .byte SPRITE_OP_SWITCH_BEHAVIOR         ; Op: Switch behavior
-    .byte SPRITE_BEHAVIOR_LILITH            ; [$ae13] SpriteBehavior
-    .byte $00                               ; [$ae14] byte
+    .byte SPRITE_BEHAVIOR_LILITH            ; SpriteBehavior
+    .byte $00                               ; byte
 
     .byte SPRITE_OP_END_SCRIPT              ; Op: End script
 
@@ -13330,7 +13328,7 @@ BSCRIPTS_ENEMY_LILITH:                      ; [$ae12]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ad35]
 ;
-BSCRIPTS_ENEMY_RAIDEN:                      ; [$ae16]
+BSCRIPTS_ENEMY_RAIDEN:
     .byte SPRITE_OP_RUN_ACTION              ; Op: Run action
     .byte SPRITE_ACTION_RANDOMLY_FLIP_X_DIRECTION ; '- Randomly flip X
                                                   ; direction
@@ -13351,7 +13349,7 @@ BSCRIPTS_ENEMY_RAIDEN:                      ; [$ae16]
     .byte $00                               ; |- 0 pixels
     .byte $01                               ; '- 1 block
 
-  @_checkDistanceLoop:                      ; [$ae28]
+  @_checkDistanceLoop:
     .byte SPRITE_OP_CHECK_DISTANCE          ; Op: Check distance
     .byte $00                               ; |- X direction
     .byte $30                               ; |- If < 48
@@ -13360,7 +13358,7 @@ BSCRIPTS_ENEMY_RAIDEN:                      ; [$ae16]
     pointer @_checkDistanceLoop             ; '- Else,
                                             ; @_checkDistanceLoop
 
-  @_isNearPlayer:                           ; [$ae2f]
+  @_isNearPlayer:
     .byte SPRITE_OP_FINISH_BEHAVIOR         ; Op: Finish behavior
     .byte SPRITE_OP_SWITCH_BEHAVIOR         ; Op: Switch behavior
     .byte SPRITE_BEHAVIOR_FALL              ; |- Fall
@@ -13394,7 +13392,7 @@ BSCRIPTS_ENEMY_RAIDEN:                      ; [$ae16]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::adb9]
 ;
-BSCRIPTS_ENEMY_UNUSED_EYEBALL:              ; [$ae43]
+BSCRIPTS_ENEMY_UNUSED_EYEBALL:
     .byte SPRITE_OP_RUN_ACTION              ; Op: Run action
     .byte SPRITE_ACTION_RANDOMLY_FLIP_X_DIRECTION ; '- Randomly flip X
                                                   ; direction
@@ -13406,7 +13404,7 @@ BSCRIPTS_ENEMY_UNUSED_EYEBALL:              ; [$ae43]
     .byte $00                               ; |- 0 pixels Y
     .byte $00                               ; '- 0 blocks Y
 
-  @_waitNearPlayerX:                        ; [$ae4c]
+  @_waitNearPlayerX:
     .byte SPRITE_OP_CHECK_DISTANCE          ; Op: Check distance to player
     .byte $00                               ; |- X direction
     .byte $30                               ; |- If < 48
@@ -13415,7 +13413,7 @@ BSCRIPTS_ENEMY_UNUSED_EYEBALL:              ; [$ae43]
     pointer @_waitNearPlayerX               ; '- Else
                                             ; @_waitNearPlayerX
 
-  @_isNearPlayerX:                          ; [$ae53]
+  @_isNearPlayerX:
     .byte SPRITE_OP_FINISH_BEHAVIOR         ; Op: Finish behavior
     .byte SPRITE_OP_SWITCH_BEHAVIOR         ; Op: Switch behavior
     .byte SPRITE_BEHAVIOR_WAIT              ; |- Wait
@@ -13430,7 +13428,7 @@ BSCRIPTS_ENEMY_UNUSED_EYEBALL:              ; [$ae43]
     .byte $00                               ; |- 0 pixels Y
     .byte $01                               ; '- 1 block Y
 
-  @_waitNearPlayerY:                        ; [$ae60]
+  @_waitNearPlayerY:
     .byte SPRITE_OP_CHECK_DISTANCE          ; Op: Check distance to player
     .byte $01                               ; |- Y direction
     .byte $08                               ; |- If < 8
@@ -13439,7 +13437,7 @@ BSCRIPTS_ENEMY_UNUSED_EYEBALL:              ; [$ae43]
     pointer @_waitNearPlayerY               ; '- Then
                                             ; @_waitNearPlayerY
 
-  @_isNearPlayerY:                          ; [$ae67]
+  @_isNearPlayerY:
     .byte SPRITE_OP_FINISH_BEHAVIOR         ; Op: Finish behavior
     .byte SPRITE_OP_SWITCH_BEHAVIOR         ; Op: Switch behavior
     .byte SPRITE_BEHAVIOR_WAIT              ; |- Wait
@@ -13491,7 +13489,7 @@ BSCRIPTS_ENEMY_UNUSED_EYEBALL:              ; [$ae43]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ad79]
 ;
-BSCRIPTS_ENEMY_IKEDA:                       ; [$ae8c]
+BSCRIPTS_ENEMY_IKEDA:
     .byte SPRITE_OP_RUN_ACTION              ; Op: Run action
     .byte SPRITE_ACTION_FACE_PLAYER_X       ; '- Face player (X)
     .byte SPRITE_OP_SWITCH_BEHAVIOR         ; Op: Switch behavior
@@ -13500,14 +13498,14 @@ BSCRIPTS_ENEMY_IKEDA:                       ; [$ae8c]
     .byte $00                               ; |- 0 pixels
     .byte $01                               ; '- 1 block
 
-  @_waitNearPlayerX:                        ; [$ae93]
+  @_waitNearPlayerX:
     .byte SPRITE_OP_CHECK_DISTANCE          ; Op: Check distance to player
     .byte $00                               ; |- X direction
     .byte $40                               ; |- If < 64 pixels
     pointer @_isNearPlayerX                 ; |- Then _isNearPlayerX
     pointer @_waitNearPlayerX               ; '- Else _waitNearPlayerX
 
-  @_isNearPlayerX:                          ; [$ae9a]
+  @_isNearPlayerX:
     .byte SPRITE_OP_FINISH_BEHAVIOR         ; Op: Finish behavior
     .byte SPRITE_OP_SWITCH_BEHAVIOR         ; Op: Switch behavior
     .byte SPRITE_BEHAVIOR_HOP               ; |- Hop
@@ -13545,7 +13543,7 @@ BSCRIPTS_ENEMY_IKEDA:                       ; [$ae8c]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::adbb]
 ;
-BSCRIPTS_ENEMY_ZOZURA:                      ; [$aeb1]
+BSCRIPTS_ENEMY_ZOZURA:
     .byte SPRITE_OP_RUN_ACTION              ; Op: Run action
     .byte SPRITE_ACTION_FACE_PLAYER_X       ; '- Face player (X)
     .byte SPRITE_OP_SWITCH_BEHAVIOR         ; Op: Switch behavior
@@ -13596,7 +13594,7 @@ BSCRIPTS_ENEMY_ZOZURA:                      ; [$aeb1]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ad81]
 ;
-BSCRIPTS_ENEMY_MONODRON:                    ; [$aecc]
+BSCRIPTS_ENEMY_MONODRON:
     .byte SPRITE_OP_RUN_ACTION              ; Op: Run action
     .byte SPRITE_ACTION_RANDOMLY_FLIP_X_DIRECTION ; '- Randomly change X
                                                   ; direction
@@ -13636,7 +13634,7 @@ BSCRIPTS_ENEMY_MONODRON:                    ; [$aecc]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ad45]
 ;
-BSCRIPTS_ENEMY_SNOWMAN:                     ; [$aee5]
+BSCRIPTS_ENEMY_SNOWMAN:
     .byte SPRITE_OP_RUN_ACTION              ; Op: Run action
     .byte SPRITE_ACTION_RANDOMLY_FLIP_X_DIRECTION ; '- Randomly flip X
                                                   ; direction
@@ -13651,7 +13649,7 @@ BSCRIPTS_ENEMY_SNOWMAN:                     ; [$aee5]
     .byte $00                               ; |- 0 pixels
     .byte $02                               ; '- 2 blocks
 
-  @_waitNearPlayer:                         ; [$aef1]
+  @_waitNearPlayer:
     .byte SPRITE_OP_CHECK_DISTANCE          ; Op: Check player distance
     .byte $00                               ; |- X direction
     .byte $20                               ; |- If < 32 pixels
@@ -13659,7 +13657,7 @@ BSCRIPTS_ENEMY_SNOWMAN:                     ; [$aee5]
     pointer @_waitNearPlayer                ; '- Else
                                             ; @_waitNearPlayer
 
-  @_isNearPlayer:                           ; [$aef8]
+  @_isNearPlayer:
     .byte SPRITE_OP_FINISH_BEHAVIOR         ; Op: Finish behavior
     .byte SPRITE_OP_SWITCH_BEHAVIOR         ; Op: Switch behavior
     .byte SPRITE_BEHAVIOR_HOP               ; |- Hop
@@ -13683,7 +13681,7 @@ BSCRIPTS_ENEMY_SNOWMAN:                     ; [$aee5]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ad31]
 ;
-BSCRIPTS_OBJ_COIN:                          ; [$af02]
+BSCRIPTS_OBJ_COIN:
     .byte SPRITE_OP_SWITCH_BEHAVIOR         ; Op: Switch behavior
     .byte SPRITE_BEHAVIOR_BOUNCE_AND_EXPIRE ; |- Bounce and expire
     .byte $00                               ; '- (unused)
@@ -13701,7 +13699,7 @@ BSCRIPTS_OBJ_COIN:                          ; [$af02]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ad39]
 ;
-BSCRIPTS_ENEMY_ZOMBIE:                      ; [$af06]
+BSCRIPTS_ENEMY_ZOMBIE:
     .byte SPRITE_OP_SWITCH_BEHAVIOR         ; Op: Switch behavior
     .byte SPRITE_BEHAVIOR_MOVE_TOWARD_PLAYER ; |- Move toward player
     .byte $14                               ; |- For 20 ticks
@@ -13759,10 +13757,10 @@ BSCRIPTS_ENEMY_ZOMBIE:                      ; [$af06]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ad37]
 ;
-BSCRIPTS_ENEMY_NECRON_AIDES:                ; [$af31]
-    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; [$af31] SpriteOp
-    .byte SPRITE_BEHAVIOR_NECRON_AIDES      ; [$af32] SpriteBehavior
-    .byte $00                               ; [$af33] byte
+BSCRIPTS_ENEMY_NECRON_AIDES:
+    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; SpriteOp
+    .byte SPRITE_BEHAVIOR_NECRON_AIDES      ; SpriteBehavior
+    .byte $00                               ; byte
 
     .byte SPRITE_OP_END_SCRIPT              ; Op: End script
 
@@ -13778,10 +13776,10 @@ BSCRIPTS_ENEMY_NECRON_AIDES:                ; [$af31]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ad43]
 ;
-BSCRIPTS_ENEMY_YUINARU:                     ; [$af35]
-    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; [$af35] SpriteOp
-    .byte SPRITE_BEHAVIOR_YUINARU           ; [$af36] SpriteBehavior
-    .byte $00                               ; [$af37] byte
+BSCRIPTS_ENEMY_YUINARU:
+    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; SpriteOp
+    .byte SPRITE_BEHAVIOR_YUINARU           ; SpriteBehavior
+    .byte $00                               ; byte
 
     .byte SPRITE_OP_END_SCRIPT              ; Op: End script
 
@@ -13797,10 +13795,10 @@ BSCRIPTS_ENEMY_YUINARU:                     ; [$af35]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ad47]
 ;
-BSCRIPTS_ENEMY_NASH:                        ; [$af39]
-    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; [$af39] SpriteOp
-    .byte SPRITE_BEHAVIOR_NASH              ; [$af3a] SpriteBehavior
-    .byte $00                               ; [$af3b] byte
+BSCRIPTS_ENEMY_NASH:
+    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; SpriteOp
+    .byte SPRITE_BEHAVIOR_NASH              ; SpriteBehavior
+    .byte $00                               ; byte
 
     .byte SPRITE_OP_END_SCRIPT              ; Op: End script
 
@@ -13816,21 +13814,21 @@ BSCRIPTS_ENEMY_NASH:                        ; [$af39]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ad49]
 ;
-BSCRIPTS_ENEMY_FIRE_GIANT:                  ; [$af3d]
+BSCRIPTS_ENEMY_FIRE_GIANT:
     .byte SPRITE_OP_RUN_ACTION              ; Op: Run action
     .byte SPRITE_ACTION_FACE_PLAYER_X       ; '- Face player (X)
     .byte SPRITE_OP_SWITCH_BEHAVIOR         ; Op: Switch behavior
     .byte SPRITE_BEHAVIOR_FALL              ; |- Fall/wait
     .byte $00                               ; '- For 0 ticks
 
-  @_waitNearPlayer:                         ; [$af42]
+  @_waitNearPlayer:
     .byte SPRITE_OP_CHECK_DISTANCE          ; Op: Check distance to player
     .byte $00                               ; |- X direction
     .byte $20                               ; |- If < 32 pixels
     pointer @_isNearPlayer                  ; |- Then _isNearPlayer
     pointer @_waitNearPlayer                ; '- Else _waitNearPlayer
 
-  @_isNearPlayer:                           ; [$af49]
+  @_isNearPlayer:
     .byte SPRITE_OP_FINISH_BEHAVIOR         ; Op: Finish behavior
     .byte SPRITE_OP_RUN_ACTION              ; Op: Run action
     .byte SPRITE_ACTION_FACE_PLAYER_X       ; '- Face player (X)
@@ -13855,10 +13853,10 @@ BSCRIPTS_ENEMY_FIRE_GIANT:                  ; [$af3d]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ad4b]
 ;
-BSCRIPTS_ENEMY_ISHIISU:                     ; [$af54]
-    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; [$af54] SpriteOp
-    .byte SPRITE_BEHAVIOR_ISHIISU           ; [$af55] SpriteBehavior
-    .byte $00                               ; [$af56] byte
+BSCRIPTS_ENEMY_ISHIISU:
+    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; SpriteOp
+    .byte SPRITE_BEHAVIOR_ISHIISU           ; SpriteBehavior
+    .byte $00                               ; byte
 
     .byte SPRITE_OP_END_SCRIPT              ; Op: End script
 
@@ -13874,10 +13872,10 @@ BSCRIPTS_ENEMY_ISHIISU:                     ; [$af54]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ad4d]
 ;
-BSCRIPTS_ENEMY_EXECUTION_HOOD:              ; [$af58]
-    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; [$af58] SpriteOp
-    .byte SPRITE_BEHAVIOR_EXECUTION_HOOD    ; [$af59] SpriteBehavior
-    .byte $00                               ; [$af5a] byte
+BSCRIPTS_ENEMY_EXECUTION_HOOD:
+    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; SpriteOp
+    .byte SPRITE_BEHAVIOR_EXECUTION_HOOD    ; SpriteBehavior
+    .byte $00                               ; byte
 
     .byte SPRITE_OP_END_SCRIPT              ; Op: End script
 
@@ -13893,10 +13891,10 @@ BSCRIPTS_ENEMY_EXECUTION_HOOD:              ; [$af58]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ad53]
 ;
-BSCRIPTS_LIGHTNING_BALL_19:                 ; [$af5c]
-    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; [$af5c] SpriteOp
-    .byte SPRITE_BEHAVIOR_MAYBE_LIGHTNINGBALL ; [$af5d] SpriteBehavior
-    .byte $00                               ; [$af5e] byte
+BSCRIPTS_LIGHTNING_BALL_19:
+    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; SpriteOp
+    .byte SPRITE_BEHAVIOR_MAYBE_LIGHTNINGBALL ; SpriteBehavior
+    .byte $00                               ; byte
 
     .byte SPRITE_OP_END_SCRIPT              ; Op: End script
 
@@ -13912,10 +13910,10 @@ BSCRIPTS_LIGHTNING_BALL_19:                 ; [$af5c]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ad55]
 ;
-BSCRIPTS_ENEMY_CHARRON:                     ; [$af60]
-    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; [$af60] SpriteOp
-    .byte SPRITE_BEHAVIOR_LIGHTNINBALL_CHARRON ; [$af61] SpriteBehavior
-    .byte $00                               ; [$af62] byte
+BSCRIPTS_ENEMY_CHARRON:
+    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; SpriteOp
+    .byte SPRITE_BEHAVIOR_LIGHTNINBALL_CHARRON ; SpriteBehavior
+    .byte $00                               ; byte
 
     .byte SPRITE_OP_END_SCRIPT              ; Op: End script
 
@@ -13931,10 +13929,10 @@ BSCRIPTS_ENEMY_CHARRON:                     ; [$af60]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::adf5]
 ;
-BSCRIPTS_EFFECT_BOSS_DEATH:                 ; [$af64]
-    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; [$af64] SpriteOp
-    .byte SPRITE_BEHAVIOR_EFFECT_BOSS_DEATH ; [$af65] SpriteBehavior
-    .byte $00                               ; [$af66] byte
+BSCRIPTS_EFFECT_BOSS_DEATH:
+    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; SpriteOp
+    .byte SPRITE_BEHAVIOR_EFFECT_BOSS_DEATH ; SpriteBehavior
+    .byte $00                               ; byte
 
     .byte SPRITE_OP_END_SCRIPT              ; Op: End script
 
@@ -13950,7 +13948,7 @@ BSCRIPTS_EFFECT_BOSS_DEATH:                 ; [$af64]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ad57]
 ;
-BSCRIPTS_ENEMY_UNUSED_21:                   ; [$af68]
+BSCRIPTS_ENEMY_UNUSED_21:
     .byte SPRITE_OP_RUN_ACTION              ; Op: Run action
     .byte SPRITE_ACTION_FACE_PLAYER_X       ; '- Face player (X)
     .byte SPRITE_OP_SWITCH_BEHAVIOR         ; Op: Switch behavior
@@ -13997,15 +13995,15 @@ BSCRIPTS_ENEMY_UNUSED_21:                   ; [$af68]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ad5b]
 ;
-BSCRIPTS_ENEMY_GERIBUTA:                    ; [$af89]
+BSCRIPTS_ENEMY_GERIBUTA:
     .byte SPRITE_OP_RUN_ACTION              ; Op: Run action
     .byte SPRITE_ACTION_RANDOMLY_FLIP_X_DIRECTION ; '- Randomly flip X
                                                   ; direction
     .byte SPRITE_OP_SWITCH_BEHAVIOR         ; Op: Switch behavior
-    .byte SPRITE_BEHAVIOR_CLEAR_READY_SET_BIT_7 ; [$af8c] SpriteBehavior
-    .byte $00                               ; [$af8d] byte
+    .byte SPRITE_BEHAVIOR_CLEAR_READY_SET_BIT_7 ; SpriteBehavior
+    .byte $00                               ; byte
 
-  @_moveTowardPlayerLoop:                   ; [$af8e]
+  @_moveTowardPlayerLoop:
     .byte SPRITE_OP_RUN_ACTION              ; Op: Run action
     .byte SPRITE_ACTION_FACE_PLAYER_X       ; '- Face player (X)
     .byte SPRITE_OP_SWITCH_BEHAVIOR         ; Op: Switch behavior
@@ -14029,7 +14027,7 @@ BSCRIPTS_ENEMY_GERIBUTA:                    ; [$af89]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ad5d]
 ;
-BSCRIPTS_ENEMY_SUGATA:                      ; [$af98]
+BSCRIPTS_ENEMY_SUGATA:
     .byte SPRITE_OP_RUN_ACTION              ; Op: Run action
     .byte SPRITE_ACTION_FACE_PLAYER_X       ; '- Face player (X)
     .byte SPRITE_OP_SWITCH_BEHAVIOR         ; Op: Switch behavior
@@ -14073,7 +14071,7 @@ BSCRIPTS_ENEMY_SUGATA:                      ; [$af98]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ad5f]
 ;
-BSCRIPTS_ENEMY_GRIMLOCK:                    ; [$afb5]
+BSCRIPTS_ENEMY_GRIMLOCK:
     .byte SPRITE_OP_RUN_ACTION              ; Op: Run action
     .byte SPRITE_ACTION_FACE_PLAYER_X       ; '- Face player (X)
     .byte SPRITE_OP_SWITCH_BEHAVIOR         ; Op: Switch behavior
@@ -14123,7 +14121,7 @@ BSCRIPTS_ENEMY_GRIMLOCK:                    ; [$afb5]
     pointer @_awayFromPlayerY               ; '- Else
                                             ; @_awayFromPlayerY
 
-  @_awayFromPlayerY:                        ; [$afe5]
+  @_awayFromPlayerY:
     .byte SPRITE_OP_FINISH_BEHAVIOR         ; Op: Finish behavior
     .byte SPRITE_OP_SWITCH_BEHAVIOR         ; Op: Switch behavior
     .byte SPRITE_BEHAVIOR_MOVE_TOWARD_PLAYER ; |- Move toward player
@@ -14131,7 +14129,7 @@ BSCRIPTS_ENEMY_GRIMLOCK:                    ; [$afb5]
     .byte $80                               ; |- 128 pixels X
     .byte $00                               ; '- 0 blocks X
 
-  @_waitNearPlayerX:                        ; [$afeb]
+  @_waitNearPlayerX:
     .byte SPRITE_OP_CHECK_DISTANCE          ; Op: Check distance to player
     .byte $00                               ; |- X direction
     .byte $10                               ; |- If < 16 pixels
@@ -14142,7 +14140,7 @@ BSCRIPTS_ENEMY_GRIMLOCK:                    ; [$afb5]
     pointer BSCRIPTS_ENEMY_GRIMLOCK         ; '-
                                             ; BSCRIPTS_ENEMY_GRIMLOCK
 
-  @_nearPlayerX:                            ; [$aff5]
+  @_nearPlayerX:
     .byte SPRITE_OP_FINISH_BEHAVIOR         ; Op: Finish behavior
     .byte SPRITE_OP_SWITCH_BEHAVIOR         ; Op: Switch behavior
     .byte SPRITE_BEHAVIOR_HOP               ; |- Hop
@@ -14154,7 +14152,7 @@ BSCRIPTS_ENEMY_GRIMLOCK:                    ; [$afb5]
     pointer BSCRIPTS_ENEMY_GRIMLOCK         ; '-
                                             ; BSCRIPTS_ENEMY_GRIMLOCK
 
-  @_nearPlayerY:                            ; [$afff]
+  @_nearPlayerY:
     .byte SPRITE_OP_FINISH_BEHAVIOR         ; Op: Finish behavior
     .byte SPRITE_OP_SET_PHASE               ; Op: Set phase
     .byte $09                               ; '- 9
@@ -14164,7 +14162,7 @@ BSCRIPTS_ENEMY_GRIMLOCK:                    ; [$afb5]
     .byte $00                               ; |- 0 pixels X
     .byte $02                               ; '- 2 pixels X
 
-  @_waitNearPlayerX2:                       ; [$b007]
+  @_waitNearPlayerX2:
     .byte SPRITE_OP_CHECK_DISTANCE          ; Op: Check distance to player
     .byte $00                               ; |- X direction
     .byte $10                               ; |- If < 16 pixels
@@ -14176,7 +14174,7 @@ BSCRIPTS_ENEMY_GRIMLOCK:                    ; [$afb5]
     pointer BSCRIPTS_ENEMY_GRIMLOCK         ; '-
                                             ; BSCRIPTS_ENEMY_GRIMLOCK
 
-  @_nearPlayerX2:                           ; [$b011]
+  @_nearPlayerX2:
     .byte SPRITE_OP_FINISH_BEHAVIOR         ; Op: Finish behavior
     .byte SPRITE_OP_SWITCH_BEHAVIOR         ; Op: Switch behavior
     .byte SPRITE_BEHAVIOR_HOP               ; |- Hop
@@ -14200,12 +14198,12 @@ BSCRIPTS_ENEMY_GRIMLOCK:                    ; [$afb5]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ad61]
 ;
-BSCRIPTS_ENEMY_GIANT_BEES:                  ; [$b01b]
-    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; [$b01b] SpriteOp
-    .byte SPRITE_BEHAVIOR_GIANT_BEES        ; [$b01c] SpriteBehavior
-    .byte $00                               ; [$b01d] byte
+BSCRIPTS_ENEMY_GIANT_BEES:
+    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; SpriteOp
+    .byte SPRITE_BEHAVIOR_GIANT_BEES        ; SpriteBehavior
+    .byte $00                               ; byte
 
-    .byte SPRITE_OP_END_SCRIPT
+    .byte SPRITE_OP_END_SCRIPT              ; SpriteOp
 
 
 ;============================================================================
@@ -14219,7 +14217,7 @@ BSCRIPTS_ENEMY_GIANT_BEES:                  ; [$b01b]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ad63]
 ;
-BSCRIPTS_ENEMY_MYCONID:                     ; [$b01f]
+BSCRIPTS_ENEMY_MYCONID:
     .byte SPRITE_OP_RUN_ACTION              ; Op: Run action
     .byte SPRITE_ACTION_FACE_PLAYER_X       ; '- Face player (X)
     .byte SPRITE_OP_SWITCH_BEHAVIOR         ; Op: Switch behavior
@@ -14270,12 +14268,12 @@ BSCRIPTS_ENEMY_MYCONID:                     ; [$b01f]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ad65]
 ;
-BSCRIPTS_ENEMY_NAGA:                        ; [$b044]
-    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; [$b044] SpriteOp
-    .byte SPRITE_BEHAVIOR_NAGA              ; [$b045] SpriteBehavior
-    .byte $00                               ; [$b046] byte
+BSCRIPTS_ENEMY_NAGA:
+    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; SpriteOp
+    .byte SPRITE_BEHAVIOR_NAGA              ; SpriteBehavior
+    .byte $00                               ; byte
 
-    .byte SPRITE_OP_END_SCRIPT
+    .byte SPRITE_OP_END_SCRIPT              ; SpriteOp
 
 
 ;============================================================================
@@ -14289,7 +14287,7 @@ BSCRIPTS_ENEMY_NAGA:                        ; [$b044]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ad69]
 ;
-BSCRIPTS_ENEMY_GIANT_STRIDER:               ; [$b048]
+BSCRIPTS_ENEMY_GIANT_STRIDER:
     .byte SPRITE_OP_RUN_ACTION              ; Op: Run action
     .byte SPRITE_ACTION_FACE_PLAYER_X       ; '- Face player (X)
     .byte SPRITE_OP_SWITCH_BEHAVIOR         ; Op: Switch behavior
@@ -14319,12 +14317,12 @@ BSCRIPTS_ENEMY_GIANT_STRIDER:               ; [$b048]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ad71]
 ;
-BSCRIPTS_ENEMY_YAREEKA:                     ; [$b058]
-    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; [$b058] SpriteOp
-    .byte SPRITE_BEHAVIOR_YAREEKA           ; [$b059] SpriteBehavior
-    .byte $00                               ; [$b05a] byte
+BSCRIPTS_ENEMY_YAREEKA:
+    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; SpriteOp
+    .byte SPRITE_BEHAVIOR_YAREEKA           ; SpriteBehavior
+    .byte $00                               ; byte
 
-    .byte SPRITE_OP_END_SCRIPT
+    .byte SPRITE_OP_END_SCRIPT              ; SpriteOp
 
 
 ;============================================================================
@@ -14338,12 +14336,12 @@ BSCRIPTS_ENEMY_YAREEKA:                     ; [$b058]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ad73]
 ;
-BSCRIPTS_ENEMY_MAGMAN:                      ; [$b05c]
-    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; [$b05c] SpriteOp
-    .byte SPRITE_BEHAVIOR_MAGMAN            ; [$b05d] SpriteBehavior
-    .byte $00                               ; [$b05e] byte
+BSCRIPTS_ENEMY_MAGMAN:
+    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; SpriteOp
+    .byte SPRITE_BEHAVIOR_MAGMAN            ; SpriteBehavior
+    .byte $00                               ; byte
 
-    .byte SPRITE_OP_END_SCRIPT
+    .byte SPRITE_OP_END_SCRIPT              ; SpriteOp
 
 
 ;============================================================================
@@ -14357,12 +14355,12 @@ BSCRIPTS_ENEMY_MAGMAN:                      ; [$b05c]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ad75]
 ;
-BSCRIPTS_ENEMY_UNUSED_36:                   ; [$b060]
-    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; [$b060] SpriteOp
-    .byte SPRITE_BEHAVIOR_ENEMY_UNUSED_36   ; [$b061] SpriteBehavior
-    .byte $00                               ; [$b062] byte
+BSCRIPTS_ENEMY_UNUSED_36:
+    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; SpriteOp
+    .byte SPRITE_BEHAVIOR_ENEMY_UNUSED_36   ; SpriteBehavior
+    .byte $00                               ; byte
 
-    .byte SPRITE_OP_END_SCRIPT
+    .byte SPRITE_OP_END_SCRIPT              ; SpriteOp
 
 
 ;============================================================================
@@ -14376,12 +14374,12 @@ BSCRIPTS_ENEMY_UNUSED_36:                   ; [$b060]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ad7b]
 ;
-BSCRIPTS_ENEMY_UNUSED_39:                   ; [$b064]
-    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; [$b064] SpriteOp
-    .byte SPRITE_BEHAVIOR_ENEMY_UNUSED_39   ; [$b065] SpriteBehavior
-    .byte $00                               ; [$b066] byte
+BSCRIPTS_ENEMY_UNUSED_39:
+    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; SpriteOp
+    .byte SPRITE_BEHAVIOR_ENEMY_UNUSED_39   ; SpriteBehavior
+    .byte $00                               ; byte
 
-    .byte SPRITE_OP_END_SCRIPT
+    .byte SPRITE_OP_END_SCRIPT              ; SpriteOp
 
 
 ;============================================================================
@@ -14395,7 +14393,7 @@ BSCRIPTS_ENEMY_UNUSED_39:                   ; [$b064]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ad7d]
 ;
-BSCRIPTS_ENEMY_LAMPREY:                     ; [$b068]
+BSCRIPTS_ENEMY_LAMPREY:
     .byte SPRITE_OP_RUN_ACTION              ; Op: Run action
     .byte SPRITE_ACTION_FACE_PLAYER_X       ; '- Face player (X)
     .byte SPRITE_OP_SWITCH_BEHAVIOR         ; Op: Switch behavior
@@ -14419,12 +14417,12 @@ BSCRIPTS_ENEMY_LAMPREY:                     ; [$b068]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ad83]
 ;
-BSCRIPTS_ENEMY_UNUSED_43:                   ; [$b072]
-    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; [$b072] SpriteOp
-    .byte SPRITE_BEHAVIOR_ENEMY_UNUSED_43   ; [$b073] SpriteBehavior
-    .byte $00                               ; [$b074] byte
+BSCRIPTS_ENEMY_UNUSED_43:
+    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; SpriteOp
+    .byte SPRITE_BEHAVIOR_ENEMY_UNUSED_43   ; SpriteBehavior
+    .byte $00                               ; byte
 
-    .byte SPRITE_OP_END_SCRIPT
+    .byte SPRITE_OP_END_SCRIPT              ; SpriteOp
 
 
 ;============================================================================
@@ -14438,12 +14436,12 @@ BSCRIPTS_ENEMY_UNUSED_43:                   ; [$b072]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ad85]
 ;
-BSCRIPTS_ENEMY_TAMAZUTSU:                   ; [$b076]
-    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; [$b076] SpriteOp
-    .byte SPRITE_BEHAVIOR_TAMAZUTSU         ; [$b077] SpriteBehavior
-    .byte $00                               ; [$b078] byte
+BSCRIPTS_ENEMY_TAMAZUTSU:
+    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; SpriteOp
+    .byte SPRITE_BEHAVIOR_TAMAZUTSU         ; SpriteBehavior
+    .byte $00                               ; byte
 
-    .byte SPRITE_OP_END_SCRIPT
+    .byte SPRITE_OP_END_SCRIPT              ; SpriteOp
 
 
 ;============================================================================
@@ -14459,12 +14457,12 @@ BSCRIPTS_ENEMY_TAMAZUTSU:                   ; [$b076]
 ;     SPRITE_BSCRIPTS [$PRG14::ad6b]
 ;     SPRITE_BSCRIPTS [$PRG14::ad6f]
 ;
-BSCRIPTS_ENEMY_SIR_GAWAINE_WOLFMAN:         ; [$b07a]
-    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; [$b07a] SpriteOp
-    .byte SPRITE_BEHAVIOR_SIR_GAWAINE_WOLFMAN ; [$b07b] SpriteBehavior
-    .byte $00                               ; [$b07c] byte
+BSCRIPTS_ENEMY_SIR_GAWAINE_WOLFMAN:
+    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; SpriteOp
+    .byte SPRITE_BEHAVIOR_SIR_GAWAINE_WOLFMAN ; SpriteBehavior
+    .byte $00                               ; byte
 
-    .byte SPRITE_OP_END_SCRIPT
+    .byte SPRITE_OP_END_SCRIPT              ; SpriteOp
 
 
 ;============================================================================
@@ -14478,7 +14476,7 @@ BSCRIPTS_ENEMY_SIR_GAWAINE_WOLFMAN:         ; [$b07a]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ad6d]
 ;
-BSCRIPTS_ENEMY_MASKMAN:                     ; [$b07e]
+BSCRIPTS_ENEMY_MASKMAN:
     .byte SPRITE_OP_RUN_ACTION              ; Op: Run action
     .byte SPRITE_ACTION_FACE_PLAYER_X       ; '- Face player (X)
     .byte SPRITE_OP_SWITCH_BEHAVIOR         ; Op: Switch behavior
@@ -14534,7 +14532,7 @@ BSCRIPTS_ENEMY_MASKMAN:                     ; [$b07e]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ad67]
 ;
-BSCRIPTS_ENEMY_UNUSED_29:                   ; [$b0a8]
+BSCRIPTS_ENEMY_UNUSED_29:
     .byte SPRITE_OP_SWITCH_BEHAVIOR         ; Op: Switch behavior
     .byte SPRITE_BEHAVIOR_FALL              ; |- Fall/wait
     .byte $00                               ; '- For 0 ticks
@@ -14552,7 +14550,7 @@ BSCRIPTS_ENEMY_UNUSED_29:                   ; [$b0a8]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ad4f]
 ;
-BSCRIPTS_BOSS_ROKUSUTAHN:                   ; [$b0ac]
+BSCRIPTS_BOSS_ROKUSUTAHN:
     .byte SPRITE_OP_RUN_ACTION              ; Op: Run action
     .byte SPRITE_ACTION_FACE_PLAYER_X       ; '- Face player (X)
     .byte SPRITE_OP_SWITCH_BEHAVIOR         ; Op: Switch behavior
@@ -14582,15 +14580,15 @@ BSCRIPTS_BOSS_ROKUSUTAHN:                   ; [$b0ac]
     pointer @_hop                           ; |- Then hop
     pointer @_loop                          ; '- Else loop
 
-  @_hop:                                    ; [$b0ca]
-    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; [$b0ca] SpriteOp
+  @_hop:
+    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; SpriteOp
     .byte SPRITE_BEHAVIOR_HOP               ; Op: Hop
     .byte $00                               ; |- (unused)
     .byte $00                               ; |- 0 pixels X
     .byte $00                               ; |- 0 blocks X
     .byte $02                               ; '- Hop mode 2
 
-  @_loop:                                   ; [$b0d0]
+  @_loop:
     .byte SPRITE_OP_GOTO                    ; Op: Goto
     pointer BSCRIPTS_BOSS_ROKUSUTAHN        ; '-
                                             ; BSCRIPTS_BOSS_ROKUSUTAHN
@@ -14607,12 +14605,12 @@ BSCRIPTS_BOSS_ROKUSUTAHN:                   ; [$b0ac]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ad51]
 ;
-BSCRIPTS_ENEMY_UNUSED_18:                   ; [$b0d3]
-    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; [$b0d3] SpriteOp
-    .byte SPRITE_BEHAVIOR_ENEMY_UNUSED_18   ; [$b0d4] SpriteBehavior
-    .byte $00                               ; [$b0d5] byte
+BSCRIPTS_ENEMY_UNUSED_18:
+    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; SpriteOp
+    .byte SPRITE_BEHAVIOR_ENEMY_UNUSED_18   ; SpriteBehavior
+    .byte $00                               ; byte
 
-    .byte SPRITE_OP_END_SCRIPT
+    .byte SPRITE_OP_END_SCRIPT              ; SpriteOp
 
 
 ;============================================================================
@@ -14626,7 +14624,7 @@ BSCRIPTS_ENEMY_UNUSED_18:                   ; [$b0d3]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ad87]
 ;
-BSCRIPTS_BOSS_RIPASHEIKU:                   ; [$b0d7]
+BSCRIPTS_BOSS_RIPASHEIKU:
     .byte SPRITE_OP_SWITCH_BEHAVIOR         ; Op: Switch behavior
     .byte SPRITE_BEHAVIOR_RIPASHEIKU        ; |- Ripasheiku boss
     .byte $00                               ; '- (unused)
@@ -14644,7 +14642,7 @@ BSCRIPTS_BOSS_RIPASHEIKU:                   ; [$b0d7]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ad89]
 ;
-BSCRIPTS_BOSS_ZORADOHNA:                    ; [$b0db]
+BSCRIPTS_BOSS_ZORADOHNA:
     .byte SPRITE_OP_RUN_ACTION              ; Op: Run action
     .byte SPRITE_ACTION_FACE_PLAYER_X       ; '- Face player (X)
     .byte SPRITE_OP_SWITCH_BEHAVIOR         ; Op: Switch behavior
@@ -14664,7 +14662,7 @@ BSCRIPTS_BOSS_ZORADOHNA:                    ; [$b0db]
     .byte $00                               ; |- 0 pixels Y
     .byte $02                               ; '- 2 blocks Y
 
-  @_mainLoop:                               ; [$b0ed]
+  @_mainLoop:
     .byte SPRITE_OP_RUN_ACTION              ; Op: Run action
     .byte SPRITE_ACTION_FACE_PLAYER_X       ; '- Face player (X)
     .byte SPRITE_OP_SWITCH_BEHAVIOR         ; Op: Switch behavior
@@ -14674,7 +14672,7 @@ BSCRIPTS_BOSS_ZORADOHNA:                    ; [$b0db]
     .byte $01                               ; |- 1 block X
     .byte $02                               ; '- TODO: Value 2
 
-  @_waitNearPlayer:                         ; [$b0f5]
+  @_waitNearPlayer:
     .byte SPRITE_OP_CHECK_DISTANCE          ; Op: Check distance to player
     .byte $00                               ; |- X direction
     .byte $20                               ; |- If < 32 pixels
@@ -14683,7 +14681,7 @@ BSCRIPTS_BOSS_ZORADOHNA:                    ; [$b0db]
     pointer @_waitNearPlayer                ; '- Else
                                             ; @_waitNearPlayer
 
-  @_isNearPlayer:                           ; [$b0fc]
+  @_isNearPlayer:
     .byte SPRITE_OP_FINISH_BEHAVIOR         ; Op: Finish behavior
     .byte SPRITE_OP_RUN_ACTION              ; Op: Run action
     .byte SPRITE_ACTION_FACE_PLAYER_X       ; '- Face player (X)
@@ -14709,12 +14707,12 @@ BSCRIPTS_BOSS_ZORADOHNA:                    ; [$b0db]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ad8b]
 ;
-BSCRIPTS_BOSS_BORABOHRA:                    ; [$b108]
-    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; [$b108] SpriteOp
-    .byte SPRITE_BEHAVIOR_BORABOHRA         ; [$b109] SpriteBehavior
-    .byte $00                               ; [$b10a] byte
+BSCRIPTS_BOSS_BORABOHRA:
+    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; SpriteOp
+    .byte SPRITE_BEHAVIOR_BORABOHRA         ; SpriteBehavior
+    .byte $00                               ; byte
 
-    .byte SPRITE_OP_END_SCRIPT
+    .byte SPRITE_OP_END_SCRIPT              ; SpriteOp
 
 
 ;============================================================================
@@ -14728,12 +14726,12 @@ BSCRIPTS_BOSS_BORABOHRA:                    ; [$b108]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ad8d]
 ;
-BSCRIPTS_BOSS_PAKUKAME:                     ; [$b10c]
-    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; [$b10c] SpriteOp
-    .byte SPRITE_BEHAVIOR_PAKUKAME          ; [$b10d] SpriteBehavior
-    .byte $00                               ; [$b10e] byte
+BSCRIPTS_BOSS_PAKUKAME:
+    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; SpriteOp
+    .byte SPRITE_BEHAVIOR_PAKUKAME          ; SpriteBehavior
+    .byte $00                               ; byte
 
-    .byte SPRITE_OP_END_SCRIPT
+    .byte SPRITE_OP_END_SCRIPT              ; SpriteOp
 
 
 ;============================================================================
@@ -14747,12 +14745,12 @@ BSCRIPTS_BOSS_PAKUKAME:                     ; [$b10c]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ad8f]
 ;
-BSCRIPTS_BOSS_ZORUGERIRU:                   ; [$b110]
-    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; [$b110] SpriteOp
-    .byte SPRITE_BEHAVIOR_ZORUGERIRU        ; [$b111] SpriteBehavior
-    .byte $00                               ; [$b112] byte
+BSCRIPTS_BOSS_ZORUGERIRU:
+    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; SpriteOp
+    .byte SPRITE_BEHAVIOR_ZORUGERIRU        ; SpriteBehavior
+    .byte $00                               ; byte
 
-    .byte SPRITE_OP_END_SCRIPT
+    .byte SPRITE_OP_END_SCRIPT              ; SpriteOp
 
 
 ;============================================================================
@@ -14766,12 +14764,12 @@ BSCRIPTS_BOSS_ZORUGERIRU:                   ; [$b110]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ad91]
 ;
-BSCRIPTS_BOSS_KING_GRIEVE:                  ; [$b114]
-    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; [$b114] SpriteOp
-    .byte SPRITE_BEHAVIOR_KING_GRIEVE       ; [$b115] SpriteBehavior
-    .byte $00                               ; [$b116] byte
+BSCRIPTS_BOSS_KING_GRIEVE:
+    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; SpriteOp
+    .byte SPRITE_BEHAVIOR_KING_GRIEVE       ; SpriteBehavior
+    .byte $00                               ; byte
 
-    .byte SPRITE_OP_END_SCRIPT
+    .byte SPRITE_OP_END_SCRIPT              ; SpriteOp
 
 
 ;============================================================================
@@ -14785,12 +14783,12 @@ BSCRIPTS_BOSS_KING_GRIEVE:                  ; [$b114]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ad93]
 ;
-BSCRIPTS_BOSS_SHADOW_EURA:                  ; [$b118]
-    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; [$b118] SpriteOp
-    .byte SPRITE_BEHAVIOR_SHADOW_EURA       ; [$b119] SpriteBehavior
-    .byte $00                               ; [$b11a] byte
+BSCRIPTS_BOSS_SHADOW_EURA:
+    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; SpriteOp
+    .byte SPRITE_BEHAVIOR_SHADOW_EURA       ; SpriteBehavior
+    .byte $00                               ; byte
 
-    .byte SPRITE_OP_END_SCRIPT
+    .byte SPRITE_OP_END_SCRIPT              ; SpriteOp
 
 
 ;============================================================================
@@ -14806,12 +14804,12 @@ BSCRIPTS_BOSS_SHADOW_EURA:                  ; [$b118]
 ;     SPRITE_BSCRIPTS [$PRG14::adcf]
 ;     SPRITE_BSCRIPTS [$PRG14::add5]
 ;
-BSCRIPTS_GARBLED_81:                        ; [$b11c]
-    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; [$b11c] SpriteOp
-    .byte SPRITE_BEHAVIOR_SOMETHING_GARBLED_81 ; [$b11d] SpriteBehavior
-    .byte $00                               ; [$b11e] byte
+BSCRIPTS_GARBLED_81:
+    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; SpriteOp
+    .byte SPRITE_BEHAVIOR_SOMETHING_GARBLED_81 ; SpriteBehavior
+    .byte $00                               ; byte
 
-    .byte SPRITE_OP_END_SCRIPT
+    .byte SPRITE_OP_END_SCRIPT              ; SpriteOp
 
 
 ;============================================================================
@@ -14825,12 +14823,12 @@ BSCRIPTS_GARBLED_81:                        ; [$b11c]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ad41]
 ;
-BSCRIPTS_GARBLED_10:                        ; [$b120]
-    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; [$b120] SpriteOp
-    .byte SPRITE_BEHAVIOR_SOMETHING_GARBLED_10 ; [$b121] SpriteBehavior
-    .byte $00                               ; [$b122] byte
+BSCRIPTS_GARBLED_10:
+    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; SpriteOp
+    .byte SPRITE_BEHAVIOR_SOMETHING_GARBLED_10 ; SpriteBehavior
+    .byte $00                               ; byte
 
-    .byte SPRITE_OP_END_SCRIPT
+    .byte SPRITE_OP_END_SCRIPT              ; SpriteOp
 
 
 ;============================================================================
@@ -14844,7 +14842,7 @@ BSCRIPTS_GARBLED_10:                        ; [$b120]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ad95]
 ;
-BSCRIPTS_NPC_WALKING_MAN:                   ; [$b124]
+BSCRIPTS_NPC_WALKING_MAN:
     .byte SPRITE_OP_SWITCH_BEHAVIOR         ; Op: Switch behavior
     .byte SPRITE_BEHAVIOR_WALK_FORWARD      ; |- Walk forward
     .byte $3c                               ; |- For 60 ticks
@@ -14871,7 +14869,7 @@ BSCRIPTS_NPC_WALKING_MAN:                   ; [$b124]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ad97]
 ;
-BSCRIPTS_NPC_UNUSED_BLUE_LADY:              ; [$b131]
+BSCRIPTS_NPC_UNUSED_BLUE_LADY:
     .byte SPRITE_OP_SWITCH_BEHAVIOR         ; Op: Switch behavior
     .byte SPRITE_BEHAVIOR_WALK_FORWARD      ; |- Walk forward
     .byte $50                               ; |- For 80 ticks
@@ -14909,7 +14907,7 @@ BSCRIPTS_NPC_UNUSED_BLUE_LADY:              ; [$b131]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ad99]
 ;
-BSCRIPTS_NPC_UNUSED_CHILD:                  ; [$b149]
+BSCRIPTS_NPC_UNUSED_CHILD:
     .byte SPRITE_OP_SWITCH_BEHAVIOR         ; Op: Switch behavior
     .byte SPRITE_BEHAVIOR_WALK_FORWARD      ; |- Walk forward
     .byte $3c                               ; |- For 60 ticks
@@ -14953,7 +14951,7 @@ BSCRIPTS_NPC_UNUSED_CHILD:                  ; [$b149]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ad9b]
 ;
-BSCRIPTS_NPC_ARMOR_SALESMAN:                ; [$b167]
+BSCRIPTS_NPC_ARMOR_SALESMAN:
     .byte SPRITE_OP_SWITCH_BEHAVIOR         ; Op: Switch behavior
     .byte SPRITE_BEHAVIOR_FALL              ; |- Fall/wait
     .byte $00                               ; '- 0 ticks
@@ -14971,7 +14969,7 @@ BSCRIPTS_NPC_ARMOR_SALESMAN:                ; [$b167]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ad9d]
 ;
-BSCRIPTS_NPC_MARTIAL_ARTS:                  ; [$b16b]
+BSCRIPTS_NPC_MARTIAL_ARTS:
     .byte SPRITE_OP_SWITCH_BEHAVIOR         ; Op: Switch behavior
     .byte SPRITE_BEHAVIOR_FALL              ; |- Fall/wait
     .byte $01                               ; '- 1 tick
@@ -14993,7 +14991,7 @@ BSCRIPTS_NPC_MARTIAL_ARTS:                  ; [$b16b]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ad9f]
 ;
-BSCRIPTS_NPC_PRIEST:                        ; [$b173]
+BSCRIPTS_NPC_PRIEST:
     .byte SPRITE_OP_RUN_ACTION              ; Op: Run action
     .byte SPRITE_ACTION_FACE_PLAYER_X       ; '- Face player (X)
     .byte SPRITE_OP_ADD_TO_SPRITE_DATA      ; Op: Set sprite data
@@ -15016,7 +15014,7 @@ BSCRIPTS_NPC_PRIEST:                        ; [$b173]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ada1]
 ;
-BSCRIPTS_NPC_KING:                          ; [$b17d]
+BSCRIPTS_NPC_KING:
     .byte SPRITE_OP_SWITCH_BEHAVIOR         ; Op: Switch behavior
     .byte SPRITE_BEHAVIOR_FALL              ; |- Fall/wait
     .byte $00                               ; '- For 0 ticks
@@ -15026,7 +15024,7 @@ BSCRIPTS_NPC_KING:                          ; [$b17d]
 ; Wait until the King and the player are within 64 pixels
 ; of each other.
 ;
-  @_waitNearPlayerLoop:                     ; [$b180]
+  @_waitNearPlayerLoop:
     .byte SPRITE_OP_CHECK_DISTANCE          ; Op: Check distance to player
     .byte $00                               ; |- For 0 ticks
     .byte $40                               ; |- If < 64 pixels
@@ -15040,7 +15038,7 @@ BSCRIPTS_NPC_KING:                          ; [$b17d]
 ; The player is now near the King. The King will step forward
 ; 8 pixels and stand on the ground.
 ;
-  @_nearPlayer:                             ; [$b187]
+  @_nearPlayer:
     .byte SPRITE_OP_FINISH_BEHAVIOR         ; Op: Finish behavior
     .byte SPRITE_OP_ADD_TO_SPRITE_DATA      ; Op: Add value to
     pointer CurrentSprites_XPos_Full        ; |- Sprite X position
@@ -15056,7 +15054,7 @@ BSCRIPTS_NPC_KING:                          ; [$b17d]
 ; This has a longer distance check, since the King's
 ; position incremented when standing up.
 ;
-  @_waitAwayFromPlayerLoop:                 ; [$b18f]
+  @_waitAwayFromPlayerLoop:
     .byte SPRITE_OP_CHECK_DISTANCE          ; Op: Check distance to player
     .byte $00                               ; |- For 0 ticks
     .byte $48                               ; |- If < 72 pixels
@@ -15070,7 +15068,7 @@ BSCRIPTS_NPC_KING:                          ; [$b17d]
 ; The player is now far enough away from the King.
 ; The King can sit down.
 ;
-  @_awayFromPlayer:                         ; [$b196]
+  @_awayFromPlayer:
     .byte SPRITE_OP_FINISH_BEHAVIOR         ; Op: Finish behavior
     .byte SPRITE_OP_ADD_TO_SPRITE_DATA      ; Op: Add value to
     pointer CurrentSprites_XPos_Full        ; |- Sprite X position
@@ -15091,7 +15089,7 @@ BSCRIPTS_NPC_KING:                          ; [$b17d]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ada3]
 ;
-BSCRIPTS_NPC_MAGIC_TEACHER:                 ; [$b19e]
+BSCRIPTS_NPC_MAGIC_TEACHER:
     .byte SPRITE_OP_SWITCH_BEHAVIOR         ; Op: Switch behavior
     .byte SPRITE_BEHAVIOR_FALL              ; |- Fall/wait
     .byte $01                               ; '- For 1 tick
@@ -15113,7 +15111,7 @@ BSCRIPTS_NPC_MAGIC_TEACHER:                 ; [$b19e]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::adb3]
 ;
-BSCRIPTS_NPC_DOCTOR:                        ; [$b1a6]
+BSCRIPTS_NPC_DOCTOR:
     .byte SPRITE_OP_ADD_TO_SPRITE_DATA      ; Op: Add to sprite value
     pointer CurrentSprites_XPos_Full        ; |- Sprite X position
     .byte $08                               ; '- Add 8
@@ -15134,7 +15132,7 @@ BSCRIPTS_NPC_DOCTOR:                        ; [$b1a6]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ada5]
 ;
-BSCRIPTS_NPC_KEY_SALESMAN:                  ; [$b1ae]
+BSCRIPTS_NPC_KEY_SALESMAN:
     .byte SPRITE_OP_SWITCH_BEHAVIOR         ; Op: Switch behavior
     .byte SPRITE_BEHAVIOR_FALL              ; |- Fall/wait
     .byte $00                               ; '- For 0 ticks
@@ -15152,7 +15150,7 @@ BSCRIPTS_NPC_KEY_SALESMAN:                  ; [$b1ae]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ada7]
 ;
-BSCRIPTS_NPC_SMOKING_MAN:                   ; [$b1b2]
+BSCRIPTS_NPC_SMOKING_MAN:
     .byte SPRITE_OP_SWITCH_BEHAVIOR         ; Op: Switch behavior
     .byte SPRITE_BEHAVIOR_FALL              ; |- Fall/wait
     .byte $05                               ; '- For 5 ticks
@@ -15174,7 +15172,7 @@ BSCRIPTS_NPC_SMOKING_MAN:                   ; [$b1b2]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ada9]
 ;
-BSCRIPTS_NPC_MAN_IN_CHAIR:                  ; [$b1ba]
+BSCRIPTS_NPC_MAN_IN_CHAIR:
     .byte SPRITE_OP_SWITCH_BEHAVIOR         ; Op: Switch behavior
     .byte SPRITE_BEHAVIOR_FALL              ; |- Fall/wait
     .byte $05                               ; '- For 5 ticks
@@ -15196,7 +15194,7 @@ BSCRIPTS_NPC_MAN_IN_CHAIR:                  ; [$b1ba]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::adab]
 ;
-BSCRIPTS_NPC_SITTING_MAN:                   ; [$b1c2]
+BSCRIPTS_NPC_SITTING_MAN:
     .byte SPRITE_OP_SWITCH_BEHAVIOR         ; Op: Switch behavior
     .byte SPRITE_BEHAVIOR_FALL              ; |- Fall/wait
     .byte $00                               ; '- For 0 ticks
@@ -15214,7 +15212,7 @@ BSCRIPTS_NPC_SITTING_MAN:                   ; [$b1c2]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::adad]
 ;
-BSCRIPTS_NPC_MEAT_SALESMAN:                 ; [$b1c6]
+BSCRIPTS_NPC_MEAT_SALESMAN:
     .byte SPRITE_OP_RUN_ACTION              ; Op: Run action
     .byte SPRITE_ACTION_FACE_PLAYER_X       ; '- Face player (X)
     .byte SPRITE_OP_SWITCH_BEHAVIOR         ; Op: Switch behavior
@@ -15234,7 +15232,7 @@ BSCRIPTS_NPC_MEAT_SALESMAN:                 ; [$b1c6]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::adaf]
 ;
-BSCRIPTS_NPC_LADY_BLUE_DRESS_WITH_CUP:      ; [$b1cc]
+BSCRIPTS_NPC_LADY_BLUE_DRESS_WITH_CUP:
     .byte SPRITE_OP_SWITCH_BEHAVIOR         ; Op: Switch behavior
     .byte SPRITE_BEHAVIOR_MOVE_TOWARD_PLAYER ; |- Move toward player
     .byte $c0                               ; |- For 192 ticks
@@ -15266,7 +15264,7 @@ BSCRIPTS_NPC_LADY_BLUE_DRESS_WITH_CUP:      ; [$b1cc]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::adb1]
 ;
-BSCRIPTS_NPC_KINGS_GUARD:                   ; [$b1de]
+BSCRIPTS_NPC_KINGS_GUARD:
     .byte SPRITE_OP_SWITCH_BEHAVIOR         ; Op: Switch behavior
     .byte SPRITE_BEHAVIOR_MOVE_TOWARD_PLAYER ; |- Move toward player
     .byte $50                               ; |- For 80 ticks
@@ -15293,7 +15291,7 @@ BSCRIPTS_NPC_KINGS_GUARD:                   ; [$b1de]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::adb5]
 ;
-BSCRIPTS_NPC_WALKING_WOMAN_01:              ; [$b1eb]
+BSCRIPTS_NPC_WALKING_WOMAN_01:
     .byte SPRITE_OP_SWITCH_BEHAVIOR         ; Op: Switch behavior
     .byte SPRITE_BEHAVIOR_MOVE_TOWARD_PLAYER ; |- Move toward player
     .byte $50                               ; |- For 80 ticks
@@ -15322,7 +15320,7 @@ BSCRIPTS_NPC_WALKING_WOMAN_01:              ; [$b1eb]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::adb7]
 ;
-BSCRIPTS_NPC_WALKING_WOMAN_02:              ; [$b1fa]
+BSCRIPTS_NPC_WALKING_WOMAN_02:
     .byte SPRITE_OP_SWITCH_BEHAVIOR         ; Op: Switch behavior
     .byte SPRITE_BEHAVIOR_MOVE_TOWARD_PLAYER ; |- Move toward player
     .byte $3c                               ; |- For 60 ticks
@@ -15353,12 +15351,12 @@ BSCRIPTS_NPC_WALKING_WOMAN_02:              ; [$b1fa]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::adc9]
 ;
-BSCRIPTS_OBJ_OINTMENT:                      ; [$b20b]
-    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; [$b20b] SpriteOp
-    .byte SPRITE_BEHAVIOR_ITEM_OINTMENT     ; [$b20c] SpriteBehavior
-    .byte $00                               ; [$b20d] byte
+BSCRIPTS_OBJ_OINTMENT:
+    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; SpriteOp
+    .byte SPRITE_BEHAVIOR_ITEM_OINTMENT     ; SpriteBehavior
+    .byte $00                               ; byte
 
-    .byte SPRITE_OP_END_SCRIPT
+    .byte SPRITE_OP_END_SCRIPT              ; SpriteOp
 
 
 ;============================================================================
@@ -15372,12 +15370,12 @@ BSCRIPTS_OBJ_OINTMENT:                      ; [$b20b]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::adbd]
 ;
-BSCRIPTS_OBJ_GLOVE:                         ; [$b20f]
-    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; [$b20f] SpriteOp
-    .byte SPRITE_BEHAVIOR_ITEM_GLOVE        ; [$b210] SpriteBehavior
-    .byte $00                               ; [$b211] byte
+BSCRIPTS_OBJ_GLOVE:
+    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; SpriteOp
+    .byte SPRITE_BEHAVIOR_ITEM_GLOVE        ; SpriteBehavior
+    .byte $00                               ; byte
 
-    .byte SPRITE_OP_END_SCRIPT
+    .byte SPRITE_OP_END_SCRIPT              ; SpriteOp
 
 
 ;============================================================================
@@ -15391,12 +15389,12 @@ BSCRIPTS_OBJ_GLOVE:                         ; [$b20f]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::add7]
 ;
-BSCRIPTS_OBJ_WINGBOOTS:                     ; [$b213]
-    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; [$b213] SpriteOp
-    .byte SPRITE_BEHAVIOR_RANDOMLY_SHOW_ITEM_55 ; [$b214] SpriteBehavior
-    .byte $00                               ; [$b215] byte
+BSCRIPTS_OBJ_WINGBOOTS:
+    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; SpriteOp
+    .byte SPRITE_BEHAVIOR_RANDOMLY_SHOW_ITEM_55 ; SpriteBehavior
+    .byte $00                               ; byte
 
-    .byte SPRITE_OP_END_SCRIPT
+    .byte SPRITE_OP_END_SCRIPT              ; SpriteOp
 
 
 ;============================================================================
@@ -15416,12 +15414,12 @@ BSCRIPTS_OBJ_WINGBOOTS:                     ; [$b213]
 ;     SPRITE_BSCRIPTS [$PRG14::adc7]
 ;     SPRITE_BSCRIPTS [$PRG14::adcb]
 ;
-BSCRIPTS_OBJ_POTIONLIKE:                    ; [$b217]
-    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; [$b217] SpriteOp
-    .byte SPRITE_BEHAVIOR_FALL              ; [$b218] SpriteBehavior
-    .byte $00                               ; [$b219] byte
+BSCRIPTS_OBJ_POTIONLIKE:
+    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; SpriteOp
+    .byte SPRITE_BEHAVIOR_FALL              ; SpriteBehavior
+    .byte $00                               ; byte
 
-    .byte SPRITE_OP_END_SCRIPT
+    .byte SPRITE_OP_END_SCRIPT              ; SpriteOp
 
 
 ;============================================================================
@@ -15435,12 +15433,12 @@ BSCRIPTS_OBJ_POTIONLIKE:                    ; [$b217]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::adcd]
 ;
-BSCRIPTS_OBJ_MATTOCK:                       ; [$b21b]
-    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; [$b21b] SpriteOp
-    .byte SPRITE_BEHAVIOR_RANDOMLY_SHOW_ITEM_50 ; [$b21c] SpriteBehavior
-    .byte $00                               ; [$b21d] byte
+BSCRIPTS_OBJ_MATTOCK:
+    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; SpriteOp
+    .byte SPRITE_BEHAVIOR_RANDOMLY_SHOW_ITEM_50 ; SpriteBehavior
+    .byte $00                               ; byte
 
-    .byte SPRITE_OP_END_SCRIPT
+    .byte SPRITE_OP_END_SCRIPT              ; SpriteOp
 
 
 ;============================================================================
@@ -15454,12 +15452,12 @@ BSCRIPTS_OBJ_MATTOCK:                       ; [$b21b]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::add9]
 ;
-BSCRIPTS_OBJ_HOURGLASS:                     ; [$b21f]
-    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; [$b21f] SpriteOp
-    .byte SPRITE_BEHAVIOR_RANDOMLY_SHOW_ITEM_51 ; [$b220] SpriteBehavior
-    .byte $00                               ; [$b221] byte
+BSCRIPTS_OBJ_HOURGLASS:
+    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; SpriteOp
+    .byte SPRITE_BEHAVIOR_RANDOMLY_SHOW_ITEM_51 ; SpriteBehavior
+    .byte $00                               ; byte
 
-    .byte SPRITE_OP_END_SCRIPT
+    .byte SPRITE_OP_END_SCRIPT              ; SpriteOp
 
 
 ;============================================================================
@@ -15473,15 +15471,15 @@ BSCRIPTS_OBJ_HOURGLASS:                     ; [$b21f]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::add1]
 ;
-BSCRIPTS_FOUNTAIN:                          ; [$b223]
+BSCRIPTS_FOUNTAIN:
     .byte SPRITE_OP_ADD_TO_SPRITE_DATA      ; Op: Add to sprite value
     pointer CurrentSprites_XPos_Full        ; |- Sprite X position
     .byte $08                               ; '- Plus 8
     .byte SPRITE_OP_SWITCH_BEHAVIOR         ; Op: Switch behavior
-    .byte SPRITE_BEHAVIOR_FOUNTAIN          ; [$b228] SpriteBehavior
-    .byte $00                               ; [$b229] byte
+    .byte SPRITE_BEHAVIOR_FOUNTAIN          ; SpriteBehavior
+    .byte $00                               ; byte
 
-    .byte SPRITE_OP_END_SCRIPT
+    .byte SPRITE_OP_END_SCRIPT              ; SpriteOp
 
 
 ;============================================================================
@@ -15495,17 +15493,16 @@ BSCRIPTS_FOUNTAIN:                          ; [$b223]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::adef]
 ;
-BSCRIPTS_SPRING_OF_FORTRESS:                ; [$b22b]
-    .byte SPRITE_OP_ADD_TO_SPRITE_DATA      ; [$b22b] SpriteOp
+BSCRIPTS_SPRING_OF_FORTRESS:
+    .byte SPRITE_OP_ADD_TO_SPRITE_DATA      ; SpriteOp
     pointer CurrentSprites_XPos_Full        ; CurrentSprites_XPos_Full
-                                            ; [$PRG14::b22c]
-    .byte $08                               ; [$b22e] byte
+    .byte $08                               ; byte
 
-    .byte SPRITE_OP_SWITCH_BEHAVIOR
-    .byte SPRITE_BEHAVIOR_SPRING_OF_FORTRESS ; [$b230] SpriteBehavior
-    .byte $00                               ; [$b231] byte
+    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; SpriteOp
+    .byte SPRITE_BEHAVIOR_SPRING_OF_FORTRESS ; SpriteBehavior
+    .byte $00                               ; byte
 
-    .byte SPRITE_OP_END_SCRIPT
+    .byte SPRITE_OP_END_SCRIPT              ; SpriteOp
 
 
 ;============================================================================
@@ -15519,17 +15516,16 @@ BSCRIPTS_SPRING_OF_FORTRESS:                ; [$b22b]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::adf1]
 ;
-BSCRIPTS_SPRING_OF_SKY:                     ; [$b233]
-    .byte SPRITE_OP_ADD_TO_SPRITE_DATA      ; [$b233] SpriteOp
+BSCRIPTS_SPRING_OF_SKY:
+    .byte SPRITE_OP_ADD_TO_SPRITE_DATA      ; SpriteOp
     pointer CurrentSprites_XPos_Full        ; CurrentSprites_XPos_Full
-                                            ; [$PRG14::b234]
-    .byte $08                               ; [$b236] byte
+    .byte $08                               ; byte
 
-    .byte SPRITE_OP_SWITCH_BEHAVIOR
-    .byte SPRITE_BEHAVIOR_SPRING_OF_SKY     ; [$b238] SpriteBehavior
-    .byte $00                               ; [$b239] byte
+    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; SpriteOp
+    .byte SPRITE_BEHAVIOR_SPRING_OF_SKY     ; SpriteBehavior
+    .byte $00                               ; byte
 
-    .byte SPRITE_OP_END_SCRIPT
+    .byte SPRITE_OP_END_SCRIPT              ; SpriteOp
 
 
 ;============================================================================
@@ -15543,17 +15539,16 @@ BSCRIPTS_SPRING_OF_SKY:                     ; [$b233]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::adf3]
 ;
-BSCRIPTS_SPRING_OF_JOKER:                   ; [$b23b]
-    .byte SPRITE_OP_ADD_TO_SPRITE_DATA      ; [$b23b] SpriteOp
+BSCRIPTS_SPRING_OF_JOKER:
+    .byte SPRITE_OP_ADD_TO_SPRITE_DATA      ; SpriteOp
     pointer CurrentSprites_XPos_Full        ; CurrentSprites_XPos_Full
-                                            ; [$PRG14::b23c]
-    .byte $08                               ; [$b23e] byte
+    .byte $08                               ; byte
 
-    .byte SPRITE_OP_SWITCH_BEHAVIOR
-    .byte SPRITE_BEHAVIOR_SPRING_OF_JOKER   ; [$b240] SpriteBehavior
-    .byte $00                               ; [$b241] byte
+    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; SpriteOp
+    .byte SPRITE_BEHAVIOR_SPRING_OF_JOKER   ; SpriteBehavior
+    .byte $00                               ; byte
 
-    .byte SPRITE_OP_END_SCRIPT
+    .byte SPRITE_OP_END_SCRIPT              ; SpriteOp
 
 
 ;============================================================================
@@ -15567,13 +15562,12 @@ BSCRIPTS_SPRING_OF_JOKER:                   ; [$b23b]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::addd]
 ;
-BSCRIPTS_OBJ_BATTLE_SUIT:                   ; [$b243]
-    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; [$b243] SpriteOp
-    .byte SPRITE_BEHAVIOR_BATTLE_SUIT_DROPPED_BY_ZORADOHNA ; [$b244]
-                                                           ; SpriteBehavior
-    .byte $00                               ; [$b245] byte
+BSCRIPTS_OBJ_BATTLE_SUIT:
+    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; SpriteOp
+    .byte SPRITE_BEHAVIOR_BATTLE_SUIT_DROPPED_BY_ZORADOHNA ; SpriteBehavior
+    .byte $00                               ; byte
 
-    .byte SPRITE_OP_END_SCRIPT
+    .byte SPRITE_OP_END_SCRIPT              ; SpriteOp
 
 
 ;============================================================================
@@ -15587,13 +15581,12 @@ BSCRIPTS_OBJ_BATTLE_SUIT:                   ; [$b243]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::addf]
 ;
-BSCRIPTS_OBJ_BATTLE_HELMET:                 ; [$b247]
-    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; [$b247] SpriteOp
-    .byte SPRITE_BEHAVIOR_BATTLE_HELMET_DROPPED_BY_ZORADOHNA ; [$b248]
-                                                             ; SpriteBehavior
-    .byte $00                               ; [$b249] byte
+BSCRIPTS_OBJ_BATTLE_HELMET:
+    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; SpriteOp
+    .byte SPRITE_BEHAVIOR_BATTLE_HELMET_DROPPED_BY_ZORADOHNA ; SpriteBehavior
+    .byte $00                               ; byte
 
-    .byte SPRITE_OP_END_SCRIPT
+    .byte SPRITE_OP_END_SCRIPT              ; SpriteOp
 
 
 ;============================================================================
@@ -15607,13 +15600,12 @@ BSCRIPTS_OBJ_BATTLE_HELMET:                 ; [$b247]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ade1]
 ;
-BSCRIPTS_OBJ_DRAGON_SLAYER:                 ; [$b24b]
-    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; [$b24b] SpriteOp
-    .byte SPRITE_BEHAVIOR_DRAGON_SLAYER_DROPPED_BY_KING_GRIEVE ; [$b24c]
-                                                               ; SpriteBehavior
-    .byte $00                               ; [$b24d] byte
+BSCRIPTS_OBJ_DRAGON_SLAYER:
+    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; SpriteOp
+    .byte SPRITE_BEHAVIOR_DRAGON_SLAYER_DROPPED_BY_KING_GRIEVE ; SpriteBehavior
+    .byte $00                               ; byte
 
-    .byte SPRITE_OP_END_SCRIPT
+    .byte SPRITE_OP_END_SCRIPT              ; SpriteOp
 
 
 ;============================================================================
@@ -15627,12 +15619,12 @@ BSCRIPTS_OBJ_DRAGON_SLAYER:                 ; [$b24b]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::addb]
 ;
-BSCRIPTS_OBJ_MAGICAL_ROD:                   ; [$b24f]
-    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; [$b24f] SpriteOp
-    .byte SPRITE_BEHAVIOR_SHOW_MAGICAL_ROD  ; [$b250] SpriteBehavior
-    .byte $00                               ; [$b251] byte
+BSCRIPTS_OBJ_MAGICAL_ROD:
+    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; SpriteOp
+    .byte SPRITE_BEHAVIOR_SHOW_MAGICAL_ROD  ; SpriteBehavior
+    .byte $00                               ; byte
 
-    .byte SPRITE_OP_END_SCRIPT
+    .byte SPRITE_OP_END_SCRIPT              ; SpriteOp
 
 
 ;============================================================================
@@ -15646,7 +15638,7 @@ BSCRIPTS_OBJ_MAGICAL_ROD:                   ; [$b24f]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::adbf]
 ;
-BSCRIPTS_OBJ_BLACK_ONYX:                    ; [$b253]
+BSCRIPTS_OBJ_BLACK_ONYX:
     .byte SPRITE_OP_SWITCH_BEHAVIOR         ; Op: Switch behavior
     .byte SPRITE_BEHAVIOR_BLACK_ONYX_DROPPED_FROM_ZORADOHNA ; |- Black Onyx
                                                             ; drops from
@@ -15666,7 +15658,7 @@ BSCRIPTS_OBJ_BLACK_ONYX:                    ; [$b253]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::adc1]
 ;
-BSCRIPTS_OBJ_PENDANT:                       ; [$b257]
+BSCRIPTS_OBJ_PENDANT:
     .byte SPRITE_OP_SWITCH_BEHAVIOR         ; Op: Switch behavior
     .byte SPRITE_BEHAVIOR_PENDANT_DROPPED_FROM_RIPASHEIKU ; |- Pendant drops
                                                           ; from Ripasheiku
@@ -15685,7 +15677,7 @@ BSCRIPTS_OBJ_PENDANT:                       ; [$b257]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ade3]
 ;
-BSCRIPTS_OBJ_MATTOCK_QUEST:                 ; [$b25b]
+BSCRIPTS_OBJ_MATTOCK_QUEST:
     .byte SPRITE_OP_SWITCH_BEHAVIOR         ; Op: Switch behavior
     .byte SPRITE_BEHAVIOR_MATTOCK_DROPPED_BY_RPIASHEIKU ; |- Mattock drops
                                                         ; from Ripasheiku
@@ -15704,7 +15696,7 @@ BSCRIPTS_OBJ_MATTOCK_QUEST:                 ; [$b25b]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ade5]
 ;
-BSCRIPTS_OBJ_WINGSBOOTS_QUEST:              ; [$b25f]
+BSCRIPTS_OBJ_WINGSBOOTS_QUEST:
     .byte SPRITE_OP_SWITCH_BEHAVIOR         ; Op: Switch behavior
     .byte SPRITE_BEHAVIOR_WING_BOOTS_DROPPED_BY_ZORUGERIRU ; |- Wing Boots
                                                            ; drops by
@@ -15724,12 +15716,12 @@ BSCRIPTS_OBJ_WINGSBOOTS_QUEST:              ; [$b25f]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ade7]
 ;
-BSCRIPTS_OBJ_RED_POTION_RANDOM:             ; [$b263]
-    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; [$b263] SpriteOp
-    .byte SPRITE_BEHAVIOR_RANDOMLY_SHOW_ITEM_52 ; [$b264] SpriteBehavior
-    .byte $00                               ; [$b265] byte
+BSCRIPTS_OBJ_RED_POTION_RANDOM:
+    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; SpriteOp
+    .byte SPRITE_BEHAVIOR_RANDOMLY_SHOW_ITEM_52 ; SpriteBehavior
+    .byte $00                               ; byte
 
-    .byte SPRITE_OP_END_SCRIPT
+    .byte SPRITE_OP_END_SCRIPT              ; SpriteOp
 
 
 ;============================================================================
@@ -15743,12 +15735,12 @@ BSCRIPTS_OBJ_RED_POTION_RANDOM:             ; [$b263]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::ade9]
 ;
-BSCRIPTS_OBJ_POISON:                        ; [$b267]
-    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; [$b267] SpriteOp
-    .byte SPRITE_BEHAVIOR_RANDOMLY_SHOW_ITEM_53 ; [$b268] SpriteBehavior
-    .byte $00                               ; [$b269] byte
+BSCRIPTS_OBJ_POISON:
+    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; SpriteOp
+    .byte SPRITE_BEHAVIOR_RANDOMLY_SHOW_ITEM_53 ; SpriteBehavior
+    .byte $00                               ; byte
 
-    .byte SPRITE_OP_END_SCRIPT
+    .byte SPRITE_OP_END_SCRIPT              ; SpriteOp
 
 
 ;============================================================================
@@ -15762,12 +15754,12 @@ BSCRIPTS_OBJ_POISON:                        ; [$b267]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::adeb]
 ;
-BSCRIPTS_OBJ_GLOVE_RANDOM:                  ; [$b26b]
-    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; [$b26b] SpriteOp
-    .byte SPRITE_BEHAVIOR_RANDOMLY_SHOW_ITEM_54 ; [$b26c] SpriteBehavior
-    .byte $00                               ; [$b26d] byte
+BSCRIPTS_OBJ_GLOVE_RANDOM:
+    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; SpriteOp
+    .byte SPRITE_BEHAVIOR_RANDOMLY_SHOW_ITEM_54 ; SpriteBehavior
+    .byte $00                               ; byte
 
-    .byte SPRITE_OP_END_SCRIPT
+    .byte SPRITE_OP_END_SCRIPT              ; SpriteOp
 
 
 ;============================================================================
@@ -15781,68 +15773,68 @@ BSCRIPTS_OBJ_GLOVE_RANDOM:                  ; [$b26b]
 ; XREFS:
 ;     SPRITE_BSCRIPTS [$PRG14::aded]
 ;
-BSCRIPTS_OBJ_OINTMENT_RANDOM:               ; [$b26f]
-    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; [$b26f] SpriteOp
-    .byte SPRITE_BEHAVIOR_RANDOMLY_SHOW_ITEM_56 ; [$b270] SpriteBehavior
-    .byte $00,$ff                           ; [$b271] byte
+BSCRIPTS_OBJ_OINTMENT_RANDOM:
+    .byte SPRITE_OP_SWITCH_BEHAVIOR         ; SpriteOp
+    .byte SPRITE_BEHAVIOR_RANDOMLY_SHOW_ITEM_56 ; SpriteBehavior
+    .byte $00,$ff                           ; byte
 
-    .byte $00,$00,$10,$20,$00,$08,$10,$08   ; [$b274] undefined
-    .byte $04,$08,$08,$08,$00,$00,$10,$10   ; [$b27b] undefined
-    .byte $00,$00,$10,$20,$00,$00,$10,$20   ; [$b283] undefined
-    .byte $00,$00,$10,$20,$00,$00,$10,$10   ; [$b28b] undefined
-    .byte $00,$00,$10,$10,$00,$00,$10,$10   ; [$b293] undefined
-    .byte $00,$00,$10,$10,$00,$00,$10,$10   ; [$b29b] undefined
-    .byte $00,$00,$10,$20,$00,$00,$10,$20   ; [$b2a3] undefined
-    .byte $00,$00,$10,$20,$00,$00,$10,$20   ; [$b2ab] undefined
-    .byte $00,$00,$10,$20,$04,$00,$18,$30   ; [$b2b3] undefined
-    .byte $00,$00,$10,$20,$00,$00,$00,$00   ; [$b2bb] undefined
-    .byte $00,$00,$10,$20,$00,$00,$10,$20   ; [$b2c3] undefined
-    .byte $00,$00,$10,$10,$00,$00,$10,$20   ; [$b2cb] undefined
-    .byte $00,$00,$10,$20,$00,$00,$10,$20   ; [$b2d3] undefined
-    .byte $00,$00,$10,$20,$00,$00,$10,$20   ; [$b2db] undefined
-    .byte $00,$00,$10,$20,$00,$00,$10,$20   ; [$b2e3] undefined
-    .byte $00,$00,$10,$20,$00,$00,$10,$20   ; [$b2eb] undefined
-    .byte $00,$00,$10,$20,$00,$00,$10,$20   ; [$b2f3] undefined
-    .byte $00,$00,$10,$20,$00,$00,$10,$20   ; [$b2fb] undefined
-    .byte $00,$00,$10,$20,$00,$00,$10,$20   ; [$b303] undefined
-    .byte $00,$00,$10,$20,$00,$00,$10,$20   ; [$b30b] undefined
-    .byte $00,$00,$10,$20,$00,$00,$10,$20   ; [$b313] undefined
-    .byte $00,$00,$10,$20,$00,$00,$10,$20   ; [$b31b] undefined
-    .byte $00,$00,$10,$20,$00,$00,$20,$40   ; [$b323] undefined
-    .byte $00,$00,$20,$30,$04,$00,$18,$30   ; [$b32b] undefined
-    .byte $00,$00,$20,$20,$00,$00,$10,$20   ; [$b333] undefined
-    .byte $00,$00,$40,$18,$08,$00,$28,$50   ; [$b33b] undefined
-    .byte $f8,$00,$20,$20,$f8,$00,$20,$20   ; [$b343] undefined
-    .byte $f8,$00,$20,$20,$00,$00,$28,$30   ; [$b34b] undefined
-    .byte $f0,$00,$30,$20,$00,$00,$30,$20   ; [$b353] undefined
-    .byte $00,$00,$30,$20,$f0,$00,$30,$20   ; [$b35b] undefined
-    .byte $00,$00,$20,$20,$f8,$00,$20,$20   ; [$b363] undefined
-    .byte $00,$00,$20,$30,$f8,$00,$20,$20   ; [$b36b] undefined
-    .byte $f8,$00,$20,$20,$f8,$00,$20,$20   ; [$b373] undefined
-    .byte $f8,$00,$20,$20,$f8,$00,$20,$20   ; [$b37b] undefined
-    .byte $f8,$00,$20,$20,$f8,$00,$20,$20   ; [$b383] undefined
-    .byte $00,$00,$10,$10,$00,$00,$10,$10   ; [$b38b] undefined
-    .byte $00,$00,$08,$10,$00,$00,$08,$10   ; [$b393] undefined
-    .byte $00,$00,$08,$10,$00,$00,$08,$10   ; [$b39b] undefined
-    .byte $00,$00,$08,$10,$00,$00,$10,$10   ; [$b3a3] undefined
-    .byte $00,$00,$10,$10,$00,$00,$10,$c0   ; [$b3ab] undefined
-    .byte $00,$00,$10,$10,$04,$04,$08,$08   ; [$b3b3] undefined
-    .byte $00,$00,$20,$20,$00,$00,$10,$10   ; [$b3bb] undefined
-    .byte $00,$00,$10,$10,$00,$00,$10,$10   ; [$b3c3] undefined
-    .byte $00,$00,$10,$10,$00,$00,$10,$10   ; [$b3cb] undefined
-    .byte $00,$00,$10,$10,$00,$00,$10,$10   ; [$b3d3] undefined
-    .byte $00,$00,$10,$10,$00,$00,$10,$10   ; [$b3db] undefined
-    .byte $00,$00,$10,$10,$00,$00,$10,$10   ; [$b3e3] undefined
-    .byte $00,$00,$10,$10,$00,$00,$10,$10   ; [$b3eb] undefined
-    .byte $00,$00,$10,$10,$00,$00,$20,$20   ; [$b3f3] undefined
-    .byte $00,$00,$20,$20,$00,$00,$20,$20   ; [$b3fb] undefined
-    .byte $00,$00,$20,$20                   ; [$b403] undefined
+    .byte $00,$00,$10,$20,$00,$08,$10,$08   ; undefined
+    .byte $04,$08,$08,$08,$00,$00,$10,$10   ; undefined
+    .byte $00,$00,$10,$20,$00,$00,$10,$20   ; undefined
+    .byte $00,$00,$10,$20,$00,$00,$10,$10   ; undefined
+    .byte $00,$00,$10,$10,$00,$00,$10,$10   ; undefined
+    .byte $00,$00,$10,$10,$00,$00,$10,$10   ; undefined
+    .byte $00,$00,$10,$20,$00,$00,$10,$20   ; undefined
+    .byte $00,$00,$10,$20,$00,$00,$10,$20   ; undefined
+    .byte $00,$00,$10,$20,$04,$00,$18,$30   ; undefined
+    .byte $00,$00,$10,$20,$00,$00,$00,$00   ; undefined
+    .byte $00,$00,$10,$20,$00,$00,$10,$20   ; undefined
+    .byte $00,$00,$10,$10,$00,$00,$10,$20   ; undefined
+    .byte $00,$00,$10,$20,$00,$00,$10,$20   ; undefined
+    .byte $00,$00,$10,$20,$00,$00,$10,$20   ; undefined
+    .byte $00,$00,$10,$20,$00,$00,$10,$20   ; undefined
+    .byte $00,$00,$10,$20,$00,$00,$10,$20   ; undefined
+    .byte $00,$00,$10,$20,$00,$00,$10,$20   ; undefined
+    .byte $00,$00,$10,$20,$00,$00,$10,$20   ; undefined
+    .byte $00,$00,$10,$20,$00,$00,$10,$20   ; undefined
+    .byte $00,$00,$10,$20,$00,$00,$10,$20   ; undefined
+    .byte $00,$00,$10,$20,$00,$00,$10,$20   ; undefined
+    .byte $00,$00,$10,$20,$00,$00,$10,$20   ; undefined
+    .byte $00,$00,$10,$20,$00,$00,$20,$40   ; undefined
+    .byte $00,$00,$20,$30,$04,$00,$18,$30   ; undefined
+    .byte $00,$00,$20,$20,$00,$00,$10,$20   ; undefined
+    .byte $00,$00,$40,$18,$08,$00,$28,$50   ; undefined
+    .byte $f8,$00,$20,$20,$f8,$00,$20,$20   ; undefined
+    .byte $f8,$00,$20,$20,$00,$00,$28,$30   ; undefined
+    .byte $f0,$00,$30,$20,$00,$00,$30,$20   ; undefined
+    .byte $00,$00,$30,$20,$f0,$00,$30,$20   ; undefined
+    .byte $00,$00,$20,$20,$f8,$00,$20,$20   ; undefined
+    .byte $00,$00,$20,$30,$f8,$00,$20,$20   ; undefined
+    .byte $f8,$00,$20,$20,$f8,$00,$20,$20   ; undefined
+    .byte $f8,$00,$20,$20,$f8,$00,$20,$20   ; undefined
+    .byte $f8,$00,$20,$20,$f8,$00,$20,$20   ; undefined
+    .byte $00,$00,$10,$10,$00,$00,$10,$10   ; undefined
+    .byte $00,$00,$08,$10,$00,$00,$08,$10   ; undefined
+    .byte $00,$00,$08,$10,$00,$00,$08,$10   ; undefined
+    .byte $00,$00,$08,$10,$00,$00,$10,$10   ; undefined
+    .byte $00,$00,$10,$10,$00,$00,$10,$c0   ; undefined
+    .byte $00,$00,$10,$10,$04,$04,$08,$08   ; undefined
+    .byte $00,$00,$20,$20,$00,$00,$10,$10   ; undefined
+    .byte $00,$00,$10,$10,$00,$00,$10,$10   ; undefined
+    .byte $00,$00,$10,$10,$00,$00,$10,$10   ; undefined
+    .byte $00,$00,$10,$10,$00,$00,$10,$10   ; undefined
+    .byte $00,$00,$10,$10,$00,$00,$10,$10   ; undefined
+    .byte $00,$00,$10,$10,$00,$00,$10,$10   ; undefined
+    .byte $00,$00,$10,$10,$00,$00,$10,$10   ; undefined
+    .byte $00,$00,$10,$10,$00,$00,$20,$20   ; undefined
+    .byte $00,$00,$20,$20,$00,$00,$20,$20   ; undefined
+    .byte $00,$00,$20,$20                   ; undefined
 
 ;
 ; XREFS:
 ;     Sprites_IsSpriteOutOfWeaponRange
 ;
-MAYBE_SPRITE_EXTENTS:                       ; [$b407]
+MAYBE_SPRITE_EXTENTS:
 SPRITE_ENTITY_WEAPON_RANGES:
     .byte $10                               ; [0]:
 
@@ -15850,7 +15842,7 @@ SPRITE_ENTITY_WEAPON_RANGES:
 ; XREFS:
 ;     Sprites_IsSpriteOutOfWeaponRange
 ;
-MAYBE_SPRITE_EXTENTS_1_:                    ; [$b408]
+MAYBE_SPRITE_EXTENTS_1_:
     .byte $20                               ; [1]:
     .byte $10                               ; [2]:
     .byte $08                               ; [3]:
@@ -16060,7 +16052,7 @@ MAYBE_SPRITE_EXTENTS_1_:                    ; [$b408]
 ;     Sprite_CheckHitByCastMagic
 ;     Sprites_MoveRight
 ;
-SPRITE_HITBOX_WIDTHS:                       ; [$b4d1]
+SPRITE_HITBOX_WIDTHS:
     .byte $0f                               ; [0]:
     .byte $0f                               ; [1]:
     .byte $1f                               ; [2]:
@@ -16077,7 +16069,7 @@ SPRITE_HITBOX_WIDTHS:                       ; [$b4d1]
 ;     Sprites_CanMoveDownByHitbox
 ;     Sprites_MoveRight__86c6
 ;
-SPRITE_HITBOX_HEIGHTS:                      ; [$b4d8]
+SPRITE_HITBOX_HEIGHTS:
     .byte $0f                               ; [0]:
     .byte $1f                               ; [1]:
     .byte $2f                               ; [2]:
@@ -16098,7 +16090,7 @@ SPRITE_HITBOX_HEIGHTS:                      ; [$b4d8]
 ; XREFS:
 ;     Sprites_PopulateNextAvailableSprite
 ;
-SPRITE_ENTITIES_HITBOX_TYPES:               ; [$b4df]
+SPRITE_ENTITIES_HITBOX_TYPES:
     .byte SPRITE_HITBOX_1                   ; [0]:
     .byte SPRITE_HITBOX_1                   ; [1]: Dropped: Bread
 
@@ -16106,7 +16098,7 @@ SPRITE_ENTITIES_HITBOX_TYPES:               ; [$b4df]
 ; XREFS:
 ;     Sprite_ReplaceWithDroppedItem
 ;
-SPRITE_ENTITIES_HITBOX_TYPES_2_:            ; [$b4e1]
+SPRITE_ENTITIES_HITBOX_TYPES_2_:
     .byte SPRITE_HITBOX_0                   ; [2]: Dropped: Coin
     .byte SPRITE_HITBOX_1                   ; [3]: Enemy: ?
     .byte SPRITE_HITBOX_1                   ; [4]: Enemy: Raiden
@@ -16196,14 +16188,14 @@ SPRITE_ENTITIES_HITBOX_TYPES_2_:            ; [$b4e1]
 ; XREFS:
 ;     Sprite_ReplaceWithMattock
 ;
-SPRITE_ENTITIES_HITBOX_TYPES_80_:           ; [$b52f]
+SPRITE_ENTITIES_HITBOX_TYPES_80_:
     .byte SPRITE_HITBOX_0                   ; [80]: Magic: ?
 
 ;
 ; XREFS:
 ;     Sprite_Maybe_ResetState
 ;
-SPRITE_ENTITIES_HITBOX_TYPES_81_:           ; [$b530]
+SPRITE_ENTITIES_HITBOX_TYPES_81_:
     .byte SPRITE_HITBOX_0                   ; [81]: Effect: Fountain
     .byte SPRITE_HITBOX_4                   ; [82]: Magic: ?
     .byte SPRITE_HITBOX_0                   ; [83]: Magic: ?
@@ -16263,7 +16255,7 @@ SPRITE_ENTITIES_HITBOX_TYPES_81_:           ; [$b530]
 ;     Sprites_UpdateBehavior
 ;     Sprites_HasBoss
 ;
-SPRITE_CATEGORIES_BY_ENTITY:                ; [$b544]
+SPRITE_CATEGORIES_BY_ENTITY:
     .byte SPRITE_ENEMY                      ; [0]:
     .byte SPRITE_DROPPED                    ; [1]: Dropped: Bread
     .byte SPRITE_DROPPED                    ; [2]: Dropped: Coin
@@ -16385,7 +16377,7 @@ SPRITE_CATEGORIES_BY_ENTITY:                ; [$b544]
 ; XREFS:
 ;     Sprites_PopulateNextAvailableSprite
 ;
-SPRITE_ENTITIES_HP:                         ; [$b5a9]
+SPRITE_ENTITIES_HP:
     .byte $00                               ; [0]:
     .byte $00                               ; [1]: Dropped: Bread
     .byte $00                               ; [2]: Dropped: Coin
@@ -16400,7 +16392,7 @@ SPRITE_ENTITIES_HP:                         ; [$b5a9]
 ; XREFS:
 ;     SpriteBehavior_Pakukame
 ;
-SPRITE_ENTITIES_HP_9_:                      ; [$b5b2]
+SPRITE_ENTITIES_HP_9_:
     .byte $07                               ; [9]: Enemy: Lilith
     .byte $08                               ; [10]: Magic: ?
     .byte $03                               ; [11]: Enemy: Yuinaru
@@ -16513,7 +16505,7 @@ SPRITE_ENTITIES_HP_9_:                      ; [$b5b2]
 ; XREFS:
 ;     Player_AddExperienceFromSprite
 ;
-ENEMY_EXPERIENCE:                           ; [$b60e]
+ENEMY_EXPERIENCE:
     .byte $00                               ; [0]:
     .byte $00                               ; [1]: Dropped: Bread
     .byte $00                               ; [2]: Dropped: Coin
@@ -16640,7 +16632,7 @@ ENEMY_EXPERIENCE:                           ; [$b60e]
 ; XREFS:
 ;     Sprite_RunDeathDropHandler
 ;
-SPRITE_ENTITY_DROP_VALUES_INDEX:            ; [$b672]
+SPRITE_ENTITY_DROP_VALUES_INDEX:
     .byte $ff                               ; [0]:
     .byte $ff                               ; [1]: Dropped: Bread
     .byte $ff                               ; [2]: Dropped: Coin
@@ -16764,7 +16756,7 @@ SPRITE_ENTITY_DROP_VALUES_INDEX:            ; [$b672]
 ;     Player_ApplyDamage
 ;     Player_HandleHitByMagic
 ;
-SPRITE_ENTITY_DAMAGES:                      ; [$b6d7]
+SPRITE_ENTITY_DAMAGES:
     .byte $00                               ; [0]:
     .byte $00                               ; [1]: Dropped: Bread
     .byte $00                               ; [2]: Dropped: Coin
@@ -16903,7 +16895,7 @@ SPRITE_ENTITY_DAMAGES:                      ; [$b6d7]
 ; XREFS:
 ;     Player_HitEnemyWithMagic
 ;
-SPRITE_ENTITY_MAGIC_DEFENSE:                ; [$b73b]
+SPRITE_ENTITY_MAGIC_DEFENSE:
     .byte $fc                               ; [0]: <unused>
     .byte $fc                               ; [1]: Dropped: Bread
     .byte $fc                               ; [2]: Dropped: Coin
@@ -17025,7 +17017,7 @@ SPRITE_ENTITY_MAGIC_DEFENSE:                ; [$b73b]
 ; XREFS:
 ;     Player_HitEnemyWithMagic
 ;
-MAGIC_DAMAGE:                               ; [$b7a0]
+MAGIC_DAMAGE:
     .byte $06                               ; [0]: Deluge -- 6HP
     .byte $09                               ; [1]: Thunder -- 9HP
     .byte $18                               ; [2]: Fire -- 12HP
@@ -17044,7 +17036,7 @@ MAGIC_DAMAGE:                               ; [$b7a0]
 ; XREFS:
 ;     Player_HitSpriteWithWeapon
 ;
-WEAPON_STRENGTHS:                           ; [$b7a5]
+WEAPON_STRENGTHS:
     .byte $04                               ; [0]: Hand Dagger -- 4HP
     .byte $08                               ; [1]: Long Sword -- 8HP
     .byte $0c                               ; [2]: Giant Blade -- 12HP
@@ -17062,7 +17054,7 @@ WEAPON_STRENGTHS:                           ; [$b7a5]
 ; XREFS:
 ;     Player_ReduceMP
 ;
-MAGIC_COSTS:                                ; [$b7a9]
+MAGIC_COSTS:
     .byte $02                               ; [0]: Deluge
     .byte $04                               ; [1]: Thunder
     .byte $06                               ; [2]: Fire
@@ -17096,7 +17088,7 @@ MAGIC_COSTS:                                ; [$b7a9]
 ; XREFS:
 ;     Game_InitStateForStartScreen
 ;============================================================================
-Player_InitInventoryState:                  ; [$b7ae]
+Player_InitInventoryState:
     LDA #$00
     STA a:NumberOfWeapons                   ; Set the number of weapons to 0.
     STA a:NumberOfShields                   ; Set the number of shields to 0.
@@ -17128,7 +17120,7 @@ Player_InitInventoryState:                  ; [$b7ae]
 ; XREFS:
 ;     Player_HandleDeath
 ;============================================================================
-PlayerDeath_ResetSelectedItemState:         ; [$b7bf]
+PlayerDeath_ResetSelectedItemState:
     LDA #$00
     STA a:SelectedArmor                     ; Set armor to Leather.
     LDA #$ff
@@ -17142,7 +17134,7 @@ PlayerDeath_ResetSelectedItemState:         ; [$b7bf]
     ; XREFS:
     ;     Player_DrawWeapon
     ;
-RETURN_B7D5:                                ; [$b7d5]
+RETURN_B7D5:
     RTS
 
 ;============================================================================
@@ -17159,7 +17151,7 @@ RETURN_B7D5:                                ; [$b7d5]
 ;     Game_DrawScreenInFrozenState
 ;     Game_MainLoop
 ;============================================================================
-Player_DrawWeapon:                          ; [$b7d6]
+Player_DrawWeapon:
     LDA a:IScript_PortraitID
     BPL RETURN_B7D5
     LDA a:Player_CurWeapon
@@ -17185,7 +17177,7 @@ Player_DrawWeapon:                          ; [$b7d6]
     BEQ @LAB_PRG14__b806
     INY
 
-  @LAB_PRG14__b806:                         ; [$b806]
+  @LAB_PRG14__b806:
     LDA (Temp_Addr_L),Y
     JSR Player_CalcValueAndFFForNeg
     LDA Player_PosX_Block
@@ -17224,7 +17216,7 @@ Player_DrawWeapon:                          ; [$b7d6]
     BEQ @LAB_PRG14__b850
     RTS
 
-  @LAB_PRG14__b850:                         ; [$b850]
+  @LAB_PRG14__b850:
     LDA Player_Flags
     AND #$40
     STA CurrentSprite_FlipMask
@@ -17257,7 +17249,7 @@ Player_DrawWeapon:                          ; [$b7d6]
 ; XREFS:
 ;     Player_DrawWeapon
 ;
-WEAPONS_SPRITE_L:                           ; [$b878]
+WEAPONS_SPRITE_L:
     .byte $40                               ; [0]:
     .byte $48                               ; [1]:
     .byte $50                               ; [2]:
@@ -17267,7 +17259,7 @@ WEAPONS_SPRITE_L:                           ; [$b878]
 ; XREFS:
 ;     Player_DrawWeapon
 ;
-WEAPONS_SPRITE_U:                           ; [$b87c]
+WEAPONS_SPRITE_U:
     .byte $38                               ; [0]:
     .byte $38                               ; [1]:
     .byte $38                               ; [2]:
@@ -17286,7 +17278,7 @@ WEAPONS_SPRITE_U:                           ; [$b87c]
 ;     Player_DrawWeapon
 ;     FUN_PRG15_MIRROR__ec58
 ;============================================================================
-Player_CalcValueAndFFForNeg:                ; [$b880]
+Player_CalcValueAndFFForNeg:
     STA Temp_04
     LDA #$00
     STA Temp_05
@@ -17295,22 +17287,22 @@ Player_CalcValueAndFFForNeg:                ; [$b880]
     LDA #$ff
     STA Temp_05
 
-  @_return:                                 ; [$b88e]
+  @_return:
     RTS
-    .byte $18,$10,$18,$18,$18,$18,$20,$00   ; [$b88f] undefined
+    .byte $18,$10,$18,$18,$18,$18,$20,$00   ; undefined
 
 ;
 ; XREFS:
 ;     Player_DrawWeapon
 ;
-MAYBE_WEAPON_RANGES:                        ; [$b897]
-    .word $0408,$0810,$0810,$0810           ; [$b897] ushort
+MAYBE_WEAPON_RANGES:
+    .word $0408,$0810,$0810,$0810           ; ushort
 
 ;
 ; XREFS:
 ;     Player_DrawWeapon
 ;
-PTR_ARRAY_PRG14__b89f:                      ; [$b89f]
+PTR_ARRAY_PRG14__b89f:
     pointer DAT_PRG14__b8af                 ; [0]: Dagger
     pointer DAT_PRG14__b8bf                 ; [1]: Dagger + shield
     pointer DAT_PRG14__b8cf                 ; [2]: Long Sword
@@ -17324,41 +17316,41 @@ PTR_ARRAY_PRG14__b89f:                      ; [$b89f]
 ; XREFS:
 ;     PTR_ARRAY_PRG14__b89f [$PRG14::b89f]
 ;
-DAT_PRG14__b8af:                            ; [$b8af]
-    .byte $f8,$10,$fc,$0c,$f8,$10,$f8,$10   ; [$b8af] undefined
-    .byte $f8,$10,$f8,$0e,$f0,$18,$00,$00   ; [$b8b7] undefined
+DAT_PRG14__b8af:
+    .byte $f8,$10,$fc,$0c,$f8,$10,$f8,$10   ; undefined
+    .byte $f8,$10,$f8,$0e,$f0,$18,$00,$00   ; undefined
 
 ;
 ; XREFS:
 ;     PTR_ARRAY_PRG14__b89f [$PRG14::b8a1]
 ;
-DAT_PRG14__b8bf:                            ; [$b8bf]
-    .byte $f8,$10,$f8,$10,$f8,$10,$f8,$10   ; [$b8bf] undefined
-    .byte $f8,$10,$f8,$10,$f0,$18,$00,$00   ; [$b8c7] undefined
+DAT_PRG14__b8bf:
+    .byte $f8,$10,$f8,$10,$f8,$10,$f8,$10   ; undefined
+    .byte $f8,$10,$f8,$10,$f0,$18,$00,$00   ; undefined
 
 ;
 ; XREFS:
 ;     PTR_ARRAY_PRG14__b89f [$PRG14::b8a3]
 ;
-DAT_PRG14__b8cf:                            ; [$b8cf]
-    .byte $f8,$10,$fc,$0c,$f8,$10,$f8,$10   ; [$b8cf] undefined
-    .byte $f8,$10,$f0,$10,$e8,$18,$00,$00   ; [$b8d7] undefined
+DAT_PRG14__b8cf:
+    .byte $f8,$10,$fc,$0c,$f8,$10,$f8,$10   ; undefined
+    .byte $f8,$10,$f0,$10,$e8,$18,$00,$00   ; undefined
 
 ;
 ; XREFS:
 ;     PTR_ARRAY_PRG14__b89f [$PRG14::b8a5]
 ;
-DAT_PRG14__b8df:                            ; [$b8df]
-    .byte $f8,$10,$f8,$10,$f8,$10,$f8,$10   ; [$b8df] undefined
-    .byte $f8,$10,$f0,$10,$e8,$18,$00,$00   ; [$b8e7] undefined
+DAT_PRG14__b8df:
+    .byte $f8,$10,$f8,$10,$f8,$10,$f8,$10   ; undefined
+    .byte $f8,$10,$f0,$10,$e8,$18,$00,$00   ; undefined
 
 ;
 ; XREFS:
 ;     PTR_ARRAY_PRG14__b89f [$PRG14::b8a7]
 ;
-DAT_PRG14__b8ef:                            ; [$b8ef]
-    .byte $f0,$10,$fc,$0c,$f8,$10,$f0,$10   ; [$b8ef] undefined
-    .byte $f8,$10,$f0,$10,$e8,$18,$00,$00   ; [$b8f7] undefined
+DAT_PRG14__b8ef:
+    .byte $f0,$10,$fc,$0c,$f8,$10,$f0,$10   ; undefined
+    .byte $f8,$10,$f0,$10,$e8,$18,$00,$00   ; undefined
 
 ;
 ; XREFS:
@@ -17366,15 +17358,15 @@ DAT_PRG14__b8ef:                            ; [$b8ef]
 ;     PTR_ARRAY_PRG14__b89f [$PRG14::b8ab]
 ;     PTR_ARRAY_PRG14__b89f [$PRG14::b8ad]
 ;
-DAT_PRG14__b8ff:                            ; [$b8ff]
-    .byte $f0,$10,$f8,$10,$f8,$10,$f0,$10   ; [$b8ff] undefined
-    .byte $f8,$10,$f0,$10,$e8,$18,$00,$00   ; [$b907] undefined
+DAT_PRG14__b8ff:
+    .byte $f0,$10,$f8,$10,$f8,$10,$f0,$10   ; undefined
+    .byte $f8,$10,$f0,$10,$e8,$18,$00,$00   ; undefined
 
 ;
 ; XREFS:
 ;     Player_DrawWeapon
 ;
-PTR_ARRAY_PRG14__b90f:                      ; [$b90f]
+PTR_ARRAY_PRG14__b90f:
     pointer DAT_PRG14__b917                 ; [0]: Hand dagger
     pointer DAT_PRG14__b91f                 ; [1]: Long sword
     pointer DAT_PRG14__b91f                 ; [2]: Giant blade
@@ -17384,8 +17376,8 @@ PTR_ARRAY_PRG14__b90f:                      ; [$b90f]
 ; XREFS:
 ;     PTR_ARRAY_PRG14__b90f [$PRG14::b90f]
 ;
-DAT_PRG14__b917:                            ; [$b917]
-    .byte $08,$08,$08,$08,$08,$08,$06,$00   ; [$b917] undefined
+DAT_PRG14__b917:
+    .byte $08,$08,$08,$08,$08,$08,$06,$00   ; undefined
 
 ;
 ; XREFS:
@@ -17393,8 +17385,8 @@ DAT_PRG14__b917:                            ; [$b917]
 ;     PTR_ARRAY_PRG14__b90f [$PRG14::b913]
 ;     PTR_ARRAY_PRG14__b90f [$PRG14::b915]
 ;
-DAT_PRG14__b91f:                            ; [$b91f]
-    .byte $00,$08,$08,$00,$08,$08,$06,$00   ; [$b91f] undefined
+DAT_PRG14__b91f:
+    .byte $00,$08,$08,$00,$08,$08,$06,$00   ; undefined
 
 ;============================================================================
 ; TODO: Document Maybe_Player_CalcAnimFrame
@@ -17410,7 +17402,7 @@ DAT_PRG14__b91f:                            ; [$b91f]
 ;     Player_DrawShield
 ;     Player_DrawWeapon
 ;============================================================================
-Maybe_Player_CalcAnimFrame:                 ; [$b927]
+Maybe_Player_CalcAnimFrame:
     LDA Player_Flags
     LSR A
     BCC @LAB_PRG14__b933
@@ -17419,7 +17411,7 @@ Maybe_Player_CalcAnimFrame:                 ; [$b927]
     LDA #$03
     RTS
 
-  @LAB_PRG14__b933:                         ; [$b933]
+  @LAB_PRG14__b933:
     AND #$04
     BEQ @LAB_PRG14__b954
     LDA Player_PosX_Block
@@ -17429,7 +17421,7 @@ Maybe_Player_CalcAnimFrame:                 ; [$b927]
     AND #$04
     BNE @LAB_PRG14__b954
 
-  @LAB_PRG14__b943:                         ; [$b943]
+  @LAB_PRG14__b943:
     LDA Player_Flags
     AND #$10
     BEQ @LAB_PRG14__b954
@@ -17441,16 +17433,16 @@ Maybe_Player_CalcAnimFrame:                 ; [$b927]
     LDA #$07
     RTS
 
-  @LAB_PRG14__b954:                         ; [$b954]
+  @LAB_PRG14__b954:
     LDA Player_Flags
     BPL @LAB_PRG14__b95e
 
-  @LAB_PRG14__b958:                         ; [$b958]
+  @LAB_PRG14__b958:
     LDX Player_AttackPhaseAnimFrame
     LDA a:BYTE_ARRAY_PRG14__b97b,X
     RTS
 
-  @LAB_PRG14__b95e:                         ; [$b95e]
+  @LAB_PRG14__b95e:
     LDA Player_StatusFlag
     BPL @LAB_PRG14__b969
     LDA Joy1_ButtonMask
@@ -17458,7 +17450,7 @@ Maybe_Player_CalcAnimFrame:                 ; [$b927]
     LDA #$03
     RTS
 
-  @LAB_PRG14__b969:                         ; [$b969]
+  @LAB_PRG14__b969:
     LDA Player_Flags
     AND #$20
     BEQ @LAB_PRG14__b976
@@ -17468,7 +17460,7 @@ Maybe_Player_CalcAnimFrame:                 ; [$b927]
     LSR A
     AND #$03
 
-  @LAB_PRG14__b976:                         ; [$b976]
+  @LAB_PRG14__b976:
     TAX
     LDA a:BYTE_ARRAY_PRG14__b97e,X
     RTS
@@ -17477,7 +17469,7 @@ Maybe_Player_CalcAnimFrame:                 ; [$b927]
 ; XREFS:
 ;     Maybe_Player_CalcAnimFrame
 ;
-BYTE_ARRAY_PRG14__b97b:                     ; [$b97b]
+BYTE_ARRAY_PRG14__b97b:
     .byte $04                               ; [0]:
     .byte $05                               ; [1]:
     .byte $06                               ; [2]:
@@ -17486,7 +17478,7 @@ BYTE_ARRAY_PRG14__b97b:                     ; [$b97b]
 ; XREFS:
 ;     Maybe_Player_CalcAnimFrame
 ;
-BYTE_ARRAY_PRG14__b97e:                     ; [$b97e]
+BYTE_ARRAY_PRG14__b97e:
     .byte $00                               ; [0]:
     .byte $01                               ; [1]:
     .byte $02                               ; [2]:
@@ -17506,7 +17498,7 @@ BYTE_ARRAY_PRG14__b97e:                     ; [$b97e]
 ;     Game_DrawScreenInFrozenState
 ;     Game_MainLoop
 ;============================================================================
-Player_DrawShield:                          ; [$b982]
+Player_DrawShield:
     LDA a:IScript_PortraitID
     BPL @_return
     LDA a:SelectedShield
@@ -17522,7 +17514,7 @@ Player_DrawShield:                          ; [$b982]
     BEQ @LAB_PRG14__b99e
     INY
 
-  @LAB_PRG14__b99e:                         ; [$b99e]
+  @LAB_PRG14__b99e:
     LDA Player_PosX_Block
     CLC
     ADC a:SHIELD_SPRITE_OFFSETS_X,Y
@@ -17549,14 +17541,14 @@ Player_DrawShield:                          ; [$b982]
     LDA a:MAYBE_SHIELD_SPRITE_PPU_OFFSETS,Y
     JMP Sprite_SetPlayerAppearanceAddr
 
-  @_return:                                 ; [$b9d4]
+  @_return:
     RTS
 
 ;
 ; XREFS:
 ;     Player_DrawShield
 ;
-MAYBE_SHIELD_SPRITE_PPU_OFFSETS:            ; [$b9d5]
+MAYBE_SHIELD_SPRITE_PPU_OFFSETS:
     .byte $60                               ; [0]:
     .byte $60                               ; [1]:
     .byte $60                               ; [2]:
@@ -17570,7 +17562,7 @@ MAYBE_SHIELD_SPRITE_PPU_OFFSETS:            ; [$b9d5]
 ; XREFS:
 ;     Player_DrawShield
 ;
-SHIELD_SPRITE_OFFSETS_X:                    ; [$b9dd]
+SHIELD_SPRITE_OFFSETS_X:
     .byte $00                               ; [0]:
     .byte $08                               ; [1]:
     .byte $00                               ; [2]:
@@ -17603,7 +17595,7 @@ SHIELD_SPRITE_OFFSETS_X:                    ; [$b9dd]
 ;     FUN_PRG15_MIRROR__ec58
 ;     Player_DrawBody
 ;============================================================================
-Player_CalculateVisibility:                 ; [$b9ed]
+Player_CalculateVisibility:
     LDA #$00
     STA Temp_MovingSpriteVisibility
     LDA Arg_DrawSprite_PosY
@@ -17621,12 +17613,12 @@ Player_CalculateVisibility:                 ; [$b9ed]
     CMP #$09
     BNE @LAB_PRG14__ba14
 
-  @LAB_PRG14__ba0e:                         ; [$ba0e]
+  @LAB_PRG14__ba0e:
     LDA Temp_MovingSpriteVisibility
     ORA #$01
     STA Temp_MovingSpriteVisibility
 
-  @LAB_PRG14__ba14:                         ; [$ba14]
+  @LAB_PRG14__ba14:
     LDA Arg_DrawSprite_PosX
     CLC
     ADC #$0c
@@ -17640,12 +17632,12 @@ Player_CalculateVisibility:                 ; [$b9ed]
     CMP #$09
     BNE @LAB_PRG14__ba33
 
-  @LAB_PRG14__ba2d:                         ; [$ba2d]
+  @LAB_PRG14__ba2d:
     LDA Temp_MovingSpriteVisibility
     ORA #$02
     STA Temp_MovingSpriteVisibility
 
-  @LAB_PRG14__ba33:                         ; [$ba33]
+  @LAB_PRG14__ba33:
     LDA Player_Flags
     AND #$40
     BEQ @LAB_PRG14__ba46
@@ -17656,14 +17648,14 @@ Player_CalculateVisibility:                 ; [$b9ed]
     EOR #$03
     JMP SUB_PRG14__ba48
 
-  @LAB_PRG14__ba46:                         ; [$ba46]
+  @LAB_PRG14__ba46:
     LDA Temp_MovingSpriteVisibility
 
     ;
     ; XREFS:
     ;     Player_CalculateVisibility
     ;
-SUB_PRG14__ba48:                            ; [$ba48]
+SUB_PRG14__ba48:
     STA MovingSpriteVisibility
     RTS
 
@@ -17685,14 +17677,14 @@ SUB_PRG14__ba48:                            ; [$ba48]
 ; XREFS:
 ;     Player_DrawWeapon
 ;============================================================================
-Player_GetNormalizedWeaponID:               ; [$ba4b]
+Player_GetNormalizedWeaponID:
     LDA a:Player_CurWeapon                  ; Load the player's current
                                             ; weapon.
     CMP #$ff                                ; Is it unset?
     BNE @_return                            ; If not, return.
     LDA #$00                                ; Else, return the Hand Dagger.
 
-  @_return:                                 ; [$ba54]
+  @_return:
     RTS
 
 
@@ -17709,7 +17701,7 @@ Player_GetNormalizedWeaponID:               ; [$ba4b]
 ; XREFS:
 ;     Game_InitStateForSpawn
 ;============================================================================
-Player_ClearVisibleMagic:                   ; [$ba55]
+Player_ClearVisibleMagic:
     LDA #$ff
     STA a:CastMagic_Type                    ; Unset the cast magic type.
     RTS
@@ -17784,7 +17776,7 @@ Player_ClearVisibleMagic:                   ; [$ba55]
 ;     EndGame_MainLoop
 ;     Game_MainLoop
 ;============================================================================
-Player_CastMagic:                           ; [$ba5b]
+Player_CastMagic:
     ;
     ; Check if there's any visible magic on the screen.
     ;
@@ -17827,7 +17819,7 @@ Player_CastMagic:                           ; [$ba5b]
                                             ; last spell).
     BCC @LAB_PRG14__ba79                    ; If a valid spell, then jump.
 
-  @_return1:                                ; [$ba78]
+  @_return1:
     RTS                                     ; We're done.
 
 
@@ -17835,7 +17827,7 @@ Player_CastMagic:                           ; [$ba5b]
     ; If the player has enough MP for the spell, reduce the MP
     ; for the spell cost.
     ;
-  @LAB_PRG14__ba79:                         ; [$ba79]
+  @LAB_PRG14__ba79:
     JSR Player_ReduceMP                     ; Reduce the MP.
     BCS @_return1                           ; If there's not enough, we're
                                             ; done.
@@ -17862,7 +17854,7 @@ Player_CastMagic:                           ; [$ba5b]
     ;
     ; This is Tilte magic. Play its sound effect.
     ;
-  @_playTilteSound:                         ; [$ba8d]
+  @_playTilteSound:
     LDA #$14
     JSR Sound_PlayEffect                    ; Play the Tilte magic sound
                                             ; effect.
@@ -17871,7 +17863,7 @@ Player_CastMagic:                           ; [$ba5b]
     ;
     ; Begin placing the magic spell on the screen.
     ;
-  @_placeMagic:                             ; [$ba92]
+  @_placeMagic:
     LDA a:SelectedMagic                     ; Load the magic spell.
     STA a:CastMagic_Type                    ; Set it as the visible magic.
 
@@ -17944,7 +17936,7 @@ Player_CastMagic:                           ; [$ba5b]
     JMP CastMagic_RunSpellHandler           ; Jump to the next function in
                                             ; the spell cast logic.
 
-  @_return2:                                ; [$bad8]
+  @_return2:
     RTS
 
 
@@ -17975,7 +17967,7 @@ Player_CastMagic:                           ; [$ba5b]
 ; XREFS:
 ;     Player_CastMagic
 ;============================================================================
-CastMagic_RunSpellHandler:                  ; [$bad9]
+CastMagic_RunSpellHandler:
     ;
     ; Push PRG15_MIRROR:C2E9 to the stack as the result
     ; after our magic function.
@@ -18015,14 +18007,14 @@ CastMagic_RunSpellHandler:                  ; [$bad9]
 ;     CAST_MAGIC_UPDATE_FINISH_HANDLERS [$PRG14::bb39]
 ;     CAST_MAGIC_UPDATE_HANDLERS [$PRG14::bb09]
 ;============================================================================
-CastMagic_Noop:                             ; [$baec]
+CastMagic_Noop:
     RTS
 
 ;
 ; XREFS:
 ;     Player_CastMagic
 ;
-CAST_MAGIC_START_Y:                         ; [$baed]
+CAST_MAGIC_START_Y:
     .byte $08                               ; [0]: Deluge
     .byte $00                               ; [1]: Thunder
     .byte $00                               ; [2]: Fire
@@ -18033,7 +18025,7 @@ CAST_MAGIC_START_Y:                         ; [$baed]
 ; XREFS:
 ;     Player_CastMagic
 ;
-CAST_MAGIC_START_X:                         ; [$baf2]
+CAST_MAGIC_START_X:
     .byte $00                               ; [0]: Deluge
     .byte $00                               ; [1]: Thunder
     .byte $00                               ; [2]: Fire
@@ -18044,7 +18036,7 @@ CAST_MAGIC_START_X:                         ; [$baf2]
 ; XREFS:
 ;     CastMagic_RunSpellHandler
 ;
-CAST_MAGIC_UPDATE_HANDLERS:                 ; [$baf7]
+CAST_MAGIC_UPDATE_HANDLERS:
     pointer CastMagic_UpdateDeluge-1        ; [0]: Deluge
     pointer CastMagic_UpdateThunderOrDeath-1 ; [1]: Thunder
     pointer CastMagic_UpdateFire-1          ; [2]: Fire
@@ -18066,7 +18058,7 @@ CAST_MAGIC_UPDATE_HANDLERS:                 ; [$baf7]
 ; XREFS:
 ;     Sprite_CheckHitByCastMagic
 ;
-CAST_MAGIC_HIT_HANDLERS:                    ; [$bb0f]
+CAST_MAGIC_HIT_HANDLERS:
     pointer CastMagic_HitHandler_Deluge-1   ; [0]: Deluge
     pointer CastMagic_HitHandler_Thunder-1  ; [1]: Thunder
     pointer CastMagic_HitHandler_Fire-1     ; [2]: Fire
@@ -18092,7 +18084,7 @@ CAST_MAGIC_HIT_HANDLERS:                    ; [$bb0f]
 ; XREFS:
 ;     CastMagic_RunUpdateSpellHandler
 ;
-CAST_MAGIC_UPDATE_FINISH_HANDLERS:          ; [$bb27]
+CAST_MAGIC_UPDATE_FINISH_HANDLERS:
     pointer CastMagic_FinishHandler_Deluge-1 ; [0]: Deluge
     pointer CastMagic_FinishHandler_Thunder-1 ; [1]: Thunder
     pointer CastMagic_FinishHandler_Fire-1  ; [2]: Fire
@@ -18127,7 +18119,7 @@ CAST_MAGIC_UPDATE_FINISH_HANDLERS:          ; [$bb27]
 ;     CastMagic_UpdateThunderOrDeath
 ;     CastMagic_UpdateTilte
 ;============================================================================
-CastMagic_Clear:                            ; [$bb3f]
+CastMagic_Clear:
     LDA #$ff
     STA a:CastMagic_Type
     RTS
@@ -18162,7 +18154,7 @@ CastMagic_Clear:                            ; [$bb3f]
 ;     CAST_MAGIC_UPDATE_HANDLERS [$PRG14::baf7]
 ;     CastMagic_Unused_UpdateDelugeAfterFirstHit
 ;============================================================================
-CastMagic_UpdateDeluge:                     ; [$bb45]
+CastMagic_UpdateDeluge:
     ;
     ; Update the position by X +/- 3 and check if the
     ; magic flew off-screen.
@@ -18187,7 +18179,7 @@ CastMagic_UpdateDeluge:                     ; [$bb45]
     ;
     ; Check if the magic is on a block other than air.
     ;
-  @_checkCollision:                         ; [$bb57]
+  @_checkCollision:
     LDA Blocks_Result                       ; Check which block the magic is
                                             ; on.
     BEQ @_return                            ; If air, we're done.
@@ -18215,7 +18207,7 @@ CastMagic_UpdateDeluge:                     ; [$bb45]
     STA a:CastMagic_Unused_HitWallDeltaPosY ; Set the Hit Wall appearance
                                             ; offset.
 
-  @_return:                                 ; [$bb6a]
+  @_return:
     RTS
 
 
@@ -18244,7 +18236,7 @@ CastMagic_UpdateDeluge:                     ; [$bb45]
 ; XREFS:
 ;     CAST_MAGIC_HIT_HANDLERS [$PRG14::bb0f]
 ;============================================================================
-CastMagic_HitHandler_Deluge:                ; [$bb6b]
+CastMagic_HitHandler_Deluge:
     LDA #$ff
     STA a:CastMagic_Type                    ; Unset the magic type.
     LDA #$04
@@ -18284,7 +18276,7 @@ CastMagic_HitHandler_Deluge:                ; [$bb6b]
 ;     CastMagic_HandleDeath
 ;     CastMagic_UpdateThunderAfterFirstHit
 ;============================================================================
-CastMagic_UpdateThunderOrDeath:             ; [$bb7e]
+CastMagic_UpdateThunderOrDeath:
     ;
     ; Update the position by X +/- 2 and check if the
     ; magic flew off-screen.
@@ -18305,7 +18297,7 @@ CastMagic_UpdateThunderOrDeath:             ; [$bb7e]
     ;
     JMP CastMagic_Clear                     ; Clear the magic.
 
-  @_return:                                 ; [$bb90]
+  @_return:
     RTS
 
 
@@ -18329,7 +18321,7 @@ CastMagic_UpdateThunderOrDeath:             ; [$bb7e]
 ; XREFS:
 ;     CAST_MAGIC_HIT_HANDLERS [$PRG14::bb11]
 ;============================================================================
-CastMagic_HitHandler_Thunder:               ; [$bb91]
+CastMagic_HitHandler_Thunder:
     LDA #$18
     STA a:CastMagic_Counter                 ; Set the magic counter to 24.
     LDA #$06
@@ -18373,7 +18365,7 @@ CastMagic_HitHandler_Thunder:               ; [$bb91]
 ;     CAST_MAGIC_UPDATE_HANDLERS [$PRG14::bafb]
 ;     CastMagic_UpdateFireAfterFirstHit
 ;============================================================================
-CastMagic_UpdateFire:                       ; [$bb9c]
+CastMagic_UpdateFire:
     ;
     ; Update X +/- 4 and check if the magic flew off-screen.
     ;
@@ -18395,7 +18387,7 @@ CastMagic_UpdateFire:                       ; [$bb9c]
     ;
     ; Check if the magic is on a block other than air.
     ;
-  @_checkCollision:                         ; [$bbae]
+  @_checkCollision:
     LDA Blocks_Result                       ; Check which block the magic is
                                             ; on.
     BEQ @_return                            ; If air, we're done.
@@ -18447,7 +18439,7 @@ CastMagic_UpdateFire:                       ; [$bb9c]
     EOR #$40                                ; Toggle the Facing Right bit.
     STA a:CastMagic_Flags                   ; Store it.
 
-  @_return:                                 ; [$bbd8]
+  @_return:
     RTS
 
 
@@ -18473,7 +18465,7 @@ CastMagic_UpdateFire:                       ; [$bb9c]
 ; XREFS:
 ;     CAST_MAGIC_HIT_HANDLERS [$PRG14::bb13]
 ;============================================================================
-CastMagic_HitHandler_Fire:                  ; [$bbd9]
+CastMagic_HitHandler_Fire:
     LDA #$ff
     STA a:CastMagic_Counter                 ; Set the counter to 0xFF.
     LDA #$07
@@ -18492,7 +18484,7 @@ CastMagic_HitHandler_Fire:                  ; [$bbd9]
 ; XREFS:
 ;     CAST_MAGIC_UPDATE_HANDLERS [$PRG14::bafd]
 ;============================================================================
-CastMagic_HandleDeath:                      ; [$bbe7]
+CastMagic_HandleDeath:
     JMP CastMagic_UpdateThunderOrDeath
 
 
@@ -18511,7 +18503,7 @@ CastMagic_HandleDeath:                      ; [$bbe7]
 ; XREFS:
 ;     CAST_MAGIC_HIT_HANDLERS [$PRG14::bb15]
 ;============================================================================
-CastMagic_HitHandler_Death:                 ; [$bbea]
+CastMagic_HitHandler_Death:
     LDA #$ff
     STA a:CastMagic_Type                    ; Set the magic type to 0xFF
                                             ; (unset).
@@ -18521,7 +18513,7 @@ CastMagic_HitHandler_Death:                 ; [$bbea]
     ; XREFS:
     ;     CastMagic_UpdateTilte
     ;
-CastMagic_ClearTilte:                       ; [$bbf0]
+CastMagic_ClearTilte:
     JMP CastMagic_Clear
 
 
@@ -18572,7 +18564,7 @@ CastMagic_ClearTilte:                       ; [$bbf0]
 ; XREFS:
 ;     CAST_MAGIC_UPDATE_HANDLERS [$PRG14::baff]
 ;============================================================================
-CastMagic_UpdateTilte:                      ; [$bbf3]
+CastMagic_UpdateTilte:
     ;
     ; Update based on the phase of this magic.
     ;
@@ -18658,7 +18650,7 @@ CastMagic_UpdateTilte:                      ; [$bbf3]
     STA a:CastMagic_Flags                   ; Store it.
     RTS
 
-  @_incAndReturn:                           ; [$bc3c]
+  @_incAndReturn:
     INC a:CastMagic_Counter                 ; Increment the tick counter.
     RTS
 
@@ -18669,7 +18661,7 @@ CastMagic_UpdateTilte:                      ; [$bbf3]
     ; We'll update X +/- 4 and Y + 4 for the movement, annd check
     ; if it's off-screen.
     ;
-  @_curveMagicPhase:                        ; [$bc40]
+  @_curveMagicPhase:
     LDA #$04
     STA a:Arg_DeltaX_Full                   ; Full Delta X = 4
     STA a:Arg_DeltaY_Full                   ; Full Delta Y = 4
@@ -18702,7 +18694,7 @@ CastMagic_UpdateTilte:                      ; [$bbf3]
 ; XREFS:
 ;     CAST_MAGIC_HIT_HANDLERS [$PRG14::bb17]
 ;============================================================================
-CastMagic_HitHandler_Tilte:                 ; [$bc5b]
+CastMagic_HitHandler_Tilte:
     LDA #$00
     STA a:CastMagic_Counter                 ; Set the counter to 0.
     LDA #$0b
@@ -18739,7 +18731,7 @@ CastMagic_HitHandler_Tilte:                 ; [$bc5b]
 ; XREFS:
 ;     CAST_MAGIC_UPDATE_HANDLERS [$PRG14::bb01]
 ;============================================================================
-CastMagic_Unused_UpdateDelugeAfterFirstHit: ; [$bc66]
+CastMagic_Unused_UpdateDelugeAfterFirstHit:
     JSR CastMagic_UpdateDeluge              ; Run standard Deluge behavior.
     DEC a:CastMagic_Counter                 ; Decrement the tick counter.
     BNE @_return                            ; If > 0, return.
@@ -18751,7 +18743,7 @@ CastMagic_Unused_UpdateDelugeAfterFirstHit: ; [$bc66]
     LDA #$ff
     STA a:CastMagic_Type                    ; Clear the active magic spell.
 
-  @_return:                                 ; [$bc73]
+  @_return:
     RTS
 
 
@@ -18780,7 +18772,7 @@ CastMagic_Unused_UpdateDelugeAfterFirstHit: ; [$bc66]
 ; XREFS:
 ;     CAST_MAGIC_UPDATE_HANDLERS [$PRG14::bb03]
 ;============================================================================
-CastMagic_UpdateThunderAfterFirstHit:       ; [$bc74]
+CastMagic_UpdateThunderAfterFirstHit:
     JSR CastMagic_UpdateThunderOrDeath      ; Run standard Thunder behavior.
     DEC a:CastMagic_Counter                 ; Decrement the tick counter.
     BNE @_return                            ; If > 0, return.
@@ -18792,7 +18784,7 @@ CastMagic_UpdateThunderAfterFirstHit:       ; [$bc74]
     LDA #$ff
     STA a:CastMagic_Type                    ; Clear the active magic spell.
 
-  @_return:                                 ; [$bc81]
+  @_return:
     RTS
 
 
@@ -18821,7 +18813,7 @@ CastMagic_UpdateThunderAfterFirstHit:       ; [$bc74]
 ; XREFS:
 ;     CAST_MAGIC_UPDATE_HANDLERS [$PRG14::bb05]
 ;============================================================================
-CastMagic_UpdateFireAfterFirstHit:          ; [$bc82]
+CastMagic_UpdateFireAfterFirstHit:
     JSR CastMagic_UpdateFire                ; Run standard Fire behavior.
     DEC a:CastMagic_Counter                 ; Decrement the tick counter.
     BNE @_return                            ; If > 0, return.
@@ -18833,7 +18825,7 @@ CastMagic_UpdateFireAfterFirstHit:          ; [$bc82]
     LDA #$ff
     STA a:CastMagic_Type                    ; Clear the active magic spell.
 
-  @_return:                                 ; [$bc8f]
+  @_return:
     RTS
 
 
@@ -18851,7 +18843,7 @@ CastMagic_UpdateFireAfterFirstHit:          ; [$bc82]
 ; XREFS:
 ;     CAST_MAGIC_UPDATE_HANDLERS [$PRG14::bb07]
 ;============================================================================
-CastMagic_UpdateDeathAfterFirstHit:         ; [$bc90]
+CastMagic_UpdateDeathAfterFirstHit:
     LDA #$ff
     STA a:CastMagic_Type                    ; Clear the active magic spell.
     RTS
@@ -18879,7 +18871,7 @@ CastMagic_UpdateDeathAfterFirstHit:         ; [$bc90]
 ; XREFS:
 ;     CAST_MAGIC_UPDATE_HANDLERS [$PRG14::bb0b]
 ;============================================================================
-CastMagic_Unused_UpdateHitWallEffect:       ; [$bc99]
+CastMagic_Unused_UpdateHitWallEffect:
     LDA #$ff
     STA a:CastMagic_Type                    ; Clear the active magic spell.
     RTS
@@ -18907,7 +18899,7 @@ CastMagic_Unused_UpdateHitWallEffect:       ; [$bc99]
 ; XREFS:
 ;     CAST_MAGIC_UPDATE_HANDLERS [$PRG14::bb0d]
 ;============================================================================
-CastMagic_UpdateTilteAfterFirstHit:         ; [$bc9f]
+CastMagic_UpdateTilteAfterFirstHit:
     INC a:CastMagic_Counter                 ; Increment the tick counter.
     LDA a:CastMagic_Counter                 ; Load the counter value.
     CMP #$10                                ; Is it < 16?
@@ -18920,7 +18912,7 @@ CastMagic_UpdateTilteAfterFirstHit:         ; [$bc9f]
     LDA #$ff
     STA a:CastMagic_Type                    ; Clear the active magic spell.
 
-  @_return:                                 ; [$bcae]
+  @_return:
     RTS
 
 
@@ -18969,7 +18961,7 @@ CastMagic_UpdateTilteAfterFirstHit:         ; [$bc9f]
 ;     CastMagic_UpdateThunderOrDeath
 ;     CastMagic_UpdateTilte
 ;============================================================================
-CastMagic_UpdateXPosition:                  ; [$bcaf]
+CastMagic_UpdateXPosition:
     LDA a:CastMagic_Flags                   ; Load the magic's flags.
     AND #$40                                ; Check the Facing Right bit.
     BNE @_isRight                           ; If it's set, jump.
@@ -19011,7 +19003,7 @@ CastMagic_UpdateXPosition:                  ; [$bcaf]
     ;
     ; Update the fractional X value based on the provided delta.
     ;
-  @_isRight:                                ; [$bcd4]
+  @_isRight:
     LDA a:CastMagic_XPos_Frac               ; Load the fractional X
                                             ; coordinate.
     CLC
@@ -19044,7 +19036,7 @@ CastMagic_UpdateXPosition:                  ; [$bcaf]
 ; XREFS:
 ;     CastMagic_UpdateXPosition
 ;
-CAST_MAGIC_MAX_SCREEN_WIDTHS:               ; [$bcf6]
+CAST_MAGIC_MAX_SCREEN_WIDTHS:
     .byte $f0                               ; [0]:
     .byte $f0                               ; [1]:
     .byte $e0                               ; [2]:
@@ -19094,7 +19086,7 @@ CAST_MAGIC_MAX_SCREEN_WIDTHS:               ; [$bcf6]
 ; XREFS:
 ;     CastMagic_UpdateTilte
 ;============================================================================
-CastMagic_UpdateYPosition:                  ; [$bcfb]
+CastMagic_UpdateYPosition:
     LDA a:CastMagic_Flags                   ; Load the magic's flags.
     BMI @_isMovingDown                      ; If it's moving up, jump.
 
@@ -19139,7 +19131,7 @@ CastMagic_UpdateYPosition:                  ; [$bcfb]
     ;
     ; Update the fractional Y value based on the provided delta.
     ;
-  @_isMovingDown:                           ; [$bd1e]
+  @_isMovingDown:
     LDA a:CastMagic_YPos_Frac               ; Load the fractional Y
                                             ; coordinate.
     CLC
@@ -19194,7 +19186,7 @@ CastMagic_UpdateYPosition:                  ; [$bcfb]
 ; XREFS:
 ;     CastMagic_CheckDirection
 ;============================================================================
-CastMagic_CheckDirection_Left:              ; [$bd3c]
+CastMagic_CheckDirection_Left:
     LDA a:CastMagic_XPos_Full               ; A = Magic X position
     STA Arg_PixelPosX                       ; Store as the pixel position to
                                             ; check.
@@ -19224,7 +19216,7 @@ CastMagic_CheckDirection_Left:              ; [$bd3c]
 ; XREFS:
 ;     CastMagic_CheckDirection_Right
 ;============================================================================
-CastMagic_SetShouldDisperse:                ; [$bd45]
+CastMagic_SetShouldDisperse:
     LDA #$01                                ; A = 1 (true)
     STA Blocks_Result                       ; Set as the result.
     RTS
@@ -19254,7 +19246,7 @@ CastMagic_SetShouldDisperse:                ; [$bd45]
 ; XREFS:
 ;     CastMagic_CheckDirection
 ;============================================================================
-CastMagic_CheckDirection_Right:             ; [$bd4a]
+CastMagic_CheckDirection_Right:
     LDY a:CastMagic_Type                    ; Y = Magic type
     LDA a:CastMagic_XPos_Full               ; A = Block X position.
     CLC
@@ -19301,7 +19293,7 @@ CastMagic_CheckDirection_Right:             ; [$bd4a]
 ; XREFS:
 ;     CastMagic_CheckDirection_Left
 ;============================================================================
-CastMagic_CheckDirection_CheckImpassable:   ; [$bd58]
+CastMagic_CheckDirection_CheckImpassable:
     ;
     ; First, check if the block at middle Y position (at the
     ; previously-calculated X) is passable.
@@ -19342,7 +19334,7 @@ CastMagic_CheckDirection_CheckImpassable:   ; [$bd58]
     ; The block was passable. Check the block at the top of
     ; the magic's bounding box.
     ;
-  @_checkTop:                               ; [$bd7d]
+  @_checkTop:
     LDA a:CastMagic_YPos_Full               ; Load the full Y position again.
     AND #$0f                                ; Keep the lower nibble.
     BEQ @_return                            ; If it's 0, return the existing
@@ -19355,7 +19347,7 @@ CastMagic_CheckDirection_CheckImpassable:   ; [$bd58]
                                             ; impassable.
     STA Blocks_Result                       ; Store the result.
 
-  @_return:                                 ; [$bd8e]
+  @_return:
     RTS
 
 
@@ -19392,7 +19384,7 @@ CastMagic_CheckDirection_CheckImpassable:   ; [$bd58]
 ;     CastMagic_UpdateXPosition
 ;     CastMagic_UpdateYPosition
 ;============================================================================
-CastMagic_CheckDirection:                   ; [$bd8f]
+CastMagic_CheckDirection:
     ;
     ; See if we're checking magic moving left.
     ;
@@ -19425,7 +19417,7 @@ CastMagic_CheckDirection:                   ; [$bd8f]
     ;
     ; It will never collide, so return a false result.
     ;
-  @_isUpOrDown:                             ; [$bd98]
+  @_isUpOrDown:
     LDA #$00                                ; A = 0 (false result)
     STA Blocks_Result                       ; Store as the result.
     RTS
@@ -19434,7 +19426,7 @@ CastMagic_CheckDirection:                   ; [$bd8f]
 ; XREFS:
 ;     CastMagic_CheckDirection_Right
 ;
-CAST_MAGIC_WIDTHS:                          ; [$bd9d]
+CAST_MAGIC_WIDTHS:
     .byte $0f                               ; [0]: Deluge
     .byte $0f                               ; [1]: Thunder
     .byte $1f                               ; [2]: Fire
@@ -19452,7 +19444,7 @@ CAST_MAGIC_WIDTHS:                          ; [$bd9d]
 ; XREFS:
 ;     CastMagic_CheckDirection_CheckImpassable
 ;
-CAST_MAGIC_HEIGHTS:                         ; [$bda9]
+CAST_MAGIC_HEIGHTS:
     .byte $0f                               ; [0]: Deluge
     .byte $1f                               ; [1]: Thunder
     .byte $0f                               ; [2]: Fire
@@ -19466,78 +19458,78 @@ CAST_MAGIC_HEIGHTS:                         ; [$bda9]
     .byte $0f                               ; [10]: Hit Wall effect (unused)
     .byte $0f                               ; [11]: Tilte after hit
 
-UNUSED_SPACE_PRG14:                         ; [$bdb5]
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$bdb5] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$bdbd] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$bdc5] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$bdcd] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$bdd5] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$bddd] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$bde5] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$bded] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$bdf5] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$bdfd] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$be05] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$be0d] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$be15] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$be1d] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$be25] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$be2d] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$be35] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$be3d] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$be45] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$be4d] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$be55] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$be5d] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$be65] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$be6d] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$be75] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$be7d] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$be85] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$be8d] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$be95] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$be9d] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$bea5] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$bead] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$beb5] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$bebd] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$bec5] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$becd] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$bed5] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$bedd] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$bee5] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$beed] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$bef5] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$befd] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$bf05] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$bf0d] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$bf15] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$bf1d] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$bf25] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$bf2d] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$bf35] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$bf3d] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$bf45] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$bf4d] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$bf55] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$bf5d] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$bf65] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$bf6d] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$bf75] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$bf7d] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$bf85] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$bf8d] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$bf95] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$bf9d] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$bfa5] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$bfad] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$bfb5] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$bfbd] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$bfc5] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$bfcd] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$bfd5] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$bfdd] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$bfe5] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$bfed] undefined
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$bff5] undefined
-    .byte $ff,$ff,$ff                       ; [$bffd] undefined
+UNUSED_SPACE_PRG14:
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$ff                       ; undefined

@@ -13,8 +13,8 @@
 ;     Music_UpdateSQVolRegister
 ;     SoundEffect_PlayerDied_OnTick
 ;
-SQ1_VOL:                                    ; [$4000]
-    .byte $00                               ; [$4000] undefined
+SQ1_VOL:
+    .byte $00                               ; undefined
 
 ;
 ; XREFS:
@@ -22,8 +22,8 @@ SQ1_VOL:                                    ; [$4000]
 ;     Music_SetupWave
 ;     SoundEffect_PlayerDied_OnTick
 ;
-SQ1_SWEEP:                                  ; [$4001]
-    .byte $00                               ; [$4001] undefined
+SQ1_SWEEP:
+    .byte $00                               ; undefined
 
 ;
 ; XREFS:
@@ -32,8 +32,8 @@ SQ1_SWEEP:                                  ; [$4001]
 ;     Music_SetupWave
 ;     SoundEffect_PlayerDied_OnTick
 ;
-SQ1_LO:                                     ; [$4002]
-    .byte $00                               ; [$4002] undefined
+SQ1_LO:
+    .byte $00                               ; undefined
 
 ;
 ; XREFS:
@@ -41,8 +41,8 @@ SQ1_LO:                                     ; [$4002]
 ;     Music_SetupWave
 ;     SoundEffect_PlayerDied_OnTick
 ;
-SQ1_HI:                                     ; [$4003]
-    .byte $00                               ; [$4003] undefined
+SQ1_HI:
+    .byte $00                               ; undefined
 
 ;
 ; XREFS:
@@ -69,37 +69,8 @@ SQ1_HI:                                     ; [$4003]
 ;     SoundEffect_ShowPlayerMenu_OnTick
 ;     SoundEffect_Tilte_OnTick
 ;
-SQ2_VOL:                                    ; [$4004]
-    .byte $00                               ; [$4004] undefined
-
-;
-; XREFS:
-;     Audio_Reset
-;     Music_SetupWave
-;     SoundEffect_0x48_OnTick
-;     SoundEffect_BreadTouched_OnTick
-;     SoundEffect_CharacterInput_OnTick
-;     SoundEffect_CoinDropped_OnTick
-;     SoundEffect_CoinTouchedCommon_OnTick
-;     SoundEffect_CursorMoved_OnTick
-;     SoundEffect_FillHPOrMP_OnTick
-;     SoundEffect_GoldAmountChanged_Setup
-;     SoundEffect_HitEnemy_OnTick
-;     SoundEffect_HitPlayer_OnTick
-;     SoundEffect_ItemPickedUp_OnTick
-;     SoundEffect_Magic_OnTick
-;     SoundEffect_Maybe_Typing_OnTick
-;     SoundEffect_Maybe_UseSpecialItem2_OnTick
-;     SoundEffect_OpenDoor_OnTick
-;     SoundEffect_Pakukame_OnTick
-;     SoundEffect_PasswordCharInput_Setup
-;     SoundEffect_PlayerDied_OnTick
-;     SoundEffect_ShieldHitByMagic_OnTick
-;     SoundEffect_ShowPlayerMenu_OnTick
-;     SoundEffect_Tilte_OnTick
-;
-SQ2_SWEEP:                                  ; [$4005]
-    .byte $00                               ; [$4005] undefined
+SQ2_VOL:
+    .byte $00                               ; undefined
 
 ;
 ; XREFS:
@@ -127,8 +98,8 @@ SQ2_SWEEP:                                  ; [$4005]
 ;     SoundEffect_ShowPlayerMenu_OnTick
 ;     SoundEffect_Tilte_OnTick
 ;
-SQ2_LO:                                     ; [$4006]
-    .byte $00                               ; [$4006] undefined
+SQ2_SWEEP:
+    .byte $00                               ; undefined
 
 ;
 ; XREFS:
@@ -156,8 +127,37 @@ SQ2_LO:                                     ; [$4006]
 ;     SoundEffect_ShowPlayerMenu_OnTick
 ;     SoundEffect_Tilte_OnTick
 ;
-SQ2_HI:                                     ; [$4007]
-    .byte $00                               ; [$4007] undefined
+SQ2_LO:
+    .byte $00                               ; undefined
+
+;
+; XREFS:
+;     Audio_Reset
+;     Music_SetupWave
+;     SoundEffect_0x48_OnTick
+;     SoundEffect_BreadTouched_OnTick
+;     SoundEffect_CharacterInput_OnTick
+;     SoundEffect_CoinDropped_OnTick
+;     SoundEffect_CoinTouchedCommon_OnTick
+;     SoundEffect_CursorMoved_OnTick
+;     SoundEffect_FillHPOrMP_OnTick
+;     SoundEffect_GoldAmountChanged_Setup
+;     SoundEffect_HitEnemy_OnTick
+;     SoundEffect_HitPlayer_OnTick
+;     SoundEffect_ItemPickedUp_OnTick
+;     SoundEffect_Magic_OnTick
+;     SoundEffect_Maybe_Typing_OnTick
+;     SoundEffect_Maybe_UseSpecialItem2_OnTick
+;     SoundEffect_OpenDoor_OnTick
+;     SoundEffect_Pakukame_OnTick
+;     SoundEffect_PasswordCharInput_Setup
+;     SoundEffect_PlayerDied_OnTick
+;     SoundEffect_ShieldHitByMagic_OnTick
+;     SoundEffect_ShowPlayerMenu_OnTick
+;     SoundEffect_Tilte_OnTick
+;
+SQ2_HI:
+    .byte $00                               ; undefined
 
 ;
 ; XREFS:
@@ -166,8 +166,8 @@ SQ2_HI:                                     ; [$4007]
 ;     Music_SetupWave
 ;     SoundEffect_PlayerDied_OnTick
 ;
-TRI_LINEAR:                                 ; [$4008]
-    .byte $00,$00                           ; [$4008] undefined
+TRI_LINEAR:
+    .byte $00,$00                           ; undefined
 
 ;
 ; XREFS:
@@ -175,16 +175,16 @@ TRI_LINEAR:                                 ; [$4008]
 ;     Music_SetupWave
 ;     SoundEffect_PlayerDied_OnTick
 ;
-TRI_LO:                                     ; [$400a]
-    .byte $00                               ; [$400a] undefined
+TRI_LO:
+    .byte $00                               ; undefined
 
 ;
 ; XREFS:
 ;     Audio_Reset
 ;     Music_SetupWave
 ;
-TRI_HI:                                     ; [$400b]
-    .byte $00                               ; [$400b] undefined
+TRI_HI:
+    .byte $00                               ; undefined
 
 ;
 ; XREFS:
@@ -203,15 +203,15 @@ TRI_HI:                                     ; [$400b]
 ;     SoundEffect_PushBlock_OnTick
 ;     SoundEffect_Tilte_OnTick
 ;
-NOISE_VOL:                                  ; [$400c]
-    .byte $00                               ; [$400c] undefined1
+NOISE_VOL:
+    .byte $00                               ; undefined1
 
 ;
 ; XREFS:
 ;     Music_PlayNoise
 ;
-DAT_400d:                                   ; [$400d]
-    .byte $00                               ; [$400d] undefined1
+DAT_400d:
+    .byte $00                               ; undefined1
 
 ;
 ; XREFS:
@@ -229,8 +229,8 @@ DAT_400d:                                   ; [$400d]
 ;     SoundEffect_PushBlock_OnTick
 ;     SoundEffect_Tilte_OnTick
 ;
-NOISE_LO:                                   ; [$400e]
-    .byte $00                               ; [$400e] undefined
+NOISE_LO:
+    .byte $00                               ; undefined
 
 ;
 ; XREFS:
@@ -248,50 +248,50 @@ NOISE_LO:                                   ; [$400e]
 ;     SoundEffect_PushBlock_OnTick
 ;     SoundEffect_Tilte_OnTick
 ;
-NOISE_HI:                                   ; [$400f]
-    .byte $00                               ; [$400f] undefined
+NOISE_HI:
+    .byte $00                               ; undefined
 
-DMC_FREQ:                                   ; [$4010]
-    .byte $00                               ; [$4010] undefined
+DMC_FREQ:
+    .byte $00                               ; undefined
 
 ;
 ; XREFS:
 ;     SoundEffects_Init
 ;
-DMC_RAW:                                    ; [$4011]
-    .byte $00                               ; [$4011] undefined
+DMC_RAW:
+    .byte $00                               ; undefined
 
-DMC_START:                                  ; [$4012]
-    .byte $00                               ; [$4012] undefined
+DMC_START:
+    .byte $00                               ; undefined
 
-DMC_LEN:                                    ; [$4013]
-    .byte $00                               ; [$4013] undefined
+DMC_LEN:
+    .byte $00                               ; undefined
 
 ;
 ; XREFS:
 ;     OnInterrupt
 ;
-OAMDMA:                                     ; [$4014]
-    .byte $00                               ; [$4014] undefined
+OAMDMA:
+    .byte $00                               ; undefined
 
 ;
 ; XREFS:
 ;     Audio_InitPlayingState
 ;     SoundEffects_Init
 ;
-SND_CHN:                                    ; [$4015]
-    .byte $00                               ; [$4015] SoundChannelsBitmask
+SND_CHN:
+    .byte $00                               ; SoundChannelsBitmask
 
 ;
 ; XREFS:
 ;     Input_HandleOnInterrupt
 ;
-JOY1:                                       ; [$4016]
-    .byte $00                               ; [$4016] undefined1
+JOY1:
+    .byte $00                               ; undefined1
 
 ;
 ; XREFS:
 ;     Input_HandleOnInterrupt
 ;
-JOY2:                                       ; [$4017]
-    .byte $00                               ; [$4017] undefined1
+JOY2:
+    .byte $00                               ; undefined1

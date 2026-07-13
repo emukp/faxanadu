@@ -19,9 +19,8 @@
 ; XREFS:
 ;     Game_LoadAreaTable
 ;
-AREAS_TABLE_PTR:                            ; [$8000]
+AREAS_TABLE_PTR:
     bank_offset_16 AREA_TABLES              ; AREA_TABLES
-                                            ; [$PRG3::8000]
 
 
 ;============================================================================
@@ -35,23 +34,15 @@ AREAS_TABLE_PTR:                            ; [$8000]
 ; XREFS:
 ;     AREAS_TABLE_PTR [$PRG3::8000]
 ;
-AREA_TABLES:                                ; [$8002]
+AREA_TABLES:
     bank_offset_16 EOLIS_AREA_DATA          ; EOLIS_AREA_DATA
-                                            ; [$PRG3::8002]
     bank_offset_16 TRUNK_AREA_DATA          ; TRUNK_AREA_DATA
-                                            ; [$PRG3::8004]
     bank_offset_16 MIST_AREA_DATA           ; MIST_AREA_DATA
-                                            ; [$PRG3::8006]
     bank_offset_16 TOWNS_AREA_DATA          ; TOWNS_AREA_DATA
-                                            ; [$PRG3::8008]
     bank_offset_16 BUILDINGS_AREA_DATA      ; BUILDINGS_AREA_DATA
-                                            ; [$PRG3::800a]
     bank_offset_16 BRANCH_AREA_DATA         ; BRANCH_AREA_DATA
-                                            ; [$PRG3::800c]
     bank_offset_16 DARTMOOR_AREA_DATA       ; DARTMOOR_AREA_DATA
-                                            ; [$PRG3::800e]
     bank_offset_16 ZENITH_AREA_DATA         ; ZENITH_AREA_DATA
-                                            ; [$PRG3::8010]
 
 
 ;============================================================================
@@ -65,33 +56,24 @@ AREA_TABLES:                                ; [$8002]
 ; XREFS:
 ;     AREA_TABLES [$PRG3::8002]
 ;
-EOLIS_AREA_DATA:                            ; [$8012]
+EOLIS_AREA_DATA:
     bank_offset_16 EOLIS_AREA_DATA_blockAttrsRelPtr ; Block attributes
                                                     ; pointer
     bank_offset_16 EOLIS_BLOCK_PROPERTIES   ; EOLIS_BLOCK_PROPERTIES
-                                            ; [$PRG3::8014]
     bank_offset_16 EOLIS_SCROLL_DATA        ; EOLIS_SCROLL_DATA
-                                            ; [$PRG3::8016]
     bank_offset_16 EOLIS_DOOR_LOCATIONS     ; EOLIS_DOOR_LOCATIONS
-                                            ; [$PRG3::8018]
     bank_offset_16 EOLIS_DOOR_DESTINATIONS  ; EOLIS_DOOR_DESTINATIONS
-                                            ; [$PRG3::801a]
 
 ;
 ; XREFS:
 ;     EOLIS_AREA_DATA [$PRG3::8012]
 ;
-EOLIS_AREA_DATA_blockAttrsRelPtr:           ; [$801c]
+EOLIS_AREA_DATA_blockAttrsRelPtr:
     bank_offset_16 EOLIS_BLOCK_ATTRIBUTES   ; EOLIS_BLOCK_ATTRIBUTES
-                                            ; [$PRG3::801c]
     bank_offset_16 EOLIS_BLOCK_DATA_01      ; EOLIS_BLOCK_DATA_01
-                                            ; [$PRG3::801e]
     bank_offset_16 EOLIS_BLOCK_DATA_02      ; EOLIS_BLOCK_DATA_02
-                                            ; [$PRG3::8020]
     bank_offset_16 EOLIS_BLOCK_DATA_03      ; EOLIS_BLOCK_DATA_03
-                                            ; [$PRG3::8022]
     bank_offset_16 EOLIS_BLOCK_DATA_04      ; EOLIS_BLOCK_DATA_04
-                                            ; [$PRG3::8024]
 
 
 ;============================================================================
@@ -105,7 +87,7 @@ EOLIS_AREA_DATA_blockAttrsRelPtr:           ; [$801c]
 ; XREFS:
 ;     EOLIS_AREA_DATA [$PRG3::801c]
 ;
-EOLIS_BLOCK_ATTRIBUTES:                     ; [$8026]
+EOLIS_BLOCK_ATTRIBUTES:
     .byte $00                               ; [0]:
     .byte $aa                               ; [1]:
     .byte $55                               ; [2]:
@@ -247,7 +229,7 @@ EOLIS_BLOCK_ATTRIBUTES:                     ; [$8026]
 ; XREFS:
 ;     EOLIS_AREA_DATA [$PRG3::801e]
 ;
-EOLIS_BLOCK_DATA_01:                        ; [$80a6]
+EOLIS_BLOCK_DATA_01:
     .byte $00                               ; [0]:
     .byte $83                               ; [1]:
     .byte $95                               ; [2]:
@@ -389,7 +371,7 @@ EOLIS_BLOCK_DATA_01:                        ; [$80a6]
 ; XREFS:
 ;     EOLIS_AREA_DATA [$PRG3::8020]
 ;
-EOLIS_BLOCK_DATA_02:                        ; [$8126]
+EOLIS_BLOCK_DATA_02:
     .byte $00                               ; [0]:
     .byte $83                               ; [1]:
     .byte $8e                               ; [2]:
@@ -531,7 +513,7 @@ EOLIS_BLOCK_DATA_02:                        ; [$8126]
 ; XREFS:
 ;     EOLIS_AREA_DATA [$PRG3::8022]
 ;
-EOLIS_BLOCK_DATA_03:                        ; [$81a6]
+EOLIS_BLOCK_DATA_03:
     .byte $00                               ; [0]:
     .byte $83                               ; [1]:
     .byte $ab                               ; [2]:
@@ -673,7 +655,7 @@ EOLIS_BLOCK_DATA_03:                        ; [$81a6]
 ; XREFS:
 ;     EOLIS_AREA_DATA [$PRG3::8024]
 ;
-EOLIS_BLOCK_DATA_04:                        ; [$8226]
+EOLIS_BLOCK_DATA_04:
     .byte $00                               ; [0]:
     .byte $83                               ; [1]:
     .byte $ab                               ; [2]:
@@ -815,7 +797,7 @@ EOLIS_BLOCK_DATA_04:                        ; [$8226]
 ; XREFS:
 ;     EOLIS_AREA_DATA [$PRG3::8014]
 ;
-EOLIS_BLOCK_PROPERTIES:                     ; [$82a6]
+EOLIS_BLOCK_PROPERTIES:
     .byte BLOCK_IS_AIR                      ; [0]:
     .byte BLOCK_IS_AIR                      ; [1]:
     .byte BLOCK_IS_AIR                      ; [2]:
@@ -957,7 +939,7 @@ EOLIS_BLOCK_PROPERTIES:                     ; [$82a6]
 ; XREFS:
 ;     EOLIS_AREA_DATA [$PRG3::8016]
 ;
-EOLIS_SCROLL_DATA:                          ; [$8326]
+EOLIS_SCROLL_DATA:
     .byte $ff                               ; [0]:
     .byte $ff                               ; [1]:
     .byte $ff                               ; [2]:
@@ -1007,7 +989,7 @@ EOLIS_SCROLL_DATA:                          ; [$8326]
 ; XREFS:
 ;     EOLIS_AREA_DATA [$PRG3::8018]
 ;
-EOLIS_DOOR_LOCATIONS:                       ; [$834a]
+EOLIS_DOOR_LOCATIONS:
     .byte $00                               ; [0]:
     .byte $9c                               ; [1]:
     .byte $00                               ; [2]:
@@ -1062,61 +1044,51 @@ EOLIS_DOOR_LOCATIONS:                       ; [$834a]
 ; XREFS:
 ;     EOLIS_AREA_DATA [$PRG3::801a]
 ;
-EOLIS_DOOR_DESTINATIONS:                    ; [$8373]
-    .byte $01,$00,$00,$00,$00,$00,$00,$00   ; [$8373] undefined
-    .byte $41,$00,$a2,$00,$00,$00,$00,$00   ; [$837b] undefined
-    .byte $a7,$00,$0f,$00,$00,$00,$00,$00   ; [$8383] undefined
-    .byte $4a,$00,$0f,$00,$00,$00,$00,$00   ; [$838b] undefined
-    .byte $34,$00,$00,$00,$00,$00,$00,$00   ; [$8393] undefined
-    .byte $f6,$00,$00,$00,$00,$00,$00,$00   ; [$839b] undefined
-    .byte $3b,$00,$c5,$00,$00,$00,$00,$00   ; [$83a3] undefined
-    .byte $c0,$00,$12,$00,$00,$00,$00,$10   ; [$83ab] undefined
-    .byte $61,$00,$06,$00,$00,$00,$00,$00   ; [$83b3] undefined
-    .byte $a7,$00,$c0,$00,$00,$00,$00,$00   ; [$83bb] undefined
-    .byte $24,$00,$20,$00,$00,$00,$00,$00   ; [$83c3] undefined
-    .byte $11,$00,$00,$00,$00,$00,$00,$00   ; [$83cb] undefined
-    .byte $06,$00,$00,$00,$00,$00,$00,$00   ; [$83d3] undefined
-    .byte $f8,$00,$00,$00,$00,$00,$00,$00   ; [$83db] undefined
-    .byte $54,$00,$10,$00,$00,$00,$00,$00   ; [$83e3] undefined
-    .byte $1c,$00,$42,$00,$00,$00,$00,$00   ; [$83eb] undefined
-    .byte $00,$07,$00,$00,$01,$06,$00,$00   ; [$83f3] undefined
-    .byte $02,$01,$00,$00,$03,$05,$00,$00   ; [$83fb] undefined
-    .byte $04,$04,$00,$00,$05,$09,$06,$00   ; [$8403] undefined
-    .byte $06,$08,$06,$00,$07,$00,$06,$00   ; [$840b] undefined
+EOLIS_DOOR_DESTINATIONS:
+    .byte $01,$00,$00,$00,$00,$00,$00,$00   ; undefined
+    .byte $41,$00,$a2,$00,$00,$00,$00,$00   ; undefined
+    .byte $a7,$00,$0f,$00,$00,$00,$00,$00   ; undefined
+    .byte $4a,$00,$0f,$00,$00,$00,$00,$00   ; undefined
+    .byte $34,$00,$00,$00,$00,$00,$00,$00   ; undefined
+    .byte $f6,$00,$00,$00,$00,$00,$00,$00   ; undefined
+    .byte $3b,$00,$c5,$00,$00,$00,$00,$00   ; undefined
+    .byte $c0,$00,$12,$00,$00,$00,$00,$10   ; undefined
+    .byte $61,$00,$06,$00,$00,$00,$00,$00   ; undefined
+    .byte $a7,$00,$c0,$00,$00,$00,$00,$00   ; undefined
+    .byte $24,$00,$20,$00,$00,$00,$00,$00   ; undefined
+    .byte $11,$00,$00,$00,$00,$00,$00,$00   ; undefined
+    .byte $06,$00,$00,$00,$00,$00,$00,$00   ; undefined
+    .byte $f8,$00,$00,$00,$00,$00,$00,$00   ; undefined
+    .byte $54,$00,$10,$00,$00,$00,$00,$00   ; undefined
+    .byte $1c,$00,$42,$00,$00,$00,$00,$00   ; undefined
+    .byte $00,$07,$00,$00,$01,$06,$00,$00   ; undefined
+    .byte $02,$01,$00,$00,$03,$05,$00,$00   ; undefined
+    .byte $04,$04,$00,$00,$05,$09,$06,$00   ; undefined
+    .byte $06,$08,$06,$00,$07,$00,$06,$00   ; undefined
 
-TRUNK_AREA_DATA:                            ; [$8413]
+TRUNK_AREA_DATA:
     bank_offset_16 TRUNK_AREA_DATA_blockAttrsRelPtr ; TRUNK_AREA_DATA.blockAttrsRelPtr
-                                                    ; [$PRG3::8413]
     bank_offset_16 TRUNK_BLOCK_PROPERTIES   ; TRUNK_BLOCK_PROPERTIES
-                                            ; [$PRG3::8415]
     bank_offset_16 TRUNK_SCROLL_DATA        ; TRUNK_SCROLL_DATA
-                                            ; [$PRG3::8417]
     bank_offset_16 TRUNK_DOOR_LOCATIONS     ; TRUNK_DOOR_LOCATIONS
-                                            ; [$PRG3::8419]
     bank_offset_16 TRUNK_DOOR_DESTINATIONS  ; TRUNK_DOOR_DESTINATIONS
-                                            ; [$PRG3::841b]
 
 ;
 ; XREFS:
 ;     TRUNK_AREA_DATA [$PRG3::8413]
 ;
-TRUNK_AREA_DATA_blockAttrsRelPtr:           ; [$841d]
+TRUNK_AREA_DATA_blockAttrsRelPtr:
     bank_offset_16 TRUNK_BLOCK_ATTRIBUTES   ; TRUNK_BLOCK_ATTRIBUTES
-                                            ; [$PRG3::841d]
     bank_offset_16 TRUNK_BLOCK_DATA_01      ; TRUNK_BLOCK_DATA_01
-                                            ; [$PRG3::841f]
     bank_offset_16 TRUNK_BLOCK_DATA_02      ; TRUNK_BLOCK_DATA_02
-                                            ; [$PRG3::8421]
     bank_offset_16 TRUNK_BLOCK_DATA_03      ; TRUNK_BLOCK_DATA_03
-                                            ; [$PRG3::8423]
     bank_offset_16 TRUNK_BLOCK_DATA_04      ; TRUNK_BLOCK_DATA_04
-                                            ; [$PRG3::8425]
 
 ;
 ; XREFS:
 ;     TRUNK_AREA_DATA [$PRG3::841d]
 ;
-TRUNK_BLOCK_ATTRIBUTES:                     ; [$8427]
+TRUNK_BLOCK_ATTRIBUTES:
     .byte $00                               ; [0]:
     .byte $55                               ; [1]:
     .byte $55                               ; [2]:
@@ -1259,7 +1231,7 @@ TRUNK_BLOCK_ATTRIBUTES:                     ; [$8427]
 ; XREFS:
 ;     TRUNK_AREA_DATA [$PRG3::841f]
 ;
-TRUNK_BLOCK_DATA_01:                        ; [$84b0]
+TRUNK_BLOCK_DATA_01:
     .byte $00                               ; [0]:
     .byte $80                               ; [1]:
     .byte $80                               ; [2]:
@@ -1402,7 +1374,7 @@ TRUNK_BLOCK_DATA_01:                        ; [$84b0]
 ; XREFS:
 ;     TRUNK_AREA_DATA [$PRG3::8421]
 ;
-TRUNK_BLOCK_DATA_02:                        ; [$8539]
+TRUNK_BLOCK_DATA_02:
     .byte $00                               ; [0]:
     .byte $80                               ; [1]:
     .byte $80                               ; [2]:
@@ -1545,7 +1517,7 @@ TRUNK_BLOCK_DATA_02:                        ; [$8539]
 ; XREFS:
 ;     TRUNK_AREA_DATA [$PRG3::8423]
 ;
-TRUNK_BLOCK_DATA_03:                        ; [$85c2]
+TRUNK_BLOCK_DATA_03:
     .byte $00                               ; [0]:
     .byte $80                               ; [1]:
     .byte $91                               ; [2]:
@@ -1688,7 +1660,7 @@ TRUNK_BLOCK_DATA_03:                        ; [$85c2]
 ; XREFS:
 ;     TRUNK_AREA_DATA [$PRG3::8425]
 ;
-TRUNK_BLOCK_DATA_04:                        ; [$864b]
+TRUNK_BLOCK_DATA_04:
     .byte $00                               ; [0]:
     .byte $80                               ; [1]:
     .byte $93                               ; [2]:
@@ -1831,7 +1803,7 @@ TRUNK_BLOCK_DATA_04:                        ; [$864b]
 ; XREFS:
 ;     TRUNK_AREA_DATA [$PRG3::8415]
 ;
-TRUNK_BLOCK_PROPERTIES:                     ; [$86d4]
+TRUNK_BLOCK_PROPERTIES:
     .byte BLOCK_IS_AIR                      ; [0]:
     .byte BLOCK_IS_AIR                      ; [1]:
     .byte BLOCK_IS_AIR                      ; [2]:
@@ -1974,7 +1946,7 @@ TRUNK_BLOCK_PROPERTIES:                     ; [$86d4]
 ; XREFS:
 ;     TRUNK_AREA_DATA [$PRG3::8417]
 ;
-TRUNK_SCROLL_DATA:                          ; [$875d]
+TRUNK_SCROLL_DATA:
     .byte $ff                               ; [0]:
     .byte $01                               ; [1]:
     .byte $ff                               ; [2]:
@@ -2236,7 +2208,7 @@ TRUNK_SCROLL_DATA:                          ; [$875d]
 ; XREFS:
 ;     TRUNK_AREA_DATA [$PRG3::8419]
 ;
-TRUNK_DOOR_LOCATIONS:                       ; [$885d]
+TRUNK_DOOR_LOCATIONS:
     .byte $28                               ; [0]:
     .byte $10                               ; [1]:
     .byte $ff                               ; [2]:
@@ -2279,7 +2251,7 @@ TRUNK_DOOR_LOCATIONS:                       ; [$885d]
 ; XREFS:
 ;     TRUNK_AREA_DATA [$PRG3::841b]
 ;
-TRUNK_DOOR_DESTINATIONS:                    ; [$8882]
+TRUNK_DOOR_DESTINATIONS:
     .byte $0d                               ; [0]:
     .byte $07                               ; [1]:
     .byte $04                               ; [2]:
@@ -2424,7 +2396,7 @@ TRUNK_DOOR_DESTINATIONS:                    ; [$8882]
 ; 68 doors (0x8DDF - 0x8D9A - 1)
 ; 136 tiles (0x8A2E - 0x89A6)
 ;============================================================================
-MIST_AREA_DATA:                             ; [$890a]
+MIST_AREA_DATA:
     bank_offset_16 MIST_AREA_DATA_blockAttrsRelPtr ; Block attributes pointer
     bank_offset_16 MIST_BLOCK_PROPERTIES    ; Block properties
     bank_offset_16 MIST_SCROLL_DATA         ; Scroll data
@@ -2435,7 +2407,7 @@ MIST_AREA_DATA:                             ; [$890a]
 ; XREFS:
 ;     MIST_AREA_DATA [$PRG3::890a]
 ;
-MIST_AREA_DATA_blockAttrsRelPtr:            ; [$8914]
+MIST_AREA_DATA_blockAttrsRelPtr:
     bank_offset_16 MIST_BLOCK_ATTRIBUTES    ; Block attributes
     bank_offset_16 MIST_BLOCK_DATA_01       ; Block data 1
     bank_offset_16 MIST_BLOCK_DATA_02       ; Block data 2
@@ -2446,7 +2418,7 @@ MIST_AREA_DATA_blockAttrsRelPtr:            ; [$8914]
 ; XREFS:
 ;     MIST_AREA_DATA [$PRG3::8914]
 ;
-MIST_BLOCK_ATTRIBUTES:                      ; [$891e]
+MIST_BLOCK_ATTRIBUTES:
     .byte $00                               ; [0]:
     .byte $00                               ; [1]:
     .byte $00                               ; [2]:
@@ -2588,7 +2560,7 @@ MIST_BLOCK_ATTRIBUTES:                      ; [$891e]
 ; XREFS:
 ;     MIST_AREA_DATA [$PRG3::8916]
 ;
-MIST_BLOCK_DATA_01:                         ; [$89a6]
+MIST_BLOCK_DATA_01:
     .byte $00                               ; [0]:
     .byte $81                               ; [1]:
     .byte $80                               ; [2]:
@@ -2730,7 +2702,7 @@ MIST_BLOCK_DATA_01:                         ; [$89a6]
 ; XREFS:
 ;     MIST_AREA_DATA [$PRG3::8918]
 ;
-MIST_BLOCK_DATA_02:                         ; [$8a2e]
+MIST_BLOCK_DATA_02:
     .byte $00                               ; [0]:
     .byte $81                               ; [1]:
     .byte $00                               ; [2]:
@@ -2872,7 +2844,7 @@ MIST_BLOCK_DATA_02:                         ; [$8a2e]
 ; XREFS:
 ;     MIST_AREA_DATA [$PRG3::891a]
 ;
-MIST_BLOCK_DATA_03:                         ; [$8ab6]
+MIST_BLOCK_DATA_03:
     .byte $00                               ; [0]:
     .byte $81                               ; [1]:
     .byte $80                               ; [2]:
@@ -3014,7 +2986,7 @@ MIST_BLOCK_DATA_03:                         ; [$8ab6]
 ; XREFS:
 ;     MIST_AREA_DATA [$PRG3::891c]
 ;
-MIST_BLOCK_DATA_04:                         ; [$8b3e]
+MIST_BLOCK_DATA_04:
     .byte $00                               ; [0]:
     .byte $81                               ; [1]:
     .byte $00                               ; [2]:
@@ -3156,7 +3128,7 @@ MIST_BLOCK_DATA_04:                         ; [$8b3e]
 ; XREFS:
 ;     MIST_AREA_DATA [$PRG3::890c]
 ;
-MIST_BLOCK_PROPERTIES:                      ; [$8bc6]
+MIST_BLOCK_PROPERTIES:
     .byte BLOCK_IS_AIR                      ; [0]:
     .byte BLOCK_FOREGROUND                  ; [1]:
     .byte BLOCK_FOREGROUND                  ; [2]:
@@ -3298,7 +3270,7 @@ MIST_BLOCK_PROPERTIES:                      ; [$8bc6]
 ; XREFS:
 ;     MIST_AREA_DATA [$PRG3::890e]
 ;
-MIST_SCROLL_DATA:                           ; [$8c4e]
+MIST_SCROLL_DATA:
     .byte $ff                               ; [0]:
     .byte $ff                               ; [1]:
     .byte $ff                               ; [2]:
@@ -3636,7 +3608,7 @@ MIST_SCROLL_DATA:                           ; [$8c4e]
 ; XREFS:
 ;     MIST_AREA_DATA [$PRG3::8910]
 ;
-MIST_DOOR_LOCATIONS:                        ; [$8d9a]
+MIST_DOOR_LOCATIONS:
     .byte $00                               ; [0]:
     .byte $9a                               ; [1]:
     .byte $00                               ; [2]:
@@ -3705,13 +3677,13 @@ MIST_DOOR_LOCATIONS:                        ; [$8d9a]
     .byte $9c                               ; [65]:
     .byte $ff                               ; [66]:
     .byte $a6                               ; [67]:
-    .byte $ff                               ; [$8dde] undefined
+    .byte $ff                               ; undefined
 
 ;
 ; XREFS:
 ;     MIST_AREA_DATA [$PRG3::8912]
 ;
-MIST_DOOR_DESTINATIONS:                     ; [$8ddf]
+MIST_DOOR_DESTINATIONS:
     .word $0b3e                             ; [0]:
     .word $0003                             ; [1]:
     .word $0b45                             ; [2]:
@@ -3798,7 +3770,7 @@ MIST_DOOR_DESTINATIONS:                     ; [$8ddf]
 ; 40 doors
 ; 94 tiles
 ;============================================================================
-BRANCH_AREA_DATA:                           ; [$8e7b]
+BRANCH_AREA_DATA:
     bank_offset_16 BRANCH_AREA_DATA_blockAttrsRelPtr ; Block attributes
                                                      ; pointer
     bank_offset_16 BRANCH_BLOCK_PROPERTIES  ; Block properties
@@ -3810,7 +3782,7 @@ BRANCH_AREA_DATA:                           ; [$8e7b]
 ; XREFS:
 ;     BRANCH_AREA_DATA [$PRG3::8e7b]
 ;
-BRANCH_AREA_DATA_blockAttrsRelPtr:          ; [$8e85]
+BRANCH_AREA_DATA_blockAttrsRelPtr:
     bank_offset_16 BRANCH_BLOCK_ATTRIBUTES  ; Block attributes
     bank_offset_16 BRANCH_BLOCK_DATA_01     ; Block data 1
     bank_offset_16 BRANCH_BLOCK_DATA_02     ; Block data 2
@@ -3821,7 +3793,7 @@ BRANCH_AREA_DATA_blockAttrsRelPtr:          ; [$8e85]
 ; XREFS:
 ;     BRANCH_AREA_DATA [$PRG3::8e85]
 ;
-BRANCH_BLOCK_ATTRIBUTES:                    ; [$8e8f]
+BRANCH_BLOCK_ATTRIBUTES:
     .byte $00                               ; [0]:
     .byte $55                               ; [1]:
     .byte $55                               ; [2]:
@@ -3921,7 +3893,7 @@ BRANCH_BLOCK_ATTRIBUTES:                    ; [$8e8f]
 ; XREFS:
 ;     BRANCH_AREA_DATA [$PRG3::8e87]
 ;
-BRANCH_BLOCK_DATA_01:                       ; [$8eed]
+BRANCH_BLOCK_DATA_01:
     .byte $00                               ; [0]:
     .byte $80                               ; [1]:
     .byte $80                               ; [2]:
@@ -4021,7 +3993,7 @@ BRANCH_BLOCK_DATA_01:                       ; [$8eed]
 ; XREFS:
 ;     BRANCH_AREA_DATA [$PRG3::8e89]
 ;
-BRANCH_BLOCK_DATA_02:                       ; [$8f4b]
+BRANCH_BLOCK_DATA_02:
     .byte $00                               ; [0]:
     .byte $80                               ; [1]:
     .byte $80                               ; [2]:
@@ -4121,7 +4093,7 @@ BRANCH_BLOCK_DATA_02:                       ; [$8f4b]
 ; XREFS:
 ;     BRANCH_AREA_DATA [$PRG3::8e8b]
 ;
-BRANCH_BLOCK_DATA_03:                       ; [$8fa9]
+BRANCH_BLOCK_DATA_03:
     .byte $00                               ; [0]:
     .byte $80                               ; [1]:
     .byte $91                               ; [2]:
@@ -4221,7 +4193,7 @@ BRANCH_BLOCK_DATA_03:                       ; [$8fa9]
 ; XREFS:
 ;     BRANCH_AREA_DATA [$PRG3::8e8d]
 ;
-BRANCH_BLOCK_DATA_04:                       ; [$9007]
+BRANCH_BLOCK_DATA_04:
     .byte $00                               ; [0]:
     .byte $80                               ; [1]:
     .byte $93                               ; [2]:
@@ -4321,7 +4293,7 @@ BRANCH_BLOCK_DATA_04:                       ; [$9007]
 ; XREFS:
 ;     BRANCH_AREA_DATA [$PRG3::8e7d]
 ;
-BRANCH_BLOCK_PROPERTIES:                    ; [$9065]
+BRANCH_BLOCK_PROPERTIES:
     .byte BLOCK_IS_AIR                      ; [0]:
     .byte BLOCK_IS_AIR                      ; [1]:
     .byte BLOCK_IS_AIR                      ; [2]:
@@ -4421,7 +4393,7 @@ BRANCH_BLOCK_PROPERTIES:                    ; [$9065]
 ; XREFS:
 ;     BRANCH_AREA_DATA [$PRG3::8e7f]
 ;
-BRANCH_SCROLL_DATA:                         ; [$90c3]
+BRANCH_SCROLL_DATA:
     .byte $ff                               ; [0]:
     .byte $01                               ; [1]:
     .byte $ff                               ; [2]:
@@ -4587,7 +4559,7 @@ BRANCH_SCROLL_DATA:                         ; [$90c3]
 ; XREFS:
 ;     BRANCH_AREA_DATA [$PRG3::8e81]
 ;
-BRANCH_DOOR_LOCATIONS:                      ; [$9163]
+BRANCH_DOOR_LOCATIONS:
     .byte $0a                               ; [0]:
     .byte $30                               ; [1]:
     .byte $00                               ; [2]:
@@ -4634,11 +4606,11 @@ BRANCH_DOOR_LOCATIONS:                      ; [$9163]
 ; XREFS:
 ;     BRANCH_AREA_DATA [$PRG3::8e83]
 ;
-BRANCH_DOOR_DESTINATIONS:                   ; [$918c]
-    .byte $09,$09,$02,$00,$0a,$08,$00,$00   ; [$918c] undefined
-    .byte $0f,$09,$02,$00,$0e,$08,$00,$00   ; [$9194] undefined
-    .byte $14,$08,$00,$00,$13,$09,$02,$00   ; [$919c] undefined
-    .byte $19,$08,$00,$00,$18,$09,$02,$00   ; [$91a4] undefined
+BRANCH_DOOR_DESTINATIONS:
+    .byte $09,$09,$02,$00,$0a,$08,$00,$00   ; undefined
+    .byte $0f,$09,$02,$00,$0e,$08,$00,$00   ; undefined
+    .byte $14,$08,$00,$00,$13,$09,$02,$00   ; undefined
+    .byte $19,$08,$00,$00,$18,$09,$02,$00   ; undefined
 
 
 ;============================================================================
@@ -4647,7 +4619,7 @@ BRANCH_DOOR_DESTINATIONS:                   ; [$918c]
 ; 0 doors
 ; 256 tiles
 ;============================================================================
-BUILDINGS_AREA_DATA:                        ; [$91ac]
+BUILDINGS_AREA_DATA:
     bank_offset_16 BUILDINGS_AREA_DATA_blockAttrsRelPtr ; Block attributes
                                                         ; pointer
     bank_offset_16 BUILDINGS_BLOCK_PROPERTIES ; Block properties
@@ -4659,7 +4631,7 @@ BUILDINGS_AREA_DATA:                        ; [$91ac]
 ; XREFS:
 ;     BUILDINGS_AREA_DATA [$PRG3::91ac]
 ;
-BUILDINGS_AREA_DATA_blockAttrsRelPtr:       ; [$91b6]
+BUILDINGS_AREA_DATA_blockAttrsRelPtr:
     bank_offset_16 BUILDINGS_BLOCK_ATTRIBUTES ; Block attributes
     bank_offset_16 BUILDINGS_BLOCK_DATA_01  ; Block data 1
     bank_offset_16 BUILDINGS_BLOCK_DATA_02  ; Block data 2
@@ -4670,7 +4642,7 @@ BUILDINGS_AREA_DATA_blockAttrsRelPtr:       ; [$91b6]
 ; XREFS:
 ;     BUILDINGS_AREA_DATA [$PRG3::91b6]
 ;
-BUILDINGS_BLOCK_ATTRIBUTES:                 ; [$91c0]
+BUILDINGS_BLOCK_ATTRIBUTES:
     .byte $00                               ; [0]:
     .byte $00                               ; [1]:
     .byte $00                               ; [2]:
@@ -4932,7 +4904,7 @@ BUILDINGS_BLOCK_ATTRIBUTES:                 ; [$91c0]
 ; XREFS:
 ;     BUILDINGS_AREA_DATA [$PRG3::91b8]
 ;
-BUILDINGS_BLOCK_DATA_01:                    ; [$92c0]
+BUILDINGS_BLOCK_DATA_01:
     .byte $00                               ; [0]:
     .byte $b0                               ; [1]:
     .byte $b0                               ; [2]:
@@ -5194,7 +5166,7 @@ BUILDINGS_BLOCK_DATA_01:                    ; [$92c0]
 ; XREFS:
 ;     BUILDINGS_AREA_DATA [$PRG3::91ba]
 ;
-BUILDINGS_BLOCK_DATA_02:                    ; [$93c0]
+BUILDINGS_BLOCK_DATA_02:
     .byte $00                               ; [0]:
     .byte $b1                               ; [1]:
     .byte $b1                               ; [2]:
@@ -5456,7 +5428,7 @@ BUILDINGS_BLOCK_DATA_02:                    ; [$93c0]
 ; XREFS:
 ;     BUILDINGS_AREA_DATA [$PRG3::91bc]
 ;
-BUILDINGS_BLOCK_DATA_03:                    ; [$94c0]
+BUILDINGS_BLOCK_DATA_03:
     .byte $00                               ; [0]:
     .byte $b0                               ; [1]:
     .byte $a0                               ; [2]:
@@ -5718,7 +5690,7 @@ BUILDINGS_BLOCK_DATA_03:                    ; [$94c0]
 ; XREFS:
 ;     BUILDINGS_AREA_DATA [$PRG3::91be]
 ;
-BUILDINGS_BLOCK_DATA_04:                    ; [$95c0]
+BUILDINGS_BLOCK_DATA_04:
     .byte $00                               ; [0]:
     .byte $b1                               ; [1]:
     .byte $a1                               ; [2]:
@@ -5980,7 +5952,7 @@ BUILDINGS_BLOCK_DATA_04:                    ; [$95c0]
 ; XREFS:
 ;     BUILDINGS_AREA_DATA [$PRG3::91ae]
 ;
-BUILDINGS_BLOCK_PROPERTIES:                 ; [$96c0]
+BUILDINGS_BLOCK_PROPERTIES:
     .byte BLOCK_IS_AIR                      ; [0]:
     .byte BLOCK_IS_AIR                      ; [1]:
     .byte BLOCK_IS_AIR                      ; [2]:
@@ -6242,7 +6214,7 @@ BUILDINGS_BLOCK_PROPERTIES:                 ; [$96c0]
 ; XREFS:
 ;     BUILDINGS_AREA_DATA [$PRG3::91b0]
 ;
-BUILDINGS_SCROLL_DATA:                      ; [$97c0]
+BUILDINGS_SCROLL_DATA:
     .byte $ff                               ; [0]:
     .byte $ff                               ; [1]:
     .byte $ff                               ; [2]:
@@ -6288,22 +6260,22 @@ BUILDINGS_SCROLL_DATA:                      ; [$97c0]
 ; XREFS:
 ;     BUILDINGS_AREA_DATA [$PRG3::91b2]
 ;
-BUILDINGS_DOOR_LOCATIONS:                   ; [$97e8]
-    .byte $ff                               ; [$97e8] byte
+BUILDINGS_DOOR_LOCATIONS:
+    .byte $ff                               ; byte
 
 ;
 ; XREFS:
 ;     BUILDINGS_AREA_DATA [$PRG3::91b4]
 ;
-BUILDINGS_DOOR_DESTINATIONS:                ; [$97e9]
-    .byte $ff,$ba,$ff,$ff,$ff,$ff,$48,$00   ; [$97e9] undefined
-    .byte $ff,$e7,$ff,$ff,$ff,$ff,$c1,$00   ; [$97f1] undefined
-    .byte $ff,$f0,$ff,$ff,$ff,$ff,$7a,$00   ; [$97f9] undefined
-    .byte $ff,$7f,$ff,$ff,$ff,$ff,$fb,$00   ; [$9801] undefined
-    .byte $ff,$fe,$ff,$ff,$ff,$fd,$66,$00   ; [$9809] undefined
-    .byte $ff,$fd,$ff,$ff,$ff,$ef,$7f,$00   ; [$9811] undefined
-    .byte $ff,$b7,$ff,$ff,$ff,$fe,$5d,$00   ; [$9819] undefined
-    .byte $ff,$36,$ff,$ff,$ff,$ff,$7a,$00   ; [$9821] undefined
+BUILDINGS_DOOR_DESTINATIONS:
+    .byte $ff,$ba,$ff,$ff,$ff,$ff,$48,$00   ; undefined
+    .byte $ff,$e7,$ff,$ff,$ff,$ff,$c1,$00   ; undefined
+    .byte $ff,$f0,$ff,$ff,$ff,$ff,$7a,$00   ; undefined
+    .byte $ff,$7f,$ff,$ff,$ff,$ff,$fb,$00   ; undefined
+    .byte $ff,$fe,$ff,$ff,$ff,$fd,$66,$00   ; undefined
+    .byte $ff,$fd,$ff,$ff,$ff,$ef,$7f,$00   ; undefined
+    .byte $ff,$b7,$ff,$ff,$ff,$fe,$5d,$00   ; undefined
+    .byte $ff,$36,$ff,$ff,$ff,$ff,$7a,$00   ; undefined
 
 
 ;============================================================================
@@ -6312,7 +6284,7 @@ BUILDINGS_DOOR_DESTINATIONS:                ; [$97e9]
 ; 172 doors
 ; 112 tiles
 ;============================================================================
-TOWNS_AREA_DATA:                            ; [$9829]
+TOWNS_AREA_DATA:
     bank_offset_16 TOWNS_AREA_DATA_blockAttrsRelPtr ; Block attributes
                                                     ; pointer
     bank_offset_16 TOWNS_BLOCK_PROPERTIES   ; Block properties
@@ -6324,7 +6296,7 @@ TOWNS_AREA_DATA:                            ; [$9829]
 ; XREFS:
 ;     TOWNS_AREA_DATA [$PRG3::9829]
 ;
-TOWNS_AREA_DATA_blockAttrsRelPtr:           ; [$9833]
+TOWNS_AREA_DATA_blockAttrsRelPtr:
     bank_offset_16 TOWNS_BLOCK_ATTRIBUTES   ; Block attributes
     bank_offset_16 TOWNS_BLOCK_DATA_01      ; Block data 1
     bank_offset_16 TOWNS_BLOCK_DATA_02      ; Block data 2
@@ -6335,7 +6307,7 @@ TOWNS_AREA_DATA_blockAttrsRelPtr:           ; [$9833]
 ; XREFS:
 ;     TOWNS_AREA_DATA [$PRG3::9833]
 ;
-TOWNS_BLOCK_ATTRIBUTES:                     ; [$983d]
+TOWNS_BLOCK_ATTRIBUTES:
     .byte $00                               ; [0]:
     .byte $aa                               ; [1]:
     .byte $aa                               ; [2]:
@@ -6453,7 +6425,7 @@ TOWNS_BLOCK_ATTRIBUTES:                     ; [$983d]
 ; XREFS:
 ;     TOWNS_AREA_DATA [$PRG3::9835]
 ;
-TOWNS_BLOCK_DATA_01:                        ; [$98ad]
+TOWNS_BLOCK_DATA_01:
     .byte $00                               ; [0]:
     .byte $80                               ; [1]:
     .byte $80                               ; [2]:
@@ -6571,7 +6543,7 @@ TOWNS_BLOCK_DATA_01:                        ; [$98ad]
 ; XREFS:
 ;     TOWNS_AREA_DATA [$PRG3::9837]
 ;
-TOWNS_BLOCK_DATA_02:                        ; [$991d]
+TOWNS_BLOCK_DATA_02:
     .byte $00                               ; [0]:
     .byte $81                               ; [1]:
     .byte $81                               ; [2]:
@@ -6689,7 +6661,7 @@ TOWNS_BLOCK_DATA_02:                        ; [$991d]
 ; XREFS:
 ;     TOWNS_AREA_DATA [$PRG3::9839]
 ;
-TOWNS_BLOCK_DATA_03:                        ; [$998d]
+TOWNS_BLOCK_DATA_03:
     .byte $00                               ; [0]:
     .byte $81                               ; [1]:
     .byte $87                               ; [2]:
@@ -6807,7 +6779,7 @@ TOWNS_BLOCK_DATA_03:                        ; [$998d]
 ; XREFS:
 ;     TOWNS_AREA_DATA [$PRG3::983b]
 ;
-TOWNS_BLOCK_DATA_04:                        ; [$99fd]
+TOWNS_BLOCK_DATA_04:
     .byte $00                               ; [0]:
     .byte $80                               ; [1]:
     .byte $87                               ; [2]:
@@ -6925,7 +6897,7 @@ TOWNS_BLOCK_DATA_04:                        ; [$99fd]
 ; XREFS:
 ;     TOWNS_AREA_DATA [$PRG3::982b]
 ;
-TOWNS_BLOCK_PROPERTIES:                     ; [$9a6d]
+TOWNS_BLOCK_PROPERTIES:
     .byte BLOCK_IS_AIR                      ; [0]:
     .byte BLOCK_IS_AIR                      ; [1]:
     .byte BLOCK_IS_SOLID                    ; [2]:
@@ -7059,7 +7031,7 @@ TOWNS_BLOCK_PROPERTIES:                     ; [$9a6d]
 ; XREFS:
 ;     TOWNS_AREA_DATA [$PRG3::982d]
 ;
-TOWNS_SCROLL_DATA:                          ; [$9aed]
+TOWNS_SCROLL_DATA:
     .byte $ff                               ; [0]:
     .byte $01                               ; [1]:
     .byte $ff                               ; [2]:
@@ -7121,7 +7093,7 @@ TOWNS_SCROLL_DATA:                          ; [$9aed]
 ; XREFS:
 ;     TOWNS_AREA_DATA [$PRG3::982f]
 ;
-TOWNS_DOOR_LOCATIONS:                       ; [$9b25]
+TOWNS_DOOR_LOCATIONS:
     .byte $00                               ; [0]:
     .byte $94                               ; [1]:
     .byte $20                               ; [2]:
@@ -7300,7 +7272,7 @@ TOWNS_DOOR_LOCATIONS:                       ; [$9b25]
 ; XREFS:
 ;     TOWNS_AREA_DATA [$PRG3::9831]
 ;
-TOWNS_DOOR_DESTINATIONS:                    ; [$9bd2]
+TOWNS_DOOR_DESTINATIONS:
     .byte $08                               ; [0]:
     .byte $04                               ; [1]:
     .byte $00                               ; [2]:
@@ -7481,39 +7453,29 @@ TOWNS_DOOR_DESTINATIONS:                    ; [$9bd2]
 ; 64 doors
 ; 99 tiles
 ;============================================================================
-DARTMOOR_AREA_DATA:                         ; [$9c7e]
+DARTMOOR_AREA_DATA:
     bank_offset_16 DARTMOOR_AREA_DATA_blockAttrsRelPtr ; DARTMOOR_AREA_DATA.blockAttrsRelPtr
-                                                       ; [$PRG3::9c7e]
     bank_offset_16 DARTMOOR_BLOCK_PROPERTIES ; DARTMOOR_BLOCK_PROPERTIES
-                                             ; [$PRG3::9c80]
     bank_offset_16 DARTMOOR_SCROLL_DATA     ; DARTMOOR_SCROLL_DATA
-                                            ; [$PRG3::9c82]
     bank_offset_16 DARTMOOR_DOOR_LOCATIONS  ; DARTMOOR_DOOR_LOCATIONS
-                                            ; [$PRG3::9c84]
     bank_offset_16 DARTMOOR_DOOR_DESTINATIONS ; DARTMOOR_DOOR_DESTINATIONS
-                                              ; [$PRG3::9c86]
 
 ;
 ; XREFS:
 ;     DARTMOOR_AREA_DATA [$PRG3::9c7e]
 ;
-DARTMOOR_AREA_DATA_blockAttrsRelPtr:        ; [$9c88]
+DARTMOOR_AREA_DATA_blockAttrsRelPtr:
     bank_offset_16 DARTMOOR_BLOCK_ATTRIBUTES ; DARTMOOR_BLOCK_ATTRIBUTES
-                                             ; [$PRG3::9c88]
     bank_offset_16 DARTMOOR_BLOCK_DATA_01   ; DARTMOOR_BLOCK_DATA_01
-                                            ; [$PRG3::9c8a]
     bank_offset_16 DARTMOOR_BLOCK_DATA_02   ; DARTMOOR_BLOCK_DATA_02
-                                            ; [$PRG3::9c8c]
     bank_offset_16 DARTMOOR_BLOCK_DATA_03   ; DARTMOOR_BLOCK_DATA_03
-                                            ; [$PRG3::9c8e]
     bank_offset_16 DARTMOOR_BLOCK_DATA_04   ; DARTMOOR_BLOCK_DATA_04
-                                            ; [$PRG3::9c90]
 
 ;
 ; XREFS:
 ;     DARTMOOR_AREA_DATA [$PRG3::9c88]
 ;
-DARTMOOR_BLOCK_ATTRIBUTES:                  ; [$9c92]
+DARTMOOR_BLOCK_ATTRIBUTES:
     .byte $00                               ; [0]:
     .byte $55                               ; [1]:
     .byte $55                               ; [2]:
@@ -7618,7 +7580,7 @@ DARTMOOR_BLOCK_ATTRIBUTES:                  ; [$9c92]
 ; XREFS:
 ;     DARTMOOR_AREA_DATA [$PRG3::9c8a]
 ;
-DARTMOOR_BLOCK_DATA_01:                     ; [$9cf5]
+DARTMOOR_BLOCK_DATA_01:
     .byte $00                               ; [0]:
     .byte $a0                               ; [1]:
     .byte $a1                               ; [2]:
@@ -7723,7 +7685,7 @@ DARTMOOR_BLOCK_DATA_01:                     ; [$9cf5]
 ; XREFS:
 ;     DARTMOOR_AREA_DATA [$PRG3::9c8c]
 ;
-DARTMOOR_BLOCK_DATA_02:                     ; [$9d58]
+DARTMOOR_BLOCK_DATA_02:
     .byte $00                               ; [0]:
     .byte $a1                               ; [1]:
     .byte $a2                               ; [2]:
@@ -7828,7 +7790,7 @@ DARTMOOR_BLOCK_DATA_02:                     ; [$9d58]
 ; XREFS:
 ;     DARTMOOR_AREA_DATA [$PRG3::9c8e]
 ;
-DARTMOOR_BLOCK_DATA_03:                     ; [$9dbb]
+DARTMOOR_BLOCK_DATA_03:
     .byte $00                               ; [0]:
     .byte $9f                               ; [1]:
     .byte $86                               ; [2]:
@@ -7933,7 +7895,7 @@ DARTMOOR_BLOCK_DATA_03:                     ; [$9dbb]
 ; XREFS:
 ;     DARTMOOR_AREA_DATA [$PRG3::9c90]
 ;
-DARTMOOR_BLOCK_DATA_04:                     ; [$9e1e]
+DARTMOOR_BLOCK_DATA_04:
     .byte $00                               ; [0]:
     .byte $85                               ; [1]:
     .byte $8f                               ; [2]:
@@ -8038,7 +8000,7 @@ DARTMOOR_BLOCK_DATA_04:                     ; [$9e1e]
 ; XREFS:
 ;     DARTMOOR_AREA_DATA [$PRG3::9c80]
 ;
-DARTMOOR_BLOCK_PROPERTIES:                  ; [$9e81]
+DARTMOOR_BLOCK_PROPERTIES:
     .byte BLOCK_IS_AIR                      ; [0]:
     .byte BLOCK_IS_SOLID                    ; [1]:
     .byte BLOCK_IS_SOLID                    ; [2]:
@@ -8143,7 +8105,7 @@ DARTMOOR_BLOCK_PROPERTIES:                  ; [$9e81]
 ; XREFS:
 ;     DARTMOOR_AREA_DATA [$PRG3::9c82]
 ;
-DARTMOOR_SCROLL_DATA:                       ; [$9ee4]
+DARTMOOR_SCROLL_DATA:
     .byte $01                               ; [0]:
     .byte $ff                               ; [1]:
     .byte $ff                               ; [2]:
@@ -8277,7 +8239,7 @@ DARTMOOR_SCROLL_DATA:                       ; [$9ee4]
 ; XREFS:
 ;     DARTMOOR_AREA_DATA [$PRG3::9c84]
 ;
-DARTMOOR_DOOR_LOCATIONS:                    ; [$9f64]
+DARTMOOR_DOOR_LOCATIONS:
     .byte $0c                               ; [0]:
     .byte $48                               ; [1]:
     .byte $00                               ; [2]:
@@ -8348,7 +8310,7 @@ DARTMOOR_DOOR_LOCATIONS:                    ; [$9f64]
 ; XREFS:
 ;     DARTMOOR_AREA_DATA [$PRG3::9c86]
 ;
-DARTMOOR_DOOR_DESTINATIONS:                 ; [$9fa5]
+DARTMOOR_DOOR_DESTINATIONS:
     .byte $10                               ; [0]:
     .byte $0d                               ; [1]:
     .byte $00                               ; [2]:
@@ -8414,53 +8376,43 @@ DARTMOOR_DOOR_DESTINATIONS:                 ; [$9fa5]
     .byte $ff                               ; [62]:
     .byte $dd                               ; [63]:
     .byte $ff                               ; [64]:
-    .byte $f9,$cf,$04,$ff,$7b,$ff,$d3,$ff   ; [$9fe6] undefined
-    .byte $af,$00,$00,$ff,$f5,$ff,$fd,$ff   ; [$9fee] undefined
-    .byte $fb,$c0,$00,$ff,$e6,$ff,$ff,$ff   ; [$9ff6] undefined
-    .byte $fb,$83,$00,$00,$00,$fd,$00,$0a   ; [$9ffe] undefined
-    .byte $00,$00,$00,$00,$00,$7a,$00,$88   ; [$a006] undefined
-    .byte $00,$00,$00,$00,$00,$8f,$00,$1c   ; [$a00e] undefined
-    .byte $00,$00,$00,$00,$00,$f3,$00,$25   ; [$a016] undefined
-    .byte $00,$00,$00,$00,$00,$7b,$02,$35   ; [$a01e] undefined
-    .byte $07,$00,$00,$36,$05,$00,$00,$37   ; [$a026] undefined
-    .byte $04,$00,$00,$38,$06,$00,$00,$39   ; [$a02e] undefined
-    .byte $03,$00,$00,$3a,$06,$00,$00,$3b   ; [$a036] undefined
-    .byte $01,$00,$00,$42,$01,$00,$00,$43   ; [$a03e] undefined
-    .byte $04,$00,$00                       ; [$a046] undefined
+    .byte $f9,$cf,$04,$ff,$7b,$ff,$d3,$ff   ; undefined
+    .byte $af,$00,$00,$ff,$f5,$ff,$fd,$ff   ; undefined
+    .byte $fb,$c0,$00,$ff,$e6,$ff,$ff,$ff   ; undefined
+    .byte $fb,$83,$00,$00,$00,$fd,$00,$0a   ; undefined
+    .byte $00,$00,$00,$00,$00,$7a,$00,$88   ; undefined
+    .byte $00,$00,$00,$00,$00,$8f,$00,$1c   ; undefined
+    .byte $00,$00,$00,$00,$00,$f3,$00,$25   ; undefined
+    .byte $00,$00,$00,$00,$00,$7b,$02,$35   ; undefined
+    .byte $07,$00,$00,$36,$05,$00,$00,$37   ; undefined
+    .byte $04,$00,$00,$38,$06,$00,$00,$39   ; undefined
+    .byte $03,$00,$00,$3a,$06,$00,$00,$3b   ; undefined
+    .byte $01,$00,$00,$42,$01,$00,$00,$43   ; undefined
+    .byte $04,$00,$00                       ; undefined
 
-ZENITH_AREA_DATA:                           ; [$a049]
+ZENITH_AREA_DATA:
     bank_offset_16 ZENITH_AREA_DATA_blockAttrsRelPtr ; ZENITH_AREA_DATA.blockAttrsRelPtr
-                                                     ; [$PRG3::a049]
     bank_offset_16 ZENITH_BLOCK_PROPERTIES  ; ZENITH_BLOCK_PROPERTIES
-                                            ; [$PRG3::a04b]
     bank_offset_16 ZENITH_SCROLL_DATA       ; ZENITH_SCROLL_DATA
-                                            ; [$PRG3::a04d]
     bank_offset_16 ZENITH_DOOR_LOCATIONS    ; ZENITH_DOOR_LOCATIONS
-                                            ; [$PRG3::a04f]
     bank_offset_16 ZENITH_DOOR_DESTINATIONS ; ZENITH_DOOR_DESTINATIONS
-                                            ; [$PRG3::a051]
 
 ;
 ; XREFS:
 ;     ZENITH_AREA_DATA [$PRG3::a049]
 ;
-ZENITH_AREA_DATA_blockAttrsRelPtr:          ; [$a053]
+ZENITH_AREA_DATA_blockAttrsRelPtr:
     bank_offset_16 ZENITH_BLOCK_ATTRIBUTES  ; ZENITH_BLOCK_ATTRIBUTES
-                                            ; [$PRG3::a053]
     bank_offset_16 ZENITH_BLOCK_DATA_01     ; ZENITH_BLOCK_DATA_01
-                                            ; [$PRG3::a055]
     bank_offset_16 ZENITH_BLOCK_DATA_02     ; ZENITH_BLOCK_DATA_02
-                                            ; [$PRG3::a057]
     bank_offset_16 ZENITH_BLOCK_DATA_03     ; ZENITH_BLOCK_DATA_03
-                                            ; [$PRG3::a059]
     bank_offset_16 ZENITH_BLOCK_DATA_04     ; ZENITH_BLOCK_DATA_04
-                                            ; [$PRG3::a05b]
 
 ;
 ; XREFS:
 ;     ZENITH_AREA_DATA [$PRG3::a053]
 ;
-ZENITH_BLOCK_ATTRIBUTES:                    ; [$a05d]
+ZENITH_BLOCK_ATTRIBUTES:
     .byte $00                               ; [0]:
     .byte $55                               ; [1]:
     .byte $55                               ; [2]:
@@ -8530,7 +8482,7 @@ ZENITH_BLOCK_ATTRIBUTES:                    ; [$a05d]
 ; XREFS:
 ;     ZENITH_AREA_DATA [$PRG3::a055]
 ;
-ZENITH_BLOCK_DATA_01:                       ; [$a09d]
+ZENITH_BLOCK_DATA_01:
     .byte $00                               ; [0]:
     .byte $a0                               ; [1]:
     .byte $a1                               ; [2]:
@@ -8600,7 +8552,7 @@ ZENITH_BLOCK_DATA_01:                       ; [$a09d]
 ; XREFS:
 ;     ZENITH_AREA_DATA [$PRG3::a057]
 ;
-ZENITH_BLOCK_DATA_02:                       ; [$a0dd]
+ZENITH_BLOCK_DATA_02:
     .byte $00                               ; [0]:
     .byte $a1                               ; [1]:
     .byte $a2                               ; [2]:
@@ -8670,7 +8622,7 @@ ZENITH_BLOCK_DATA_02:                       ; [$a0dd]
 ; XREFS:
 ;     ZENITH_AREA_DATA [$PRG3::a059]
 ;
-ZENITH_BLOCK_DATA_03:                       ; [$a11d]
+ZENITH_BLOCK_DATA_03:
     .byte $00                               ; [0]:
     .byte $9f                               ; [1]:
     .byte $86                               ; [2]:
@@ -8740,7 +8692,7 @@ ZENITH_BLOCK_DATA_03:                       ; [$a11d]
 ; XREFS:
 ;     ZENITH_AREA_DATA [$PRG3::a05b]
 ;
-ZENITH_BLOCK_DATA_04:                       ; [$a15d]
+ZENITH_BLOCK_DATA_04:
     .byte $00                               ; [0]:
     .byte $85                               ; [1]:
     .byte $c3                               ; [2]:
@@ -8810,7 +8762,7 @@ ZENITH_BLOCK_DATA_04:                       ; [$a15d]
 ; XREFS:
 ;     ZENITH_AREA_DATA [$PRG3::a04b]
 ;
-ZENITH_BLOCK_PROPERTIES:                    ; [$a19d]
+ZENITH_BLOCK_PROPERTIES:
     .byte $00                               ; [0]:
     .byte $01                               ; [1]:
     .byte $01                               ; [2]:
@@ -8880,7 +8832,7 @@ ZENITH_BLOCK_PROPERTIES:                    ; [$a19d]
 ; XREFS:
 ;     ZENITH_AREA_DATA [$PRG3::a04d]
 ;
-ZENITH_SCROLL_DATA:                         ; [$a1dd]
+ZENITH_SCROLL_DATA:
     .byte $ff                               ; [0]:
     .byte $ff                               ; [1]:
     .byte $ff                               ; [2]:
@@ -8966,7 +8918,7 @@ ZENITH_SCROLL_DATA:                         ; [$a1dd]
 ; XREFS:
 ;     ZENITH_AREA_DATA [$PRG3::a04f]
 ;
-ZENITH_DOOR_LOCATIONS:                      ; [$a22d]
+ZENITH_DOOR_LOCATIONS:
     .byte $01                               ; [0]:
     .byte $60                               ; [1]:
     .byte $00                               ; [2]:
@@ -8981,958 +8933,958 @@ ZENITH_DOOR_LOCATIONS:                      ; [$a22d]
 ; XREFS:
 ;     ZENITH_AREA_DATA [$PRG3::a051]
 ;
-ZENITH_DOOR_DESTINATIONS:                   ; [$a236]
-    .byte $00,$0f,$00,$00,$00,$3f,$00,$90   ; [$a236] undefined
-    .byte $00,$00,$00,$00,$00,$57,$00,$e1   ; [$a23e] undefined
-    .byte $00,$00,$00,$00,$00,$b3,$00,$84   ; [$a246] undefined
-    .byte $00,$00,$00,$00,$00,$64,$00,$48   ; [$a24e] undefined
-    .byte $00,$00,$00,$00,$00,$ba,$00,$ac   ; [$a256] undefined
-    .byte $00,$00,$00,$00,$00,$bc,$00,$e9   ; [$a25e] undefined
-    .byte $00,$00,$00,$00,$00,$fd,$00,$40   ; [$a266] undefined
-    .byte $00,$00,$00,$00,$00,$96,$00,$00   ; [$a26e] undefined
-    .byte $00,$00,$00,$00,$00,$c7,$00,$06   ; [$a276] undefined
-    .byte $00,$00,$00,$00,$00,$56,$00,$84   ; [$a27e] undefined
-    .byte $00,$00,$00,$00,$00,$58,$00,$16   ; [$a286] undefined
-    .byte $00,$00,$00,$00,$00,$90,$00,$0a   ; [$a28e] undefined
-    .byte $00,$00,$00,$00,$00,$b5,$00,$80   ; [$a296] undefined
-    .byte $00,$00,$00,$00,$00,$1e,$00,$25   ; [$a29e] undefined
-    .byte $00,$00,$00,$00,$00,$0a,$20,$00   ; [$a2a6] undefined
-    .byte $00,$00,$00,$00,$00,$2b,$10,$40   ; [$a2ae] undefined
-    .byte $00,$00,$00,$00,$00,$d9,$00,$00   ; [$a2b6] undefined
-    .byte $00,$00,$00,$00,$00,$6b,$00,$00   ; [$a2be] undefined
-    .byte $00,$00,$00,$00,$00,$78,$00,$6c   ; [$a2c6] undefined
-    .byte $00,$00,$00,$00,$00,$3c,$00,$00   ; [$a2ce] undefined
-    .byte $00,$00,$00,$00,$00,$85,$01,$00   ; [$a2d6] undefined
-    .byte $00,$00,$00,$00,$00,$de,$00,$64   ; [$a2de] undefined
-    .byte $00,$00,$00,$00,$00,$98,$00,$10   ; [$a2e6] undefined
-    .byte $00,$00,$00,$00,$00,$18,$00,$04   ; [$a2ee] undefined
-    .byte $00,$00,$00,$00,$00,$3c,$00,$00   ; [$a2f6] undefined
-    .byte $00,$00,$00,$00,$00,$bd,$00,$b2   ; [$a2fe] undefined
-    .byte $00,$00,$00,$00,$00,$97,$00,$09   ; [$a306] undefined
-    .byte $00,$00,$00,$00,$00,$c3,$00,$b2   ; [$a30e] undefined
-    .byte $00,$00,$00,$00,$00,$ca,$00,$21   ; [$a316] undefined
-    .byte $00,$00,$00,$00,$00,$1b,$00,$4a   ; [$a31e] undefined
-    .byte $00,$00,$00,$00,$00,$93,$00,$89   ; [$a326] undefined
-    .byte $00,$00,$00,$00,$00,$77,$00,$01   ; [$a32e] undefined
-    .byte $00,$00,$00,$00,$00,$7e,$00,$44   ; [$a336] undefined
-    .byte $00,$00,$00,$00,$00,$b7,$00,$3f   ; [$a33e] undefined
-    .byte $00,$00,$00,$00,$00,$5a,$00,$30   ; [$a346] undefined
-    .byte $00,$00,$00,$00,$00,$6d,$00,$51   ; [$a34e] undefined
-    .byte $00,$00,$00,$00,$00,$6c,$00,$00   ; [$a356] undefined
-    .byte $00,$00,$00,$00,$00,$d3,$00,$c0   ; [$a35e] undefined
-    .byte $00,$00,$00,$00,$00,$0d,$00,$10   ; [$a366] undefined
-    .byte $00,$00,$00,$00,$00,$74,$00,$20   ; [$a36e] undefined
-    .byte $00,$00,$00,$00,$00,$85,$00,$01   ; [$a376] undefined
-    .byte $00,$00,$00,$00,$00,$6d,$00,$4a   ; [$a37e] undefined
-    .byte $00,$00,$00,$00,$00,$54,$00,$a0   ; [$a386] undefined
-    .byte $00,$00,$00,$00,$00,$f8,$00,$00   ; [$a38e] undefined
-    .byte $00,$00,$00,$00,$00,$b5,$01,$04   ; [$a396] undefined
-    .byte $00,$00,$00,$00,$00,$16,$00,$0a   ; [$a39e] undefined
-    .byte $00,$00,$00,$00,$00,$8f,$00,$10   ; [$a3a6] undefined
-    .byte $00,$00,$00,$00,$00,$04,$01,$50   ; [$a3ae] undefined
-    .byte $00,$00,$00,$00,$00,$58,$00,$c1   ; [$a3b6] undefined
-    .byte $00,$00,$00,$00,$00,$0b,$00,$10   ; [$a3be] undefined
-    .byte $00,$00,$00,$00,$00,$33,$00,$80   ; [$a3c6] undefined
-    .byte $00,$00,$00,$00,$00,$9c,$00,$00   ; [$a3ce] undefined
-    .byte $00,$00,$00,$00,$00,$ca,$00,$10   ; [$a3d6] undefined
-    .byte $00,$00,$00,$00,$00,$1e,$00,$02   ; [$a3de] undefined
-    .byte $00,$00,$00,$00,$00,$f8,$00,$02   ; [$a3e6] undefined
-    .byte $00,$00,$00,$00,$00,$26,$04,$98   ; [$a3ee] undefined
-    .byte $00,$00,$00,$00,$00,$21,$44,$20   ; [$a3f6] undefined
-    .byte $00,$00,$00,$00,$00,$61,$00,$a1   ; [$a3fe] undefined
-    .byte $00,$00,$00,$00,$00,$c5,$00,$32   ; [$a406] undefined
-    .byte $00,$00,$00,$00,$00,$97,$00,$10   ; [$a40e] undefined
-    .byte $00,$00,$00,$00,$00,$76,$00,$05   ; [$a416] undefined
-    .byte $00,$00,$00,$00,$00,$b9,$00,$80   ; [$a41e] undefined
-    .byte $00,$00,$00,$00,$00,$c3,$80,$08   ; [$a426] undefined
-    .byte $00,$00,$00,$00,$00,$be,$00,$80   ; [$a42e] undefined
-    .byte $00,$00,$00,$00,$00,$7c,$00,$03   ; [$a436] undefined
-    .byte $00,$00,$00,$00,$00,$56,$00,$18   ; [$a43e] undefined
-    .byte $00,$00,$00,$00,$00,$ac,$00,$12   ; [$a446] undefined
-    .byte $00,$00,$00,$00,$00,$d6,$10,$00   ; [$a44e] undefined
-    .byte $00,$00,$00,$00,$00,$9c,$88,$8e   ; [$a456] undefined
-    .byte $00,$00,$00,$00,$00,$f7,$00,$13   ; [$a45e] undefined
-    .byte $00,$00,$00,$00,$00,$dd,$00,$d0   ; [$a466] undefined
-    .byte $00,$00,$00,$00,$00,$7f,$00,$10   ; [$a46e] undefined
-    .byte $00,$00,$00,$00,$00,$60,$00,$14   ; [$a476] undefined
-    .byte $00,$00,$00,$00,$00,$ed,$00,$11   ; [$a47e] undefined
-    .byte $00,$00,$00,$00,$00,$47,$00,$44   ; [$a486] undefined
-    .byte $00,$00,$00,$00,$00,$25,$00,$42   ; [$a48e] undefined
-    .byte $00,$00,$00,$00,$00,$ce,$80,$a0   ; [$a496] undefined
-    .byte $00,$00,$00,$00,$00,$05,$00,$00   ; [$a49e] undefined
-    .byte $00,$00,$00,$00,$00,$6a,$00,$0d   ; [$a4a6] undefined
-    .byte $00,$00,$00,$00,$00,$61,$80,$10   ; [$a4ae] undefined
-    .byte $00,$00,$00,$00,$00,$12,$00,$40   ; [$a4b6] undefined
-    .byte $00,$00,$00,$00,$00,$0e,$00,$39   ; [$a4be] undefined
-    .byte $00,$00,$00,$00,$00,$7e,$00,$0c   ; [$a4c6] undefined
-    .byte $00,$00,$00,$00,$00,$43,$20,$10   ; [$a4ce] undefined
-    .byte $00,$00,$00,$00,$00,$02,$00,$49   ; [$a4d6] undefined
-    .byte $00,$00,$00,$00,$00,$39,$00,$10   ; [$a4de] undefined
-    .byte $00,$00,$00,$00,$00,$62,$00,$02   ; [$a4e6] undefined
-    .byte $00,$00,$00,$00,$00,$42,$00,$01   ; [$a4ee] undefined
-    .byte $00,$00,$00,$00,$00,$10,$00,$00   ; [$a4f6] undefined
-    .byte $00,$00,$00,$00,$00,$1e,$00,$94   ; [$a4fe] undefined
-    .byte $00,$00,$00,$00,$00,$ab,$00,$22   ; [$a506] undefined
-    .byte $00,$00,$00,$00,$00,$ee,$00,$94   ; [$a50e] undefined
-    .byte $00,$00,$00,$00,$00,$5a,$00,$a2   ; [$a516] undefined
-    .byte $00,$00,$00,$00,$00,$19,$00,$40   ; [$a51e] undefined
-    .byte $00,$00,$00,$00,$00,$69,$00,$00   ; [$a526] undefined
-    .byte $00,$00,$00,$00,$00,$eb,$00,$64   ; [$a52e] undefined
-    .byte $00,$00,$00,$00,$00,$75,$00,$82   ; [$a536] undefined
-    .byte $00,$00,$00,$00,$00,$1f,$00,$a2   ; [$a53e] undefined
-    .byte $00,$00,$00,$00,$00,$df,$00,$19   ; [$a546] undefined
-    .byte $00,$00,$00,$00,$00,$ae,$00,$28   ; [$a54e] undefined
-    .byte $00,$00,$00,$00,$00,$95,$10,$21   ; [$a556] undefined
-    .byte $00,$00,$00,$00,$00,$cd,$00,$12   ; [$a55e] undefined
-    .byte $00,$00,$00,$00,$00,$ed,$00,$12   ; [$a566] undefined
-    .byte $00,$00,$00,$00,$00,$0f,$00,$81   ; [$a56e] undefined
-    .byte $00,$00,$00,$00,$00,$75,$03,$30   ; [$a576] undefined
-    .byte $00,$00,$00,$00,$00,$55,$02,$80   ; [$a57e] undefined
-    .byte $00,$00,$00,$00,$00,$7c,$00,$0a   ; [$a586] undefined
-    .byte $00,$00,$00,$00,$00,$fd,$00,$91   ; [$a58e] undefined
-    .byte $00,$00,$00,$00,$00,$57,$00,$44   ; [$a596] undefined
-    .byte $00,$00,$00,$00,$00,$de,$10,$02   ; [$a59e] undefined
-    .byte $00,$00,$00,$00,$00,$51,$00,$04   ; [$a5a6] undefined
-    .byte $00,$00,$00,$00,$00,$c6,$00,$91   ; [$a5ae] undefined
-    .byte $00,$00,$00,$00,$00,$c9,$10,$21   ; [$a5b6] undefined
-    .byte $00,$00,$00,$00,$00,$7e,$00,$3c   ; [$a5be] undefined
-    .byte $00,$00,$00,$00,$00,$70,$00,$00   ; [$a5c6] undefined
-    .byte $00,$00,$00,$00,$00,$2c,$00,$28   ; [$a5ce] undefined
-    .byte $00,$00,$00,$00,$00,$20,$00,$00   ; [$a5d6] undefined
-    .byte $00,$00,$00,$00,$00,$32,$00,$04   ; [$a5de] undefined
-    .byte $00,$00,$00,$00,$00,$12,$00,$15   ; [$a5e6] undefined
-    .byte $00,$00,$00,$00,$00,$d0,$00,$01   ; [$a5ee] undefined
-    .byte $00,$00,$00,$00,$a0,$47,$01,$00   ; [$a5f6] undefined
-    .byte $00,$00,$00,$00,$00,$4d,$00,$15   ; [$a5fe] undefined
-    .byte $00,$00,$00,$00,$10,$bd,$00,$08   ; [$a606] undefined
-    .byte $00,$00,$00,$00,$00,$41,$00,$80   ; [$a60e] undefined
-    .byte $00,$00,$00,$00,$00,$64,$00,$49   ; [$a616] undefined
-    .byte $00,$00,$00,$00,$00,$1f,$00,$49   ; [$a61e] undefined
-    .byte $00,$00,$00,$00,$00,$06,$00,$12   ; [$a626] undefined
-    .byte $00,$00,$00,$00,$00,$e7,$00,$05   ; [$a62e] undefined
-    .byte $00,$00,$00,$00,$00,$c5,$00,$47   ; [$a636] undefined
-    .byte $00,$00,$00,$00,$00,$9f,$80,$a5   ; [$a63e] undefined
-    .byte $00,$00,$00,$00,$00,$5a,$80,$06   ; [$a646] undefined
-    .byte $00,$00,$00,$00,$00,$7e,$00,$00   ; [$a64e] undefined
-    .byte $00,$00,$00,$00,$00,$a0,$00,$21   ; [$a656] undefined
-    .byte $00,$00,$00,$00,$20,$7b,$00,$80   ; [$a65e] undefined
-    .byte $00,$00,$00,$00,$00,$96,$00,$12   ; [$a666] undefined
-    .byte $00,$00,$00,$00,$00,$d0,$40,$00   ; [$a66e] undefined
-    .byte $00,$00,$00,$00,$00,$12,$00,$01   ; [$a676] undefined
-    .byte $00,$00,$00,$00,$00,$5b,$00,$50   ; [$a67e] undefined
-    .byte $00,$00,$00,$00,$00,$b2,$00,$00   ; [$a686] undefined
-    .byte $00,$00,$00,$00,$00,$0d,$00,$04   ; [$a68e] undefined
-    .byte $00,$00,$00,$00,$00,$ab,$00,$01   ; [$a696] undefined
-    .byte $00,$00,$00,$00,$00,$0b,$00,$40   ; [$a69e] undefined
-    .byte $00,$00,$00,$00,$00,$63,$00,$00   ; [$a6a6] undefined
-    .byte $00,$00,$00,$00,$00,$b1,$16,$00   ; [$a6ae] undefined
-    .byte $00,$00,$00,$00,$00,$43,$40,$81   ; [$a6b6] undefined
-    .byte $00,$00,$00,$00,$00,$7d,$80,$14   ; [$a6be] undefined
-    .byte $00,$00,$00,$00,$00,$ef,$00,$60   ; [$a6c6] undefined
-    .byte $00,$00,$00,$00,$00,$a0,$00,$02   ; [$a6ce] undefined
-    .byte $00,$00,$00,$00,$00,$61,$41,$04   ; [$a6d6] undefined
-    .byte $00,$00,$00,$00,$00,$dd,$00,$41   ; [$a6de] undefined
-    .byte $00,$00,$00,$00,$00,$06,$00,$44   ; [$a6e6] undefined
-    .byte $00,$00,$00,$00,$00,$9a,$00,$84   ; [$a6ee] undefined
-    .byte $00,$00,$00,$00,$00,$4b,$11,$10   ; [$a6f6] undefined
-    .byte $00,$00,$00,$00,$00,$67,$00,$04   ; [$a6fe] undefined
-    .byte $00,$00,$00,$00,$00,$e6,$20,$01   ; [$a706] undefined
-    .byte $00,$00,$00,$00,$00,$fd,$02,$53   ; [$a70e] undefined
-    .byte $00,$00,$00,$00,$00,$5c,$10,$40   ; [$a716] undefined
-    .byte $00,$00,$00,$00,$00,$d9,$00,$00   ; [$a71e] undefined
-    .byte $00,$00,$00,$00,$00,$0f,$00,$0a   ; [$a726] undefined
-    .byte $00,$00,$00,$00,$00,$7b,$00,$8f   ; [$a72e] undefined
-    .byte $00,$00,$00,$00,$00,$c9,$00,$08   ; [$a736] undefined
-    .byte $00,$00,$00,$00,$00,$36,$00,$68   ; [$a73e] undefined
-    .byte $00,$00,$00,$00,$00,$5a,$80,$5c   ; [$a746] undefined
-    .byte $00,$00,$00,$00,$00,$24,$00,$48   ; [$a74e] undefined
-    .byte $00,$00,$00,$00,$00,$72,$00,$03   ; [$a756] undefined
-    .byte $00,$00,$00,$00,$00,$5f,$00,$8a   ; [$a75e] undefined
-    .byte $00,$00,$00,$00,$00,$57,$00,$25   ; [$a766] undefined
-    .byte $00,$00,$00,$00,$80,$fc,$00,$44   ; [$a76e] undefined
-    .byte $00,$00,$00,$00,$00,$ae,$00,$ba   ; [$a776] undefined
-    .byte $00,$00,$00,$00,$00,$36,$00,$40   ; [$a77e] undefined
-    .byte $00,$00,$00,$00,$00,$ea,$00,$00   ; [$a786] undefined
-    .byte $00,$00,$00,$00,$00,$76,$00,$40   ; [$a78e] undefined
-    .byte $00,$00,$00,$00,$00,$cf,$10,$48   ; [$a796] undefined
-    .byte $00,$00,$00,$00,$00,$1f,$00,$03   ; [$a79e] undefined
-    .byte $00,$00,$00,$00,$00,$32,$00,$b0   ; [$a7a6] undefined
-    .byte $00,$00,$00,$00,$00,$fa,$00,$50   ; [$a7ae] undefined
-    .byte $00,$00,$00,$00,$00,$d5,$80,$00   ; [$a7b6] undefined
-    .byte $00,$00,$00,$00,$00,$7a,$04,$80   ; [$a7be] undefined
-    .byte $00,$00,$00,$00,$00,$9b,$00,$80   ; [$a7c6] undefined
-    .byte $00,$00,$00,$00,$00,$59,$00,$50   ; [$a7ce] undefined
-    .byte $00,$00,$00,$00,$00,$10,$84,$07   ; [$a7d6] undefined
-    .byte $00,$00,$00,$00,$00,$95,$00,$00   ; [$a7de] undefined
-    .byte $00,$00,$00,$00,$00,$91,$00,$00   ; [$a7e6] undefined
-    .byte $00,$00,$00,$00,$00,$e4,$00,$00   ; [$a7ee] undefined
-    .byte $00,$00,$00,$00,$04,$d1,$80,$20   ; [$a7f6] undefined
-    .byte $00,$00,$00,$00,$00,$3c,$00,$45   ; [$a7fe] undefined
-    .byte $00,$00,$00,$00,$00,$ab,$00,$2e   ; [$a806] undefined
-    .byte $00,$00,$00,$00,$00,$eb,$00,$9c   ; [$a80e] undefined
-    .byte $00,$00,$00,$00,$00,$77,$00,$0e   ; [$a816] undefined
-    .byte $00,$00,$00,$00,$00,$6e,$00,$2a   ; [$a81e] undefined
-    .byte $00,$00,$00,$00,$00,$fa,$84,$e8   ; [$a826] undefined
-    .byte $00,$00,$00,$00,$00,$72,$00,$35   ; [$a82e] undefined
-    .byte $00,$00,$00,$00,$00,$62,$00,$00   ; [$a836] undefined
-    .byte $00,$00,$00,$00,$00,$be,$00,$42   ; [$a83e] undefined
-    .byte $00,$00,$00,$00,$00,$7d,$00,$21   ; [$a846] undefined
-    .byte $00,$00,$00,$00,$00,$4d,$40,$00   ; [$a84e] undefined
-    .byte $00,$00,$00,$00,$00,$bf,$00,$61   ; [$a856] undefined
-    .byte $00,$00,$00,$00,$00,$36,$00,$14   ; [$a85e] undefined
-    .byte $00,$00,$00,$00,$00,$4a,$00,$01   ; [$a866] undefined
-    .byte $00,$00,$00,$00,$00,$ab,$00,$21   ; [$a86e] undefined
-    .byte $00,$00,$00,$00,$00,$0f,$00,$19   ; [$a876] undefined
-    .byte $00,$00,$00,$00,$00,$dd,$00,$2a   ; [$a87e] undefined
-    .byte $00,$00,$00,$00,$00,$ed,$00,$a8   ; [$a886] undefined
-    .byte $00,$00,$00,$00,$00,$1e,$00,$80   ; [$a88e] undefined
-    .byte $00,$00,$00,$00,$00,$aa,$00,$01   ; [$a896] undefined
-    .byte $00,$00,$00,$00,$00,$9b,$00,$16   ; [$a89e] undefined
-    .byte $00,$00,$00,$00,$00,$70,$00,$a0   ; [$a8a6] undefined
-    .byte $00,$00,$00,$00,$00,$98,$00,$21   ; [$a8ae] undefined
-    .byte $00,$00,$00,$00,$00,$ca,$00,$21   ; [$a8b6] undefined
-    .byte $00,$00,$00,$00,$00,$f1,$00,$99   ; [$a8be] undefined
-    .byte $00,$00,$00,$00,$00,$31,$00,$00   ; [$a8c6] undefined
-    .byte $00,$00,$00,$00,$00,$b0,$00,$00   ; [$a8ce] undefined
-    .byte $00,$00,$00,$00,$00,$41,$02,$08   ; [$a8d6] undefined
-    .byte $00,$00,$00,$00,$00,$fc,$00,$09   ; [$a8de] undefined
-    .byte $00,$00,$00,$00,$00,$a9,$00,$01   ; [$a8e6] undefined
-    .byte $00,$00,$00,$00,$00,$14,$00,$00   ; [$a8ee] undefined
-    .byte $00,$00,$00,$00,$00,$7a,$00,$00   ; [$a8f6] undefined
-    .byte $00,$00,$00,$00,$00,$dd,$00,$06   ; [$a8fe] undefined
-    .byte $00,$00,$00,$00,$00,$62,$00,$e2   ; [$a906] undefined
-    .byte $00,$00,$00,$00,$00,$1b,$00,$00   ; [$a90e] undefined
-    .byte $00,$00,$00,$00,$00,$ff,$00,$01   ; [$a916] undefined
-    .byte $00,$00,$00,$00,$00,$b3,$00,$5c   ; [$a91e] undefined
-    .byte $00,$00,$00,$00,$00,$5c,$00,$00   ; [$a926] undefined
-    .byte $00,$00,$00,$00,$00,$17,$00,$31   ; [$a92e] undefined
-    .byte $00,$00,$00,$00,$00,$8f,$04,$02   ; [$a936] undefined
-    .byte $00,$00,$00,$00,$00,$7d,$00,$ab   ; [$a93e] undefined
-    .byte $00,$00,$00,$00,$00,$6f,$00,$80   ; [$a946] undefined
-    .byte $00,$00,$00,$00,$00,$f3,$00,$c3   ; [$a94e] undefined
-    .byte $00,$00,$00,$00,$00,$d0,$00,$00   ; [$a956] undefined
-    .byte $00,$00,$00,$00,$00,$bf,$00,$01   ; [$a95e] undefined
-    .byte $00,$00,$00,$00,$00,$61,$80,$1a   ; [$a966] undefined
-    .byte $00,$00,$00,$00,$00,$be,$00,$00   ; [$a96e] undefined
-    .byte $00,$00,$00,$00,$00,$30,$08,$18   ; [$a976] undefined
-    .byte $00,$00,$00,$00,$00,$ff,$00,$00   ; [$a97e] undefined
-    .byte $00,$00,$00,$00,$00,$eb,$00,$50   ; [$a986] undefined
-    .byte $00,$00,$00,$00,$00,$76,$00,$12   ; [$a98e] undefined
-    .byte $00,$00,$00,$00,$00,$75,$00,$00   ; [$a996] undefined
-    .byte $00,$00,$00,$00,$00,$60,$00,$9c   ; [$a99e] undefined
-    .byte $00,$00,$00,$00,$00,$f9,$00,$0c   ; [$a9a6] undefined
-    .byte $00,$00,$00,$00,$00,$29,$20,$00   ; [$a9ae] undefined
-    .byte $00,$00,$00,$00,$00,$2c,$00,$a0   ; [$a9b6] undefined
-    .byte $00,$00,$00,$00,$00,$69,$00,$40   ; [$a9be] undefined
-    .byte $00,$00,$00,$00,$00,$13,$00,$12   ; [$a9c6] undefined
-    .byte $00,$00,$00,$00,$00,$84,$08,$04   ; [$a9ce] undefined
-    .byte $00,$00,$00,$00,$00,$0a,$00,$08   ; [$a9d6] undefined
-    .byte $00,$00,$00,$00,$00,$3c,$00,$1e   ; [$a9de] undefined
-    .byte $00,$00,$00,$00,$00,$de,$01,$10   ; [$a9e6] undefined
-    .byte $00,$00,$00,$00,$00,$06,$20,$09   ; [$a9ee] undefined
-    .byte $00,$00,$00,$00,$00,$4c,$00,$42   ; [$a9f6] undefined
-    .byte $00,$00,$00,$00,$00,$32,$00,$04   ; [$a9fe] undefined
-    .byte $00,$00,$00,$00,$00,$de,$00,$26   ; [$aa06] undefined
-    .byte $00,$00,$00,$00,$00,$f8,$00,$b4   ; [$aa0e] undefined
-    .byte $00,$00,$00,$00,$00,$f9,$04,$e7   ; [$aa16] undefined
-    .byte $00,$00,$00,$00,$00,$6e,$80,$10   ; [$aa1e] undefined
-    .byte $00,$00,$00,$00,$00,$96,$00,$01   ; [$aa26] undefined
-    .byte $00,$00,$00,$00,$00,$aa,$00,$38   ; [$aa2e] undefined
-    .byte $00,$00,$00,$00,$00,$16,$00,$27   ; [$aa36] undefined
-    .byte $00,$00,$00,$00,$00,$f8,$00,$84   ; [$aa3e] undefined
-    .byte $00,$00,$00,$00,$00,$da,$00,$28   ; [$aa46] undefined
-    .byte $00,$00,$00,$00,$00,$d1,$00,$31   ; [$aa4e] undefined
-    .byte $00,$00,$00,$00,$00,$e2,$00,$82   ; [$aa56] undefined
-    .byte $00,$00,$00,$00,$00,$b1,$00,$31   ; [$aa5e] undefined
-    .byte $00,$00,$00,$00,$00,$06,$00,$04   ; [$aa66] undefined
-    .byte $00,$00,$00,$00,$00,$57,$00,$46   ; [$aa6e] undefined
-    .byte $00,$00,$00,$00,$00,$0c,$00,$64   ; [$aa76] undefined
-    .byte $00,$00,$00,$00,$00,$bd,$00,$29   ; [$aa7e] undefined
-    .byte $00,$00,$00,$00,$00,$3c,$02,$15   ; [$aa86] undefined
-    .byte $00,$00,$00,$00,$00,$02,$00,$48   ; [$aa8e] undefined
-    .byte $00,$00,$00,$00,$00,$40,$01,$40   ; [$aa96] undefined
-    .byte $00,$00,$00,$00,$00,$c7,$00,$80   ; [$aa9e] undefined
-    .byte $00,$00,$00,$00,$00,$3a,$00,$08   ; [$aaa6] undefined
-    .byte $00,$00,$00,$00,$00,$0c,$08,$00   ; [$aaae] undefined
-    .byte $00,$00,$00,$00,$00,$66,$14,$01   ; [$aab6] undefined
-    .byte $00,$00,$00,$00,$00,$7a,$00,$a2   ; [$aabe] undefined
-    .byte $00,$00,$00,$00,$00,$39,$00,$04   ; [$aac6] undefined
-    .byte $00,$00,$00,$00,$00,$fc,$00,$42   ; [$aace] undefined
-    .byte $00,$00,$00,$00,$00,$d6,$05,$20   ; [$aad6] undefined
-    .byte $00,$00,$00,$00,$00,$df,$00,$20   ; [$aade] undefined
-    .byte $00,$00,$00,$00,$00,$49,$00,$00   ; [$aae6] undefined
-    .byte $00,$00,$00,$00,$00,$9e,$00,$00   ; [$aaee] undefined
-    .byte $00,$00,$00,$00,$00,$e1,$c0,$00   ; [$aaf6] undefined
-    .byte $00,$00,$00,$00,$00,$0b,$00,$01   ; [$aafe] undefined
-    .byte $00,$00,$00,$00,$00,$7b,$00,$a4   ; [$ab06] undefined
-    .byte $00,$00,$00,$00,$00,$36,$00,$32   ; [$ab0e] undefined
-    .byte $00,$00,$00,$00,$00,$07,$00,$08   ; [$ab16] undefined
-    .byte $00,$00,$00,$00,$00,$af,$00,$81   ; [$ab1e] undefined
-    .byte $00,$00,$00,$00,$00,$9e,$00,$00   ; [$ab26] undefined
-    .byte $00,$00,$00,$00,$00,$8e,$20,$22   ; [$ab2e] undefined
-    .byte $00,$00,$00,$00,$00,$f5,$02,$70   ; [$ab36] undefined
-    .byte $00,$00,$00,$00,$00,$fc,$00,$5d   ; [$ab3e] undefined
-    .byte $00,$00,$00,$00,$00,$f3,$02,$b8   ; [$ab46] undefined
-    .byte $00,$00,$00,$00,$00,$a9,$00,$04   ; [$ab4e] undefined
-    .byte $00,$00,$00,$00,$00,$d5,$00,$18   ; [$ab56] undefined
-    .byte $00,$00,$00,$00,$00,$27,$00,$35   ; [$ab5e] undefined
-    .byte $00,$00,$00,$00,$00,$d0,$00,$34   ; [$ab66] undefined
-    .byte $00,$00,$00,$00,$02,$ed,$00,$38   ; [$ab6e] undefined
-    .byte $00,$00,$00,$00,$00,$c1,$04,$01   ; [$ab76] undefined
-    .byte $00,$00,$00,$00,$00,$4f,$00,$15   ; [$ab7e] undefined
-    .byte $00,$00,$00,$00,$00,$96,$10,$28   ; [$ab86] undefined
-    .byte $00,$00,$00,$00,$00,$c6,$00,$20   ; [$ab8e] undefined
-    .byte $00,$00,$00,$00,$00,$40,$00,$47   ; [$ab96] undefined
-    .byte $00,$00,$00,$00,$00,$ef,$00,$00   ; [$ab9e] undefined
-    .byte $00,$00,$00,$00,$00,$4f,$00,$04   ; [$aba6] undefined
-    .byte $00,$00,$00,$00,$00,$a5,$00,$00   ; [$abae] undefined
-    .byte $00,$00,$00,$00,$40,$a0,$08,$01   ; [$abb6] undefined
-    .byte $00,$00,$00,$00,$00,$3b,$00,$88   ; [$abbe] undefined
-    .byte $00,$00,$00,$00,$00,$54,$00,$d0   ; [$abc6] undefined
-    .byte $00,$00,$00,$00,$00,$a6,$00,$48   ; [$abce] undefined
-    .byte $00,$00,$00,$00,$00,$26,$00,$01   ; [$abd6] undefined
-    .byte $00,$00,$00,$00,$00,$2c,$00,$b1   ; [$abde] undefined
-    .byte $00,$00,$00,$00,$00,$b2,$00,$01   ; [$abe6] undefined
-    .byte $00,$00,$00,$00,$00,$b5,$00,$44   ; [$abee] undefined
-    .byte $00,$00,$00,$00,$40,$25,$00,$00   ; [$abf6] undefined
-    .byte $00,$00,$00,$00,$00,$bd,$20,$04   ; [$abfe] undefined
-    .byte $00,$00,$00,$00,$00,$9e,$04,$07   ; [$ac06] undefined
-    .byte $00,$00,$00,$00,$00,$e5,$00,$18   ; [$ac0e] undefined
-    .byte $00,$00,$00,$00,$00,$8d,$00,$b1   ; [$ac16] undefined
-    .byte $00,$00,$00,$00,$00,$16,$00,$92   ; [$ac1e] undefined
-    .byte $00,$00,$00,$00,$00,$87,$00,$42   ; [$ac26] undefined
-    .byte $00,$00,$00,$00,$00,$fc,$00,$31   ; [$ac2e] undefined
-    .byte $00,$00,$00,$00,$00,$37,$00,$01   ; [$ac36] undefined
-    .byte $00,$00,$00,$00,$00,$b7,$00,$e0   ; [$ac3e] undefined
-    .byte $00,$00,$00,$00,$00,$fd,$20,$40   ; [$ac46] undefined
-    .byte $00,$00,$00,$00,$00,$9d,$00,$a8   ; [$ac4e] undefined
-    .byte $00,$00,$00,$00,$00,$da,$00,$00   ; [$ac56] undefined
-    .byte $00,$00,$00,$00,$00,$96,$00,$28   ; [$ac5e] undefined
-    .byte $00,$00,$00,$00,$00,$2b,$00,$52   ; [$ac66] undefined
-    .byte $00,$00,$00,$00,$00,$a9,$00,$a2   ; [$ac6e] undefined
-    .byte $00,$00,$00,$00,$00,$62,$00,$10   ; [$ac76] undefined
-    .byte $00,$00,$00,$00,$00,$74,$00,$19   ; [$ac7e] undefined
-    .byte $00,$00,$00,$00,$00,$25,$40,$30   ; [$ac86] undefined
-    .byte $00,$00,$00,$00,$00,$3b,$00,$a1   ; [$ac8e] undefined
-    .byte $00,$00,$00,$00,$00,$ff,$00,$40   ; [$ac96] undefined
-    .byte $00,$00,$00,$00,$00,$e9,$00,$06   ; [$ac9e] undefined
-    .byte $00,$00,$00,$00,$00,$ee,$00,$00   ; [$aca6] undefined
-    .byte $00,$00,$00,$00,$00,$31,$22,$60   ; [$acae] undefined
-    .byte $00,$00,$00,$00,$00,$11,$00,$c0   ; [$acb6] undefined
-    .byte $00,$00,$00,$00,$00,$e9,$00,$aa   ; [$acbe] undefined
-    .byte $00,$00,$00,$00,$00,$24,$00,$00   ; [$acc6] undefined
-    .byte $00,$00,$00,$00,$00,$81,$00,$00   ; [$acce] undefined
-    .byte $00,$00,$00,$00,$00,$c2,$04,$00   ; [$acd6] undefined
-    .byte $00,$00,$00,$00,$00,$b6,$00,$c0   ; [$acde] undefined
-    .byte $00,$00,$00,$00,$00,$aa,$08,$08   ; [$ace6] undefined
-    .byte $00,$00,$00,$00,$00,$5c,$00,$05   ; [$acee] undefined
-    .byte $00,$00,$00,$00,$00,$3c,$20,$11   ; [$acf6] undefined
-    .byte $00,$00,$00,$00,$00,$52,$00,$5a   ; [$acfe] undefined
-    .byte $00,$00,$00,$00,$00,$4f,$00,$0c   ; [$ad06] undefined
-    .byte $00,$00,$00,$00,$00,$f3,$00,$42   ; [$ad0e] undefined
-    .byte $00,$00,$00,$00,$00,$f1,$00,$a4   ; [$ad16] undefined
-    .byte $00,$00,$00,$00,$00,$56,$00,$be   ; [$ad1e] undefined
-    .byte $00,$00,$00,$00,$10,$15,$00,$17   ; [$ad26] undefined
-    .byte $00,$00,$00,$00,$00,$bf,$00,$94   ; [$ad2e] undefined
-    .byte $00,$00,$00,$00,$00,$6a,$00,$54   ; [$ad36] undefined
-    .byte $00,$00,$00,$00,$00,$fe,$00,$90   ; [$ad3e] undefined
-    .byte $00,$00,$00,$00,$00,$72,$00,$02   ; [$ad46] undefined
-    .byte $00,$00,$00,$00,$00,$5c,$00,$82   ; [$ad4e] undefined
-    .byte $00,$00,$00,$00,$00,$67,$02,$00   ; [$ad56] undefined
-    .byte $00,$00,$00,$00,$00,$9f,$00,$01   ; [$ad5e] undefined
-    .byte $00,$00,$00,$00,$00,$be,$00,$44   ; [$ad66] undefined
-    .byte $00,$00,$00,$00,$00,$1a,$14,$00   ; [$ad6e] undefined
-    .byte $00,$00,$00,$00,$00,$d0,$10,$0a   ; [$ad76] undefined
-    .byte $00,$00,$00,$00,$00,$b6,$00,$12   ; [$ad7e] undefined
-    .byte $00,$00,$00,$00,$00,$7d,$00,$30   ; [$ad86] undefined
-    .byte $00,$00,$00,$00,$00,$a1,$00,$04   ; [$ad8e] undefined
-    .byte $00,$00,$00,$00,$00,$29,$20,$00   ; [$ad96] undefined
-    .byte $00,$00,$00,$00,$00,$fe,$00,$4c   ; [$ad9e] undefined
-    .byte $00,$00,$00,$00,$00,$04,$08,$00   ; [$ada6] undefined
-    .byte $00,$00,$00,$00,$00,$57,$00,$00   ; [$adae] undefined
-    .byte $00,$00,$00,$00,$00,$20,$00,$02   ; [$adb6] undefined
-    .byte $00,$00,$00,$00,$00,$8d,$00,$02   ; [$adbe] undefined
-    .byte $00,$00,$00,$00,$00,$d8,$00,$04   ; [$adc6] undefined
-    .byte $00,$00,$00,$00,$00,$52,$00,$05   ; [$adce] undefined
-    .byte $00,$00,$00,$00,$10,$6f,$00,$44   ; [$add6] undefined
-    .byte $00,$00,$00,$00,$00,$cf,$00,$00   ; [$adde] undefined
-    .byte $00,$00,$00,$00,$80,$15,$00,$09   ; [$ade6] undefined
-    .byte $00,$00,$00,$00,$00,$85,$08,$00   ; [$adee] undefined
-    .byte $00,$00,$00,$00,$00,$d1,$00,$00   ; [$adf6] undefined
-    .byte $00,$00,$00,$00,$00,$12,$00,$10   ; [$adfe] undefined
-    .byte $00,$00,$00,$00,$00,$eb,$40,$52   ; [$ae06] undefined
-    .byte $00,$00,$00,$00,$00,$d1,$00,$00   ; [$ae0e] undefined
-    .byte $00,$00,$00,$00,$00,$c3,$00,$00   ; [$ae16] undefined
-    .byte $00,$00,$00,$00,$00,$df,$00,$09   ; [$ae1e] undefined
-    .byte $00,$00,$00,$00,$00,$9b,$00,$60   ; [$ae26] undefined
-    .byte $00,$00,$00,$00,$00,$ed,$00,$60   ; [$ae2e] undefined
-    .byte $00,$00,$00,$00,$00,$98,$00,$d0   ; [$ae36] undefined
-    .byte $00,$00,$00,$00,$00,$b7,$00,$19   ; [$ae3e] undefined
-    .byte $00,$00,$00,$00,$00,$3f,$00,$01   ; [$ae46] undefined
-    .byte $00,$00,$00,$00,$00,$a0,$00,$80   ; [$ae4e] undefined
-    .byte $00,$00,$00,$00,$00,$f1,$00,$24   ; [$ae56] undefined
-    .byte $00,$00,$00,$00,$00,$1f,$00,$4b   ; [$ae5e] undefined
-    .byte $00,$00,$00,$00,$00,$67,$00,$60   ; [$ae66] undefined
-    .byte $00,$00,$00,$00,$00,$c0,$00,$10   ; [$ae6e] undefined
-    .byte $00,$00,$00,$00,$00,$40,$00,$12   ; [$ae76] undefined
-    .byte $00,$00,$00,$00,$00,$7b,$00,$50   ; [$ae7e] undefined
-    .byte $00,$00,$00,$00,$00,$79,$20,$03   ; [$ae86] undefined
-    .byte $00,$00,$00,$00,$00,$5b,$00,$02   ; [$ae8e] undefined
-    .byte $00,$00,$00,$00,$00,$6e,$00,$00   ; [$ae96] undefined
-    .byte $00,$00,$00,$00,$00,$c6,$00,$61   ; [$ae9e] undefined
-    .byte $00,$00,$00,$00,$00,$47,$00,$12   ; [$aea6] undefined
-    .byte $00,$00,$00,$00,$00,$b6,$84,$00   ; [$aeae] undefined
-    .byte $00,$00,$00,$00,$00,$10,$81,$c2   ; [$aeb6] undefined
-    .byte $00,$00,$00,$00,$00,$1a,$00,$71   ; [$aebe] undefined
-    .byte $00,$00,$00,$00,$00,$84,$00,$40   ; [$aec6] undefined
-    .byte $00,$00,$00,$00,$00,$25,$00,$00   ; [$aece] undefined
-    .byte $00,$00,$00,$00,$00,$45,$00,$01   ; [$aed6] undefined
-    .byte $00,$00,$00,$00,$00,$c9,$00,$33   ; [$aede] undefined
-    .byte $00,$00,$00,$00,$00,$6a,$00,$88   ; [$aee6] undefined
-    .byte $00,$00,$00,$00,$00,$4e,$40,$c0   ; [$aeee] undefined
-    .byte $00,$00,$00,$00,$00,$57,$40,$00   ; [$aef6] undefined
-    .byte $00,$00,$00,$00,$00,$3a,$00,$37   ; [$aefe] undefined
-    .byte $00,$00,$00,$00,$00,$9f,$00,$50   ; [$af06] undefined
-    .byte $00,$00,$00,$00,$00,$bc,$01,$c0   ; [$af0e] undefined
-    .byte $00,$00,$00,$00,$00,$f0,$00,$29   ; [$af16] undefined
-    .byte $00,$00,$00,$00,$00,$e3,$04,$07   ; [$af1e] undefined
-    .byte $00,$00,$00,$00,$00,$ff,$00,$09   ; [$af26] undefined
-    .byte $00,$00,$00,$00,$02,$1f,$00,$10   ; [$af2e] undefined
-    .byte $00,$00,$00,$00,$00,$85,$00,$10   ; [$af36] undefined
-    .byte $00,$00,$00,$00,$00,$a6,$00,$03   ; [$af3e] undefined
-    .byte $00,$00,$00,$00,$00,$85,$40,$40   ; [$af46] undefined
-    .byte $00,$00,$00,$00,$00,$77,$20,$40   ; [$af4e] undefined
-    .byte $00,$00,$00,$00,$00,$cf,$00,$00   ; [$af56] undefined
-    .byte $00,$00,$00,$00,$00,$7a,$01,$41   ; [$af5e] undefined
-    .byte $00,$00,$00,$00,$00,$8e,$80,$00   ; [$af66] undefined
-    .byte $00,$00,$00,$00,$00,$2b,$10,$00   ; [$af6e] undefined
-    .byte $00,$00,$00,$00,$00,$38,$00,$0a   ; [$af76] undefined
-    .byte $00,$00,$00,$00,$00,$3b,$00,$8e   ; [$af7e] undefined
-    .byte $00,$00,$00,$00,$00,$18,$20,$41   ; [$af86] undefined
-    .byte $00,$00,$00,$00,$00,$c9,$00,$09   ; [$af8e] undefined
-    .byte $00,$00,$00,$00,$00,$73,$03,$00   ; [$af96] undefined
-    .byte $00,$00,$00,$00,$00,$55,$00,$45   ; [$af9e] undefined
-    .byte $00,$00,$00,$00,$00,$28,$00,$01   ; [$afa6] undefined
-    .byte $00,$00,$00,$00,$00,$1c,$00,$00   ; [$afae] undefined
-    .byte $00,$00,$00,$00,$00,$11,$00,$22   ; [$afb6] undefined
-    .byte $00,$00,$00,$00,$00,$7f,$00,$80   ; [$afbe] undefined
-    .byte $00,$00,$00,$00,$00,$1c,$01,$04   ; [$afc6] undefined
-    .byte $00,$00,$00,$00,$00,$05,$00,$20   ; [$afce] undefined
-    .byte $00,$00,$00,$00,$00,$6a,$80,$00   ; [$afd6] undefined
-    .byte $00,$00,$00,$00,$00,$eb,$00,$d1   ; [$afde] undefined
-    .byte $00,$00,$00,$00,$00,$80,$00,$40   ; [$afe6] undefined
-    .byte $00,$00,$00,$00,$00,$89,$80,$10   ; [$afee] undefined
-    .byte $00,$00,$00,$00,$00,$23,$40,$30   ; [$aff6] undefined
-    .byte $00,$00,$04,$ff,$ff,$ff,$ef,$ff   ; [$affe] undefined
-    .byte $df,$1c,$00,$ff,$7e,$ff,$ff,$ff   ; [$b006] undefined
-    .byte $ff,$ae,$00,$ff,$3e,$ff,$ef,$ff   ; [$b00e] undefined
-    .byte $bf,$fe,$00,$ff,$ee,$ff,$ff,$ff   ; [$b016] undefined
-    .byte $ff,$bb,$00,$ff,$bf,$ff,$7f,$ff   ; [$b01e] undefined
-    .byte $7f,$5f,$00,$ff,$7d,$ff,$ff,$ff   ; [$b026] undefined
-    .byte $ff,$6a,$00,$ff,$df,$ff,$7f,$ff   ; [$b02e] undefined
-    .byte $fa,$ed,$00,$ff,$ef,$ff,$db,$ff   ; [$b036] undefined
-    .byte $7f,$ff,$00,$ff,$5c,$ff,$cf,$ff   ; [$b03e] undefined
-    .byte $ff,$be,$00,$ff,$93,$ff,$f3,$ff   ; [$b046] undefined
-    .byte $ff,$a0,$00,$ff,$bf,$ff,$ff,$ff   ; [$b04e] undefined
-    .byte $f6,$e6,$00,$ff,$ff,$ff,$ff,$ff   ; [$b056] undefined
-    .byte $ff,$6e,$00,$ff,$f9,$ff,$ff,$ff   ; [$b05e] undefined
-    .byte $ef,$3f,$00,$ff,$5e,$ff,$ff,$ff   ; [$b066] undefined
-    .byte $fb,$bc,$00,$ff,$4f,$ff,$7f,$ff   ; [$b06e] undefined
-    .byte $ff,$af,$00,$ff,$df,$ff,$ff,$ff   ; [$b076] undefined
-    .byte $f6,$ed,$00,$ff,$4b,$ff,$f7,$ff   ; [$b07e] undefined
-    .byte $fb,$f7,$00,$ff,$83,$ff,$fe,$ff   ; [$b086] undefined
-    .byte $ff,$be,$00,$ff,$df,$ff,$ff,$ff   ; [$b08e] undefined
-    .byte $7f,$d3,$00,$ff,$fd,$ff,$ff,$ff   ; [$b096] undefined
-    .byte $ff,$bb,$00,$ff,$ff,$ff,$7f,$ff   ; [$b09e] undefined
-    .byte $ff,$d7,$00,$ff,$eb,$ff,$ff,$ff   ; [$b0a6] undefined
-    .byte $ff,$b2,$00,$ff,$ff,$ff,$7f,$ff   ; [$b0ae] undefined
-    .byte $ff,$d8,$00,$ff,$fd,$ff,$ff,$ff   ; [$b0b6] undefined
-    .byte $7d,$6e,$00,$ff,$6b,$ff,$ff,$ff   ; [$b0be] undefined
-    .byte $de,$bb,$00,$ff,$27,$ff,$bf,$ff   ; [$b0c6] undefined
-    .byte $ff,$47,$00,$ff,$ff,$ff,$bf,$ff   ; [$b0ce] undefined
-    .byte $ff,$c8,$00,$ff,$6f,$ff,$ff,$fd   ; [$b0d6] undefined
-    .byte $ff,$ac,$00,$ff,$ef,$ff,$fe,$ff   ; [$b0de] undefined
-    .byte $8f,$3d,$00,$ff,$41,$ff,$ef,$ff   ; [$b0e6] undefined
-    .byte $7f,$8b,$00,$ff,$ff,$ff,$ff,$ff   ; [$b0ee] undefined
-    .byte $ff,$1b,$00,$ff,$fd,$ff,$ff,$ff   ; [$b0f6] undefined
-    .byte $ff,$50,$00,$ff,$fb,$ff,$ff,$ff   ; [$b0fe] undefined
-    .byte $ff,$fd,$00,$ff,$df,$ff,$ff,$ff   ; [$b106] undefined
-    .byte $ff,$45,$00,$ff,$fa,$ff,$df,$ff   ; [$b10e] undefined
-    .byte $fb,$77,$00,$ff,$de,$ff,$ff,$ff   ; [$b116] undefined
-    .byte $ff,$fb,$00,$ff,$2c,$ff,$ff,$ff   ; [$b11e] undefined
-    .byte $df,$bb,$00,$ff,$fe,$ff,$f7,$ff   ; [$b126] undefined
-    .byte $df,$99,$00,$ff,$68,$ff,$ff,$ff   ; [$b12e] undefined
-    .byte $ff,$dd,$00,$ff,$b1,$ff,$ef,$ff   ; [$b136] undefined
-    .byte $ff,$e2,$00,$ff,$d7,$ff,$af,$ff   ; [$b13e] undefined
-    .byte $df,$de,$00,$ff,$5b,$ff,$7f,$ff   ; [$b146] undefined
-    .byte $ff,$bf,$40,$ff,$ef,$ff,$ff,$ff   ; [$b14e] undefined
-    .byte $ff,$f7,$00,$ff,$fa,$ff,$bd,$ff   ; [$b156] undefined
-    .byte $fd,$d6,$00,$ff,$79,$ff,$ff,$ff   ; [$b15e] undefined
-    .byte $fb,$9a,$00,$ff,$ad,$ff,$ff,$ff   ; [$b166] undefined
-    .byte $f7,$91,$00,$ff,$b9,$ff,$7f,$ff   ; [$b16e] undefined
-    .byte $ff,$ff,$00,$ff,$68,$ff,$ff,$ff   ; [$b176] undefined
-    .byte $ef,$bd,$00,$ff,$3c,$ff,$b7,$ff   ; [$b17e] undefined
-    .byte $bf,$69,$00,$ff,$77,$ff,$ff,$ff   ; [$b186] undefined
-    .byte $ff,$b3,$00,$ff,$e3,$ff,$ff,$ff   ; [$b18e] undefined
-    .byte $ff,$e3,$00,$ff,$f3,$ff,$ff,$ff   ; [$b196] undefined
-    .byte $ff,$df,$00,$ff,$58,$ff,$df,$ff   ; [$b19e] undefined
-    .byte $db,$f7,$00,$ff,$7f,$ff,$7f,$ff   ; [$b1a6] undefined
-    .byte $ff,$76,$00,$ff,$28,$ff,$ff,$ff   ; [$b1ae] undefined
-    .byte $fe,$d8,$00,$ff,$ff,$ff,$ff,$ff   ; [$b1b6] undefined
-    .byte $ff,$e7,$00,$ff,$ef,$ff,$ef,$ff   ; [$b1be] undefined
-    .byte $ff,$eb,$00,$ff,$f0,$ff,$df,$ff   ; [$b1c6] undefined
-    .byte $ff,$70,$00,$ff,$e3,$ff,$ff,$ff   ; [$b1ce] undefined
-    .byte $e7,$6c,$00,$ff,$c0,$ff,$ff,$ff   ; [$b1d6] undefined
-    .byte $ff,$5c,$00,$ff,$0d,$ff,$fe,$ff   ; [$b1de] undefined
-    .byte $fb,$5f,$00,$ff,$77,$ff,$7f,$ff   ; [$b1e6] undefined
-    .byte $ff,$14,$00,$ff,$5f,$ff,$b7,$ff   ; [$b1ee] undefined
-    .byte $3f,$de,$00,$ff,$8f,$ff,$ff,$ff   ; [$b1f6] undefined
-    .byte $ff,$ea,$00,$ff,$ef,$ff,$ff,$ff   ; [$b1fe] undefined
-    .byte $bf,$40,$00,$ff,$f3,$ff,$ef,$ff   ; [$b206] undefined
-    .byte $be,$e6,$00,$ff,$fa,$ff,$ff,$ff   ; [$b20e] undefined
-    .byte $ff,$bf,$00,$ff,$7f,$ff,$fd,$ff   ; [$b216] undefined
-    .byte $ff,$93,$00,$ff,$be,$ff,$df,$ff   ; [$b21e] undefined
-    .byte $9d,$fb,$00,$ff,$cf,$ff,$f7,$ff   ; [$b226] undefined
-    .byte $ff,$b6,$00,$ff,$e8,$ff,$eb,$ff   ; [$b22e] undefined
-    .byte $ef,$bf,$00,$ff,$7f,$ff,$fd,$ff   ; [$b236] undefined
-    .byte $ff,$ff,$00,$ff,$d3,$ff,$d7,$ff   ; [$b23e] undefined
-    .byte $ff,$7d,$00,$ff,$b7,$ff,$ff,$ff   ; [$b246] undefined
-    .byte $5f,$ac,$00,$ff,$3f,$ff,$fd,$ff   ; [$b24e] undefined
-    .byte $ff,$2c,$00,$ff,$f6,$ff,$df,$ff   ; [$b256] undefined
-    .byte $ff,$ea,$00,$ff,$c0,$ff,$af,$ff   ; [$b25e] undefined
-    .byte $fb,$ff,$00,$ff,$47,$ff,$ff,$ff   ; [$b266] undefined
-    .byte $ff,$ef,$00,$ff,$bd,$ff,$ff,$ff   ; [$b26e] undefined
-    .byte $ff,$f7,$00,$ff,$db,$ff,$bf,$ff   ; [$b276] undefined
-    .byte $fd,$c7,$00,$ff,$ce,$ff,$7f,$ff   ; [$b27e] undefined
-    .byte $ff,$b9,$00,$ff,$ef,$ff,$ef,$ff   ; [$b286] undefined
-    .byte $ff,$c8,$00,$ff,$f7,$ff,$ff,$ff   ; [$b28e] undefined
-    .byte $ff,$db,$00,$ff,$bf,$ff,$ff,$ff   ; [$b296] undefined
-    .byte $fe,$ef,$00,$ff,$dc,$ff,$ff,$ff   ; [$b29e] undefined
-    .byte $5b,$73,$00,$ff,$af,$ff,$df,$ff   ; [$b2a6] undefined
-    .byte $ff,$b6,$00,$ff,$e7,$ff,$ff,$ff   ; [$b2ae] undefined
-    .byte $ff,$f0,$00,$ff,$7b,$ff,$fd,$ef   ; [$b2b6] undefined
-    .byte $ff,$a7,$00,$ff,$89,$ff,$bf,$ff   ; [$b2be] undefined
-    .byte $fb,$ef,$00,$ff,$50,$ff,$77,$ff   ; [$b2c6] undefined
-    .byte $f7,$f6,$00,$ff,$bc,$ff,$ff,$ff   ; [$b2ce] undefined
-    .byte $ff,$f0,$00,$ff,$f3,$ff,$cf,$ff   ; [$b2d6] undefined
-    .byte $ff,$be,$00,$ff,$c5,$ff,$b3,$ff   ; [$b2de] undefined
-    .byte $ff,$ff,$00,$ff,$52,$ff,$bf,$ff   ; [$b2e6] undefined
-    .byte $76,$00,$00,$ff,$dc,$ff,$ef,$ff   ; [$b2ee] undefined
-    .byte $ff,$e8,$00,$ff,$d9,$ff,$7f,$ff   ; [$b2f6] undefined
-    .byte $4e,$74,$00,$ff,$fb,$ff,$ff,$ff   ; [$b2fe] undefined
-    .byte $7f,$ba,$00,$ff,$d5,$ff,$ff,$ff   ; [$b306] undefined
-    .byte $ff,$df,$10,$ff,$ff,$ff,$fe,$ff   ; [$b30e] undefined
-    .byte $bf,$bf,$00,$ff,$45,$ff,$ff,$ff   ; [$b316] undefined
-    .byte $ff,$ec,$00,$ff,$7f,$ff,$f7,$ff   ; [$b31e] undefined
-    .byte $ef,$7f,$00,$ff,$ff,$ff,$ff,$ff   ; [$b326] undefined
-    .byte $7b,$5c,$00,$ff,$df,$ff,$ff,$ff   ; [$b32e] undefined
-    .byte $ef,$cc,$00,$ff,$fb,$ff,$ff,$ff   ; [$b336] undefined
-    .byte $ff,$6d,$00,$ff,$76,$ff,$f7,$ff   ; [$b33e] undefined
-    .byte $ff,$40,$00,$ff,$bb,$ff,$fd,$ff   ; [$b346] undefined
-    .byte $ff,$de,$20,$ff,$ff,$ff,$ff,$ff   ; [$b34e] undefined
-    .byte $ef,$a7,$04,$ff,$df,$ff,$ff,$ff   ; [$b356] undefined
-    .byte $bf,$3b,$00,$ff,$4b,$ff,$ff,$ff   ; [$b35e] undefined
-    .byte $b0,$f5,$00,$ff,$dd,$ff,$ff,$ff   ; [$b366] undefined
-    .byte $ff,$bc,$00,$ff,$9d,$ff,$f9,$ff   ; [$b36e] undefined
-    .byte $ff,$7e,$00,$ff,$ff,$ff,$df,$ff   ; [$b376] undefined
-    .byte $ff,$6f,$00,$ff,$f3,$ff,$ff,$ff   ; [$b37e] undefined
-    .byte $bb,$2e,$00,$ff,$e7,$ff,$3d,$ff   ; [$b386] undefined
-    .byte $ff,$6e,$00,$ff,$7f,$ff,$fc,$fb   ; [$b38e] undefined
-    .byte $ff,$96,$00,$ff,$3b,$ff,$ff,$ff   ; [$b396] undefined
-    .byte $ff,$1b,$00,$ff,$df,$ff,$ef,$ff   ; [$b39e] undefined
-    .byte $fb,$db,$00,$ff,$f6,$ff,$fd,$ff   ; [$b3a6] undefined
-    .byte $bf,$89,$00,$ff,$ff,$ff,$fe,$ff   ; [$b3ae] undefined
-    .byte $ff,$11,$00,$ff,$ff,$ff,$df,$ff   ; [$b3b6] undefined
-    .byte $bf,$94,$00,$ff,$23,$ff,$ff,$ff   ; [$b3be] undefined
-    .byte $af,$fb,$00,$ff,$9a,$ff,$ff,$ff   ; [$b3c6] undefined
-    .byte $9f,$3b,$00,$ff,$3f,$ff,$ff,$ff   ; [$b3ce] undefined
-    .byte $ff,$7d,$00,$ff,$fe,$ff,$ff,$ff   ; [$b3d6] undefined
-    .byte $fd,$aa,$00,$ff,$d2,$ff,$ff,$ff   ; [$b3de] undefined
-    .byte $7f,$9f,$00,$ff,$a7,$ff,$ff,$ff   ; [$b3e6] undefined
-    .byte $ff,$12,$00,$ff,$69,$ff,$ff,$ff   ; [$b3ee] undefined
-    .byte $f7,$dd,$00,$ff,$bf,$ff,$bf,$ff   ; [$b3f6] undefined
-    .byte $f7,$44,$00,$ff,$7e,$ff,$ff,$ff   ; [$b3fe] undefined
-    .byte $ff,$dd,$00,$ff,$66,$ff,$ff,$ff   ; [$b406] undefined
-    .byte $ff,$7f,$00,$ff,$2c,$ff,$ff,$ff   ; [$b40e] undefined
-    .byte $df,$fa,$00,$ff,$7f,$ff,$bf,$ff   ; [$b416] undefined
-    .byte $ff,$df,$00,$ff,$de,$ff,$df,$ff   ; [$b41e] undefined
-    .byte $ff,$fb,$00,$ff,$6c,$ff,$77,$ff   ; [$b426] undefined
-    .byte $ff,$52,$00,$ff,$fb,$ff,$ef,$ff   ; [$b42e] undefined
-    .byte $ff,$77,$01,$ff,$ff,$ff,$bb,$ff   ; [$b436] undefined
-    .byte $ff,$af,$02,$ff,$7f,$ff,$fd,$ff   ; [$b43e] undefined
-    .byte $ff,$bd,$00,$ff,$ff,$ff,$f7,$ff   ; [$b446] undefined
-    .byte $ff,$a5,$00,$ff,$1d,$ff,$ff,$ff   ; [$b44e] undefined
-    .byte $bd,$ef,$00,$ff,$fb,$ff,$ff,$ff   ; [$b456] undefined
-    .byte $ff,$ef,$00,$ff,$6a,$ff,$fe,$ff   ; [$b45e] undefined
-    .byte $7f,$fd,$00,$ff,$fe,$ff,$ff,$ff   ; [$b466] undefined
-    .byte $e7,$e2,$00,$ff,$f7,$ff,$ff,$ff   ; [$b46e] undefined
-    .byte $3f,$cd,$00,$ff,$af,$ff,$ff,$ff   ; [$b476] undefined
-    .byte $7f,$67,$00,$ff,$f7,$ff,$ff,$ff   ; [$b47e] undefined
-    .byte $ff,$65,$00,$ff,$c5,$ff,$ff,$ff   ; [$b486] undefined
-    .byte $ff,$c2,$00,$ff,$fe,$ff,$fe,$ff   ; [$b48e] undefined
-    .byte $fd,$ff,$00,$ff,$7c,$ff,$fd,$ff   ; [$b496] undefined
-    .byte $ff,$db,$00,$ff,$ba,$ff,$fb,$ff   ; [$b49e] undefined
-    .byte $ff,$9b,$00,$ff,$f3,$ff,$ff,$ff   ; [$b4a6] undefined
-    .byte $f7,$81,$00,$ff,$7c,$ff,$ff,$ff   ; [$b4ae] undefined
-    .byte $ef,$b1,$00,$ff,$e7,$ff,$ff,$ff   ; [$b4b6] undefined
-    .byte $ff,$87,$00,$ff,$e0,$ff,$7f,$ff   ; [$b4be] undefined
-    .byte $ff,$65,$00,$ff,$75,$ff,$ff,$ff   ; [$b4c6] undefined
-    .byte $7d,$69,$00,$ff,$38,$ff,$ef,$ff   ; [$b4ce] undefined
-    .byte $f3,$87,$00,$ff,$ff,$ff,$ff,$ff   ; [$b4d6] undefined
-    .byte $ff,$99,$00,$ff,$b6,$ff,$ff,$ff   ; [$b4de] undefined
-    .byte $e3,$df,$00,$ff,$f6,$ff,$f9,$ff   ; [$b4e6] undefined
-    .byte $ff,$79,$00,$ff,$7f,$ff,$ff,$ff   ; [$b4ee] undefined
-    .byte $fd,$af,$00,$ff,$fa,$ff,$ff,$ff   ; [$b4f6] undefined
-    .byte $df,$ec,$20,$ff,$7f,$ff,$ff,$ff   ; [$b4fe] undefined
-    .byte $fe,$bb,$00,$ff,$b7,$ff,$ff,$ff   ; [$b506] undefined
-    .byte $fe,$dd,$00,$ff,$e5,$ff,$ff,$ff   ; [$b50e] undefined
-    .byte $ff,$e2,$00,$ff,$fb,$ff,$ff,$ff   ; [$b516] undefined
-    .byte $ff,$fb,$00,$ff,$7a,$ff,$ff,$ff   ; [$b51e] undefined
-    .byte $bf,$3e,$00,$ff,$ff,$ff,$ff,$ff   ; [$b526] undefined
-    .byte $bb,$77,$00,$ff,$e9,$ff,$fb,$ff   ; [$b52e] undefined
-    .byte $ff,$fb,$00,$ff,$7f,$ff,$ff,$ff   ; [$b536] undefined
-    .byte $fd,$df,$00,$ff,$b7,$ff,$ff,$ff   ; [$b53e] undefined
-    .byte $cf,$cf,$80,$ff,$ff,$ff,$ff,$ff   ; [$b546] undefined
-    .byte $ff,$52,$00,$ff,$7f,$ff,$ff,$ff   ; [$b54e] undefined
-    .byte $ff,$a7,$00,$ff,$f2,$ff,$fb,$ff   ; [$b556] undefined
-    .byte $ff,$7c,$00,$ff,$f7,$ff,$f7,$ff   ; [$b55e] undefined
-    .byte $ff,$dd,$00,$ff,$fd,$ff,$df,$ff   ; [$b566] undefined
-    .byte $ef,$7b,$00,$ff,$cf,$ff,$ff,$ff   ; [$b56e] undefined
-    .byte $ff,$2e,$00,$ff,$fd,$ff,$ff,$ff   ; [$b576] undefined
-    .byte $ff,$eb,$00,$ff,$33,$ff,$ff,$ff   ; [$b57e] undefined
-    .byte $f7,$bf,$00,$ff,$db,$ff,$bf,$ff   ; [$b586] undefined
-    .byte $f7,$77,$00,$ff,$c7,$ff,$ff,$ff   ; [$b58e] undefined
-    .byte $ff,$f6,$00,$ff,$c1,$ff,$7f,$ff   ; [$b596] undefined
-    .byte $fb,$53,$00,$ff,$6f,$ff,$6f,$ff   ; [$b59e] undefined
-    .byte $ff,$3c,$00,$ff,$fa,$ff,$ff,$ff   ; [$b5a6] undefined
-    .byte $5f,$c9,$00,$ff,$79,$ff,$ff,$ff   ; [$b5ae] undefined
-    .byte $ff,$df,$00,$ff,$fb,$ff,$ff,$ff   ; [$b5b6] undefined
-    .byte $ff,$48,$00,$ff,$32,$ff,$d7,$ff   ; [$b5be] undefined
-    .byte $7f,$ee,$00,$ff,$ee,$ff,$ff,$ff   ; [$b5c6] undefined
-    .byte $ff,$ed,$00,$ff,$ff,$ff,$7f,$ff   ; [$b5ce] undefined
-    .byte $ff,$15,$04,$ff,$bd,$ff,$ff,$ff   ; [$b5d6] undefined
-    .byte $ff,$02,$00,$ff,$c9,$ff,$ff,$ff   ; [$b5de] undefined
-    .byte $ff,$cf,$00,$ff,$fb,$ff,$df,$ff   ; [$b5e6] undefined
-    .byte $fc,$15,$00,$ff,$f7,$ff,$fe,$ff   ; [$b5ee] undefined
-    .byte $fe,$96,$00,$ff,$fa,$ff,$df,$ff   ; [$b5f6] undefined
-    .byte $de,$db,$00,$ff,$ee,$ff,$ff,$ff   ; [$b5fe] undefined
-    .byte $fd,$d6,$00,$ff,$8f,$ff,$ff,$ff   ; [$b606] undefined
-    .byte $ff,$13,$00,$ff,$2b,$ff,$ff,$ff   ; [$b60e] undefined
-    .byte $fb,$77,$00,$ff,$ac,$ff,$ff,$ff   ; [$b616] undefined
-    .byte $ff,$fe,$00,$ff,$f6,$ff,$ff,$ff   ; [$b61e] undefined
-    .byte $f7,$ff,$00,$ff,$b2,$ff,$fe,$ff   ; [$b626] undefined
-    .byte $ff,$be,$00,$ff,$f7,$ff,$ff,$ff   ; [$b62e] undefined
-    .byte $bf,$f7,$00,$ff,$fa,$ff,$ff,$ff   ; [$b636] undefined
-    .byte $ff,$bb,$00,$ff,$f6,$ff,$ff,$ff   ; [$b63e] undefined
-    .byte $5f,$e8,$00,$ff,$fb,$ff,$ff,$ff   ; [$b646] undefined
-    .byte $bf,$fe,$00,$ff,$ff,$ff,$7f,$ff   ; [$b64e] undefined
-    .byte $eb,$7d,$00,$ff,$9f,$ff,$ff,$ff   ; [$b656] undefined
-    .byte $ff,$75,$00,$ff,$fd,$ff,$ff,$ff   ; [$b65e] undefined
-    .byte $ef,$f3,$00,$ff,$ba,$ff,$ff,$ff   ; [$b666] undefined
-    .byte $f7,$64,$00,$ff,$3a,$ff,$fe,$ff   ; [$b66e] undefined
-    .byte $f3,$7f,$00,$ff,$bf,$ff,$fb,$ff   ; [$b676] undefined
-    .byte $ff,$7f,$04,$ff,$9e,$ff,$ff,$ff   ; [$b67e] undefined
-    .byte $e5,$b5,$00,$ff,$f3,$ff,$7f,$ff   ; [$b686] undefined
-    .byte $ff,$bf,$00,$ff,$39,$ff,$ff,$ff   ; [$b68e] undefined
-    .byte $ff,$c9,$00,$ff,$59,$ff,$bd,$ff   ; [$b696] undefined
-    .byte $ff,$39,$00,$ff,$7d,$ff,$ff,$ff   ; [$b69e] undefined
-    .byte $f3,$c9,$00,$ff,$b5,$ff,$7c,$ff   ; [$b6a6] undefined
-    .byte $ff,$08,$00,$ff,$db,$ff,$ff,$ff   ; [$b6ae] undefined
-    .byte $ff,$fa,$00,$ff,$77,$ff,$ff,$ff   ; [$b6b6] undefined
-    .byte $ff,$7b,$00,$ff,$bf,$ff,$ff,$ff   ; [$b6be] undefined
-    .byte $f7,$fc,$00,$ff,$eb,$ff,$ef,$ff   ; [$b6c6] undefined
-    .byte $ff,$7e,$10,$ff,$2a,$ff,$ff,$ff   ; [$b6ce] undefined
-    .byte $ff,$93,$00,$ff,$dc,$ff,$ff,$ff   ; [$b6d6] undefined
-    .byte $ff,$fc,$00,$ff,$44,$ff,$b7,$ff   ; [$b6de] undefined
-    .byte $fd,$ff,$00,$ff,$bf,$ff,$fd,$ff   ; [$b6e6] undefined
-    .byte $f7,$9c,$00,$ff,$ae,$ff,$ff,$ff   ; [$b6ee] undefined
-    .byte $ff,$b0,$00,$ff,$bf,$ff,$fd,$ff   ; [$b6f6] undefined
-    .byte $ff,$24,$00,$ff,$fb,$ff,$ff,$ff   ; [$b6fe] undefined
-    .byte $ff,$87,$40,$ff,$ff,$ff,$ff,$ff   ; [$b706] undefined
-    .byte $ff,$6f,$08,$ff,$3f,$ff,$ff,$ff   ; [$b70e] undefined
-    .byte $ff,$79,$00,$ff,$b5,$ff,$ff,$ff   ; [$b716] undefined
-    .byte $ff,$77,$00,$ff,$d5,$ff,$ed,$ff   ; [$b71e] undefined
-    .byte $7f,$ff,$00,$ff,$fb,$ff,$ed,$ff   ; [$b726] undefined
-    .byte $ff,$be,$00,$ff,$e5,$ff,$ff,$ff   ; [$b72e] undefined
-    .byte $ff,$7d,$00,$ff,$ee,$ff,$df,$ff   ; [$b736] undefined
-    .byte $fe,$e7,$00,$ff,$e4,$ff,$bf,$ff   ; [$b73e] undefined
-    .byte $ff,$1b,$00,$ff,$bf,$ff,$ff,$ff   ; [$b746] undefined
-    .byte $ff,$78,$00,$ff,$77,$ff,$bf,$ff   ; [$b74e] undefined
-    .byte $ff,$f9,$00,$ff,$de,$ff,$b9,$ff   ; [$b756] undefined
-    .byte $df,$bf,$00,$ff,$ef,$ff,$f7,$ff   ; [$b75e] undefined
-    .byte $ff,$ed,$00,$ff,$6f,$ff,$ff,$ff   ; [$b766] undefined
-    .byte $7b,$db,$00,$ff,$db,$ff,$ff,$ff   ; [$b76e] undefined
-    .byte $ff,$3f,$00,$ff,$56,$ff,$ff,$ff   ; [$b776] undefined
-    .byte $7f,$fc,$00,$ff,$5a,$ff,$f1,$ff   ; [$b77e] undefined
-    .byte $f7,$b6,$00,$ff,$d6,$ff,$ff,$ff   ; [$b786] undefined
-    .byte $7f,$de,$00,$ff,$ff,$ff,$ff,$ff   ; [$b78e] undefined
-    .byte $df,$38,$00,$ff,$ff,$ff,$7f,$ff   ; [$b796] undefined
-    .byte $fe,$67,$00,$ff,$fb,$ff,$bf,$ff   ; [$b79e] undefined
-    .byte $ff,$65,$00,$ff,$ff,$ff,$3f,$ff   ; [$b7a6] undefined
-    .byte $ff,$1f,$00,$ff,$f5,$ff,$ff,$ff   ; [$b7ae] undefined
-    .byte $fd,$35,$00,$ff,$f4,$ff,$fe,$ff   ; [$b7b6] undefined
-    .byte $ff,$dd,$00,$ff,$ce,$ff,$ff,$ff   ; [$b7be] undefined
-    .byte $ff,$bf,$00,$ff,$dc,$ff,$f7,$ff   ; [$b7c6] undefined
-    .byte $fe,$30,$00,$ff,$79,$ff,$ff,$f7   ; [$b7ce] undefined
-    .byte $ef,$26,$00,$ff,$36,$ff,$fd,$ff   ; [$b7d6] undefined
-    .byte $ff,$35,$00,$ff,$6b,$ff,$ff,$ff   ; [$b7de] undefined
-    .byte $fe,$69,$00,$ff,$bd,$ff,$ff,$ff   ; [$b7e6] undefined
-    .byte $ff,$c6,$00,$ff,$3e,$ff,$ff,$ff   ; [$b7ee] undefined
-    .byte $ff,$0b,$00,$ff,$d7,$ff,$ff,$ff   ; [$b7f6] undefined
-    .byte $d7,$7f,$00,$ff,$a7,$ff,$7d,$ff   ; [$b7fe] undefined
-    .byte $fb,$fd,$00,$ff,$ff,$ff,$ff,$ff   ; [$b806] undefined
-    .byte $fe,$ad,$08,$ff,$fd,$ff,$ff,$ff   ; [$b80e] undefined
-    .byte $ff,$9c,$00,$ff,$3d,$ff,$ff,$ff   ; [$b816] undefined
-    .byte $fb,$d7,$00,$ff,$35,$ff,$ff,$ff   ; [$b81e] undefined
-    .byte $7f,$37,$00,$ff,$d7,$ff,$bf,$ff   ; [$b826] undefined
-    .byte $ef,$fb,$00,$ff,$56,$ff,$ef,$ff   ; [$b82e] undefined
-    .byte $ff,$b3,$00,$ff,$ff,$ff,$7f,$ff   ; [$b836] undefined
-    .byte $bf,$fb,$00,$ff,$bc,$ff,$fd,$ff   ; [$b83e] undefined
-    .byte $fe,$d7,$00,$ff,$5f,$ff,$f7,$ff   ; [$b846] undefined
-    .byte $fe,$f5,$00,$ff,$ff,$ff,$fe,$ff   ; [$b84e] undefined
-    .byte $ff,$75,$00,$ff,$fd,$ff,$ff,$ff   ; [$b856] undefined
-    .byte $ff,$f7,$00,$ff,$bf,$ff,$ff,$ff   ; [$b85e] undefined
-    .byte $ff,$6c,$00,$ff,$bb,$ff,$fd,$ff   ; [$b866] undefined
-    .byte $fd,$96,$00,$ff,$73,$ff,$ff,$ff   ; [$b86e] undefined
-    .byte $df,$d7,$00,$ff,$7f,$ff,$ff,$ff   ; [$b876] undefined
-    .byte $ff,$d1,$00,$ff,$49,$ff,$fd,$ff   ; [$b87e] undefined
-    .byte $ff,$63,$00,$ff,$f7,$ff,$ff,$ff   ; [$b886] undefined
-    .byte $ff,$5d,$00,$ff,$b7,$ff,$ff,$ff   ; [$b88e] undefined
-    .byte $ff,$b6,$01,$ff,$b7,$ff,$ff,$ff   ; [$b896] undefined
-    .byte $fd,$f1,$00,$ff,$c5,$ff,$ff,$ff   ; [$b89e] undefined
-    .byte $df,$8b,$00,$ff,$df,$ff,$7f,$ff   ; [$b8a6] undefined
-    .byte $ff,$07,$00,$ff,$b9,$ff,$ef,$ff   ; [$b8ae] undefined
-    .byte $cf,$d7,$00,$ff,$ff,$ff,$ff,$ff   ; [$b8b6] undefined
-    .byte $ff,$b0,$00,$ff,$5f,$ff,$ff,$ff   ; [$b8be] undefined
-    .byte $bf,$43,$00,$ff,$ba,$ff,$ff,$ff   ; [$b8c6] undefined
-    .byte $ff,$45,$00,$ff,$27,$ff,$ff,$ff   ; [$b8ce] undefined
-    .byte $bf,$53,$04,$ff,$ff,$ff,$fe,$ff   ; [$b8d6] undefined
-    .byte $df,$57,$00,$ff,$17,$ff,$ff,$ff   ; [$b8de] undefined
-    .byte $37,$ed,$00,$ff,$7f,$ff,$fa,$ff   ; [$b8e6] undefined
-    .byte $ef,$1d,$00,$ff,$8f,$ff,$ff,$ff   ; [$b8ee] undefined
-    .byte $ff,$fc,$00,$ff,$bf,$ff,$cf,$7f   ; [$b8f6] undefined
-    .byte $ef,$1c,$00,$ff,$df,$ff,$ff,$ff   ; [$b8fe] undefined
-    .byte $dd,$d7,$00,$ff,$a6,$ff,$ef,$ff   ; [$b906] undefined
-    .byte $f7,$ed,$00,$ff,$4f,$ff,$ff,$ff   ; [$b90e] undefined
-    .byte $df,$7f,$00,$ff,$6f,$ff,$7b,$ff   ; [$b916] undefined
-    .byte $ff,$d4,$00,$ff,$fc,$ff,$f6,$ff   ; [$b91e] undefined
-    .byte $ff,$d7,$00,$ff,$7f,$ff,$be,$ff   ; [$b926] undefined
-    .byte $ff,$ef,$00,$ff,$f5,$ff,$ff,$ff   ; [$b92e] undefined
-    .byte $ff,$3e,$00,$ff,$5b,$ff,$ff,$ff   ; [$b936] undefined
-    .byte $ff,$fe,$00,$ff,$75,$ff,$df,$ff   ; [$b93e] undefined
-    .byte $ff,$73,$00,$ff,$6e,$ff,$f7,$ff   ; [$b946] undefined
-    .byte $fb,$f7,$00,$ff,$fb,$ff,$ff,$ff   ; [$b94e] undefined
-    .byte $ff,$fe,$00,$ff,$ed,$ff,$ff,$ff   ; [$b956] undefined
-    .byte $ff,$ee,$00,$ff,$cf,$ff,$ff,$ff   ; [$b95e] undefined
-    .byte $fd,$31,$00,$ff,$e7,$ff,$df,$ff   ; [$b966] undefined
-    .byte $ff,$de,$00,$ff,$ff,$ff,$ef,$ff   ; [$b96e] undefined
-    .byte $fb,$f3,$00,$ff,$fc,$ff,$ff,$ff   ; [$b976] undefined
-    .byte $ff,$c6,$00,$ff,$03,$ff,$bf,$ff   ; [$b97e] undefined
-    .byte $b5,$3f,$00,$ff,$46,$ff,$ff,$ff   ; [$b986] undefined
-    .byte $ff,$61,$00,$ff,$ed,$ff,$ff,$ff   ; [$b98e] undefined
-    .byte $fb,$b7,$00,$ff,$9e,$ff,$7d,$ff   ; [$b996] undefined
-    .byte $ff,$e7,$00,$ff,$fc,$ff,$ff,$ff   ; [$b99e] undefined
-    .byte $bf,$7a,$00,$ff,$c7,$ff,$d8,$ff   ; [$b9a6] undefined
-    .byte $ff,$3e,$00,$ff,$5a,$ff,$ff,$ff   ; [$b9ae] undefined
-    .byte $ff,$bd,$80,$ff,$e7,$ff,$f5,$f7   ; [$b9b6] undefined
-    .byte $ff,$1b,$00,$ff,$e3,$ff,$bf,$ff   ; [$b9be] undefined
-    .byte $fd,$cf,$00,$ff,$be,$ff,$ff,$ff   ; [$b9c6] undefined
-    .byte $7d,$c9,$00,$ff,$2b,$ff,$ff,$ff   ; [$b9ce] undefined
-    .byte $f6,$80,$00,$ff,$cf,$ff,$af,$ff   ; [$b9d6] undefined
-    .byte $ff,$fc,$00,$ff,$ec,$ff,$fe,$ff   ; [$b9de] undefined
-    .byte $fb,$f3,$00,$ff,$b1,$ff,$6f,$ff   ; [$b9e6] undefined
-    .byte $37,$de,$00,$ff,$a4,$ff,$ff,$ff   ; [$b9ee] undefined
-    .byte $ff,$71,$00,$ff,$3c,$ff,$ff,$ff   ; [$b9f6] undefined
-    .byte $f3,$fe,$00,$ff,$7f,$ff,$d7,$ff   ; [$b9fe] undefined
-    .byte $f7,$74,$00,$ff,$73,$ff,$fe,$ff   ; [$ba06] undefined
-    .byte $fb,$fd,$00,$ff,$f4,$ff,$ff,$ff   ; [$ba0e] undefined
-    .byte $ff,$f7,$00,$ff,$93,$ff,$5d,$ff   ; [$ba16] undefined
-    .byte $fd,$da,$40,$ff,$bb,$ff,$ff,$ff   ; [$ba1e] undefined
-    .byte $fe,$f4,$00,$ff,$fe,$ff,$ff,$ff   ; [$ba26] undefined
-    .byte $ff,$5b,$00,$ff,$c5,$ff,$ff,$ff   ; [$ba2e] undefined
-    .byte $ff,$e8,$00,$ff,$fc,$ff,$f6,$ff   ; [$ba36] undefined
-    .byte $ff,$d7,$00,$ff,$99,$ff,$df,$ff   ; [$ba3e] undefined
-    .byte $fb,$f4,$10,$ff,$ef,$ff,$ff,$ff   ; [$ba46] undefined
-    .byte $ff,$36,$00,$ff,$5a,$ff,$ff,$ff   ; [$ba4e] undefined
-    .byte $ff,$f9,$00,$ff,$f9,$ff,$ff,$ff   ; [$ba56] undefined
-    .byte $ff,$9f,$00,$ff,$fe,$ff,$ff,$ff   ; [$ba5e] undefined
-    .byte $ff,$bb,$00,$ff,$bd,$ff,$df,$ff   ; [$ba66] undefined
-    .byte $ff,$6f,$00,$ff,$bf,$ff,$f3,$ff   ; [$ba6e] undefined
-    .byte $af,$56,$00,$ff,$f9,$ff,$ff,$ff   ; [$ba76] undefined
-    .byte $ff,$db,$00,$ff,$f1,$ff,$f3,$ff   ; [$ba7e] undefined
-    .byte $ff,$93,$00,$ff,$6d,$ff,$6f,$ff   ; [$ba86] undefined
-    .byte $df,$0a,$00,$ff,$8f,$ff,$db,$ff   ; [$ba8e] undefined
-    .byte $ff,$fd,$00,$ff,$f9,$ff,$ff,$ff   ; [$ba96] undefined
-    .byte $5f,$f6,$00,$ff,$c5,$ff,$df,$ff   ; [$ba9e] undefined
-    .byte $7f,$df,$00,$ff,$fd,$ff,$ff,$ff   ; [$baa6] undefined
-    .byte $ff,$79,$00,$ff,$d9,$ff,$7f,$ff   ; [$baae] undefined
-    .byte $fb,$3d,$00,$ff,$e7,$ff,$ff,$ff   ; [$bab6] undefined
-    .byte $ff,$dc,$00,$ff,$91,$ff,$e7,$ff   ; [$babe] undefined
-    .byte $67,$dc,$00,$ff,$fc,$ff,$ff,$ff   ; [$bac6] undefined
-    .byte $ff,$58,$00,$ff,$7d,$ff,$ff,$ff   ; [$bace] undefined
-    .byte $ff,$20,$00,$ff,$3f,$ff,$ff,$ff   ; [$bad6] undefined
-    .byte $ff,$fc,$00,$ff,$8d,$ff,$ef,$ff   ; [$bade] undefined
-    .byte $ff,$41,$00,$ff,$dc,$ff,$fe,$ff   ; [$bae6] undefined
-    .byte $bf,$a6,$00,$ff,$8f,$ff,$bd,$ff   ; [$baee] undefined
-    .byte $7f,$a8,$00,$ff,$6a,$ff,$ff,$ff   ; [$baf6] undefined
-    .byte $fd,$86,$00,$ff,$da,$ff,$fd,$ff   ; [$bafe] undefined
-    .byte $ff,$cd,$00,$ff,$ff,$ff,$ff,$ff   ; [$bb06] undefined
-    .byte $ff,$66,$00,$ff,$cf,$ff,$ff,$ff   ; [$bb0e] undefined
-    .byte $ff,$7a,$00,$ff,$fd,$ff,$ed,$ff   ; [$bb16] undefined
-    .byte $7f,$f5,$00,$ff,$ef,$ff,$fe,$ff   ; [$bb1e] undefined
-    .byte $de,$37,$00,$ff,$bf,$ff,$ff,$ff   ; [$bb26] undefined
-    .byte $ff,$e5,$00,$ff,$d4,$ff,$7f,$ff   ; [$bb2e] undefined
-    .byte $7d,$c0,$00,$ff,$eb,$ff,$df,$ff   ; [$bb36] undefined
-    .byte $ff,$bb,$00,$ff,$ab,$ff,$ef,$ff   ; [$bb3e] undefined
-    .byte $ef,$ff,$00,$ff,$fb,$ff,$fd,$ff   ; [$bb46] undefined
-    .byte $f3,$8c,$00,$ff,$ee,$ff,$fe,$ff   ; [$bb4e] undefined
-    .byte $fb,$37,$00,$ff,$fd,$ff,$ef,$ff   ; [$bb56] undefined
-    .byte $ff,$bf,$00,$ff,$1b,$ff,$fd,$ff   ; [$bb5e] undefined
-    .byte $5f,$f2,$00,$ff,$b7,$ff,$ff,$ff   ; [$bb66] undefined
-    .byte $f7,$77,$00,$ff,$cf,$ff,$bf,$ff   ; [$bb6e] undefined
-    .byte $ff,$d4,$00,$ff,$ff,$ff,$ff,$ff   ; [$bb76] undefined
-    .byte $fb,$dc,$00,$ff,$dc,$ff,$7a,$ff   ; [$bb7e] undefined
-    .byte $fb,$c2,$00,$ff,$df,$ff,$ed,$ff   ; [$bb86] undefined
-    .byte $fe,$d5,$00,$ff,$9c,$ff,$bd,$ff   ; [$bb8e] undefined
-    .byte $ff,$fe,$00,$ff,$fe,$ff,$ff,$ff   ; [$bb96] undefined
-    .byte $ff,$07,$00,$ff,$b2,$ff,$ff,$ff   ; [$bb9e] undefined
-    .byte $7e,$b4,$00,$ff,$5b,$ff,$fe,$ff   ; [$bba6] undefined
-    .byte $7f,$73,$00,$ff,$64,$ff,$ff,$ff   ; [$bbae] undefined
-    .byte $df,$db,$00,$ff,$ed,$ff,$bd,$ff   ; [$bbb6] undefined
-    .byte $ff,$d4,$00,$ff,$04,$ff,$c3,$ff   ; [$bbbe] undefined
-    .byte $7f,$ff,$00,$ff,$1a,$ff,$7b,$ff   ; [$bbc6] undefined
-    .byte $ff,$d8,$00,$ff,$fb,$ff,$fd,$ff   ; [$bbce] undefined
-    .byte $7f,$72,$00,$ff,$bb,$ff,$ff,$ff   ; [$bbd6] undefined
-    .byte $ef,$70,$00,$ff,$db,$ff,$ff,$ff   ; [$bbde] undefined
-    .byte $ff,$df,$00,$ff,$8d,$ff,$fb,$ff   ; [$bbe6] undefined
-    .byte $fd,$64,$00,$ff,$fa,$ff,$4f,$ff   ; [$bbee] undefined
-    .byte $bf,$00,$00,$ff,$de,$ff,$ff,$ff   ; [$bbf6] undefined
-    .byte $ef,$12,$00,$ff,$ff,$ff,$ff,$ff   ; [$bbfe] undefined
-    .byte $fb,$7b,$00,$ff,$d9,$ff,$ff,$ff   ; [$bc06] undefined
-    .byte $ff,$df,$00,$ff,$d6,$ff,$fe,$ff   ; [$bc0e] undefined
-    .byte $ff,$ff,$00,$ff,$77,$ff,$ef,$ff   ; [$bc16] undefined
-    .byte $df,$5d,$00,$ff,$bd,$ff,$7f,$ff   ; [$bc1e] undefined
-    .byte $b6,$b3,$00,$ff,$bd,$ff,$fb,$ff   ; [$bc26] undefined
-    .byte $f9,$bf,$00,$ff,$7f,$ff,$ff,$ff   ; [$bc2e] undefined
-    .byte $f9,$b6,$00,$ff,$b9,$ff,$ff,$ff   ; [$bc36] undefined
-    .byte $bb,$7f,$00,$ff,$2e,$ff,$fe,$ff   ; [$bc3e] undefined
-    .byte $fe,$fd,$00,$ff,$77,$ff,$ff,$ff   ; [$bc46] undefined
-    .byte $7d,$3c,$00,$ff,$bf,$ff,$ff,$ff   ; [$bc4e] undefined
-    .byte $ff,$aa,$00,$ff,$ff,$ff,$ff,$ff   ; [$bc56] undefined
-    .byte $fa,$7f,$00,$ff,$3f,$ff,$ff,$ff   ; [$bc5e] undefined
-    .byte $ff,$5e,$00,$ff,$f9,$ff,$fd,$ff   ; [$bc66] undefined
-    .byte $ff,$73,$00,$ff,$ef,$ff,$fb,$ff   ; [$bc6e] undefined
-    .byte $ff,$7c,$00,$ff,$fd,$ff,$ff,$ff   ; [$bc76] undefined
-    .byte $ef,$77,$00,$ff,$99,$ff,$ff,$ff   ; [$bc7e] undefined
-    .byte $7f,$b9,$00,$ff,$bf,$ff,$6b,$ff   ; [$bc86] undefined
-    .byte $e9,$c4,$00,$ff,$7a,$ff,$fe,$ff   ; [$bc8e] undefined
-    .byte $ff,$7a,$00,$ff,$ff,$ff,$ff,$ff   ; [$bc96] undefined
-    .byte $ef,$2e,$00,$ff,$99,$ff,$ff,$ff   ; [$bc9e] undefined
-    .byte $fe,$b1,$00,$ff,$bf,$ff,$ff,$ff   ; [$bca6] undefined
-    .byte $f7,$ac,$00,$ff,$fa,$ff,$ff,$ff   ; [$bcae] undefined
-    .byte $df,$f2,$00,$ff,$fd,$ff,$df,$ff   ; [$bcb6] undefined
-    .byte $ff,$7c,$00,$ff,$fc,$ff,$ff,$ff   ; [$bcbe] undefined
-    .byte $7f,$1c,$00,$ff,$50,$ff,$fe,$ff   ; [$bcc6] undefined
-    .byte $df,$9e,$00,$ff,$7f,$ff,$ff,$ff   ; [$bcce] undefined
-    .byte $ff,$1d,$00,$ff,$de,$ff,$f7,$ff   ; [$bcd6] undefined
-    .byte $ef,$ec,$00,$ff,$5d,$ff,$ff,$ff   ; [$bcde] undefined
-    .byte $37,$68,$00,$ff,$4a,$ff,$c8,$ff   ; [$bce6] undefined
-    .byte $fe,$cf,$00,$ff,$ff,$ff,$ff,$ff   ; [$bcee] undefined
-    .byte $7b,$9b,$00,$ff,$c7,$ff,$fd,$ff   ; [$bcf6] undefined
-    .byte $d7,$d0,$00,$ff,$ef,$ff,$db,$ff   ; [$bcfe] undefined
-    .byte $fd,$cf,$00,$ff,$fe,$ff,$ff,$ff   ; [$bd06] undefined
-    .byte $ff,$bf,$40,$ff,$9f,$ff,$f7,$ff   ; [$bd0e] undefined
-    .byte $ff,$f6,$00,$ff,$f4,$ff,$ff,$ff   ; [$bd16] undefined
-    .byte $7f,$54,$00,$ff,$ff,$ff,$df,$ff   ; [$bd1e] undefined
-    .byte $ff,$6f,$00,$ff,$f9,$ff,$fd,$ff   ; [$bd26] undefined
-    .byte $df,$bb,$00,$ff,$de,$ff,$ff,$ff   ; [$bd2e] undefined
-    .byte $bf,$df,$00,$ff,$ff,$ff,$ff,$ff   ; [$bd36] undefined
-    .byte $ff,$cc,$00,$ff,$57,$ff,$ff,$ff   ; [$bd3e] undefined
-    .byte $af,$9d,$00,$ff,$5a,$ff,$fd,$ff   ; [$bd46] undefined
-    .byte $f7,$59,$00,$ff,$7f,$ff,$ff,$ff   ; [$bd4e] undefined
-    .byte $ff,$df,$00,$ff,$ff,$ff,$ff,$ff   ; [$bd56] undefined
-    .byte $ff,$a9,$00,$ff,$a9,$ff,$fe,$ff   ; [$bd5e] undefined
-    .byte $f6,$f9,$00,$ff,$ff,$ff,$af,$ff   ; [$bd66] undefined
-    .byte $ff,$1f,$00,$ff,$ff,$ff,$ff,$ff   ; [$bd6e] undefined
-    .byte $ff,$8b,$00,$ff,$b7,$ff,$ff,$ff   ; [$bd76] undefined
-    .byte $ff,$6d,$00,$ff,$67,$ff,$ff,$ff   ; [$bd7e] undefined
-    .byte $df,$37,$00,$ff,$3f,$ff,$fc,$ff   ; [$bd86] undefined
-    .byte $db,$44,$00,$ff,$ff,$ff,$ff,$ff   ; [$bd8e] undefined
-    .byte $ff,$89,$00,$ff,$1f,$ff,$ff,$ff   ; [$bd96] undefined
-    .byte $fe,$db,$00,$ff,$4b,$ff,$df,$ff   ; [$bd9e] undefined
-    .byte $ff,$89,$00,$ff,$fb,$ff,$ee,$ff   ; [$bda6] undefined
-    .byte $7e,$9e,$00,$ff,$b9,$ff,$fb,$ff   ; [$bdae] undefined
-    .byte $ff,$5c,$00,$ff,$ff,$ff,$ff,$ff   ; [$bdb6] undefined
-    .byte $ff,$db,$00,$ff,$e5,$ff,$bf,$ff   ; [$bdbe] undefined
-    .byte $fb,$f7,$00,$ff,$7b,$ff,$ff,$ff   ; [$bdc6] undefined
-    .byte $ef,$63,$00,$ff,$5d,$ff,$bf,$ff   ; [$bdce] undefined
-    .byte $ff,$63,$00,$ff,$5f,$ff,$ff,$ff   ; [$bdd6] undefined
-    .byte $df,$f3,$00,$ff,$be,$ff,$fc,$ff   ; [$bdde] undefined
-    .byte $5f,$77,$00,$ff,$3d,$ff,$7f,$ff   ; [$bde6] undefined
-    .byte $fb,$52,$00,$ff,$dc,$ff,$ff,$ff   ; [$bdee] undefined
-    .byte $fc,$8a,$00,$ff,$7e,$ff,$ff,$ff   ; [$bdf6] undefined
-    .byte $5f,$1c,$00,$ff,$7e,$ff,$f7,$ff   ; [$bdfe] undefined
-    .byte $ff,$bc,$00,$ff,$7b,$ff,$7f,$ff   ; [$be06] undefined
-    .byte $fe,$ff,$00,$ff,$27,$ff,$ff,$ff   ; [$be0e] undefined
-    .byte $ff,$ff,$00,$ff,$ff,$ff,$fb,$ff   ; [$be16] undefined
-    .byte $ff,$bf,$00,$ff,$f7,$ff,$ff,$ff   ; [$be1e] undefined
-    .byte $ff,$e5,$00,$ff,$43,$ff,$ff,$ff   ; [$be26] undefined
-    .byte $fa,$75,$00,$ff,$b7,$ff,$bf,$ff   ; [$be2e] undefined
-    .byte $ff,$fb,$00,$ff,$8a,$ff,$fe,$ff   ; [$be36] undefined
-    .byte $7f,$5d,$00,$ff,$53,$ff,$ee,$ff   ; [$be3e] undefined
-    .byte $f3,$55,$00,$ff,$7e,$ff,$ff,$ff   ; [$be46] undefined
-    .byte $ff,$98,$00,$ff,$2f,$ff,$ff,$ff   ; [$be4e] undefined
-    .byte $fd,$7d,$00,$ff,$7f,$ff,$fb,$ff   ; [$be56] undefined
-    .byte $ff,$7f,$00,$ff,$6f,$ff,$7f,$ff   ; [$be5e] undefined
-    .byte $be,$75,$00,$ff,$fd,$ff,$ff,$ff   ; [$be66] undefined
-    .byte $7b,$e2,$00,$ff,$ff,$ff,$ef,$ff   ; [$be6e] undefined
-    .byte $f7,$f1,$00,$ff,$fd,$ff,$ff,$ff   ; [$be76] undefined
-    .byte $ff,$7f,$00,$ff,$69,$ff,$ef,$ff   ; [$be7e] undefined
-    .byte $be,$3f,$00,$ff,$ff,$ff,$ff,$ff   ; [$be86] undefined
-    .byte $ff,$5c,$00,$ff,$fd,$ff,$ff,$ff   ; [$be8e] undefined
-    .byte $ff,$cc,$00,$ff,$fe,$ff,$ff,$ff   ; [$be96] undefined
-    .byte $ff,$4f,$00,$ff,$c3,$ff,$f3,$ff   ; [$be9e] undefined
-    .byte $ff,$2b,$00,$ff,$ab,$ff,$ff,$ff   ; [$bea6] undefined
-    .byte $7b,$0e,$00,$ff,$ff,$ff,$f7,$ff   ; [$beae] undefined
-    .byte $ff,$16,$00,$ff,$f3,$ff,$ff,$ff   ; [$beb6] undefined
-    .byte $ff,$ab,$00,$ff,$14,$ff,$f1,$ff   ; [$bebe] undefined
-    .byte $ef,$a4,$00,$ff,$fb,$ff,$ff,$ff   ; [$bec6] undefined
-    .byte $e7,$19,$00,$ff,$56,$ff,$fb,$ff   ; [$bece] undefined
-    .byte $ff,$5c,$00,$ff,$ff,$ff,$ff,$ff   ; [$bed6] undefined
-    .byte $ff,$c8,$00,$ff,$08,$ff,$b7,$ff   ; [$bede] undefined
-    .byte $ce,$2c,$00,$ff,$fc,$ff,$f6,$ff   ; [$bee6] undefined
-    .byte $ff,$a1,$00,$ff,$ef,$ff,$ff,$ff   ; [$beee] undefined
-    .byte $ff,$5d,$00,$ff,$7f,$ff,$fd,$ff   ; [$bef6] undefined
-    .byte $ff,$d9,$00,$ff,$3e,$ff,$ff,$ff   ; [$befe] undefined
-    .byte $df,$57,$00,$ff,$f7,$ff,$cf,$ff   ; [$bf06] undefined
-    .byte $ff,$fa,$00,$ff,$9d,$ff,$ef,$ff   ; [$bf0e] undefined
-    .byte $ff,$ef,$00,$ff,$f4,$ff,$ff,$ff   ; [$bf16] undefined
-    .byte $ff,$fd,$00,$ff,$fe,$ff,$bf,$ff   ; [$bf1e] undefined
-    .byte $ff,$1b,$00,$ff,$d7,$ff,$eb,$ff   ; [$bf26] undefined
-    .byte $ff,$37,$00,$ff,$f7,$ff,$7f,$ff   ; [$bf2e] undefined
-    .byte $be,$f3,$00,$ff,$77,$ff,$ff,$ff   ; [$bf36] undefined
-    .byte $ff,$6f,$00,$ff,$f6,$ff,$ff,$ff   ; [$bf3e] undefined
-    .byte $7f,$79,$00,$ff,$df,$ff,$f7,$ff   ; [$bf46] undefined
-    .byte $f7,$fb,$08,$ff,$ff,$ff,$ff,$ff   ; [$bf4e] undefined
-    .byte $ff,$a0,$01,$ff,$65,$ff,$ff,$ff   ; [$bf56] undefined
-    .byte $f9,$7b,$00,$ff,$df,$ff,$ff,$ff   ; [$bf5e] undefined
-    .byte $ff,$e6,$00,$ff,$cf,$ff,$bf,$ff   ; [$bf66] undefined
-    .byte $fe,$75,$00,$ff,$7e,$ff,$df,$ff   ; [$bf6e] undefined
-    .byte $ff,$6f,$00,$ff,$f1,$ff,$ff,$ff   ; [$bf76] undefined
-    .byte $9d,$4a,$00,$ff,$fe,$ff,$c7,$ff   ; [$bf7e] undefined
-    .byte $bb,$09,$00,$ff,$b2,$ff,$77,$ff   ; [$bf86] undefined
-    .byte $ff,$47,$00,$ff,$f7,$ff,$bf,$fd   ; [$bf8e] undefined
-    .byte $ff,$37,$00,$ff,$7f,$ff,$ef,$ff   ; [$bf96] undefined
-    .byte $ff,$fd,$00,$ff,$3d,$ff,$3f,$ff   ; [$bf9e] undefined
-    .byte $ff,$df,$00,$ff,$bc,$ff,$ff,$ff   ; [$bfa6] undefined
-    .byte $f7,$d6,$00,$ff,$ff,$ff,$7f,$ff   ; [$bfae] undefined
-    .byte $be,$47,$00,$ff,$9f,$ff,$be,$ff   ; [$bfb6] undefined
-    .byte $ff,$d2,$00,$ff,$e4,$ff,$fe,$ff   ; [$bfbe] undefined
-    .byte $bc,$ec,$00,$ff,$fb,$ff,$ff,$ff   ; [$bfc6] undefined
-    .byte $f6,$83,$00,$ff,$f7,$ff,$fc,$ff   ; [$bfce] undefined
-    .byte $ef,$ba,$00,$ff,$9b,$ff,$ff,$ff   ; [$bfd6] undefined
-    .byte $ff,$21,$00,$ff,$7c,$ff,$be,$ff   ; [$bfde] undefined
-    .byte $77,$d7,$00,$ff,$ac,$ff,$ff,$ff   ; [$bfe6] undefined
-    .byte $fd,$a9,$00,$ff,$53,$ff,$f3,$ff   ; [$bfee] undefined
-    .byte $ff,$0b,$00,$ff,$99,$ff,$7f,$ff   ; [$bff6] undefined
-    .byte $ee,$92                           ; [$bffe] undefined
+ZENITH_DOOR_DESTINATIONS:
+    .byte $00,$0f,$00,$00,$00,$3f,$00,$90   ; undefined
+    .byte $00,$00,$00,$00,$00,$57,$00,$e1   ; undefined
+    .byte $00,$00,$00,$00,$00,$b3,$00,$84   ; undefined
+    .byte $00,$00,$00,$00,$00,$64,$00,$48   ; undefined
+    .byte $00,$00,$00,$00,$00,$ba,$00,$ac   ; undefined
+    .byte $00,$00,$00,$00,$00,$bc,$00,$e9   ; undefined
+    .byte $00,$00,$00,$00,$00,$fd,$00,$40   ; undefined
+    .byte $00,$00,$00,$00,$00,$96,$00,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$c7,$00,$06   ; undefined
+    .byte $00,$00,$00,$00,$00,$56,$00,$84   ; undefined
+    .byte $00,$00,$00,$00,$00,$58,$00,$16   ; undefined
+    .byte $00,$00,$00,$00,$00,$90,$00,$0a   ; undefined
+    .byte $00,$00,$00,$00,$00,$b5,$00,$80   ; undefined
+    .byte $00,$00,$00,$00,$00,$1e,$00,$25   ; undefined
+    .byte $00,$00,$00,$00,$00,$0a,$20,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$2b,$10,$40   ; undefined
+    .byte $00,$00,$00,$00,$00,$d9,$00,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$6b,$00,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$78,$00,$6c   ; undefined
+    .byte $00,$00,$00,$00,$00,$3c,$00,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$85,$01,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$de,$00,$64   ; undefined
+    .byte $00,$00,$00,$00,$00,$98,$00,$10   ; undefined
+    .byte $00,$00,$00,$00,$00,$18,$00,$04   ; undefined
+    .byte $00,$00,$00,$00,$00,$3c,$00,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$bd,$00,$b2   ; undefined
+    .byte $00,$00,$00,$00,$00,$97,$00,$09   ; undefined
+    .byte $00,$00,$00,$00,$00,$c3,$00,$b2   ; undefined
+    .byte $00,$00,$00,$00,$00,$ca,$00,$21   ; undefined
+    .byte $00,$00,$00,$00,$00,$1b,$00,$4a   ; undefined
+    .byte $00,$00,$00,$00,$00,$93,$00,$89   ; undefined
+    .byte $00,$00,$00,$00,$00,$77,$00,$01   ; undefined
+    .byte $00,$00,$00,$00,$00,$7e,$00,$44   ; undefined
+    .byte $00,$00,$00,$00,$00,$b7,$00,$3f   ; undefined
+    .byte $00,$00,$00,$00,$00,$5a,$00,$30   ; undefined
+    .byte $00,$00,$00,$00,$00,$6d,$00,$51   ; undefined
+    .byte $00,$00,$00,$00,$00,$6c,$00,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$d3,$00,$c0   ; undefined
+    .byte $00,$00,$00,$00,$00,$0d,$00,$10   ; undefined
+    .byte $00,$00,$00,$00,$00,$74,$00,$20   ; undefined
+    .byte $00,$00,$00,$00,$00,$85,$00,$01   ; undefined
+    .byte $00,$00,$00,$00,$00,$6d,$00,$4a   ; undefined
+    .byte $00,$00,$00,$00,$00,$54,$00,$a0   ; undefined
+    .byte $00,$00,$00,$00,$00,$f8,$00,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$b5,$01,$04   ; undefined
+    .byte $00,$00,$00,$00,$00,$16,$00,$0a   ; undefined
+    .byte $00,$00,$00,$00,$00,$8f,$00,$10   ; undefined
+    .byte $00,$00,$00,$00,$00,$04,$01,$50   ; undefined
+    .byte $00,$00,$00,$00,$00,$58,$00,$c1   ; undefined
+    .byte $00,$00,$00,$00,$00,$0b,$00,$10   ; undefined
+    .byte $00,$00,$00,$00,$00,$33,$00,$80   ; undefined
+    .byte $00,$00,$00,$00,$00,$9c,$00,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$ca,$00,$10   ; undefined
+    .byte $00,$00,$00,$00,$00,$1e,$00,$02   ; undefined
+    .byte $00,$00,$00,$00,$00,$f8,$00,$02   ; undefined
+    .byte $00,$00,$00,$00,$00,$26,$04,$98   ; undefined
+    .byte $00,$00,$00,$00,$00,$21,$44,$20   ; undefined
+    .byte $00,$00,$00,$00,$00,$61,$00,$a1   ; undefined
+    .byte $00,$00,$00,$00,$00,$c5,$00,$32   ; undefined
+    .byte $00,$00,$00,$00,$00,$97,$00,$10   ; undefined
+    .byte $00,$00,$00,$00,$00,$76,$00,$05   ; undefined
+    .byte $00,$00,$00,$00,$00,$b9,$00,$80   ; undefined
+    .byte $00,$00,$00,$00,$00,$c3,$80,$08   ; undefined
+    .byte $00,$00,$00,$00,$00,$be,$00,$80   ; undefined
+    .byte $00,$00,$00,$00,$00,$7c,$00,$03   ; undefined
+    .byte $00,$00,$00,$00,$00,$56,$00,$18   ; undefined
+    .byte $00,$00,$00,$00,$00,$ac,$00,$12   ; undefined
+    .byte $00,$00,$00,$00,$00,$d6,$10,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$9c,$88,$8e   ; undefined
+    .byte $00,$00,$00,$00,$00,$f7,$00,$13   ; undefined
+    .byte $00,$00,$00,$00,$00,$dd,$00,$d0   ; undefined
+    .byte $00,$00,$00,$00,$00,$7f,$00,$10   ; undefined
+    .byte $00,$00,$00,$00,$00,$60,$00,$14   ; undefined
+    .byte $00,$00,$00,$00,$00,$ed,$00,$11   ; undefined
+    .byte $00,$00,$00,$00,$00,$47,$00,$44   ; undefined
+    .byte $00,$00,$00,$00,$00,$25,$00,$42   ; undefined
+    .byte $00,$00,$00,$00,$00,$ce,$80,$a0   ; undefined
+    .byte $00,$00,$00,$00,$00,$05,$00,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$6a,$00,$0d   ; undefined
+    .byte $00,$00,$00,$00,$00,$61,$80,$10   ; undefined
+    .byte $00,$00,$00,$00,$00,$12,$00,$40   ; undefined
+    .byte $00,$00,$00,$00,$00,$0e,$00,$39   ; undefined
+    .byte $00,$00,$00,$00,$00,$7e,$00,$0c   ; undefined
+    .byte $00,$00,$00,$00,$00,$43,$20,$10   ; undefined
+    .byte $00,$00,$00,$00,$00,$02,$00,$49   ; undefined
+    .byte $00,$00,$00,$00,$00,$39,$00,$10   ; undefined
+    .byte $00,$00,$00,$00,$00,$62,$00,$02   ; undefined
+    .byte $00,$00,$00,$00,$00,$42,$00,$01   ; undefined
+    .byte $00,$00,$00,$00,$00,$10,$00,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$1e,$00,$94   ; undefined
+    .byte $00,$00,$00,$00,$00,$ab,$00,$22   ; undefined
+    .byte $00,$00,$00,$00,$00,$ee,$00,$94   ; undefined
+    .byte $00,$00,$00,$00,$00,$5a,$00,$a2   ; undefined
+    .byte $00,$00,$00,$00,$00,$19,$00,$40   ; undefined
+    .byte $00,$00,$00,$00,$00,$69,$00,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$eb,$00,$64   ; undefined
+    .byte $00,$00,$00,$00,$00,$75,$00,$82   ; undefined
+    .byte $00,$00,$00,$00,$00,$1f,$00,$a2   ; undefined
+    .byte $00,$00,$00,$00,$00,$df,$00,$19   ; undefined
+    .byte $00,$00,$00,$00,$00,$ae,$00,$28   ; undefined
+    .byte $00,$00,$00,$00,$00,$95,$10,$21   ; undefined
+    .byte $00,$00,$00,$00,$00,$cd,$00,$12   ; undefined
+    .byte $00,$00,$00,$00,$00,$ed,$00,$12   ; undefined
+    .byte $00,$00,$00,$00,$00,$0f,$00,$81   ; undefined
+    .byte $00,$00,$00,$00,$00,$75,$03,$30   ; undefined
+    .byte $00,$00,$00,$00,$00,$55,$02,$80   ; undefined
+    .byte $00,$00,$00,$00,$00,$7c,$00,$0a   ; undefined
+    .byte $00,$00,$00,$00,$00,$fd,$00,$91   ; undefined
+    .byte $00,$00,$00,$00,$00,$57,$00,$44   ; undefined
+    .byte $00,$00,$00,$00,$00,$de,$10,$02   ; undefined
+    .byte $00,$00,$00,$00,$00,$51,$00,$04   ; undefined
+    .byte $00,$00,$00,$00,$00,$c6,$00,$91   ; undefined
+    .byte $00,$00,$00,$00,$00,$c9,$10,$21   ; undefined
+    .byte $00,$00,$00,$00,$00,$7e,$00,$3c   ; undefined
+    .byte $00,$00,$00,$00,$00,$70,$00,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$2c,$00,$28   ; undefined
+    .byte $00,$00,$00,$00,$00,$20,$00,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$32,$00,$04   ; undefined
+    .byte $00,$00,$00,$00,$00,$12,$00,$15   ; undefined
+    .byte $00,$00,$00,$00,$00,$d0,$00,$01   ; undefined
+    .byte $00,$00,$00,$00,$a0,$47,$01,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$4d,$00,$15   ; undefined
+    .byte $00,$00,$00,$00,$10,$bd,$00,$08   ; undefined
+    .byte $00,$00,$00,$00,$00,$41,$00,$80   ; undefined
+    .byte $00,$00,$00,$00,$00,$64,$00,$49   ; undefined
+    .byte $00,$00,$00,$00,$00,$1f,$00,$49   ; undefined
+    .byte $00,$00,$00,$00,$00,$06,$00,$12   ; undefined
+    .byte $00,$00,$00,$00,$00,$e7,$00,$05   ; undefined
+    .byte $00,$00,$00,$00,$00,$c5,$00,$47   ; undefined
+    .byte $00,$00,$00,$00,$00,$9f,$80,$a5   ; undefined
+    .byte $00,$00,$00,$00,$00,$5a,$80,$06   ; undefined
+    .byte $00,$00,$00,$00,$00,$7e,$00,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$a0,$00,$21   ; undefined
+    .byte $00,$00,$00,$00,$20,$7b,$00,$80   ; undefined
+    .byte $00,$00,$00,$00,$00,$96,$00,$12   ; undefined
+    .byte $00,$00,$00,$00,$00,$d0,$40,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$12,$00,$01   ; undefined
+    .byte $00,$00,$00,$00,$00,$5b,$00,$50   ; undefined
+    .byte $00,$00,$00,$00,$00,$b2,$00,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$0d,$00,$04   ; undefined
+    .byte $00,$00,$00,$00,$00,$ab,$00,$01   ; undefined
+    .byte $00,$00,$00,$00,$00,$0b,$00,$40   ; undefined
+    .byte $00,$00,$00,$00,$00,$63,$00,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$b1,$16,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$43,$40,$81   ; undefined
+    .byte $00,$00,$00,$00,$00,$7d,$80,$14   ; undefined
+    .byte $00,$00,$00,$00,$00,$ef,$00,$60   ; undefined
+    .byte $00,$00,$00,$00,$00,$a0,$00,$02   ; undefined
+    .byte $00,$00,$00,$00,$00,$61,$41,$04   ; undefined
+    .byte $00,$00,$00,$00,$00,$dd,$00,$41   ; undefined
+    .byte $00,$00,$00,$00,$00,$06,$00,$44   ; undefined
+    .byte $00,$00,$00,$00,$00,$9a,$00,$84   ; undefined
+    .byte $00,$00,$00,$00,$00,$4b,$11,$10   ; undefined
+    .byte $00,$00,$00,$00,$00,$67,$00,$04   ; undefined
+    .byte $00,$00,$00,$00,$00,$e6,$20,$01   ; undefined
+    .byte $00,$00,$00,$00,$00,$fd,$02,$53   ; undefined
+    .byte $00,$00,$00,$00,$00,$5c,$10,$40   ; undefined
+    .byte $00,$00,$00,$00,$00,$d9,$00,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$0f,$00,$0a   ; undefined
+    .byte $00,$00,$00,$00,$00,$7b,$00,$8f   ; undefined
+    .byte $00,$00,$00,$00,$00,$c9,$00,$08   ; undefined
+    .byte $00,$00,$00,$00,$00,$36,$00,$68   ; undefined
+    .byte $00,$00,$00,$00,$00,$5a,$80,$5c   ; undefined
+    .byte $00,$00,$00,$00,$00,$24,$00,$48   ; undefined
+    .byte $00,$00,$00,$00,$00,$72,$00,$03   ; undefined
+    .byte $00,$00,$00,$00,$00,$5f,$00,$8a   ; undefined
+    .byte $00,$00,$00,$00,$00,$57,$00,$25   ; undefined
+    .byte $00,$00,$00,$00,$80,$fc,$00,$44   ; undefined
+    .byte $00,$00,$00,$00,$00,$ae,$00,$ba   ; undefined
+    .byte $00,$00,$00,$00,$00,$36,$00,$40   ; undefined
+    .byte $00,$00,$00,$00,$00,$ea,$00,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$76,$00,$40   ; undefined
+    .byte $00,$00,$00,$00,$00,$cf,$10,$48   ; undefined
+    .byte $00,$00,$00,$00,$00,$1f,$00,$03   ; undefined
+    .byte $00,$00,$00,$00,$00,$32,$00,$b0   ; undefined
+    .byte $00,$00,$00,$00,$00,$fa,$00,$50   ; undefined
+    .byte $00,$00,$00,$00,$00,$d5,$80,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$7a,$04,$80   ; undefined
+    .byte $00,$00,$00,$00,$00,$9b,$00,$80   ; undefined
+    .byte $00,$00,$00,$00,$00,$59,$00,$50   ; undefined
+    .byte $00,$00,$00,$00,$00,$10,$84,$07   ; undefined
+    .byte $00,$00,$00,$00,$00,$95,$00,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$91,$00,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$e4,$00,$00   ; undefined
+    .byte $00,$00,$00,$00,$04,$d1,$80,$20   ; undefined
+    .byte $00,$00,$00,$00,$00,$3c,$00,$45   ; undefined
+    .byte $00,$00,$00,$00,$00,$ab,$00,$2e   ; undefined
+    .byte $00,$00,$00,$00,$00,$eb,$00,$9c   ; undefined
+    .byte $00,$00,$00,$00,$00,$77,$00,$0e   ; undefined
+    .byte $00,$00,$00,$00,$00,$6e,$00,$2a   ; undefined
+    .byte $00,$00,$00,$00,$00,$fa,$84,$e8   ; undefined
+    .byte $00,$00,$00,$00,$00,$72,$00,$35   ; undefined
+    .byte $00,$00,$00,$00,$00,$62,$00,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$be,$00,$42   ; undefined
+    .byte $00,$00,$00,$00,$00,$7d,$00,$21   ; undefined
+    .byte $00,$00,$00,$00,$00,$4d,$40,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$bf,$00,$61   ; undefined
+    .byte $00,$00,$00,$00,$00,$36,$00,$14   ; undefined
+    .byte $00,$00,$00,$00,$00,$4a,$00,$01   ; undefined
+    .byte $00,$00,$00,$00,$00,$ab,$00,$21   ; undefined
+    .byte $00,$00,$00,$00,$00,$0f,$00,$19   ; undefined
+    .byte $00,$00,$00,$00,$00,$dd,$00,$2a   ; undefined
+    .byte $00,$00,$00,$00,$00,$ed,$00,$a8   ; undefined
+    .byte $00,$00,$00,$00,$00,$1e,$00,$80   ; undefined
+    .byte $00,$00,$00,$00,$00,$aa,$00,$01   ; undefined
+    .byte $00,$00,$00,$00,$00,$9b,$00,$16   ; undefined
+    .byte $00,$00,$00,$00,$00,$70,$00,$a0   ; undefined
+    .byte $00,$00,$00,$00,$00,$98,$00,$21   ; undefined
+    .byte $00,$00,$00,$00,$00,$ca,$00,$21   ; undefined
+    .byte $00,$00,$00,$00,$00,$f1,$00,$99   ; undefined
+    .byte $00,$00,$00,$00,$00,$31,$00,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$b0,$00,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$41,$02,$08   ; undefined
+    .byte $00,$00,$00,$00,$00,$fc,$00,$09   ; undefined
+    .byte $00,$00,$00,$00,$00,$a9,$00,$01   ; undefined
+    .byte $00,$00,$00,$00,$00,$14,$00,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$7a,$00,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$dd,$00,$06   ; undefined
+    .byte $00,$00,$00,$00,$00,$62,$00,$e2   ; undefined
+    .byte $00,$00,$00,$00,$00,$1b,$00,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$ff,$00,$01   ; undefined
+    .byte $00,$00,$00,$00,$00,$b3,$00,$5c   ; undefined
+    .byte $00,$00,$00,$00,$00,$5c,$00,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$17,$00,$31   ; undefined
+    .byte $00,$00,$00,$00,$00,$8f,$04,$02   ; undefined
+    .byte $00,$00,$00,$00,$00,$7d,$00,$ab   ; undefined
+    .byte $00,$00,$00,$00,$00,$6f,$00,$80   ; undefined
+    .byte $00,$00,$00,$00,$00,$f3,$00,$c3   ; undefined
+    .byte $00,$00,$00,$00,$00,$d0,$00,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$bf,$00,$01   ; undefined
+    .byte $00,$00,$00,$00,$00,$61,$80,$1a   ; undefined
+    .byte $00,$00,$00,$00,$00,$be,$00,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$30,$08,$18   ; undefined
+    .byte $00,$00,$00,$00,$00,$ff,$00,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$eb,$00,$50   ; undefined
+    .byte $00,$00,$00,$00,$00,$76,$00,$12   ; undefined
+    .byte $00,$00,$00,$00,$00,$75,$00,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$60,$00,$9c   ; undefined
+    .byte $00,$00,$00,$00,$00,$f9,$00,$0c   ; undefined
+    .byte $00,$00,$00,$00,$00,$29,$20,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$2c,$00,$a0   ; undefined
+    .byte $00,$00,$00,$00,$00,$69,$00,$40   ; undefined
+    .byte $00,$00,$00,$00,$00,$13,$00,$12   ; undefined
+    .byte $00,$00,$00,$00,$00,$84,$08,$04   ; undefined
+    .byte $00,$00,$00,$00,$00,$0a,$00,$08   ; undefined
+    .byte $00,$00,$00,$00,$00,$3c,$00,$1e   ; undefined
+    .byte $00,$00,$00,$00,$00,$de,$01,$10   ; undefined
+    .byte $00,$00,$00,$00,$00,$06,$20,$09   ; undefined
+    .byte $00,$00,$00,$00,$00,$4c,$00,$42   ; undefined
+    .byte $00,$00,$00,$00,$00,$32,$00,$04   ; undefined
+    .byte $00,$00,$00,$00,$00,$de,$00,$26   ; undefined
+    .byte $00,$00,$00,$00,$00,$f8,$00,$b4   ; undefined
+    .byte $00,$00,$00,$00,$00,$f9,$04,$e7   ; undefined
+    .byte $00,$00,$00,$00,$00,$6e,$80,$10   ; undefined
+    .byte $00,$00,$00,$00,$00,$96,$00,$01   ; undefined
+    .byte $00,$00,$00,$00,$00,$aa,$00,$38   ; undefined
+    .byte $00,$00,$00,$00,$00,$16,$00,$27   ; undefined
+    .byte $00,$00,$00,$00,$00,$f8,$00,$84   ; undefined
+    .byte $00,$00,$00,$00,$00,$da,$00,$28   ; undefined
+    .byte $00,$00,$00,$00,$00,$d1,$00,$31   ; undefined
+    .byte $00,$00,$00,$00,$00,$e2,$00,$82   ; undefined
+    .byte $00,$00,$00,$00,$00,$b1,$00,$31   ; undefined
+    .byte $00,$00,$00,$00,$00,$06,$00,$04   ; undefined
+    .byte $00,$00,$00,$00,$00,$57,$00,$46   ; undefined
+    .byte $00,$00,$00,$00,$00,$0c,$00,$64   ; undefined
+    .byte $00,$00,$00,$00,$00,$bd,$00,$29   ; undefined
+    .byte $00,$00,$00,$00,$00,$3c,$02,$15   ; undefined
+    .byte $00,$00,$00,$00,$00,$02,$00,$48   ; undefined
+    .byte $00,$00,$00,$00,$00,$40,$01,$40   ; undefined
+    .byte $00,$00,$00,$00,$00,$c7,$00,$80   ; undefined
+    .byte $00,$00,$00,$00,$00,$3a,$00,$08   ; undefined
+    .byte $00,$00,$00,$00,$00,$0c,$08,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$66,$14,$01   ; undefined
+    .byte $00,$00,$00,$00,$00,$7a,$00,$a2   ; undefined
+    .byte $00,$00,$00,$00,$00,$39,$00,$04   ; undefined
+    .byte $00,$00,$00,$00,$00,$fc,$00,$42   ; undefined
+    .byte $00,$00,$00,$00,$00,$d6,$05,$20   ; undefined
+    .byte $00,$00,$00,$00,$00,$df,$00,$20   ; undefined
+    .byte $00,$00,$00,$00,$00,$49,$00,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$9e,$00,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$e1,$c0,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$0b,$00,$01   ; undefined
+    .byte $00,$00,$00,$00,$00,$7b,$00,$a4   ; undefined
+    .byte $00,$00,$00,$00,$00,$36,$00,$32   ; undefined
+    .byte $00,$00,$00,$00,$00,$07,$00,$08   ; undefined
+    .byte $00,$00,$00,$00,$00,$af,$00,$81   ; undefined
+    .byte $00,$00,$00,$00,$00,$9e,$00,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$8e,$20,$22   ; undefined
+    .byte $00,$00,$00,$00,$00,$f5,$02,$70   ; undefined
+    .byte $00,$00,$00,$00,$00,$fc,$00,$5d   ; undefined
+    .byte $00,$00,$00,$00,$00,$f3,$02,$b8   ; undefined
+    .byte $00,$00,$00,$00,$00,$a9,$00,$04   ; undefined
+    .byte $00,$00,$00,$00,$00,$d5,$00,$18   ; undefined
+    .byte $00,$00,$00,$00,$00,$27,$00,$35   ; undefined
+    .byte $00,$00,$00,$00,$00,$d0,$00,$34   ; undefined
+    .byte $00,$00,$00,$00,$02,$ed,$00,$38   ; undefined
+    .byte $00,$00,$00,$00,$00,$c1,$04,$01   ; undefined
+    .byte $00,$00,$00,$00,$00,$4f,$00,$15   ; undefined
+    .byte $00,$00,$00,$00,$00,$96,$10,$28   ; undefined
+    .byte $00,$00,$00,$00,$00,$c6,$00,$20   ; undefined
+    .byte $00,$00,$00,$00,$00,$40,$00,$47   ; undefined
+    .byte $00,$00,$00,$00,$00,$ef,$00,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$4f,$00,$04   ; undefined
+    .byte $00,$00,$00,$00,$00,$a5,$00,$00   ; undefined
+    .byte $00,$00,$00,$00,$40,$a0,$08,$01   ; undefined
+    .byte $00,$00,$00,$00,$00,$3b,$00,$88   ; undefined
+    .byte $00,$00,$00,$00,$00,$54,$00,$d0   ; undefined
+    .byte $00,$00,$00,$00,$00,$a6,$00,$48   ; undefined
+    .byte $00,$00,$00,$00,$00,$26,$00,$01   ; undefined
+    .byte $00,$00,$00,$00,$00,$2c,$00,$b1   ; undefined
+    .byte $00,$00,$00,$00,$00,$b2,$00,$01   ; undefined
+    .byte $00,$00,$00,$00,$00,$b5,$00,$44   ; undefined
+    .byte $00,$00,$00,$00,$40,$25,$00,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$bd,$20,$04   ; undefined
+    .byte $00,$00,$00,$00,$00,$9e,$04,$07   ; undefined
+    .byte $00,$00,$00,$00,$00,$e5,$00,$18   ; undefined
+    .byte $00,$00,$00,$00,$00,$8d,$00,$b1   ; undefined
+    .byte $00,$00,$00,$00,$00,$16,$00,$92   ; undefined
+    .byte $00,$00,$00,$00,$00,$87,$00,$42   ; undefined
+    .byte $00,$00,$00,$00,$00,$fc,$00,$31   ; undefined
+    .byte $00,$00,$00,$00,$00,$37,$00,$01   ; undefined
+    .byte $00,$00,$00,$00,$00,$b7,$00,$e0   ; undefined
+    .byte $00,$00,$00,$00,$00,$fd,$20,$40   ; undefined
+    .byte $00,$00,$00,$00,$00,$9d,$00,$a8   ; undefined
+    .byte $00,$00,$00,$00,$00,$da,$00,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$96,$00,$28   ; undefined
+    .byte $00,$00,$00,$00,$00,$2b,$00,$52   ; undefined
+    .byte $00,$00,$00,$00,$00,$a9,$00,$a2   ; undefined
+    .byte $00,$00,$00,$00,$00,$62,$00,$10   ; undefined
+    .byte $00,$00,$00,$00,$00,$74,$00,$19   ; undefined
+    .byte $00,$00,$00,$00,$00,$25,$40,$30   ; undefined
+    .byte $00,$00,$00,$00,$00,$3b,$00,$a1   ; undefined
+    .byte $00,$00,$00,$00,$00,$ff,$00,$40   ; undefined
+    .byte $00,$00,$00,$00,$00,$e9,$00,$06   ; undefined
+    .byte $00,$00,$00,$00,$00,$ee,$00,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$31,$22,$60   ; undefined
+    .byte $00,$00,$00,$00,$00,$11,$00,$c0   ; undefined
+    .byte $00,$00,$00,$00,$00,$e9,$00,$aa   ; undefined
+    .byte $00,$00,$00,$00,$00,$24,$00,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$81,$00,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$c2,$04,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$b6,$00,$c0   ; undefined
+    .byte $00,$00,$00,$00,$00,$aa,$08,$08   ; undefined
+    .byte $00,$00,$00,$00,$00,$5c,$00,$05   ; undefined
+    .byte $00,$00,$00,$00,$00,$3c,$20,$11   ; undefined
+    .byte $00,$00,$00,$00,$00,$52,$00,$5a   ; undefined
+    .byte $00,$00,$00,$00,$00,$4f,$00,$0c   ; undefined
+    .byte $00,$00,$00,$00,$00,$f3,$00,$42   ; undefined
+    .byte $00,$00,$00,$00,$00,$f1,$00,$a4   ; undefined
+    .byte $00,$00,$00,$00,$00,$56,$00,$be   ; undefined
+    .byte $00,$00,$00,$00,$10,$15,$00,$17   ; undefined
+    .byte $00,$00,$00,$00,$00,$bf,$00,$94   ; undefined
+    .byte $00,$00,$00,$00,$00,$6a,$00,$54   ; undefined
+    .byte $00,$00,$00,$00,$00,$fe,$00,$90   ; undefined
+    .byte $00,$00,$00,$00,$00,$72,$00,$02   ; undefined
+    .byte $00,$00,$00,$00,$00,$5c,$00,$82   ; undefined
+    .byte $00,$00,$00,$00,$00,$67,$02,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$9f,$00,$01   ; undefined
+    .byte $00,$00,$00,$00,$00,$be,$00,$44   ; undefined
+    .byte $00,$00,$00,$00,$00,$1a,$14,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$d0,$10,$0a   ; undefined
+    .byte $00,$00,$00,$00,$00,$b6,$00,$12   ; undefined
+    .byte $00,$00,$00,$00,$00,$7d,$00,$30   ; undefined
+    .byte $00,$00,$00,$00,$00,$a1,$00,$04   ; undefined
+    .byte $00,$00,$00,$00,$00,$29,$20,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$fe,$00,$4c   ; undefined
+    .byte $00,$00,$00,$00,$00,$04,$08,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$57,$00,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$20,$00,$02   ; undefined
+    .byte $00,$00,$00,$00,$00,$8d,$00,$02   ; undefined
+    .byte $00,$00,$00,$00,$00,$d8,$00,$04   ; undefined
+    .byte $00,$00,$00,$00,$00,$52,$00,$05   ; undefined
+    .byte $00,$00,$00,$00,$10,$6f,$00,$44   ; undefined
+    .byte $00,$00,$00,$00,$00,$cf,$00,$00   ; undefined
+    .byte $00,$00,$00,$00,$80,$15,$00,$09   ; undefined
+    .byte $00,$00,$00,$00,$00,$85,$08,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$d1,$00,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$12,$00,$10   ; undefined
+    .byte $00,$00,$00,$00,$00,$eb,$40,$52   ; undefined
+    .byte $00,$00,$00,$00,$00,$d1,$00,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$c3,$00,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$df,$00,$09   ; undefined
+    .byte $00,$00,$00,$00,$00,$9b,$00,$60   ; undefined
+    .byte $00,$00,$00,$00,$00,$ed,$00,$60   ; undefined
+    .byte $00,$00,$00,$00,$00,$98,$00,$d0   ; undefined
+    .byte $00,$00,$00,$00,$00,$b7,$00,$19   ; undefined
+    .byte $00,$00,$00,$00,$00,$3f,$00,$01   ; undefined
+    .byte $00,$00,$00,$00,$00,$a0,$00,$80   ; undefined
+    .byte $00,$00,$00,$00,$00,$f1,$00,$24   ; undefined
+    .byte $00,$00,$00,$00,$00,$1f,$00,$4b   ; undefined
+    .byte $00,$00,$00,$00,$00,$67,$00,$60   ; undefined
+    .byte $00,$00,$00,$00,$00,$c0,$00,$10   ; undefined
+    .byte $00,$00,$00,$00,$00,$40,$00,$12   ; undefined
+    .byte $00,$00,$00,$00,$00,$7b,$00,$50   ; undefined
+    .byte $00,$00,$00,$00,$00,$79,$20,$03   ; undefined
+    .byte $00,$00,$00,$00,$00,$5b,$00,$02   ; undefined
+    .byte $00,$00,$00,$00,$00,$6e,$00,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$c6,$00,$61   ; undefined
+    .byte $00,$00,$00,$00,$00,$47,$00,$12   ; undefined
+    .byte $00,$00,$00,$00,$00,$b6,$84,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$10,$81,$c2   ; undefined
+    .byte $00,$00,$00,$00,$00,$1a,$00,$71   ; undefined
+    .byte $00,$00,$00,$00,$00,$84,$00,$40   ; undefined
+    .byte $00,$00,$00,$00,$00,$25,$00,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$45,$00,$01   ; undefined
+    .byte $00,$00,$00,$00,$00,$c9,$00,$33   ; undefined
+    .byte $00,$00,$00,$00,$00,$6a,$00,$88   ; undefined
+    .byte $00,$00,$00,$00,$00,$4e,$40,$c0   ; undefined
+    .byte $00,$00,$00,$00,$00,$57,$40,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$3a,$00,$37   ; undefined
+    .byte $00,$00,$00,$00,$00,$9f,$00,$50   ; undefined
+    .byte $00,$00,$00,$00,$00,$bc,$01,$c0   ; undefined
+    .byte $00,$00,$00,$00,$00,$f0,$00,$29   ; undefined
+    .byte $00,$00,$00,$00,$00,$e3,$04,$07   ; undefined
+    .byte $00,$00,$00,$00,$00,$ff,$00,$09   ; undefined
+    .byte $00,$00,$00,$00,$02,$1f,$00,$10   ; undefined
+    .byte $00,$00,$00,$00,$00,$85,$00,$10   ; undefined
+    .byte $00,$00,$00,$00,$00,$a6,$00,$03   ; undefined
+    .byte $00,$00,$00,$00,$00,$85,$40,$40   ; undefined
+    .byte $00,$00,$00,$00,$00,$77,$20,$40   ; undefined
+    .byte $00,$00,$00,$00,$00,$cf,$00,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$7a,$01,$41   ; undefined
+    .byte $00,$00,$00,$00,$00,$8e,$80,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$2b,$10,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$38,$00,$0a   ; undefined
+    .byte $00,$00,$00,$00,$00,$3b,$00,$8e   ; undefined
+    .byte $00,$00,$00,$00,$00,$18,$20,$41   ; undefined
+    .byte $00,$00,$00,$00,$00,$c9,$00,$09   ; undefined
+    .byte $00,$00,$00,$00,$00,$73,$03,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$55,$00,$45   ; undefined
+    .byte $00,$00,$00,$00,$00,$28,$00,$01   ; undefined
+    .byte $00,$00,$00,$00,$00,$1c,$00,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$11,$00,$22   ; undefined
+    .byte $00,$00,$00,$00,$00,$7f,$00,$80   ; undefined
+    .byte $00,$00,$00,$00,$00,$1c,$01,$04   ; undefined
+    .byte $00,$00,$00,$00,$00,$05,$00,$20   ; undefined
+    .byte $00,$00,$00,$00,$00,$6a,$80,$00   ; undefined
+    .byte $00,$00,$00,$00,$00,$eb,$00,$d1   ; undefined
+    .byte $00,$00,$00,$00,$00,$80,$00,$40   ; undefined
+    .byte $00,$00,$00,$00,$00,$89,$80,$10   ; undefined
+    .byte $00,$00,$00,$00,$00,$23,$40,$30   ; undefined
+    .byte $00,$00,$04,$ff,$ff,$ff,$ef,$ff   ; undefined
+    .byte $df,$1c,$00,$ff,$7e,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ae,$00,$ff,$3e,$ff,$ef,$ff   ; undefined
+    .byte $bf,$fe,$00,$ff,$ee,$ff,$ff,$ff   ; undefined
+    .byte $ff,$bb,$00,$ff,$bf,$ff,$7f,$ff   ; undefined
+    .byte $7f,$5f,$00,$ff,$7d,$ff,$ff,$ff   ; undefined
+    .byte $ff,$6a,$00,$ff,$df,$ff,$7f,$ff   ; undefined
+    .byte $fa,$ed,$00,$ff,$ef,$ff,$db,$ff   ; undefined
+    .byte $7f,$ff,$00,$ff,$5c,$ff,$cf,$ff   ; undefined
+    .byte $ff,$be,$00,$ff,$93,$ff,$f3,$ff   ; undefined
+    .byte $ff,$a0,$00,$ff,$bf,$ff,$ff,$ff   ; undefined
+    .byte $f6,$e6,$00,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$6e,$00,$ff,$f9,$ff,$ff,$ff   ; undefined
+    .byte $ef,$3f,$00,$ff,$5e,$ff,$ff,$ff   ; undefined
+    .byte $fb,$bc,$00,$ff,$4f,$ff,$7f,$ff   ; undefined
+    .byte $ff,$af,$00,$ff,$df,$ff,$ff,$ff   ; undefined
+    .byte $f6,$ed,$00,$ff,$4b,$ff,$f7,$ff   ; undefined
+    .byte $fb,$f7,$00,$ff,$83,$ff,$fe,$ff   ; undefined
+    .byte $ff,$be,$00,$ff,$df,$ff,$ff,$ff   ; undefined
+    .byte $7f,$d3,$00,$ff,$fd,$ff,$ff,$ff   ; undefined
+    .byte $ff,$bb,$00,$ff,$ff,$ff,$7f,$ff   ; undefined
+    .byte $ff,$d7,$00,$ff,$eb,$ff,$ff,$ff   ; undefined
+    .byte $ff,$b2,$00,$ff,$ff,$ff,$7f,$ff   ; undefined
+    .byte $ff,$d8,$00,$ff,$fd,$ff,$ff,$ff   ; undefined
+    .byte $7d,$6e,$00,$ff,$6b,$ff,$ff,$ff   ; undefined
+    .byte $de,$bb,$00,$ff,$27,$ff,$bf,$ff   ; undefined
+    .byte $ff,$47,$00,$ff,$ff,$ff,$bf,$ff   ; undefined
+    .byte $ff,$c8,$00,$ff,$6f,$ff,$ff,$fd   ; undefined
+    .byte $ff,$ac,$00,$ff,$ef,$ff,$fe,$ff   ; undefined
+    .byte $8f,$3d,$00,$ff,$41,$ff,$ef,$ff   ; undefined
+    .byte $7f,$8b,$00,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$1b,$00,$ff,$fd,$ff,$ff,$ff   ; undefined
+    .byte $ff,$50,$00,$ff,$fb,$ff,$ff,$ff   ; undefined
+    .byte $ff,$fd,$00,$ff,$df,$ff,$ff,$ff   ; undefined
+    .byte $ff,$45,$00,$ff,$fa,$ff,$df,$ff   ; undefined
+    .byte $fb,$77,$00,$ff,$de,$ff,$ff,$ff   ; undefined
+    .byte $ff,$fb,$00,$ff,$2c,$ff,$ff,$ff   ; undefined
+    .byte $df,$bb,$00,$ff,$fe,$ff,$f7,$ff   ; undefined
+    .byte $df,$99,$00,$ff,$68,$ff,$ff,$ff   ; undefined
+    .byte $ff,$dd,$00,$ff,$b1,$ff,$ef,$ff   ; undefined
+    .byte $ff,$e2,$00,$ff,$d7,$ff,$af,$ff   ; undefined
+    .byte $df,$de,$00,$ff,$5b,$ff,$7f,$ff   ; undefined
+    .byte $ff,$bf,$40,$ff,$ef,$ff,$ff,$ff   ; undefined
+    .byte $ff,$f7,$00,$ff,$fa,$ff,$bd,$ff   ; undefined
+    .byte $fd,$d6,$00,$ff,$79,$ff,$ff,$ff   ; undefined
+    .byte $fb,$9a,$00,$ff,$ad,$ff,$ff,$ff   ; undefined
+    .byte $f7,$91,$00,$ff,$b9,$ff,$7f,$ff   ; undefined
+    .byte $ff,$ff,$00,$ff,$68,$ff,$ff,$ff   ; undefined
+    .byte $ef,$bd,$00,$ff,$3c,$ff,$b7,$ff   ; undefined
+    .byte $bf,$69,$00,$ff,$77,$ff,$ff,$ff   ; undefined
+    .byte $ff,$b3,$00,$ff,$e3,$ff,$ff,$ff   ; undefined
+    .byte $ff,$e3,$00,$ff,$f3,$ff,$ff,$ff   ; undefined
+    .byte $ff,$df,$00,$ff,$58,$ff,$df,$ff   ; undefined
+    .byte $db,$f7,$00,$ff,$7f,$ff,$7f,$ff   ; undefined
+    .byte $ff,$76,$00,$ff,$28,$ff,$ff,$ff   ; undefined
+    .byte $fe,$d8,$00,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$e7,$00,$ff,$ef,$ff,$ef,$ff   ; undefined
+    .byte $ff,$eb,$00,$ff,$f0,$ff,$df,$ff   ; undefined
+    .byte $ff,$70,$00,$ff,$e3,$ff,$ff,$ff   ; undefined
+    .byte $e7,$6c,$00,$ff,$c0,$ff,$ff,$ff   ; undefined
+    .byte $ff,$5c,$00,$ff,$0d,$ff,$fe,$ff   ; undefined
+    .byte $fb,$5f,$00,$ff,$77,$ff,$7f,$ff   ; undefined
+    .byte $ff,$14,$00,$ff,$5f,$ff,$b7,$ff   ; undefined
+    .byte $3f,$de,$00,$ff,$8f,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ea,$00,$ff,$ef,$ff,$ff,$ff   ; undefined
+    .byte $bf,$40,$00,$ff,$f3,$ff,$ef,$ff   ; undefined
+    .byte $be,$e6,$00,$ff,$fa,$ff,$ff,$ff   ; undefined
+    .byte $ff,$bf,$00,$ff,$7f,$ff,$fd,$ff   ; undefined
+    .byte $ff,$93,$00,$ff,$be,$ff,$df,$ff   ; undefined
+    .byte $9d,$fb,$00,$ff,$cf,$ff,$f7,$ff   ; undefined
+    .byte $ff,$b6,$00,$ff,$e8,$ff,$eb,$ff   ; undefined
+    .byte $ef,$bf,$00,$ff,$7f,$ff,$fd,$ff   ; undefined
+    .byte $ff,$ff,$00,$ff,$d3,$ff,$d7,$ff   ; undefined
+    .byte $ff,$7d,$00,$ff,$b7,$ff,$ff,$ff   ; undefined
+    .byte $5f,$ac,$00,$ff,$3f,$ff,$fd,$ff   ; undefined
+    .byte $ff,$2c,$00,$ff,$f6,$ff,$df,$ff   ; undefined
+    .byte $ff,$ea,$00,$ff,$c0,$ff,$af,$ff   ; undefined
+    .byte $fb,$ff,$00,$ff,$47,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ef,$00,$ff,$bd,$ff,$ff,$ff   ; undefined
+    .byte $ff,$f7,$00,$ff,$db,$ff,$bf,$ff   ; undefined
+    .byte $fd,$c7,$00,$ff,$ce,$ff,$7f,$ff   ; undefined
+    .byte $ff,$b9,$00,$ff,$ef,$ff,$ef,$ff   ; undefined
+    .byte $ff,$c8,$00,$ff,$f7,$ff,$ff,$ff   ; undefined
+    .byte $ff,$db,$00,$ff,$bf,$ff,$ff,$ff   ; undefined
+    .byte $fe,$ef,$00,$ff,$dc,$ff,$ff,$ff   ; undefined
+    .byte $5b,$73,$00,$ff,$af,$ff,$df,$ff   ; undefined
+    .byte $ff,$b6,$00,$ff,$e7,$ff,$ff,$ff   ; undefined
+    .byte $ff,$f0,$00,$ff,$7b,$ff,$fd,$ef   ; undefined
+    .byte $ff,$a7,$00,$ff,$89,$ff,$bf,$ff   ; undefined
+    .byte $fb,$ef,$00,$ff,$50,$ff,$77,$ff   ; undefined
+    .byte $f7,$f6,$00,$ff,$bc,$ff,$ff,$ff   ; undefined
+    .byte $ff,$f0,$00,$ff,$f3,$ff,$cf,$ff   ; undefined
+    .byte $ff,$be,$00,$ff,$c5,$ff,$b3,$ff   ; undefined
+    .byte $ff,$ff,$00,$ff,$52,$ff,$bf,$ff   ; undefined
+    .byte $76,$00,$00,$ff,$dc,$ff,$ef,$ff   ; undefined
+    .byte $ff,$e8,$00,$ff,$d9,$ff,$7f,$ff   ; undefined
+    .byte $4e,$74,$00,$ff,$fb,$ff,$ff,$ff   ; undefined
+    .byte $7f,$ba,$00,$ff,$d5,$ff,$ff,$ff   ; undefined
+    .byte $ff,$df,$10,$ff,$ff,$ff,$fe,$ff   ; undefined
+    .byte $bf,$bf,$00,$ff,$45,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ec,$00,$ff,$7f,$ff,$f7,$ff   ; undefined
+    .byte $ef,$7f,$00,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $7b,$5c,$00,$ff,$df,$ff,$ff,$ff   ; undefined
+    .byte $ef,$cc,$00,$ff,$fb,$ff,$ff,$ff   ; undefined
+    .byte $ff,$6d,$00,$ff,$76,$ff,$f7,$ff   ; undefined
+    .byte $ff,$40,$00,$ff,$bb,$ff,$fd,$ff   ; undefined
+    .byte $ff,$de,$20,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ef,$a7,$04,$ff,$df,$ff,$ff,$ff   ; undefined
+    .byte $bf,$3b,$00,$ff,$4b,$ff,$ff,$ff   ; undefined
+    .byte $b0,$f5,$00,$ff,$dd,$ff,$ff,$ff   ; undefined
+    .byte $ff,$bc,$00,$ff,$9d,$ff,$f9,$ff   ; undefined
+    .byte $ff,$7e,$00,$ff,$ff,$ff,$df,$ff   ; undefined
+    .byte $ff,$6f,$00,$ff,$f3,$ff,$ff,$ff   ; undefined
+    .byte $bb,$2e,$00,$ff,$e7,$ff,$3d,$ff   ; undefined
+    .byte $ff,$6e,$00,$ff,$7f,$ff,$fc,$fb   ; undefined
+    .byte $ff,$96,$00,$ff,$3b,$ff,$ff,$ff   ; undefined
+    .byte $ff,$1b,$00,$ff,$df,$ff,$ef,$ff   ; undefined
+    .byte $fb,$db,$00,$ff,$f6,$ff,$fd,$ff   ; undefined
+    .byte $bf,$89,$00,$ff,$ff,$ff,$fe,$ff   ; undefined
+    .byte $ff,$11,$00,$ff,$ff,$ff,$df,$ff   ; undefined
+    .byte $bf,$94,$00,$ff,$23,$ff,$ff,$ff   ; undefined
+    .byte $af,$fb,$00,$ff,$9a,$ff,$ff,$ff   ; undefined
+    .byte $9f,$3b,$00,$ff,$3f,$ff,$ff,$ff   ; undefined
+    .byte $ff,$7d,$00,$ff,$fe,$ff,$ff,$ff   ; undefined
+    .byte $fd,$aa,$00,$ff,$d2,$ff,$ff,$ff   ; undefined
+    .byte $7f,$9f,$00,$ff,$a7,$ff,$ff,$ff   ; undefined
+    .byte $ff,$12,$00,$ff,$69,$ff,$ff,$ff   ; undefined
+    .byte $f7,$dd,$00,$ff,$bf,$ff,$bf,$ff   ; undefined
+    .byte $f7,$44,$00,$ff,$7e,$ff,$ff,$ff   ; undefined
+    .byte $ff,$dd,$00,$ff,$66,$ff,$ff,$ff   ; undefined
+    .byte $ff,$7f,$00,$ff,$2c,$ff,$ff,$ff   ; undefined
+    .byte $df,$fa,$00,$ff,$7f,$ff,$bf,$ff   ; undefined
+    .byte $ff,$df,$00,$ff,$de,$ff,$df,$ff   ; undefined
+    .byte $ff,$fb,$00,$ff,$6c,$ff,$77,$ff   ; undefined
+    .byte $ff,$52,$00,$ff,$fb,$ff,$ef,$ff   ; undefined
+    .byte $ff,$77,$01,$ff,$ff,$ff,$bb,$ff   ; undefined
+    .byte $ff,$af,$02,$ff,$7f,$ff,$fd,$ff   ; undefined
+    .byte $ff,$bd,$00,$ff,$ff,$ff,$f7,$ff   ; undefined
+    .byte $ff,$a5,$00,$ff,$1d,$ff,$ff,$ff   ; undefined
+    .byte $bd,$ef,$00,$ff,$fb,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ef,$00,$ff,$6a,$ff,$fe,$ff   ; undefined
+    .byte $7f,$fd,$00,$ff,$fe,$ff,$ff,$ff   ; undefined
+    .byte $e7,$e2,$00,$ff,$f7,$ff,$ff,$ff   ; undefined
+    .byte $3f,$cd,$00,$ff,$af,$ff,$ff,$ff   ; undefined
+    .byte $7f,$67,$00,$ff,$f7,$ff,$ff,$ff   ; undefined
+    .byte $ff,$65,$00,$ff,$c5,$ff,$ff,$ff   ; undefined
+    .byte $ff,$c2,$00,$ff,$fe,$ff,$fe,$ff   ; undefined
+    .byte $fd,$ff,$00,$ff,$7c,$ff,$fd,$ff   ; undefined
+    .byte $ff,$db,$00,$ff,$ba,$ff,$fb,$ff   ; undefined
+    .byte $ff,$9b,$00,$ff,$f3,$ff,$ff,$ff   ; undefined
+    .byte $f7,$81,$00,$ff,$7c,$ff,$ff,$ff   ; undefined
+    .byte $ef,$b1,$00,$ff,$e7,$ff,$ff,$ff   ; undefined
+    .byte $ff,$87,$00,$ff,$e0,$ff,$7f,$ff   ; undefined
+    .byte $ff,$65,$00,$ff,$75,$ff,$ff,$ff   ; undefined
+    .byte $7d,$69,$00,$ff,$38,$ff,$ef,$ff   ; undefined
+    .byte $f3,$87,$00,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$99,$00,$ff,$b6,$ff,$ff,$ff   ; undefined
+    .byte $e3,$df,$00,$ff,$f6,$ff,$f9,$ff   ; undefined
+    .byte $ff,$79,$00,$ff,$7f,$ff,$ff,$ff   ; undefined
+    .byte $fd,$af,$00,$ff,$fa,$ff,$ff,$ff   ; undefined
+    .byte $df,$ec,$20,$ff,$7f,$ff,$ff,$ff   ; undefined
+    .byte $fe,$bb,$00,$ff,$b7,$ff,$ff,$ff   ; undefined
+    .byte $fe,$dd,$00,$ff,$e5,$ff,$ff,$ff   ; undefined
+    .byte $ff,$e2,$00,$ff,$fb,$ff,$ff,$ff   ; undefined
+    .byte $ff,$fb,$00,$ff,$7a,$ff,$ff,$ff   ; undefined
+    .byte $bf,$3e,$00,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $bb,$77,$00,$ff,$e9,$ff,$fb,$ff   ; undefined
+    .byte $ff,$fb,$00,$ff,$7f,$ff,$ff,$ff   ; undefined
+    .byte $fd,$df,$00,$ff,$b7,$ff,$ff,$ff   ; undefined
+    .byte $cf,$cf,$80,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$52,$00,$ff,$7f,$ff,$ff,$ff   ; undefined
+    .byte $ff,$a7,$00,$ff,$f2,$ff,$fb,$ff   ; undefined
+    .byte $ff,$7c,$00,$ff,$f7,$ff,$f7,$ff   ; undefined
+    .byte $ff,$dd,$00,$ff,$fd,$ff,$df,$ff   ; undefined
+    .byte $ef,$7b,$00,$ff,$cf,$ff,$ff,$ff   ; undefined
+    .byte $ff,$2e,$00,$ff,$fd,$ff,$ff,$ff   ; undefined
+    .byte $ff,$eb,$00,$ff,$33,$ff,$ff,$ff   ; undefined
+    .byte $f7,$bf,$00,$ff,$db,$ff,$bf,$ff   ; undefined
+    .byte $f7,$77,$00,$ff,$c7,$ff,$ff,$ff   ; undefined
+    .byte $ff,$f6,$00,$ff,$c1,$ff,$7f,$ff   ; undefined
+    .byte $fb,$53,$00,$ff,$6f,$ff,$6f,$ff   ; undefined
+    .byte $ff,$3c,$00,$ff,$fa,$ff,$ff,$ff   ; undefined
+    .byte $5f,$c9,$00,$ff,$79,$ff,$ff,$ff   ; undefined
+    .byte $ff,$df,$00,$ff,$fb,$ff,$ff,$ff   ; undefined
+    .byte $ff,$48,$00,$ff,$32,$ff,$d7,$ff   ; undefined
+    .byte $7f,$ee,$00,$ff,$ee,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ed,$00,$ff,$ff,$ff,$7f,$ff   ; undefined
+    .byte $ff,$15,$04,$ff,$bd,$ff,$ff,$ff   ; undefined
+    .byte $ff,$02,$00,$ff,$c9,$ff,$ff,$ff   ; undefined
+    .byte $ff,$cf,$00,$ff,$fb,$ff,$df,$ff   ; undefined
+    .byte $fc,$15,$00,$ff,$f7,$ff,$fe,$ff   ; undefined
+    .byte $fe,$96,$00,$ff,$fa,$ff,$df,$ff   ; undefined
+    .byte $de,$db,$00,$ff,$ee,$ff,$ff,$ff   ; undefined
+    .byte $fd,$d6,$00,$ff,$8f,$ff,$ff,$ff   ; undefined
+    .byte $ff,$13,$00,$ff,$2b,$ff,$ff,$ff   ; undefined
+    .byte $fb,$77,$00,$ff,$ac,$ff,$ff,$ff   ; undefined
+    .byte $ff,$fe,$00,$ff,$f6,$ff,$ff,$ff   ; undefined
+    .byte $f7,$ff,$00,$ff,$b2,$ff,$fe,$ff   ; undefined
+    .byte $ff,$be,$00,$ff,$f7,$ff,$ff,$ff   ; undefined
+    .byte $bf,$f7,$00,$ff,$fa,$ff,$ff,$ff   ; undefined
+    .byte $ff,$bb,$00,$ff,$f6,$ff,$ff,$ff   ; undefined
+    .byte $5f,$e8,$00,$ff,$fb,$ff,$ff,$ff   ; undefined
+    .byte $bf,$fe,$00,$ff,$ff,$ff,$7f,$ff   ; undefined
+    .byte $eb,$7d,$00,$ff,$9f,$ff,$ff,$ff   ; undefined
+    .byte $ff,$75,$00,$ff,$fd,$ff,$ff,$ff   ; undefined
+    .byte $ef,$f3,$00,$ff,$ba,$ff,$ff,$ff   ; undefined
+    .byte $f7,$64,$00,$ff,$3a,$ff,$fe,$ff   ; undefined
+    .byte $f3,$7f,$00,$ff,$bf,$ff,$fb,$ff   ; undefined
+    .byte $ff,$7f,$04,$ff,$9e,$ff,$ff,$ff   ; undefined
+    .byte $e5,$b5,$00,$ff,$f3,$ff,$7f,$ff   ; undefined
+    .byte $ff,$bf,$00,$ff,$39,$ff,$ff,$ff   ; undefined
+    .byte $ff,$c9,$00,$ff,$59,$ff,$bd,$ff   ; undefined
+    .byte $ff,$39,$00,$ff,$7d,$ff,$ff,$ff   ; undefined
+    .byte $f3,$c9,$00,$ff,$b5,$ff,$7c,$ff   ; undefined
+    .byte $ff,$08,$00,$ff,$db,$ff,$ff,$ff   ; undefined
+    .byte $ff,$fa,$00,$ff,$77,$ff,$ff,$ff   ; undefined
+    .byte $ff,$7b,$00,$ff,$bf,$ff,$ff,$ff   ; undefined
+    .byte $f7,$fc,$00,$ff,$eb,$ff,$ef,$ff   ; undefined
+    .byte $ff,$7e,$10,$ff,$2a,$ff,$ff,$ff   ; undefined
+    .byte $ff,$93,$00,$ff,$dc,$ff,$ff,$ff   ; undefined
+    .byte $ff,$fc,$00,$ff,$44,$ff,$b7,$ff   ; undefined
+    .byte $fd,$ff,$00,$ff,$bf,$ff,$fd,$ff   ; undefined
+    .byte $f7,$9c,$00,$ff,$ae,$ff,$ff,$ff   ; undefined
+    .byte $ff,$b0,$00,$ff,$bf,$ff,$fd,$ff   ; undefined
+    .byte $ff,$24,$00,$ff,$fb,$ff,$ff,$ff   ; undefined
+    .byte $ff,$87,$40,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$6f,$08,$ff,$3f,$ff,$ff,$ff   ; undefined
+    .byte $ff,$79,$00,$ff,$b5,$ff,$ff,$ff   ; undefined
+    .byte $ff,$77,$00,$ff,$d5,$ff,$ed,$ff   ; undefined
+    .byte $7f,$ff,$00,$ff,$fb,$ff,$ed,$ff   ; undefined
+    .byte $ff,$be,$00,$ff,$e5,$ff,$ff,$ff   ; undefined
+    .byte $ff,$7d,$00,$ff,$ee,$ff,$df,$ff   ; undefined
+    .byte $fe,$e7,$00,$ff,$e4,$ff,$bf,$ff   ; undefined
+    .byte $ff,$1b,$00,$ff,$bf,$ff,$ff,$ff   ; undefined
+    .byte $ff,$78,$00,$ff,$77,$ff,$bf,$ff   ; undefined
+    .byte $ff,$f9,$00,$ff,$de,$ff,$b9,$ff   ; undefined
+    .byte $df,$bf,$00,$ff,$ef,$ff,$f7,$ff   ; undefined
+    .byte $ff,$ed,$00,$ff,$6f,$ff,$ff,$ff   ; undefined
+    .byte $7b,$db,$00,$ff,$db,$ff,$ff,$ff   ; undefined
+    .byte $ff,$3f,$00,$ff,$56,$ff,$ff,$ff   ; undefined
+    .byte $7f,$fc,$00,$ff,$5a,$ff,$f1,$ff   ; undefined
+    .byte $f7,$b6,$00,$ff,$d6,$ff,$ff,$ff   ; undefined
+    .byte $7f,$de,$00,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $df,$38,$00,$ff,$ff,$ff,$7f,$ff   ; undefined
+    .byte $fe,$67,$00,$ff,$fb,$ff,$bf,$ff   ; undefined
+    .byte $ff,$65,$00,$ff,$ff,$ff,$3f,$ff   ; undefined
+    .byte $ff,$1f,$00,$ff,$f5,$ff,$ff,$ff   ; undefined
+    .byte $fd,$35,$00,$ff,$f4,$ff,$fe,$ff   ; undefined
+    .byte $ff,$dd,$00,$ff,$ce,$ff,$ff,$ff   ; undefined
+    .byte $ff,$bf,$00,$ff,$dc,$ff,$f7,$ff   ; undefined
+    .byte $fe,$30,$00,$ff,$79,$ff,$ff,$f7   ; undefined
+    .byte $ef,$26,$00,$ff,$36,$ff,$fd,$ff   ; undefined
+    .byte $ff,$35,$00,$ff,$6b,$ff,$ff,$ff   ; undefined
+    .byte $fe,$69,$00,$ff,$bd,$ff,$ff,$ff   ; undefined
+    .byte $ff,$c6,$00,$ff,$3e,$ff,$ff,$ff   ; undefined
+    .byte $ff,$0b,$00,$ff,$d7,$ff,$ff,$ff   ; undefined
+    .byte $d7,$7f,$00,$ff,$a7,$ff,$7d,$ff   ; undefined
+    .byte $fb,$fd,$00,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $fe,$ad,$08,$ff,$fd,$ff,$ff,$ff   ; undefined
+    .byte $ff,$9c,$00,$ff,$3d,$ff,$ff,$ff   ; undefined
+    .byte $fb,$d7,$00,$ff,$35,$ff,$ff,$ff   ; undefined
+    .byte $7f,$37,$00,$ff,$d7,$ff,$bf,$ff   ; undefined
+    .byte $ef,$fb,$00,$ff,$56,$ff,$ef,$ff   ; undefined
+    .byte $ff,$b3,$00,$ff,$ff,$ff,$7f,$ff   ; undefined
+    .byte $bf,$fb,$00,$ff,$bc,$ff,$fd,$ff   ; undefined
+    .byte $fe,$d7,$00,$ff,$5f,$ff,$f7,$ff   ; undefined
+    .byte $fe,$f5,$00,$ff,$ff,$ff,$fe,$ff   ; undefined
+    .byte $ff,$75,$00,$ff,$fd,$ff,$ff,$ff   ; undefined
+    .byte $ff,$f7,$00,$ff,$bf,$ff,$ff,$ff   ; undefined
+    .byte $ff,$6c,$00,$ff,$bb,$ff,$fd,$ff   ; undefined
+    .byte $fd,$96,$00,$ff,$73,$ff,$ff,$ff   ; undefined
+    .byte $df,$d7,$00,$ff,$7f,$ff,$ff,$ff   ; undefined
+    .byte $ff,$d1,$00,$ff,$49,$ff,$fd,$ff   ; undefined
+    .byte $ff,$63,$00,$ff,$f7,$ff,$ff,$ff   ; undefined
+    .byte $ff,$5d,$00,$ff,$b7,$ff,$ff,$ff   ; undefined
+    .byte $ff,$b6,$01,$ff,$b7,$ff,$ff,$ff   ; undefined
+    .byte $fd,$f1,$00,$ff,$c5,$ff,$ff,$ff   ; undefined
+    .byte $df,$8b,$00,$ff,$df,$ff,$7f,$ff   ; undefined
+    .byte $ff,$07,$00,$ff,$b9,$ff,$ef,$ff   ; undefined
+    .byte $cf,$d7,$00,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$b0,$00,$ff,$5f,$ff,$ff,$ff   ; undefined
+    .byte $bf,$43,$00,$ff,$ba,$ff,$ff,$ff   ; undefined
+    .byte $ff,$45,$00,$ff,$27,$ff,$ff,$ff   ; undefined
+    .byte $bf,$53,$04,$ff,$ff,$ff,$fe,$ff   ; undefined
+    .byte $df,$57,$00,$ff,$17,$ff,$ff,$ff   ; undefined
+    .byte $37,$ed,$00,$ff,$7f,$ff,$fa,$ff   ; undefined
+    .byte $ef,$1d,$00,$ff,$8f,$ff,$ff,$ff   ; undefined
+    .byte $ff,$fc,$00,$ff,$bf,$ff,$cf,$7f   ; undefined
+    .byte $ef,$1c,$00,$ff,$df,$ff,$ff,$ff   ; undefined
+    .byte $dd,$d7,$00,$ff,$a6,$ff,$ef,$ff   ; undefined
+    .byte $f7,$ed,$00,$ff,$4f,$ff,$ff,$ff   ; undefined
+    .byte $df,$7f,$00,$ff,$6f,$ff,$7b,$ff   ; undefined
+    .byte $ff,$d4,$00,$ff,$fc,$ff,$f6,$ff   ; undefined
+    .byte $ff,$d7,$00,$ff,$7f,$ff,$be,$ff   ; undefined
+    .byte $ff,$ef,$00,$ff,$f5,$ff,$ff,$ff   ; undefined
+    .byte $ff,$3e,$00,$ff,$5b,$ff,$ff,$ff   ; undefined
+    .byte $ff,$fe,$00,$ff,$75,$ff,$df,$ff   ; undefined
+    .byte $ff,$73,$00,$ff,$6e,$ff,$f7,$ff   ; undefined
+    .byte $fb,$f7,$00,$ff,$fb,$ff,$ff,$ff   ; undefined
+    .byte $ff,$fe,$00,$ff,$ed,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ee,$00,$ff,$cf,$ff,$ff,$ff   ; undefined
+    .byte $fd,$31,$00,$ff,$e7,$ff,$df,$ff   ; undefined
+    .byte $ff,$de,$00,$ff,$ff,$ff,$ef,$ff   ; undefined
+    .byte $fb,$f3,$00,$ff,$fc,$ff,$ff,$ff   ; undefined
+    .byte $ff,$c6,$00,$ff,$03,$ff,$bf,$ff   ; undefined
+    .byte $b5,$3f,$00,$ff,$46,$ff,$ff,$ff   ; undefined
+    .byte $ff,$61,$00,$ff,$ed,$ff,$ff,$ff   ; undefined
+    .byte $fb,$b7,$00,$ff,$9e,$ff,$7d,$ff   ; undefined
+    .byte $ff,$e7,$00,$ff,$fc,$ff,$ff,$ff   ; undefined
+    .byte $bf,$7a,$00,$ff,$c7,$ff,$d8,$ff   ; undefined
+    .byte $ff,$3e,$00,$ff,$5a,$ff,$ff,$ff   ; undefined
+    .byte $ff,$bd,$80,$ff,$e7,$ff,$f5,$f7   ; undefined
+    .byte $ff,$1b,$00,$ff,$e3,$ff,$bf,$ff   ; undefined
+    .byte $fd,$cf,$00,$ff,$be,$ff,$ff,$ff   ; undefined
+    .byte $7d,$c9,$00,$ff,$2b,$ff,$ff,$ff   ; undefined
+    .byte $f6,$80,$00,$ff,$cf,$ff,$af,$ff   ; undefined
+    .byte $ff,$fc,$00,$ff,$ec,$ff,$fe,$ff   ; undefined
+    .byte $fb,$f3,$00,$ff,$b1,$ff,$6f,$ff   ; undefined
+    .byte $37,$de,$00,$ff,$a4,$ff,$ff,$ff   ; undefined
+    .byte $ff,$71,$00,$ff,$3c,$ff,$ff,$ff   ; undefined
+    .byte $f3,$fe,$00,$ff,$7f,$ff,$d7,$ff   ; undefined
+    .byte $f7,$74,$00,$ff,$73,$ff,$fe,$ff   ; undefined
+    .byte $fb,$fd,$00,$ff,$f4,$ff,$ff,$ff   ; undefined
+    .byte $ff,$f7,$00,$ff,$93,$ff,$5d,$ff   ; undefined
+    .byte $fd,$da,$40,$ff,$bb,$ff,$ff,$ff   ; undefined
+    .byte $fe,$f4,$00,$ff,$fe,$ff,$ff,$ff   ; undefined
+    .byte $ff,$5b,$00,$ff,$c5,$ff,$ff,$ff   ; undefined
+    .byte $ff,$e8,$00,$ff,$fc,$ff,$f6,$ff   ; undefined
+    .byte $ff,$d7,$00,$ff,$99,$ff,$df,$ff   ; undefined
+    .byte $fb,$f4,$10,$ff,$ef,$ff,$ff,$ff   ; undefined
+    .byte $ff,$36,$00,$ff,$5a,$ff,$ff,$ff   ; undefined
+    .byte $ff,$f9,$00,$ff,$f9,$ff,$ff,$ff   ; undefined
+    .byte $ff,$9f,$00,$ff,$fe,$ff,$ff,$ff   ; undefined
+    .byte $ff,$bb,$00,$ff,$bd,$ff,$df,$ff   ; undefined
+    .byte $ff,$6f,$00,$ff,$bf,$ff,$f3,$ff   ; undefined
+    .byte $af,$56,$00,$ff,$f9,$ff,$ff,$ff   ; undefined
+    .byte $ff,$db,$00,$ff,$f1,$ff,$f3,$ff   ; undefined
+    .byte $ff,$93,$00,$ff,$6d,$ff,$6f,$ff   ; undefined
+    .byte $df,$0a,$00,$ff,$8f,$ff,$db,$ff   ; undefined
+    .byte $ff,$fd,$00,$ff,$f9,$ff,$ff,$ff   ; undefined
+    .byte $5f,$f6,$00,$ff,$c5,$ff,$df,$ff   ; undefined
+    .byte $7f,$df,$00,$ff,$fd,$ff,$ff,$ff   ; undefined
+    .byte $ff,$79,$00,$ff,$d9,$ff,$7f,$ff   ; undefined
+    .byte $fb,$3d,$00,$ff,$e7,$ff,$ff,$ff   ; undefined
+    .byte $ff,$dc,$00,$ff,$91,$ff,$e7,$ff   ; undefined
+    .byte $67,$dc,$00,$ff,$fc,$ff,$ff,$ff   ; undefined
+    .byte $ff,$58,$00,$ff,$7d,$ff,$ff,$ff   ; undefined
+    .byte $ff,$20,$00,$ff,$3f,$ff,$ff,$ff   ; undefined
+    .byte $ff,$fc,$00,$ff,$8d,$ff,$ef,$ff   ; undefined
+    .byte $ff,$41,$00,$ff,$dc,$ff,$fe,$ff   ; undefined
+    .byte $bf,$a6,$00,$ff,$8f,$ff,$bd,$ff   ; undefined
+    .byte $7f,$a8,$00,$ff,$6a,$ff,$ff,$ff   ; undefined
+    .byte $fd,$86,$00,$ff,$da,$ff,$fd,$ff   ; undefined
+    .byte $ff,$cd,$00,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$66,$00,$ff,$cf,$ff,$ff,$ff   ; undefined
+    .byte $ff,$7a,$00,$ff,$fd,$ff,$ed,$ff   ; undefined
+    .byte $7f,$f5,$00,$ff,$ef,$ff,$fe,$ff   ; undefined
+    .byte $de,$37,$00,$ff,$bf,$ff,$ff,$ff   ; undefined
+    .byte $ff,$e5,$00,$ff,$d4,$ff,$7f,$ff   ; undefined
+    .byte $7d,$c0,$00,$ff,$eb,$ff,$df,$ff   ; undefined
+    .byte $ff,$bb,$00,$ff,$ab,$ff,$ef,$ff   ; undefined
+    .byte $ef,$ff,$00,$ff,$fb,$ff,$fd,$ff   ; undefined
+    .byte $f3,$8c,$00,$ff,$ee,$ff,$fe,$ff   ; undefined
+    .byte $fb,$37,$00,$ff,$fd,$ff,$ef,$ff   ; undefined
+    .byte $ff,$bf,$00,$ff,$1b,$ff,$fd,$ff   ; undefined
+    .byte $5f,$f2,$00,$ff,$b7,$ff,$ff,$ff   ; undefined
+    .byte $f7,$77,$00,$ff,$cf,$ff,$bf,$ff   ; undefined
+    .byte $ff,$d4,$00,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $fb,$dc,$00,$ff,$dc,$ff,$7a,$ff   ; undefined
+    .byte $fb,$c2,$00,$ff,$df,$ff,$ed,$ff   ; undefined
+    .byte $fe,$d5,$00,$ff,$9c,$ff,$bd,$ff   ; undefined
+    .byte $ff,$fe,$00,$ff,$fe,$ff,$ff,$ff   ; undefined
+    .byte $ff,$07,$00,$ff,$b2,$ff,$ff,$ff   ; undefined
+    .byte $7e,$b4,$00,$ff,$5b,$ff,$fe,$ff   ; undefined
+    .byte $7f,$73,$00,$ff,$64,$ff,$ff,$ff   ; undefined
+    .byte $df,$db,$00,$ff,$ed,$ff,$bd,$ff   ; undefined
+    .byte $ff,$d4,$00,$ff,$04,$ff,$c3,$ff   ; undefined
+    .byte $7f,$ff,$00,$ff,$1a,$ff,$7b,$ff   ; undefined
+    .byte $ff,$d8,$00,$ff,$fb,$ff,$fd,$ff   ; undefined
+    .byte $7f,$72,$00,$ff,$bb,$ff,$ff,$ff   ; undefined
+    .byte $ef,$70,$00,$ff,$db,$ff,$ff,$ff   ; undefined
+    .byte $ff,$df,$00,$ff,$8d,$ff,$fb,$ff   ; undefined
+    .byte $fd,$64,$00,$ff,$fa,$ff,$4f,$ff   ; undefined
+    .byte $bf,$00,$00,$ff,$de,$ff,$ff,$ff   ; undefined
+    .byte $ef,$12,$00,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $fb,$7b,$00,$ff,$d9,$ff,$ff,$ff   ; undefined
+    .byte $ff,$df,$00,$ff,$d6,$ff,$fe,$ff   ; undefined
+    .byte $ff,$ff,$00,$ff,$77,$ff,$ef,$ff   ; undefined
+    .byte $df,$5d,$00,$ff,$bd,$ff,$7f,$ff   ; undefined
+    .byte $b6,$b3,$00,$ff,$bd,$ff,$fb,$ff   ; undefined
+    .byte $f9,$bf,$00,$ff,$7f,$ff,$ff,$ff   ; undefined
+    .byte $f9,$b6,$00,$ff,$b9,$ff,$ff,$ff   ; undefined
+    .byte $bb,$7f,$00,$ff,$2e,$ff,$fe,$ff   ; undefined
+    .byte $fe,$fd,$00,$ff,$77,$ff,$ff,$ff   ; undefined
+    .byte $7d,$3c,$00,$ff,$bf,$ff,$ff,$ff   ; undefined
+    .byte $ff,$aa,$00,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $fa,$7f,$00,$ff,$3f,$ff,$ff,$ff   ; undefined
+    .byte $ff,$5e,$00,$ff,$f9,$ff,$fd,$ff   ; undefined
+    .byte $ff,$73,$00,$ff,$ef,$ff,$fb,$ff   ; undefined
+    .byte $ff,$7c,$00,$ff,$fd,$ff,$ff,$ff   ; undefined
+    .byte $ef,$77,$00,$ff,$99,$ff,$ff,$ff   ; undefined
+    .byte $7f,$b9,$00,$ff,$bf,$ff,$6b,$ff   ; undefined
+    .byte $e9,$c4,$00,$ff,$7a,$ff,$fe,$ff   ; undefined
+    .byte $ff,$7a,$00,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ef,$2e,$00,$ff,$99,$ff,$ff,$ff   ; undefined
+    .byte $fe,$b1,$00,$ff,$bf,$ff,$ff,$ff   ; undefined
+    .byte $f7,$ac,$00,$ff,$fa,$ff,$ff,$ff   ; undefined
+    .byte $df,$f2,$00,$ff,$fd,$ff,$df,$ff   ; undefined
+    .byte $ff,$7c,$00,$ff,$fc,$ff,$ff,$ff   ; undefined
+    .byte $7f,$1c,$00,$ff,$50,$ff,$fe,$ff   ; undefined
+    .byte $df,$9e,$00,$ff,$7f,$ff,$ff,$ff   ; undefined
+    .byte $ff,$1d,$00,$ff,$de,$ff,$f7,$ff   ; undefined
+    .byte $ef,$ec,$00,$ff,$5d,$ff,$ff,$ff   ; undefined
+    .byte $37,$68,$00,$ff,$4a,$ff,$c8,$ff   ; undefined
+    .byte $fe,$cf,$00,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $7b,$9b,$00,$ff,$c7,$ff,$fd,$ff   ; undefined
+    .byte $d7,$d0,$00,$ff,$ef,$ff,$db,$ff   ; undefined
+    .byte $fd,$cf,$00,$ff,$fe,$ff,$ff,$ff   ; undefined
+    .byte $ff,$bf,$40,$ff,$9f,$ff,$f7,$ff   ; undefined
+    .byte $ff,$f6,$00,$ff,$f4,$ff,$ff,$ff   ; undefined
+    .byte $7f,$54,$00,$ff,$ff,$ff,$df,$ff   ; undefined
+    .byte $ff,$6f,$00,$ff,$f9,$ff,$fd,$ff   ; undefined
+    .byte $df,$bb,$00,$ff,$de,$ff,$ff,$ff   ; undefined
+    .byte $bf,$df,$00,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$cc,$00,$ff,$57,$ff,$ff,$ff   ; undefined
+    .byte $af,$9d,$00,$ff,$5a,$ff,$fd,$ff   ; undefined
+    .byte $f7,$59,$00,$ff,$7f,$ff,$ff,$ff   ; undefined
+    .byte $ff,$df,$00,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$a9,$00,$ff,$a9,$ff,$fe,$ff   ; undefined
+    .byte $f6,$f9,$00,$ff,$ff,$ff,$af,$ff   ; undefined
+    .byte $ff,$1f,$00,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$8b,$00,$ff,$b7,$ff,$ff,$ff   ; undefined
+    .byte $ff,$6d,$00,$ff,$67,$ff,$ff,$ff   ; undefined
+    .byte $df,$37,$00,$ff,$3f,$ff,$fc,$ff   ; undefined
+    .byte $db,$44,$00,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$89,$00,$ff,$1f,$ff,$ff,$ff   ; undefined
+    .byte $fe,$db,$00,$ff,$4b,$ff,$df,$ff   ; undefined
+    .byte $ff,$89,$00,$ff,$fb,$ff,$ee,$ff   ; undefined
+    .byte $7e,$9e,$00,$ff,$b9,$ff,$fb,$ff   ; undefined
+    .byte $ff,$5c,$00,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$db,$00,$ff,$e5,$ff,$bf,$ff   ; undefined
+    .byte $fb,$f7,$00,$ff,$7b,$ff,$ff,$ff   ; undefined
+    .byte $ef,$63,$00,$ff,$5d,$ff,$bf,$ff   ; undefined
+    .byte $ff,$63,$00,$ff,$5f,$ff,$ff,$ff   ; undefined
+    .byte $df,$f3,$00,$ff,$be,$ff,$fc,$ff   ; undefined
+    .byte $5f,$77,$00,$ff,$3d,$ff,$7f,$ff   ; undefined
+    .byte $fb,$52,$00,$ff,$dc,$ff,$ff,$ff   ; undefined
+    .byte $fc,$8a,$00,$ff,$7e,$ff,$ff,$ff   ; undefined
+    .byte $5f,$1c,$00,$ff,$7e,$ff,$f7,$ff   ; undefined
+    .byte $ff,$bc,$00,$ff,$7b,$ff,$7f,$ff   ; undefined
+    .byte $fe,$ff,$00,$ff,$27,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ff,$00,$ff,$ff,$ff,$fb,$ff   ; undefined
+    .byte $ff,$bf,$00,$ff,$f7,$ff,$ff,$ff   ; undefined
+    .byte $ff,$e5,$00,$ff,$43,$ff,$ff,$ff   ; undefined
+    .byte $fa,$75,$00,$ff,$b7,$ff,$bf,$ff   ; undefined
+    .byte $ff,$fb,$00,$ff,$8a,$ff,$fe,$ff   ; undefined
+    .byte $7f,$5d,$00,$ff,$53,$ff,$ee,$ff   ; undefined
+    .byte $f3,$55,$00,$ff,$7e,$ff,$ff,$ff   ; undefined
+    .byte $ff,$98,$00,$ff,$2f,$ff,$ff,$ff   ; undefined
+    .byte $fd,$7d,$00,$ff,$7f,$ff,$fb,$ff   ; undefined
+    .byte $ff,$7f,$00,$ff,$6f,$ff,$7f,$ff   ; undefined
+    .byte $be,$75,$00,$ff,$fd,$ff,$ff,$ff   ; undefined
+    .byte $7b,$e2,$00,$ff,$ff,$ff,$ef,$ff   ; undefined
+    .byte $f7,$f1,$00,$ff,$fd,$ff,$ff,$ff   ; undefined
+    .byte $ff,$7f,$00,$ff,$69,$ff,$ef,$ff   ; undefined
+    .byte $be,$3f,$00,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$5c,$00,$ff,$fd,$ff,$ff,$ff   ; undefined
+    .byte $ff,$cc,$00,$ff,$fe,$ff,$ff,$ff   ; undefined
+    .byte $ff,$4f,$00,$ff,$c3,$ff,$f3,$ff   ; undefined
+    .byte $ff,$2b,$00,$ff,$ab,$ff,$ff,$ff   ; undefined
+    .byte $7b,$0e,$00,$ff,$ff,$ff,$f7,$ff   ; undefined
+    .byte $ff,$16,$00,$ff,$f3,$ff,$ff,$ff   ; undefined
+    .byte $ff,$ab,$00,$ff,$14,$ff,$f1,$ff   ; undefined
+    .byte $ef,$a4,$00,$ff,$fb,$ff,$ff,$ff   ; undefined
+    .byte $e7,$19,$00,$ff,$56,$ff,$fb,$ff   ; undefined
+    .byte $ff,$5c,$00,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$c8,$00,$ff,$08,$ff,$b7,$ff   ; undefined
+    .byte $ce,$2c,$00,$ff,$fc,$ff,$f6,$ff   ; undefined
+    .byte $ff,$a1,$00,$ff,$ef,$ff,$ff,$ff   ; undefined
+    .byte $ff,$5d,$00,$ff,$7f,$ff,$fd,$ff   ; undefined
+    .byte $ff,$d9,$00,$ff,$3e,$ff,$ff,$ff   ; undefined
+    .byte $df,$57,$00,$ff,$f7,$ff,$cf,$ff   ; undefined
+    .byte $ff,$fa,$00,$ff,$9d,$ff,$ef,$ff   ; undefined
+    .byte $ff,$ef,$00,$ff,$f4,$ff,$ff,$ff   ; undefined
+    .byte $ff,$fd,$00,$ff,$fe,$ff,$bf,$ff   ; undefined
+    .byte $ff,$1b,$00,$ff,$d7,$ff,$eb,$ff   ; undefined
+    .byte $ff,$37,$00,$ff,$f7,$ff,$7f,$ff   ; undefined
+    .byte $be,$f3,$00,$ff,$77,$ff,$ff,$ff   ; undefined
+    .byte $ff,$6f,$00,$ff,$f6,$ff,$ff,$ff   ; undefined
+    .byte $7f,$79,$00,$ff,$df,$ff,$f7,$ff   ; undefined
+    .byte $f7,$fb,$08,$ff,$ff,$ff,$ff,$ff   ; undefined
+    .byte $ff,$a0,$01,$ff,$65,$ff,$ff,$ff   ; undefined
+    .byte $f9,$7b,$00,$ff,$df,$ff,$ff,$ff   ; undefined
+    .byte $ff,$e6,$00,$ff,$cf,$ff,$bf,$ff   ; undefined
+    .byte $fe,$75,$00,$ff,$7e,$ff,$df,$ff   ; undefined
+    .byte $ff,$6f,$00,$ff,$f1,$ff,$ff,$ff   ; undefined
+    .byte $9d,$4a,$00,$ff,$fe,$ff,$c7,$ff   ; undefined
+    .byte $bb,$09,$00,$ff,$b2,$ff,$77,$ff   ; undefined
+    .byte $ff,$47,$00,$ff,$f7,$ff,$bf,$fd   ; undefined
+    .byte $ff,$37,$00,$ff,$7f,$ff,$ef,$ff   ; undefined
+    .byte $ff,$fd,$00,$ff,$3d,$ff,$3f,$ff   ; undefined
+    .byte $ff,$df,$00,$ff,$bc,$ff,$ff,$ff   ; undefined
+    .byte $f7,$d6,$00,$ff,$ff,$ff,$7f,$ff   ; undefined
+    .byte $be,$47,$00,$ff,$9f,$ff,$be,$ff   ; undefined
+    .byte $ff,$d2,$00,$ff,$e4,$ff,$fe,$ff   ; undefined
+    .byte $bc,$ec,$00,$ff,$fb,$ff,$ff,$ff   ; undefined
+    .byte $f6,$83,$00,$ff,$f7,$ff,$fc,$ff   ; undefined
+    .byte $ef,$ba,$00,$ff,$9b,$ff,$ff,$ff   ; undefined
+    .byte $ff,$21,$00,$ff,$7c,$ff,$be,$ff   ; undefined
+    .byte $77,$d7,$00,$ff,$ac,$ff,$ff,$ff   ; undefined
+    .byte $fd,$a9,$00,$ff,$53,$ff,$f3,$ff   ; undefined
+    .byte $ff,$0b,$00,$ff,$99,$ff,$7f,$ff   ; undefined
+    .byte $ee,$92                           ; undefined

@@ -9,33 +9,30 @@
 
     bank_offset_16 BANK7_SPRITEADDRS_START  ; Start of the sprite entity
                                             ; images.
-    .word $0000,$0000                       ; [$8002] bank_offset_16
+    .word $0000,$0000                       ; bank_offset_16
 
 ;
 ; XREFS:
 ;     Sprite_SetAppearanceAddrFromOffset
 ;
-SPRITE_APPEARANCES_OFFSET:                  ; [$8006]
+SPRITE_APPEARANCES_OFFSET:
     bank_offset_16 TILEINFO_ENTITY_ADDRS    ; TILEINFO_ENTITY_ADDRS
-                                            ; [$PRG7::8006]
 
 ;
 ; XREFS:
 ;     Sprite_SetPlayerAppearanceAddr
 ;
-PLAYER_APPEARANCES_OFFSET:                  ; [$8008]
+PLAYER_APPEARANCES_OFFSET:
     bank_offset_16 TILEINFO_PLAYER_ADDRS    ; TILEINFO_PLAYER_ADDRS
-                                            ; [$PRG7::8008]
 
 ;
 ; XREFS:
 ;     Sprite_DrawPortraitPartAppearance
 ;
-PORTRAIT_APPEARANCES_OFFSET:                ; [$800a]
+PORTRAIT_APPEARANCES_OFFSET:
     bank_offset_16 TILEINFO_PORTRAITS_ADDRS ; TILEINFO_PORTRAITS_ADDRS
-                                            ; [$PRG7::800a]
 
-BANK7_SPRITEADDRS_START:                    ; [$800c]
+BANK7_SPRITEADDRS_START:
     bank_offset_16 SPRITE_TILES_NPC_ARMOR_SALESMAN_00 ; [0]: NPC: Armor
                                                       ; Salesman
     bank_offset_16 SPRITE_TILES_NPC_MARTIAL_ARTIST_00 ; [1]: NPC: Martial
@@ -128,9 +125,9 @@ BANK7_SPRITEADDRS_START:                    ; [$800c]
 ;     BANK7_SPRITEADDRS_START [$PRG7::8044]
 ;     BANK7_SPRITEADDRS_START [$PRG7::8046]
 ;
-SPRITE_TILES_NPC_ARMOR_SALESMAN_00:         ; [$8066]
-    .byte $02,$05,$06,$0e,$0a,$06,$06,$01   ; [$8066] byte
-    .byte $01,$03,$01,$01,$05,$05,$01,$0e   ; [$806e] byte
+SPRITE_TILES_NPC_ARMOR_SALESMAN_00:
+    .byte $02,$05,$06,$0e,$0a,$06,$06,$01   ; byte
+    .byte $01,$03,$01,$01,$05,$05,$01,$0e   ; byte
 
 
 ;
@@ -143,9 +140,9 @@ SPRITE_TILES_NPC_ARMOR_SALESMAN_00:         ; [$8066]
 ; █▒██░...
 ; ▒░░░░...
 ;
-SPRITE_TILES_NPC_ARMOR_SALESMAN_01:         ; [$8076]
-    .byte $80,$80,$10,$90,$80,$20,$b8,$78   ; [$8076] byte
-    .byte $c0,$e0,$e0,$f0,$a8,$f8,$f0,$80   ; [$807e] byte
+SPRITE_TILES_NPC_ARMOR_SALESMAN_01:
+    .byte $80,$80,$10,$90,$80,$20,$b8,$78   ; byte
+    .byte $c0,$e0,$e0,$f0,$a8,$f8,$f0,$80   ; byte
 
 
 ;
@@ -158,9 +155,9 @@ SPRITE_TILES_NPC_ARMOR_SALESMAN_01:         ; [$8076]
 ; ░▒▒▒▒▒▒█
 ; ░░░░░░░░
 ;
-SPRITE_TILES_NPC_ARMOR_SALESMAN_02:         ; [$8086]
-    .byte $3d,$5f,$2c,$af,$cf,$ce,$81,$ff   ; [$8086] byte
-    .byte $1a,$2d,$77,$72,$70,$7f,$7f,$00   ; [$808e] byte
+SPRITE_TILES_NPC_ARMOR_SALESMAN_02:
+    .byte $3d,$5f,$2c,$af,$cf,$ce,$81,$ff   ; byte
+    .byte $1a,$2d,$77,$72,$70,$7f,$7f,$00   ; byte
 
 
 ;
@@ -173,9 +170,9 @@ SPRITE_TILES_NPC_ARMOR_SALESMAN_02:         ; [$8086]
 ; █░░░░░▒▒
 ; ░░░░░░▒▒
 ;
-SPRITE_TILES_NPC_ARMOR_SALESMAN_03:         ; [$8096]
-    .byte $f8,$f4,$f6,$f4,$35,$f4,$fc,$fc   ; [$8096] byte
-    .byte $00,$08,$88,$0a,$ca,$0b,$83,$03   ; [$809e] byte
+SPRITE_TILES_NPC_ARMOR_SALESMAN_03:
+    .byte $f8,$f4,$f6,$f4,$35,$f4,$fc,$fc   ; byte
+    .byte $00,$08,$88,$0a,$ca,$0b,$83,$03   ; byte
 
 
 ;
@@ -188,9 +185,9 @@ SPRITE_TILES_NPC_ARMOR_SALESMAN_03:         ; [$8096]
 ; .....░▒█
 ; ....▒░░▒
 ;
-SPRITE_TILES_NPC_ARMOR_SALESMAN_04:         ; [$80a6]
-    .byte $02,$05,$04,$0d,$05,$00,$05,$06   ; [$80a6] byte
-    .byte $01,$03,$03,$03,$0b,$0f,$03,$09   ; [$80ae] byte
+SPRITE_TILES_NPC_ARMOR_SALESMAN_04:
+    .byte $02,$05,$04,$0d,$05,$00,$05,$06   ; byte
+    .byte $01,$03,$03,$03,$0b,$0f,$03,$09   ; byte
 
 
 ;
@@ -203,9 +200,9 @@ SPRITE_TILES_NPC_ARMOR_SALESMAN_04:         ; [$80a6]
 ; ▒██▒░...
 ; ░░░▒░...
 ;
-SPRITE_TILES_NPC_ARMOR_SALESMAN_05:         ; [$80b6]
-    .byte $80,$80,$10,$20,$10,$40,$68,$e8   ; [$80b6] byte
-    .byte $c0,$e0,$e0,$f0,$50,$f0,$f0,$10   ; [$80be] byte
+SPRITE_TILES_NPC_ARMOR_SALESMAN_05:
+    .byte $80,$80,$10,$20,$10,$40,$68,$e8   ; byte
+    .byte $c0,$e0,$e0,$f0,$50,$f0,$f0,$10   ; byte
 
 
 ;
@@ -218,9 +215,9 @@ SPRITE_TILES_NPC_ARMOR_SALESMAN_05:         ; [$80b6]
 ; ░▒▒▒▒▒▒░
 ; ░░░░░░░░
 ;
-SPRITE_TILES_NPC_ARMOR_SALESMAN_06:         ; [$80c6]
-    .byte $3b,$5b,$2f,$af,$cf,$cc,$81,$ff   ; [$80c6] byte
-    .byte $1c,$2d,$74,$71,$73,$7f,$7e,$00   ; [$80ce] byte
+SPRITE_TILES_NPC_ARMOR_SALESMAN_06:
+    .byte $3b,$5b,$2f,$af,$cf,$cc,$81,$ff   ; byte
+    .byte $1c,$2d,$74,$71,$73,$7f,$7e,$00   ; byte
 
 
 ;
@@ -233,9 +230,9 @@ SPRITE_TILES_NPC_ARMOR_SALESMAN_06:         ; [$80c6]
 ; ░░░░░░▒▒
 ; ░░░░░░▒▒
 ;
-SPRITE_TILES_NPC_ARMOR_SALESMAN_07:         ; [$80d6]
-    .byte $98,$f4,$f6,$b4,$15,$74,$fc,$fc   ; [$80d6] byte
-    .byte $60,$08,$08,$ca,$ea,$8b,$03,$03   ; [$80de] byte
+SPRITE_TILES_NPC_ARMOR_SALESMAN_07:
+    .byte $98,$f4,$f6,$b4,$15,$74,$fc,$fc   ; byte
+    .byte $60,$08,$08,$ca,$ea,$8b,$03,$03   ; byte
 
 
 ;============================================================================
@@ -258,9 +255,9 @@ SPRITE_TILES_NPC_ARMOR_SALESMAN_07:         ; [$80d6]
 ; XREFS:
 ;     BANK7_SPRITEADDRS_START [$PRG7::800e]
 ;
-SPRITE_TILES_NPC_MARTIAL_ARTIST_00:         ; [$80e6]
-    .byte $03,$04,$06,$06,$05,$07,$03,$04   ; [$80e6] byte
-    .byte $00,$03,$03,$01,$03,$00,$07,$03   ; [$80ee] byte
+SPRITE_TILES_NPC_MARTIAL_ARTIST_00:
+    .byte $03,$04,$06,$06,$05,$07,$03,$04   ; byte
+    .byte $00,$03,$03,$01,$03,$00,$07,$03   ; byte
 
 
 ;
@@ -273,9 +270,9 @@ SPRITE_TILES_NPC_MARTIAL_ARTIST_00:         ; [$80e6]
 ; ▒▒░░....
 ; ▒░▒▒▒▒..
 ;
-SPRITE_TILES_NPC_MARTIAL_ARTIST_01:         ; [$80f6]
-    .byte $e0,$30,$d8,$e8,$08,$b8,$30,$40   ; [$80f6] byte
-    .byte $00,$c0,$e0,$50,$f0,$40,$c0,$bc   ; [$80fe] byte
+SPRITE_TILES_NPC_MARTIAL_ARTIST_01:
+    .byte $e0,$30,$d8,$e8,$08,$b8,$30,$40   ; byte
+    .byte $00,$c0,$e0,$50,$f0,$40,$c0,$bc   ; byte
 
 
 ;
@@ -288,9 +285,9 @@ SPRITE_TILES_NPC_MARTIAL_ARTIST_01:         ; [$80f6]
 ; ..░▒█▒░░
 ; ...░▒░░█
 ;
-SPRITE_TILES_NPC_MARTIAL_ARTIST_02:         ; [$8106]
-    .byte $27,$71,$2c,$cd,$9f,$5f,$2b,$17   ; [$8106] byte
-    .byte $18,$0e,$77,$72,$60,$30,$1c,$09   ; [$810e] byte
+SPRITE_TILES_NPC_MARTIAL_ARTIST_02:
+    .byte $27,$71,$2c,$cd,$9f,$5f,$2b,$17   ; byte
+    .byte $18,$0e,$77,$72,$60,$30,$1c,$09   ; byte
 
 
 ;
@@ -303,9 +300,9 @@ SPRITE_TILES_NPC_MARTIAL_ARTIST_02:         ; [$8106]
 ; ░░░▒█▒..
 ; ▒░▒█▒...
 ;
-SPRITE_TILES_NPC_MARTIAL_ARTIST_03:         ; [$8116]
-    .byte $ac,$5a,$98,$34,$f8,$f4,$e8,$50   ; [$8116] byte
-    .byte $70,$ec,$ee,$cf,$07,$0e,$1c,$b8   ; [$811e] byte
+SPRITE_TILES_NPC_MARTIAL_ARTIST_03:
+    .byte $ac,$5a,$98,$34,$f8,$f4,$e8,$50   ; byte
+    .byte $70,$ec,$ee,$cf,$07,$0e,$1c,$b8   ; byte
 
 
 ;
@@ -318,9 +315,9 @@ SPRITE_TILES_NPC_MARTIAL_ARTIST_03:         ; [$8116]
 ; ....██░░
 ; ...░█▒▒░
 ;
-SPRITE_TILES_NPC_MARTIAL_ARTIST_04:         ; [$8126]
-    .byte $0f,$0f,$07,$06,$08,$07,$0f,$19   ; [$8126] byte
-    .byte $00,$05,$0d,$0d,$07,$08,$0c,$0e   ; [$812e] byte
+SPRITE_TILES_NPC_MARTIAL_ARTIST_04:
+    .byte $0f,$0f,$07,$06,$08,$07,$0f,$19   ; byte
+    .byte $00,$05,$0d,$0d,$07,$08,$0c,$0e   ; byte
 
 
 ;
@@ -333,9 +330,9 @@ SPRITE_TILES_NPC_MARTIAL_ARTIST_04:         ; [$8126]
 ; ██▒░....
 ; ▒█▒░....
 ;
-SPRITE_TILES_NPC_MARTIAL_ARTIST_05:         ; [$8136]
-    .byte $f0,$f8,$e8,$68,$f0,$f0,$d0,$50   ; [$8136] byte
-    .byte $00,$a0,$b0,$b0,$00,$c0,$e0,$e0   ; [$813e] byte
+SPRITE_TILES_NPC_MARTIAL_ARTIST_05:
+    .byte $f0,$f8,$e8,$68,$f0,$f0,$d0,$50   ; byte
+    .byte $00,$a0,$b0,$b0,$00,$c0,$e0,$e0   ; byte
 
 
 ;
@@ -348,9 +345,9 @@ SPRITE_TILES_NPC_MARTIAL_ARTIST_05:         ; [$8136]
 ; ..▒█▒░..
 ; .▒█▒█░..
 ;
-SPRITE_TILES_NPC_MARTIAL_ARTIST_06:         ; [$8146]
-    .byte $12,$1c,$14,$10,$10,$04,$14,$2c   ; [$8146] byte
-    .byte $0c,$00,$08,$1c,$1c,$18,$38,$78   ; [$814e] byte
+SPRITE_TILES_NPC_MARTIAL_ARTIST_06:
+    .byte $12,$1c,$14,$10,$10,$04,$14,$2c   ; byte
+    .byte $0c,$00,$08,$1c,$1c,$18,$38,$78   ; byte
 
 
 ;
@@ -363,9 +360,9 @@ SPRITE_TILES_NPC_MARTIAL_ARTIST_06:         ; [$8146]
 ; .▒█▒░...
 ; .▒▒▒▒░..
 ;
-SPRITE_TILES_NPC_MARTIAL_ARTIST_07:         ; [$8156]
-    .byte $50,$58,$78,$38,$38,$38,$28,$04   ; [$8156] byte
-    .byte $e0,$60,$00,$20,$20,$00,$70,$78   ; [$815e] byte
+SPRITE_TILES_NPC_MARTIAL_ARTIST_07:
+    .byte $50,$58,$78,$38,$38,$38,$28,$04   ; byte
+    .byte $e0,$60,$00,$20,$20,$00,$70,$78   ; byte
 
 
 ;
@@ -378,9 +375,9 @@ SPRITE_TILES_NPC_MARTIAL_ARTIST_07:         ; [$8156]
 ; .▒█▒.░██
 ; .▒█▒░.▒▒
 ;
-SPRITE_TILES_NPC_MARTIAL_ARTIST_08:         ; [$8166]
-    .byte $23,$0c,$7e,$6e,$55,$54,$27,$28   ; [$8166] byte
-    .byte $10,$33,$33,$31,$63,$63,$73,$73   ; [$816e] byte
+SPRITE_TILES_NPC_MARTIAL_ARTIST_08:
+    .byte $23,$0c,$7e,$6e,$55,$54,$27,$28   ; byte
+    .byte $10,$33,$33,$31,$63,$63,$73,$73   ; byte
 
 
 ;
@@ -393,9 +390,9 @@ SPRITE_TILES_NPC_MARTIAL_ARTIST_08:         ; [$8166]
 ; ▒▒░░....
 ; ▒░▒▒▒▒..
 ;
-SPRITE_TILES_NPC_MARTIAL_ARTIST_09:         ; [$8176]
-    .byte $e0,$30,$d8,$e8,$08,$38,$30,$40   ; [$8176] byte
-    .byte $00,$c0,$e0,$50,$f0,$c0,$c0,$bc   ; [$817e] byte
+SPRITE_TILES_NPC_MARTIAL_ARTIST_09:
+    .byte $e0,$30,$d8,$e8,$08,$38,$30,$40   ; byte
+    .byte $00,$c0,$e0,$50,$f0,$c0,$c0,$bc   ; byte
 
 
 ;
@@ -408,9 +405,9 @@ SPRITE_TILES_NPC_MARTIAL_ARTIST_09:         ; [$8176]
 ; .....░░░
 ; .....░██
 ;
-SPRITE_TILES_NPC_MARTIAL_ARTIST_10:         ; [$8186]
-    .byte $27,$19,$1c,$09,$07,$07,$07,$07   ; [$8186] byte
-    .byte $78,$36,$37,$16,$08,$00,$00,$03   ; [$818e] byte
+SPRITE_TILES_NPC_MARTIAL_ARTIST_10:
+    .byte $27,$19,$1c,$09,$07,$07,$07,$07   ; byte
+    .byte $78,$36,$37,$16,$08,$00,$00,$03   ; byte
 
 
 ;============================================================================
@@ -433,9 +430,9 @@ SPRITE_TILES_NPC_MARTIAL_ARTIST_10:         ; [$8186]
 ; XREFS:
 ;     BANK7_SPRITEADDRS_START [$PRG7::8010]
 ;
-SPRITE_TILES_NPC_GURU_00:                   ; [$8196]
-    .byte $03,$03,$03,$07,$05,$07,$01,$01   ; [$8196] byte
-    .byte $05,$06,$07,$00,$06,$0a,$06,$02   ; [$819e] byte
+SPRITE_TILES_NPC_GURU_00:
+    .byte $03,$03,$03,$07,$05,$07,$01,$01   ; byte
+    .byte $05,$06,$07,$00,$06,$0a,$06,$02   ; byte
 
 
 ;
@@ -448,9 +445,9 @@ SPRITE_TILES_NPC_GURU_00:                   ; [$8196]
 ; ▒█▒.....
 ; ░█▒.....
 ;
-SPRITE_TILES_NPC_GURU_01:                   ; [$81a6]
-    .byte $80,$40,$c0,$e0,$a0,$e0,$40,$c0   ; [$81a6] byte
-    .byte $80,$80,$80,$00,$c0,$c0,$e0,$60   ; [$81ae] byte
+SPRITE_TILES_NPC_GURU_01:
+    .byte $80,$40,$c0,$e0,$a0,$e0,$40,$c0   ; byte
+    .byte $80,$80,$80,$00,$c0,$c0,$e0,$60   ; byte
 
 
 ;
@@ -463,9 +460,9 @@ SPRITE_TILES_NPC_GURU_01:                   ; [$81a6]
 ; ....▒███
 ; .....███
 ;
-SPRITE_TILES_NPC_GURU_02:                   ; [$81b6]
-    .byte $03,$06,$0a,$1d,$17,$05,$07,$07   ; [$81b6] byte
-    .byte $05,$03,$07,$12,$18,$1e,$0f,$07   ; [$81be] byte
+SPRITE_TILES_NPC_GURU_02:
+    .byte $03,$06,$0a,$1d,$17,$05,$07,$07   ; byte
+    .byte $05,$03,$07,$12,$18,$1e,$0f,$07   ; byte
 
 
 ;
@@ -478,9 +475,9 @@ SPRITE_TILES_NPC_GURU_02:                   ; [$81b6]
 ; ██▒░....
 ; █▒▒░....
 ;
-SPRITE_TILES_NPC_GURU_03:                   ; [$81c6]
-    .byte $20,$d0,$d0,$d0,$d0,$d0,$d0,$90   ; [$81c6] byte
-    .byte $c0,$e0,$e0,$e0,$e0,$e0,$e0,$e0   ; [$81ce] byte
+SPRITE_TILES_NPC_GURU_03:
+    .byte $20,$d0,$d0,$d0,$d0,$d0,$d0,$90   ; byte
+    .byte $c0,$e0,$e0,$e0,$e0,$e0,$e0,$e0   ; byte
 
 
 ;
@@ -493,9 +490,9 @@ SPRITE_TILES_NPC_GURU_03:                   ; [$81c6]
 ; ....▒░█▒
 ; ....▒▒█▒
 ;
-SPRITE_TILES_NPC_GURU_04:                   ; [$81d6]
-    .byte $06,$0d,$07,$07,$07,$0f,$06,$02   ; [$81d6] byte
-    .byte $07,$07,$0e,$0d,$0d,$05,$0b,$0f   ; [$81de] byte
+SPRITE_TILES_NPC_GURU_04:
+    .byte $06,$0d,$07,$07,$07,$0f,$06,$02   ; byte
+    .byte $07,$07,$0e,$0d,$0d,$05,$0b,$0f   ; byte
 
 
 ;
@@ -508,9 +505,9 @@ SPRITE_TILES_NPC_GURU_04:                   ; [$81d6]
 ; █▒░.....
 ; █▒░.....
 ;
-SPRITE_TILES_NPC_GURU_05:                   ; [$81e6]
-    .byte $20,$e0,$60,$a0,$20,$20,$a0,$a0   ; [$81e6] byte
-    .byte $c0,$00,$80,$c0,$c0,$c0,$c0,$c0   ; [$81ee] byte
+SPRITE_TILES_NPC_GURU_05:
+    .byte $20,$e0,$60,$a0,$20,$20,$a0,$a0   ; byte
+    .byte $c0,$00,$80,$c0,$c0,$c0,$c0,$c0   ; byte
 
 
 ;
@@ -523,9 +520,9 @@ SPRITE_TILES_NPC_GURU_05:                   ; [$81e6]
 ; ...░██░█
 ; ...█▒░▒▒
 ;
-SPRITE_TILES_NPC_GURU_06:                   ; [$81f6]
-    .byte $05,$0d,$01,$04,$06,$0f,$1f,$14   ; [$81f6] byte
-    .byte $0f,$07,$0f,$0b,$09,$00,$0d,$1b   ; [$81fe] byte
+SPRITE_TILES_NPC_GURU_06:
+    .byte $05,$0d,$01,$04,$06,$0f,$1f,$14   ; byte
+    .byte $0f,$07,$0f,$0b,$09,$00,$0d,$1b   ; byte
 
 
 ;
@@ -538,9 +535,9 @@ SPRITE_TILES_NPC_GURU_06:                   ; [$81f6]
 ; ░▒▒░....
 ; ▒░░░....
 ;
-SPRITE_TILES_NPC_GURU_07:                   ; [$8206]
-    .byte $20,$a0,$20,$a0,$10,$90,$90,$70   ; [$8206] byte
-    .byte $c0,$c0,$c0,$c0,$e0,$e0,$60,$80   ; [$820e] byte
+SPRITE_TILES_NPC_GURU_07:
+    .byte $20,$a0,$20,$a0,$10,$90,$90,$70   ; byte
+    .byte $c0,$c0,$c0,$c0,$e0,$e0,$60,$80   ; byte
 
 
 ;
@@ -553,9 +550,9 @@ SPRITE_TILES_NPC_GURU_07:                   ; [$8206]
 ; .....▒▒░
 ; .....▒▒░
 ;
-SPRITE_TILES_NPC_GURU_08:                   ; [$8216]
-    .byte $03,$03,$03,$07,$05,$07,$01,$01   ; [$8216] byte
-    .byte $05,$06,$07,$00,$06,$0a,$06,$06   ; [$821e] byte
+SPRITE_TILES_NPC_GURU_08:
+    .byte $03,$03,$03,$07,$05,$07,$01,$01   ; byte
+    .byte $05,$06,$07,$00,$06,$0a,$06,$06   ; byte
 
 
 ;
@@ -568,9 +565,9 @@ SPRITE_TILES_NPC_GURU_08:                   ; [$8216]
 ; ...▒▒███
 ; .....███
 ;
-SPRITE_TILES_NPC_GURU_09:                   ; [$8226]
-    .byte $03,$06,$0a,$0d,$1f,$1b,$07,$07   ; [$8226] byte
-    .byte $05,$03,$07,$02,$10,$34,$1f,$07   ; [$822e] byte
+SPRITE_TILES_NPC_GURU_09:
+    .byte $03,$06,$0a,$0d,$1f,$1b,$07,$07   ; byte
+    .byte $05,$03,$07,$02,$10,$34,$1f,$07   ; byte
 
 
 ;
@@ -583,9 +580,9 @@ SPRITE_TILES_NPC_GURU_09:                   ; [$8226]
 ; ....░█▒▒
 ; ....▒░█▒
 ;
-SPRITE_TILES_NPC_GURU_10:                   ; [$8236]
-    .byte $06,$0d,$0f,$0f,$0f,$0f,$0c,$06   ; [$8236] byte
-    .byte $07,$07,$06,$05,$05,$05,$07,$0b   ; [$823e] byte
+SPRITE_TILES_NPC_GURU_10:
+    .byte $06,$0d,$0f,$0f,$0f,$0f,$0c,$06   ; byte
+    .byte $07,$07,$06,$05,$05,$05,$07,$0b   ; byte
 
 
 ;============================================================================
@@ -608,9 +605,9 @@ SPRITE_TILES_NPC_GURU_10:                   ; [$8236]
 ; XREFS:
 ;     BANK7_SPRITEADDRS_START [$PRG7::8012]
 ;
-SPRITE_TILES_NPC_KING_00:                   ; [$8246]
-    .byte $05,$07,$03,$03,$06,$06,$06,$00   ; [$8246] byte
-    .byte $05,$07,$04,$07,$01,$07,$03,$0f   ; [$824e] byte
+SPRITE_TILES_NPC_KING_00:
+    .byte $05,$07,$03,$03,$06,$06,$06,$00   ; byte
+    .byte $05,$07,$04,$07,$01,$07,$03,$0f   ; byte
 
 
 ;
@@ -623,9 +620,9 @@ SPRITE_TILES_NPC_KING_00:                   ; [$8246]
 ; ░█▒██░..
 ; █▒██▒░..
 ;
-SPRITE_TILES_NPC_KING_01:                   ; [$8256]
-    .byte $50,$e0,$f0,$f0,$f8,$f8,$dc,$b4   ; [$8256] byte
-    .byte $50,$f0,$00,$e0,$f0,$70,$78,$f8   ; [$825e] byte
+SPRITE_TILES_NPC_KING_01:
+    .byte $50,$e0,$f0,$f0,$f8,$f8,$dc,$b4   ; byte
+    .byte $50,$f0,$00,$e0,$f0,$70,$78,$f8   ; byte
 
 
 ;
@@ -638,9 +635,9 @@ SPRITE_TILES_NPC_KING_01:                   ; [$8256]
 ; ░▒█░▒▒██
 ; ▒░▒░▒███
 ;
-SPRITE_TILES_NPC_KING_02:                   ; [$8266]
-    .byte $07,$07,$0f,$1f,$1f,$6c,$b3,$57   ; [$8266] byte
-    .byte $07,$07,$0e,$1d,$03,$13,$6f,$af   ; [$826e] byte
+SPRITE_TILES_NPC_KING_02:
+    .byte $07,$07,$0f,$1f,$1f,$6c,$b3,$57   ; byte
+    .byte $07,$07,$0e,$1d,$03,$13,$6f,$af   ; byte
 
 
 ;
@@ -653,9 +650,9 @@ SPRITE_TILES_NPC_KING_02:                   ; [$8266]
 ; ██▒▒░...
 ; █▒▒░░...
 ;
-SPRITE_TILES_NPC_KING_03:                   ; [$8276]
-    .byte $b8,$e8,$68,$68,$68,$e8,$c8,$98   ; [$8276] byte
-    .byte $48,$70,$f0,$f0,$f0,$f0,$f0,$e0   ; [$827e] byte
+SPRITE_TILES_NPC_KING_03:
+    .byte $b8,$e8,$68,$68,$68,$e8,$c8,$98   ; byte
+    .byte $48,$70,$f0,$f0,$f0,$f0,$f0,$e0   ; byte
 
 
 ;
@@ -668,9 +665,9 @@ SPRITE_TILES_NPC_KING_03:                   ; [$8276]
 ; ...░▒▒░▒
 ; ....░░░▒
 ;
-SPRITE_TILES_NPC_KING_04:                   ; [$8286]
-    .byte $01,$06,$1f,$1e,$1d,$1d,$12,$0e   ; [$8286] byte
-    .byte $07,$0f,$0c,$0d,$0e,$0e,$0d,$01   ; [$828e] byte
+SPRITE_TILES_NPC_KING_04:
+    .byte $01,$06,$1f,$1e,$1d,$1d,$12,$0e   ; byte
+    .byte $07,$0f,$0c,$0d,$0e,$0e,$0d,$01   ; byte
 
 
 ;
@@ -683,9 +680,9 @@ SPRITE_TILES_NPC_KING_04:                   ; [$8286]
 ; ........
 ; ........
 ;
-SPRITE_TILES_NPC_KING_05:                   ; [$8296]
-    .byte $03,$09,$1c,$06,$00,$00,$00,$00   ; [$8296] byte
-    .byte $0c,$0e,$1e,$38,$00,$00,$00,$00   ; [$829e] byte
+SPRITE_TILES_NPC_KING_05:
+    .byte $03,$09,$1c,$06,$00,$00,$00,$00   ; byte
+    .byte $0c,$0e,$1e,$38,$00,$00,$00,$00   ; byte
 
 
 ;
@@ -698,9 +695,9 @@ SPRITE_TILES_NPC_KING_05:                   ; [$8296]
 ; .....░█▒
 ; ....▒▒▒▒
 ;
-SPRITE_TILES_NPC_KING_06:                   ; [$82a6]
-    .byte $05,$07,$03,$03,$06,$06,$06,$00   ; [$82a6] byte
-    .byte $05,$07,$04,$07,$01,$07,$03,$0f   ; [$82ae] byte
+SPRITE_TILES_NPC_KING_06:
+    .byte $05,$07,$03,$03,$06,$06,$06,$00   ; byte
+    .byte $05,$07,$04,$07,$01,$07,$03,$0f   ; byte
 
 
 ;
@@ -713,9 +710,9 @@ SPRITE_TILES_NPC_KING_06:                   ; [$82a6]
 ; .░░░▒▒██
 ; ░██░▒███
 ;
-SPRITE_TILES_NPC_KING_07:                   ; [$82b6]
-    .byte $07,$07,$0f,$1f,$1f,$0c,$73,$f7   ; [$82b6] byte
-    .byte $07,$03,$0e,$1d,$03,$33,$0f,$6f   ; [$82be] byte
+SPRITE_TILES_NPC_KING_07:
+    .byte $07,$07,$0f,$1f,$1f,$0c,$73,$f7   ; byte
+    .byte $07,$03,$0e,$1d,$03,$33,$0f,$6f   ; byte
 
 
 ;
@@ -728,9 +725,9 @@ SPRITE_TILES_NPC_KING_07:                   ; [$82b6]
 ; ....░█▒░
 ; ...▒▒▒▒█
 ;
-SPRITE_TILES_NPC_KING_08:                   ; [$82c6]
-    .byte $0a,$0f,$07,$07,$0f,$0d,$0d,$01   ; [$82c6] byte
-    .byte $0a,$0f,$08,$0f,$01,$0e,$06,$1f   ; [$82ce] byte
+SPRITE_TILES_NPC_KING_08:
+    .byte $0a,$0f,$07,$07,$0f,$0d,$0d,$01   ; byte
+    .byte $0a,$0f,$08,$0f,$01,$0e,$06,$1f   ; byte
 
 
 ;
@@ -743,9 +740,9 @@ SPRITE_TILES_NPC_KING_08:                   ; [$82c6]
 ; █▒██....
 ; ▒██▒....
 ;
-SPRITE_TILES_NPC_KING_09:                   ; [$82d6]
-    .byte $20,$20,$e0,$e0,$f0,$f0,$b0,$60   ; [$82d6] byte
-    .byte $80,$c0,$00,$c0,$e0,$e0,$f0,$f0   ; [$82de] byte
+SPRITE_TILES_NPC_KING_09:
+    .byte $20,$20,$e0,$e0,$f0,$f0,$b0,$60   ; byte
+    .byte $80,$c0,$00,$c0,$e0,$e0,$f0,$f0   ; byte
 
 
 ;
@@ -758,9 +755,9 @@ SPRITE_TILES_NPC_KING_09:                   ; [$82d6]
 ; ░▒██░░▒█
 ; .▒█░█░██
 ;
-SPRITE_TILES_NPC_KING_10:                   ; [$82e6]
-    .byte $0f,$1f,$3e,$fe,$f2,$5e,$bd,$3f   ; [$82e6] byte
-    .byte $0f,$0e,$1d,$39,$8d,$bd,$73,$6b   ; [$82ee] byte
+SPRITE_TILES_NPC_KING_10:
+    .byte $0f,$1f,$3e,$fe,$f2,$5e,$bd,$3f   ; byte
+    .byte $0f,$0e,$1d,$39,$8d,$bd,$73,$6b   ; byte
 
 
 ;
@@ -773,9 +770,9 @@ SPRITE_TILES_NPC_KING_10:                   ; [$82e6]
 ; █▒▒░....
 ; ▒▒░░....
 ;
-SPRITE_TILES_NPC_KING_11:                   ; [$82f6]
-    .byte $f0,$d0,$d0,$d0,$d0,$d0,$90,$30   ; [$82f6] byte
-    .byte $10,$e0,$e0,$e0,$e0,$e0,$e0,$c0   ; [$82fe] byte
+SPRITE_TILES_NPC_KING_11:
+    .byte $f0,$d0,$d0,$d0,$d0,$d0,$90,$30   ; byte
+    .byte $10,$e0,$e0,$e0,$e0,$e0,$e0,$c0   ; byte
 
 
 ;
@@ -788,9 +785,9 @@ SPRITE_TILES_NPC_KING_11:                   ; [$82f6]
 ; ...░░░░▒
 ; ...░▒██▒
 ;
-SPRITE_TILES_NPC_KING_12:                   ; [$8306]
-    .byte $3f,$52,$3f,$39,$3c,$21,$1e,$16   ; [$8306] byte
-    .byte $6d,$2d,$00,$1e,$1f,$1e,$01,$0f   ; [$830e] byte
+SPRITE_TILES_NPC_KING_12:
+    .byte $3f,$52,$3f,$39,$3c,$21,$1e,$16   ; byte
+    .byte $6d,$2d,$00,$1e,$1f,$1e,$01,$0f   ; byte
 
 
 ;
@@ -803,9 +800,9 @@ SPRITE_TILES_NPC_KING_12:                   ; [$8306]
 ; ▒░......
 ; ▒░......
 ;
-SPRITE_TILES_NPC_KING_13:                   ; [$8316]
-    .byte $70,$f0,$e0,$e0,$40,$c0,$40,$40   ; [$8316] byte
-    .byte $80,$00,$00,$00,$80,$00,$80,$80   ; [$831e] byte
+SPRITE_TILES_NPC_KING_13:
+    .byte $70,$f0,$e0,$e0,$40,$c0,$40,$40   ; byte
+    .byte $80,$00,$00,$00,$80,$00,$80,$80   ; byte
 
 
 ;
@@ -818,9 +815,9 @@ SPRITE_TILES_NPC_KING_13:                   ; [$8316]
 ; ...░▒█▒▒
 ; ..░▒███▒
 ;
-SPRITE_TILES_NPC_KING_14:                   ; [$8326]
-    .byte $16,$14,$14,$1c,$1f,$0d,$14,$2e   ; [$8326] byte
-    .byte $0f,$0f,$0f,$0f,$00,$02,$0f,$1f   ; [$832e] byte
+SPRITE_TILES_NPC_KING_14:
+    .byte $16,$14,$14,$1c,$1f,$0d,$14,$2e   ; byte
+    .byte $0f,$0f,$0f,$0f,$00,$02,$0f,$1f   ; byte
 
 
 ;
@@ -833,9 +830,9 @@ SPRITE_TILES_NPC_KING_14:                   ; [$8326]
 ; ░.......
 ; ░.......
 ;
-SPRITE_TILES_NPC_KING_15:                   ; [$8336]
-    .byte $40,$c0,$c0,$c0,$80,$00,$80,$80   ; [$8336] byte
-    .byte $80,$00,$00,$00,$00,$00,$00,$00   ; [$833e] byte
+SPRITE_TILES_NPC_KING_15:
+    .byte $40,$c0,$c0,$c0,$80,$00,$80,$80   ; byte
+    .byte $80,$00,$00,$00,$00,$00,$00,$00   ; byte
 
 
 ;
@@ -848,9 +845,9 @@ SPRITE_TILES_NPC_KING_15:                   ; [$8336]
 ; ░▒█░██░█
 ; ░▒█░█▒░▒
 ;
-SPRITE_TILES_NPC_KING_16:                   ; [$8346]
-    .byte $0f,$1f,$3e,$3e,$f2,$5f,$bf,$ba   ; [$8346] byte
-    .byte $0f,$06,$1d,$39,$0d,$b3,$6d,$6d   ; [$834e] byte
+SPRITE_TILES_NPC_KING_16:
+    .byte $0f,$1f,$3e,$3e,$f2,$5f,$bf,$ba   ; byte
+    .byte $0f,$06,$1d,$39,$0d,$b3,$6d,$6d   ; byte
 
 
 ;
@@ -863,9 +860,9 @@ SPRITE_TILES_NPC_KING_16:                   ; [$8346]
 ; ▒▒░░....
 ; ▒░░░....
 ;
-SPRITE_TILES_NPC_KING_17:                   ; [$8356]
-    .byte $f0,$d0,$d0,$d0,$90,$90,$30,$70   ; [$8356] byte
-    .byte $10,$e0,$e0,$e0,$e0,$e0,$c0,$80   ; [$835e] byte
+SPRITE_TILES_NPC_KING_17:
+    .byte $f0,$d0,$d0,$d0,$90,$90,$30,$70   ; byte
+    .byte $10,$e0,$e0,$e0,$e0,$e0,$c0,$80   ; byte
 
 
 ;
@@ -878,9 +875,9 @@ SPRITE_TILES_NPC_KING_17:                   ; [$8356]
 ; ...░░░░▒
 ; ...░▒██▒
 ;
-SPRITE_TILES_NPC_KING_18:                   ; [$8366]
-    .byte $32,$5f,$3f,$39,$3c,$21,$1e,$16   ; [$8366] byte
-    .byte $6d,$20,$00,$1e,$1f,$1e,$01,$0f   ; [$836e] byte
+SPRITE_TILES_NPC_KING_18:
+    .byte $32,$5f,$3f,$39,$3c,$21,$1e,$16   ; byte
+    .byte $6d,$20,$00,$1e,$1f,$1e,$01,$0f   ; byte
 
 
 ;
@@ -893,9 +890,9 @@ SPRITE_TILES_NPC_KING_18:                   ; [$8366]
 ; ▒░......
 ; ▒░......
 ;
-SPRITE_TILES_NPC_KING_19:                   ; [$8376]
-    .byte $f0,$f0,$e0,$e0,$40,$c0,$40,$40   ; [$8376] byte
-    .byte $00,$00,$00,$00,$80,$00,$80,$80   ; [$837e] byte
+SPRITE_TILES_NPC_KING_19:
+    .byte $f0,$f0,$e0,$e0,$40,$c0,$40,$40   ; byte
+    .byte $00,$00,$00,$00,$80,$00,$80,$80   ; byte
 
 
 ;============================================================================
@@ -918,9 +915,9 @@ SPRITE_TILES_NPC_KING_19:                   ; [$8376]
 ; XREFS:
 ;     BANK7_SPRITEADDRS_START [$PRG7::8014]
 ;
-SPRITE_TILES_NPC_MAGIC_TEACHER_00:          ; [$8386]
-    .byte $63,$d6,$f4,$b0,$96,$56,$f0,$67   ; [$8386] byte
-    .byte $03,$67,$67,$67,$67,$e3,$47,$40   ; [$838e] byte
+SPRITE_TILES_NPC_MAGIC_TEACHER_00:
+    .byte $63,$d6,$f4,$b0,$96,$56,$f0,$67   ; byte
+    .byte $03,$67,$67,$67,$67,$e3,$47,$40   ; byte
 
 
 ;
@@ -933,9 +930,9 @@ SPRITE_TILES_NPC_MAGIC_TEACHER_00:          ; [$8386]
 ; ▒▒▒██...
 ; ▒▒█░██..
 ;
-SPRITE_TILES_NPC_MAGIC_TEACHER_01:          ; [$8396]
-    .byte $c0,$e0,$f0,$10,$f0,$f8,$18,$3c   ; [$8396] byte
-    .byte $e0,$f0,$f0,$f0,$d0,$58,$f8,$ec   ; [$839e] byte
+SPRITE_TILES_NPC_MAGIC_TEACHER_01:
+    .byte $c0,$e0,$f0,$10,$f0,$f8,$18,$3c   ; byte
+    .byte $e0,$f0,$f0,$f0,$d0,$58,$f8,$ec   ; byte
 
 
 ;
@@ -948,9 +945,9 @@ SPRITE_TILES_NPC_MAGIC_TEACHER_01:          ; [$8396]
 ; .░░░░░██
 ; .▒░░░░█▒
 ;
-SPRITE_TILES_NPC_MAGIC_TEACHER_02:          ; [$83a6]
-    .byte $6d,$6f,$7f,$ed,$f2,$f7,$7f,$3e   ; [$83a6] byte
-    .byte $47,$57,$57,$16,$cd,$48,$03,$43   ; [$83ae] byte
+SPRITE_TILES_NPC_MAGIC_TEACHER_02:
+    .byte $6d,$6f,$7f,$ed,$f2,$f7,$7f,$3e   ; byte
+    .byte $47,$57,$57,$16,$cd,$48,$03,$43   ; byte
 
 
 ;
@@ -963,9 +960,9 @@ SPRITE_TILES_NPC_MAGIC_TEACHER_02:          ; [$83a6]
 ; ▒▒███▒█▒
 ; ▒░██▒█▒░
 ;
-SPRITE_TILES_NPC_MAGIC_TEACHER_03:          ; [$83b6]
-    .byte $e4,$5a,$bd,$7f,$3f,$fe,$3a,$75   ; [$83b6] byte
-    .byte $d8,$bc,$7e,$ee,$cf,$3f,$ff,$be   ; [$83be] byte
+SPRITE_TILES_NPC_MAGIC_TEACHER_03:
+    .byte $e4,$5a,$bd,$7f,$3f,$fe,$3a,$75   ; byte
+    .byte $d8,$bc,$7e,$ee,$cf,$3f,$ff,$be   ; byte
 
 
 ;
@@ -978,9 +975,9 @@ SPRITE_TILES_NPC_MAGIC_TEACHER_03:          ; [$83b6]
 ; .█░░█▒██
 ; .▒.░████
 ;
-SPRITE_TILES_NPC_MAGIC_TEACHER_04:          ; [$83c6]
-    .byte $77,$39,$74,$3f,$7f,$39,$7b,$1f   ; [$83c6] byte
-    .byte $48,$4e,$4f,$4f,$4f,$4f,$4f,$4f   ; [$83ce] byte
+SPRITE_TILES_NPC_MAGIC_TEACHER_04:
+    .byte $77,$39,$74,$3f,$7f,$39,$7b,$1f   ; byte
+    .byte $48,$4e,$4f,$4f,$4f,$4f,$4f,$4f   ; byte
 
 
 ;
@@ -993,9 +990,9 @@ SPRITE_TILES_NPC_MAGIC_TEACHER_04:          ; [$83c6]
 ; █▒░░░...
 ; █▒█░▒...
 ;
-SPRITE_TILES_NPC_MAGIC_TEACHER_05:          ; [$83d6]
-    .byte $ca,$f4,$e8,$48,$d8,$f8,$b8,$b0   ; [$83d6] byte
-    .byte $3c,$38,$30,$b0,$a0,$c0,$c0,$e8   ; [$83de] byte
+SPRITE_TILES_NPC_MAGIC_TEACHER_05:
+    .byte $ca,$f4,$e8,$48,$d8,$f8,$b8,$b0   ; byte
+    .byte $3c,$38,$30,$b0,$a0,$c0,$c0,$e8   ; byte
 
 
 ;
@@ -1008,9 +1005,9 @@ SPRITE_TILES_NPC_MAGIC_TEACHER_05:          ; [$83d6]
 ; ..▒█▒░░.
 ; .▒█▒█░░.
 ;
-SPRITE_TILES_NPC_MAGIC_TEACHER_06:          ; [$83e6]
-    .byte $1f,$1f,$1f,$1f,$1f,$0e,$16,$2e   ; [$83e6] byte
-    .byte $5f,$5f,$5f,$5f,$5e,$10,$38,$78   ; [$83ee] byte
+SPRITE_TILES_NPC_MAGIC_TEACHER_06:
+    .byte $1f,$1f,$1f,$1f,$1f,$0e,$16,$2e   ; byte
+    .byte $5f,$5f,$5f,$5f,$5e,$10,$38,$78   ; byte
 
 
 ;
@@ -1023,9 +1020,9 @@ SPRITE_TILES_NPC_MAGIC_TEACHER_06:          ; [$83e6]
 ; .▒█▒░...
 ; .▒▒▒▒░..
 ;
-SPRITE_TILES_NPC_MAGIC_TEACHER_07:          ; [$83f6]
-    .byte $b8,$90,$54,$b4,$34,$38,$28,$04   ; [$83f6] byte
-    .byte $f0,$f8,$b8,$78,$38,$00,$70,$78   ; [$83fe] byte
+SPRITE_TILES_NPC_MAGIC_TEACHER_07:
+    .byte $b8,$90,$54,$b4,$34,$38,$28,$04   ; byte
+    .byte $f0,$f8,$b8,$78,$38,$00,$70,$78   ; byte
 
 
 ;
@@ -1038,9 +1035,9 @@ SPRITE_TILES_NPC_MAGIC_TEACHER_07:          ; [$83f6]
 ; ░█▒░.▒▒▒
 ; ░█░░.░░░
 ;
-SPRITE_TILES_NPC_MAGIC_TEACHER_08:          ; [$8406]
-    .byte $03,$66,$d4,$f0,$b6,$16,$d0,$f7   ; [$8406] byte
-    .byte $03,$07,$67,$67,$67,$e3,$67,$40   ; [$840e] byte
+SPRITE_TILES_NPC_MAGIC_TEACHER_08:
+    .byte $03,$66,$d4,$f0,$b6,$16,$d0,$f7   ; byte
+    .byte $03,$07,$67,$67,$67,$e3,$67,$40   ; byte
 
 
 ;
@@ -1053,9 +1050,9 @@ SPRITE_TILES_NPC_MAGIC_TEACHER_08:          ; [$8406]
 ; .█░░░░██
 ; .░░░░░█▒
 ;
-SPRITE_TILES_NPC_MAGIC_TEACHER_09:          ; [$8416]
-    .byte $6b,$6f,$6f,$3d,$e2,$f7,$7f,$7e   ; [$8416] byte
-    .byte $44,$47,$57,$56,$1d,$c8,$43,$03   ; [$841e] byte
+SPRITE_TILES_NPC_MAGIC_TEACHER_09:
+    .byte $6b,$6f,$6f,$3d,$e2,$f7,$7f,$7e   ; byte
+    .byte $44,$47,$57,$56,$1d,$c8,$43,$03   ; byte
 
 
 ;
@@ -1068,9 +1065,9 @@ SPRITE_TILES_NPC_MAGIC_TEACHER_09:          ; [$8416]
 ; .█░░█▒██
 ; .▒.░████
 ;
-SPRITE_TILES_NPC_MAGIC_TEACHER_10:          ; [$8426]
-    .byte $77,$39,$74,$3f,$7f,$39,$7b,$1f   ; [$8426] byte
-    .byte $48,$4e,$4f,$4f,$4f,$4f,$4f,$4f   ; [$842e] byte
+SPRITE_TILES_NPC_MAGIC_TEACHER_10:
+    .byte $77,$39,$74,$3f,$7f,$39,$7b,$1f   ; byte
+    .byte $48,$4e,$4f,$4f,$4f,$4f,$4f,$4f   ; byte
 
 
 ;
@@ -1083,9 +1080,9 @@ SPRITE_TILES_NPC_MAGIC_TEACHER_10:          ; [$8426]
 ; .░▒█▒░░.
 ; .▒█▒█░░.
 ;
-SPRITE_TILES_NPC_MAGIC_TEACHER_11:          ; [$8436]
-    .byte $1f,$1f,$1f,$1f,$1f,$0e,$56,$2e   ; [$8436] byte
-    .byte $5f,$5f,$5f,$5f,$5e,$50,$38,$78   ; [$843e] byte
+SPRITE_TILES_NPC_MAGIC_TEACHER_11:
+    .byte $1f,$1f,$1f,$1f,$1f,$0e,$56,$2e   ; byte
+    .byte $5f,$5f,$5f,$5f,$5e,$50,$38,$78   ; byte
 
 
 ;============================================================================
@@ -1108,9 +1105,9 @@ SPRITE_TILES_NPC_MAGIC_TEACHER_11:          ; [$8436]
 ; XREFS:
 ;     BANK7_SPRITEADDRS_START [$PRG7::8016]
 ;
-SPRITE_TILES_NPC_KEY_SALESMAN_00:           ; [$8446]
-    .byte $87,$03,$9b,$9b,$80,$03,$f8,$03   ; [$8446] byte
-    .byte $08,$1c,$1c,$8d,$3f,$1e,$e7,$5c   ; [$844e] byte
+SPRITE_TILES_NPC_KEY_SALESMAN_00:
+    .byte $87,$03,$9b,$9b,$80,$03,$f8,$03   ; byte
+    .byte $08,$1c,$1c,$8d,$3f,$1e,$e7,$5c   ; byte
 
 
 ;
@@ -1123,9 +1120,9 @@ SPRITE_TILES_NPC_KEY_SALESMAN_00:           ; [$8446]
 ; ░████▒..
 ; ▒█████▒.
 ;
-SPRITE_TILES_NPC_KEY_SALESMAN_01:           ; [$8456]
-    .byte $80,$c0,$c0,$e0,$d8,$bc,$f8,$7c   ; [$8456] byte
-    .byte $00,$00,$00,$00,$20,$78,$7c,$fe   ; [$845e] byte
+SPRITE_TILES_NPC_KEY_SALESMAN_01:
+    .byte $80,$c0,$c0,$e0,$d8,$bc,$f8,$7c   ; byte
+    .byte $00,$00,$00,$00,$20,$78,$7c,$fe   ; byte
 
 
 ;
@@ -1138,9 +1135,9 @@ SPRITE_TILES_NPC_KEY_SALESMAN_01:           ; [$8456]
 ; ...░▒███
 ; ..░▒██▒▒
 ;
-SPRITE_TILES_NPC_KEY_SALESMAN_02:           ; [$8466]
-    .byte $3d,$11,$6b,$33,$3f,$1c,$17,$2c   ; [$8466] byte
-    .byte $40,$60,$10,$0c,$00,$03,$0f,$1f   ; [$846e] byte
+SPRITE_TILES_NPC_KEY_SALESMAN_02:
+    .byte $3d,$11,$6b,$33,$3f,$1c,$17,$2c   ; byte
+    .byte $40,$60,$10,$0c,$00,$03,$0f,$1f   ; byte
 
 
 ;
@@ -1153,9 +1150,9 @@ SPRITE_TILES_NPC_KEY_SALESMAN_02:           ; [$8466]
 ; ▒▒░░█▒▒░
 ; ░░░░█▒░░
 ;
-SPRITE_TILES_NPC_KEY_SALESMAN_03:           ; [$8476]
-    .byte $6c,$67,$77,$f5,$17,$cf,$39,$fb   ; [$8476] byte
-    .byte $fe,$fe,$ee,$0e,$ee,$fe,$ce,$0c   ; [$847e] byte
+SPRITE_TILES_NPC_KEY_SALESMAN_03:
+    .byte $6c,$67,$77,$f5,$17,$cf,$39,$fb   ; byte
+    .byte $fe,$fe,$ee,$0e,$ee,$fe,$ce,$0c   ; byte
 
 
 ;
@@ -1168,9 +1165,9 @@ SPRITE_TILES_NPC_KEY_SALESMAN_03:           ; [$8476]
 ; ...░░░░░
 ; ....░░▒▒
 ;
-SPRITE_TILES_NPC_KEY_SALESMAN_04:           ; [$8486]
-    .byte $2f,$24,$1b,$16,$15,$15,$1f,$0c   ; [$8486] byte
-    .byte $18,$1b,$07,$0f,$0e,$0e,$00,$03   ; [$848e] byte
+SPRITE_TILES_NPC_KEY_SALESMAN_04:
+    .byte $2f,$24,$1b,$16,$15,$15,$1f,$0c   ; byte
+    .byte $18,$1b,$07,$0f,$0e,$0e,$00,$03   ; byte
 
 
 ;
@@ -1183,9 +1180,9 @@ SPRITE_TILES_NPC_KEY_SALESMAN_04:           ; [$8486]
 ; ........
 ; ........
 ;
-SPRITE_TILES_NPC_KEY_SALESMAN_05:           ; [$8496]
-    .byte $7f,$c6,$9e,$f8,$00,$00,$00,$00   ; [$8496] byte
-    .byte $f0,$f8,$e0,$00,$00,$00,$00,$00   ; [$849e] byte
+SPRITE_TILES_NPC_KEY_SALESMAN_05:
+    .byte $7f,$c6,$9e,$f8,$00,$00,$00,$00   ; byte
+    .byte $f0,$f8,$e0,$00,$00,$00,$00,$00   ; byte
 
 
 ;
@@ -1198,9 +1195,9 @@ SPRITE_TILES_NPC_KEY_SALESMAN_05:           ; [$8496]
 ; ..░▒░░░.
 ; ..░░....
 ;
-SPRITE_TILES_NPC_KEY_SALESMAN_06:           ; [$84a6]
-    .byte $0a,$0a,$0a,$0c,$13,$21,$2e,$30   ; [$84a6] byte
-    .byte $07,$07,$07,$03,$0e,$1e,$10,$00   ; [$84ae] byte
+SPRITE_TILES_NPC_KEY_SALESMAN_06:
+    .byte $0a,$0a,$0a,$0c,$13,$21,$2e,$30   ; byte
+    .byte $07,$07,$07,$03,$0e,$1e,$10,$00   ; byte
 
 
 ;
@@ -1213,9 +1210,9 @@ SPRITE_TILES_NPC_KEY_SALESMAN_06:           ; [$84a6]
 ; ███░▒▒▒▒
 ; .▒.▒▒▒░░
 ;
-SPRITE_TILES_NPC_KEY_SALESMAN_07:           ; [$84b6]
-    .byte $87,$03,$13,$9b,$80,$03,$f0,$03   ; [$84b6] byte
-    .byte $88,$1c,$9c,$0d,$3f,$1e,$ef,$5c   ; [$84be] byte
+SPRITE_TILES_NPC_KEY_SALESMAN_07:
+    .byte $87,$03,$13,$9b,$80,$03,$f0,$03   ; byte
+    .byte $88,$1c,$9c,$0d,$3f,$1e,$ef,$5c   ; byte
 
 
 ;============================================================================
@@ -1238,9 +1235,9 @@ SPRITE_TILES_NPC_KEY_SALESMAN_07:           ; [$84b6]
 ; XREFS:
 ;     BANK7_SPRITEADDRS_START [$PRG7::8018]
 ;
-SPRITE_TILES_NPC_SMOKING_MAN_00:            ; [$84c6]
-    .byte $11,$02,$12,$03,$03,$02,$11,$03   ; [$84c6] byte
-    .byte $00,$01,$01,$11,$10,$01,$01,$06   ; [$84ce] byte
+SPRITE_TILES_NPC_SMOKING_MAN_00:
+    .byte $11,$02,$12,$03,$03,$02,$11,$03   ; byte
+    .byte $00,$01,$01,$11,$10,$01,$01,$06   ; byte
 
 
 ;
@@ -1253,9 +1250,9 @@ SPRITE_TILES_NPC_SMOKING_MAN_00:            ; [$84c6]
 ; ▒▒█▒░░..
 ; ░░▒▒▒░..
 ;
-SPRITE_TILES_NPC_SMOKING_MAN_01:            ; [$84d6]
-    .byte $f0,$b8,$0c,$6c,$68,$88,$2c,$c4   ; [$84d6] byte
-    .byte $00,$40,$f0,$f0,$b4,$f4,$f0,$38   ; [$84de] byte
+SPRITE_TILES_NPC_SMOKING_MAN_01:
+    .byte $f0,$b8,$0c,$6c,$68,$88,$2c,$c4   ; byte
+    .byte $00,$40,$f0,$f0,$b4,$f4,$f0,$38   ; byte
 
 
 ;
@@ -1268,9 +1265,9 @@ SPRITE_TILES_NPC_SMOKING_MAN_01:            ; [$84d6]
 ; ....▒▒▒▒
 ; .....░░░
 ;
-SPRITE_TILES_NPC_SMOKING_MAN_02:            ; [$84e6]
-    .byte $01,$02,$01,$03,$05,$07,$00,$07   ; [$84e6] byte
-    .byte $00,$01,$02,$04,$0f,$0f,$0f,$00   ; [$84ee] byte
+SPRITE_TILES_NPC_SMOKING_MAN_02:
+    .byte $01,$02,$01,$03,$05,$07,$00,$07   ; byte
+    .byte $00,$01,$02,$04,$0f,$0f,$0f,$00   ; byte
 
 
 ;
@@ -1283,9 +1280,9 @@ SPRITE_TILES_NPC_SMOKING_MAN_02:            ; [$84e6]
 ; ░░███▒▒░
 ; ░▒▒▒▒▒░.
 ;
-SPRITE_TILES_NPC_SMOKING_MAN_03:            ; [$84f6]
-    .byte $1e,$fa,$f5,$f5,$f5,$2d,$f9,$82   ; [$84f6] byte
-    .byte $e0,$04,$0e,$0e,$ce,$de,$3e,$7c   ; [$84fe] byte
+SPRITE_TILES_NPC_SMOKING_MAN_03:
+    .byte $1e,$fa,$f5,$f5,$f5,$2d,$f9,$82   ; byte
+    .byte $e0,$04,$0e,$0e,$ce,$de,$3e,$7c   ; byte
 
 
 ;
@@ -1298,9 +1295,9 @@ SPRITE_TILES_NPC_SMOKING_MAN_03:            ; [$84f6]
 ; ....▒█▒░
 ; ....▒█▒░
 ;
-SPRITE_TILES_NPC_SMOKING_MAN_04:            ; [$8506]
-    .byte $01,$02,$01,$07,$00,$07,$05,$05   ; [$8506] byte
-    .byte $00,$01,$03,$03,$07,$00,$0e,$0e   ; [$850e] byte
+SPRITE_TILES_NPC_SMOKING_MAN_04:
+    .byte $01,$02,$01,$07,$00,$07,$05,$05   ; byte
+    .byte $00,$01,$03,$03,$07,$00,$0e,$0e   ; byte
 
 
 ;
@@ -1313,9 +1310,9 @@ SPRITE_TILES_NPC_SMOKING_MAN_04:            ; [$8506]
 ; ░▒░░....
 ; ▒▒░.....
 ;
-SPRITE_TILES_NPC_SMOKING_MAN_05:            ; [$8516]
-    .byte $f8,$a8,$68,$68,$40,$f0,$b0,$20   ; [$8516] byte
-    .byte $00,$d0,$b0,$b0,$b0,$00,$40,$c0   ; [$851e] byte
+SPRITE_TILES_NPC_SMOKING_MAN_05:
+    .byte $f8,$a8,$68,$68,$40,$f0,$b0,$20   ; byte
+    .byte $00,$d0,$b0,$b0,$b0,$00,$40,$c0   ; byte
 
 
 ;
@@ -1328,9 +1325,9 @@ SPRITE_TILES_NPC_SMOKING_MAN_05:            ; [$8516]
 ; .....█░░
 ; ....▒▒██
 ;
-SPRITE_TILES_NPC_SMOKING_MAN_06:            ; [$8526]
-    .byte $03,$04,$02,$03,$01,$03,$07,$03   ; [$8526] byte
-    .byte $0c,$0f,$07,$03,$01,$00,$04,$0f   ; [$852e] byte
+SPRITE_TILES_NPC_SMOKING_MAN_06:
+    .byte $03,$04,$02,$03,$01,$03,$07,$03   ; byte
+    .byte $0c,$0f,$07,$03,$01,$00,$04,$0f   ; byte
 
 
 ;
@@ -1343,9 +1340,9 @@ SPRITE_TILES_NPC_SMOKING_MAN_06:            ; [$8526]
 ; █▒░.....
 ; ▒░......
 ;
-SPRITE_TILES_NPC_SMOKING_MAN_07:            ; [$8536]
-    .byte $60,$c0,$40,$40,$40,$a0,$a0,$40   ; [$8536] byte
-    .byte $80,$00,$80,$80,$80,$c0,$c0,$80   ; [$853e] byte
+SPRITE_TILES_NPC_SMOKING_MAN_07:
+    .byte $60,$c0,$40,$40,$40,$a0,$a0,$40   ; byte
+    .byte $80,$00,$80,$80,$80,$c0,$c0,$80   ; byte
 
 
 ;
@@ -1358,9 +1355,9 @@ SPRITE_TILES_NPC_SMOKING_MAN_07:            ; [$8536]
 ; .......█
 ; .....██▒
 ;
-SPRITE_TILES_NPC_SMOKING_MAN_08:            ; [$8546]
-    .byte $01,$02,$02,$13,$03,$12,$01,$06   ; [$8546] byte
-    .byte $10,$11,$01,$01,$00,$01,$01,$07   ; [$854e] byte
+SPRITE_TILES_NPC_SMOKING_MAN_08:
+    .byte $01,$02,$02,$13,$03,$12,$01,$06   ; byte
+    .byte $10,$11,$01,$01,$00,$01,$01,$07   ; byte
 
 
 ;
@@ -1373,9 +1370,9 @@ SPRITE_TILES_NPC_SMOKING_MAN_08:            ; [$8546]
 ; ▒▒█▒░░..
 ; ░▒▒▒▒░..
 ;
-SPRITE_TILES_NPC_SMOKING_MAN_09:            ; [$8556]
-    .byte $f0,$b8,$0c,$6c,$68,$88,$2c,$84   ; [$8556] byte
-    .byte $00,$40,$f0,$f0,$b4,$f4,$f0,$78   ; [$855e] byte
+SPRITE_TILES_NPC_SMOKING_MAN_09:
+    .byte $f0,$b8,$0c,$6c,$68,$88,$2c,$84   ; byte
+    .byte $00,$40,$f0,$f0,$b4,$f4,$f0,$78   ; byte
 
 
 ;============================================================================
@@ -1398,9 +1395,9 @@ SPRITE_TILES_NPC_SMOKING_MAN_09:            ; [$8556]
 ; XREFS:
 ;     BANK7_SPRITEADDRS_START [$PRG7::801a]
 ;
-SPRITE_TILES_NPC_MAN_IN_CHAIR_00:           ; [$8566]
-    .byte $00,$00,$00,$01,$03,$03,$03,$00   ; [$8566] byte
-    .byte $00,$00,$00,$00,$00,$03,$01,$07   ; [$856e] byte
+SPRITE_TILES_NPC_MAN_IN_CHAIR_00:
+    .byte $00,$00,$00,$01,$03,$03,$03,$00   ; byte
+    .byte $00,$00,$00,$00,$00,$03,$01,$07   ; byte
 
 
 ;
@@ -1413,9 +1410,9 @@ SPRITE_TILES_NPC_MAN_IN_CHAIR_00:           ; [$8566]
 ; ▒▒░░░...
 ; ▒░▒░░...
 ;
-SPRITE_TILES_NPC_MAN_IN_CHAIR_01:           ; [$8576]
-    .byte $00,$00,$00,$e0,$f0,$38,$38,$58   ; [$8576] byte
-    .byte $00,$00,$00,$00,$00,$c0,$c0,$a0   ; [$857e] byte
+SPRITE_TILES_NPC_MAN_IN_CHAIR_01:
+    .byte $00,$00,$00,$e0,$f0,$38,$38,$58   ; byte
+    .byte $00,$00,$00,$00,$00,$c0,$c0,$a0   ; byte
 
 
 ;
@@ -1428,9 +1425,9 @@ SPRITE_TILES_NPC_MAN_IN_CHAIR_01:           ; [$8576]
 ; ....░██▒
 ; ....░░░░
 ;
-SPRITE_TILES_NPC_MAN_IN_CHAIR_02:           ; [$8586]
-    .byte $06,$01,$00,$01,$03,$03,$0e,$0f   ; [$8586] byte
-    .byte $01,$02,$03,$06,$03,$07,$07,$00   ; [$858e] byte
+SPRITE_TILES_NPC_MAN_IN_CHAIR_02:
+    .byte $06,$01,$00,$01,$03,$03,$0e,$0f   ; byte
+    .byte $01,$02,$03,$06,$03,$07,$07,$00   ; byte
 
 
 ;
@@ -1443,9 +1440,9 @@ SPRITE_TILES_NPC_MAN_IN_CHAIR_02:           ; [$8586]
 ; ░░░░░▒░.
 ; ░█▒▒░▒░.
 ;
-SPRITE_TILES_NPC_MAN_IN_CHAIR_03:           ; [$8596]
-    .byte $1c,$7a,$fe,$de,$ea,$ea,$fa,$ca   ; [$8596] byte
-    .byte $e0,$84,$04,$e4,$f4,$74,$04,$74   ; [$859e] byte
+SPRITE_TILES_NPC_MAN_IN_CHAIR_03:
+    .byte $1c,$7a,$fe,$de,$ea,$ea,$fa,$ca   ; byte
+    .byte $e0,$84,$04,$e4,$f4,$74,$04,$74   ; byte
 
 
 ;
@@ -1458,9 +1455,9 @@ SPRITE_TILES_NPC_MAN_IN_CHAIR_03:           ; [$8596]
 ; ..░▒▒▒░░
 ; .░▒█▒░.░
 ;
-SPRITE_TILES_NPC_MAN_IN_CHAIR_04:           ; [$85a6]
-    .byte $01,$03,$05,$02,$0d,$09,$23,$55   ; [$85a6] byte
-    .byte $03,$07,$03,$05,$06,$0e,$1c,$38   ; [$85ae] byte
+SPRITE_TILES_NPC_MAN_IN_CHAIR_04:
+    .byte $01,$03,$05,$02,$0d,$09,$23,$55   ; byte
+    .byte $03,$07,$03,$05,$06,$0e,$1c,$38   ; byte
 
 
 ;
@@ -1473,9 +1470,9 @@ SPRITE_TILES_NPC_MAN_IN_CHAIR_04:           ; [$85a6]
 ; ░░░░█▒░░
 ; ░░░░▒▒░▒
 ;
-SPRITE_TILES_NPC_MAN_IN_CHAIR_05:           ; [$85b6]
-    .byte $df,$f8,$df,$3f,$fc,$f9,$fb,$f2   ; [$85b6] byte
-    .byte $ff,$bf,$a0,$c3,$07,$0e,$0c,$0d   ; [$85be] byte
+SPRITE_TILES_NPC_MAN_IN_CHAIR_05:
+    .byte $df,$f8,$df,$3f,$fc,$f9,$fb,$f2   ; byte
+    .byte $ff,$bf,$a0,$c3,$07,$0e,$0c,$0d   ; byte
 
 
 ;
@@ -1488,9 +1485,9 @@ SPRITE_TILES_NPC_MAN_IN_CHAIR_05:           ; [$85b6]
 ; ░░░░░▒░.
 ; ▒▒▒▒▒░░.
 ;
-SPRITE_TILES_NPC_MAN_IN_CHAIR_06:           ; [$85c6]
-    .byte $ca,$1a,$f2,$a6,$0a,$5a,$fa,$06   ; [$85c6] byte
-    .byte $f4,$e4,$0c,$d8,$f4,$ac,$04,$f8   ; [$85ce] byte
+SPRITE_TILES_NPC_MAN_IN_CHAIR_06:
+    .byte $ca,$1a,$f2,$a6,$0a,$5a,$fa,$06   ; byte
+    .byte $f4,$e4,$0c,$d8,$f4,$ac,$04,$f8   ; byte
 
 
 ;
@@ -1503,9 +1500,9 @@ SPRITE_TILES_NPC_MAN_IN_CHAIR_06:           ; [$85c6]
 ; ......██
 ; .....░▒▒
 ;
-SPRITE_TILES_NPC_MAN_IN_CHAIR_07:           ; [$85d6]
-    .byte $a0,$79,$01,$01,$00,$00,$03,$04   ; [$85d6] byte
-    .byte $79,$00,$01,$01,$01,$01,$03,$03   ; [$85de] byte
+SPRITE_TILES_NPC_MAN_IN_CHAIR_07:
+    .byte $a0,$79,$01,$01,$00,$00,$03,$04   ; byte
+    .byte $79,$00,$01,$01,$01,$01,$03,$03   ; byte
 
 
 ;
@@ -1518,9 +1515,9 @@ SPRITE_TILES_NPC_MAN_IN_CHAIR_07:           ; [$85d6]
 ; ▒▒..▒▒░.
 ; ▒░..░░░.
 ;
-SPRITE_TILES_NPC_MAN_IN_CHAIR_08:           ; [$85e6]
-    .byte $fb,$4a,$ca,$ca,$4a,$4a,$02,$4e   ; [$85e6] byte
-    .byte $0c,$8c,$0c,$0c,$8c,$8c,$cc,$80   ; [$85ee] byte
+SPRITE_TILES_NPC_MAN_IN_CHAIR_08:
+    .byte $fb,$4a,$ca,$ca,$4a,$4a,$02,$4e   ; byte
+    .byte $0c,$8c,$0c,$0c,$8c,$8c,$cc,$80   ; byte
 
 
 ;
@@ -1533,9 +1530,9 @@ SPRITE_TILES_NPC_MAN_IN_CHAIR_08:           ; [$85e6]
 ; ....▒▒░.
 ; ....░░░.
 ;
-SPRITE_TILES_NPC_MAN_IN_CHAIR_09:           ; [$85f6]
-    .byte $f2,$02,$0a,$0a,$0a,$0a,$02,$0e   ; [$85f6] byte
-    .byte $0c,$0c,$0c,$0c,$0c,$0c,$0c,$00   ; [$85fe] byte
+SPRITE_TILES_NPC_MAN_IN_CHAIR_09:
+    .byte $f2,$02,$0a,$0a,$0a,$0a,$02,$0e   ; byte
+    .byte $0c,$0c,$0c,$0c,$0c,$0c,$0c,$00   ; byte
 
 
 ;
@@ -1548,9 +1545,9 @@ SPRITE_TILES_NPC_MAN_IN_CHAIR_09:           ; [$85f6]
 ; ......░█
 ; .....▒▒▒
 ;
-SPRITE_TILES_NPC_MAN_IN_CHAIR_10:           ; [$8606]
-    .byte $00,$00,$00,$01,$03,$03,$03,$00   ; [$8606] byte
-    .byte $00,$00,$00,$00,$00,$03,$01,$07   ; [$860e] byte
+SPRITE_TILES_NPC_MAN_IN_CHAIR_10:
+    .byte $00,$00,$00,$01,$03,$03,$03,$00   ; byte
+    .byte $00,$00,$00,$00,$00,$03,$01,$07   ; byte
 
 
 ;
@@ -1563,9 +1560,9 @@ SPRITE_TILES_NPC_MAN_IN_CHAIR_10:           ; [$8606]
 ; ▒▒░░░...
 ; ▒░▒░░...
 ;
-SPRITE_TILES_NPC_MAN_IN_CHAIR_11:           ; [$8616]
-    .byte $00,$00,$00,$e0,$f0,$38,$38,$58   ; [$8616] byte
-    .byte $00,$00,$00,$00,$00,$c0,$c0,$a0   ; [$861e] byte
+SPRITE_TILES_NPC_MAN_IN_CHAIR_11:
+    .byte $00,$00,$00,$e0,$f0,$38,$38,$58   ; byte
+    .byte $00,$00,$00,$00,$00,$c0,$c0,$a0   ; byte
 
 
 ;
@@ -1578,9 +1575,9 @@ SPRITE_TILES_NPC_MAN_IN_CHAIR_11:           ; [$8616]
 ; ....░██▒
 ; ....░░░░
 ;
-SPRITE_TILES_NPC_MAN_IN_CHAIR_12:           ; [$8626]
-    .byte $06,$01,$00,$03,$03,$03,$0e,$0f   ; [$8626] byte
-    .byte $01,$02,$07,$00,$03,$07,$07,$00   ; [$862e] byte
+SPRITE_TILES_NPC_MAN_IN_CHAIR_12:
+    .byte $06,$01,$00,$03,$03,$03,$0e,$0f   ; byte
+    .byte $01,$02,$07,$00,$03,$07,$07,$00   ; byte
 
 
 ;
@@ -1593,9 +1590,9 @@ SPRITE_TILES_NPC_MAN_IN_CHAIR_12:           ; [$8626]
 ; ░░░░█▒░░
 ; ░░░░▒▒░▒
 ;
-SPRITE_TILES_NPC_MAN_IN_CHAIR_13:           ; [$8636]
-    .byte $ff,$f8,$f7,$2f,$fc,$f9,$fb,$f2   ; [$8636] byte
-    .byte $ef,$df,$d8,$d3,$07,$0e,$0c,$0d   ; [$863e] byte
+SPRITE_TILES_NPC_MAN_IN_CHAIR_13:
+    .byte $ff,$f8,$f7,$2f,$fc,$f9,$fb,$f2   ; byte
+    .byte $ef,$df,$d8,$d3,$07,$0e,$0c,$0d   ; byte
 
 
 ;============================================================================
@@ -1618,9 +1615,9 @@ SPRITE_TILES_NPC_MAN_IN_CHAIR_13:           ; [$8636]
 ; XREFS:
 ;     BANK7_SPRITEADDRS_START [$PRG7::801c]
 ;
-SPRITE_TILES_NPC_SITTING_MAN_00:            ; [$8646]
-    .byte $07,$0f,$09,$0c,$2e,$2c,$19,$13   ; [$8646] byte
-    .byte $00,$00,$06,$03,$17,$15,$0f,$0c   ; [$864e] byte
+SPRITE_TILES_NPC_SITTING_MAN_00:
+    .byte $07,$0f,$09,$0c,$2e,$2c,$19,$13   ; byte
+    .byte $00,$00,$06,$03,$17,$15,$0f,$0c   ; byte
 
 
 ;
@@ -1633,9 +1630,9 @@ SPRITE_TILES_NPC_SITTING_MAN_00:            ; [$8646]
 ; ▒▒█░....
 ; ░▒▒░....
 ;
-SPRITE_TILES_NPC_SITTING_MAN_01:            ; [$8656]
-    .byte $c0,$e0,$20,$60,$e8,$48,$30,$90   ; [$8656] byte
-    .byte $00,$00,$c0,$80,$d0,$70,$e0,$60   ; [$865e] byte
+SPRITE_TILES_NPC_SITTING_MAN_01:
+    .byte $c0,$e0,$20,$60,$e8,$48,$30,$90   ; byte
+    .byte $00,$00,$c0,$80,$d0,$70,$e0,$60   ; byte
 
 
 ;
@@ -1648,9 +1645,9 @@ SPRITE_TILES_NPC_SITTING_MAN_01:            ; [$8656]
 ; ▒████▒░░
 ; .▒▒▒▒▒▒░
 ;
-SPRITE_TILES_NPC_SITTING_MAN_02:            ; [$8666]
-    .byte $11,$38,$7f,$7f,$dc,$e4,$7b,$01   ; [$8666] byte
-    .byte $0f,$37,$78,$0c,$e3,$fb,$fc,$7e   ; [$866e] byte
+SPRITE_TILES_NPC_SITTING_MAN_02:
+    .byte $11,$38,$7f,$7f,$dc,$e4,$7b,$01   ; byte
+    .byte $0f,$37,$78,$0c,$e3,$fb,$fc,$7e   ; byte
 
 
 ;
@@ -1663,9 +1660,9 @@ SPRITE_TILES_NPC_SITTING_MAN_02:            ; [$8666]
 ; ▒▒▒▒▒░░.
 ; ░▒▒▒░░..
 ;
-SPRITE_TILES_NPC_SITTING_MAN_03:            ; [$8676]
-    .byte $10,$58,$fc,$fa,$8a,$76,$06,$8c   ; [$8676] byte
-    .byte $e0,$b8,$7c,$04,$f4,$f8,$f8,$70   ; [$867e] byte
+SPRITE_TILES_NPC_SITTING_MAN_03:
+    .byte $10,$58,$fc,$fa,$8a,$76,$06,$8c   ; byte
+    .byte $e0,$b8,$7c,$04,$f4,$f8,$f8,$70   ; byte
 
 
 ;
@@ -1678,9 +1675,9 @@ SPRITE_TILES_NPC_SITTING_MAN_03:            ; [$8676]
 ; ...░▒░░░
 ; ....░░▒▒
 ;
-SPRITE_TILES_NPC_SITTING_MAN_04:            ; [$8686]
-    .byte $1f,$21,$3e,$3f,$3f,$24,$17,$0c   ; [$8686] byte
-    .byte $00,$1e,$1d,$1b,$1b,$1b,$08,$03   ; [$868e] byte
+SPRITE_TILES_NPC_SITTING_MAN_04:
+    .byte $1f,$21,$3e,$3f,$3f,$24,$17,$0c   ; byte
+    .byte $00,$1e,$1d,$1b,$1b,$1b,$08,$03   ; byte
 
 
 ;
@@ -1693,9 +1690,9 @@ SPRITE_TILES_NPC_SITTING_MAN_04:            ; [$8686]
 ; ▒█▒▒░...
 ; ░▒▒▒░...
 ;
-SPRITE_TILES_NPC_SITTING_MAN_05:            ; [$8696]
-    .byte $f8,$f8,$98,$58,$38,$d8,$48,$88   ; [$8696] byte
-    .byte $00,$00,$60,$a0,$c0,$e0,$f0,$70   ; [$869e] byte
+SPRITE_TILES_NPC_SITTING_MAN_05:
+    .byte $f8,$f8,$98,$58,$38,$d8,$48,$88   ; byte
+    .byte $00,$00,$60,$a0,$c0,$e0,$f0,$70   ; byte
 
 
 ;
@@ -1708,9 +1705,9 @@ SPRITE_TILES_NPC_SITTING_MAN_05:            ; [$8696]
 ; .....▒█▒
 ; ....▒██▒
 ;
-SPRITE_TILES_NPC_SITTING_MAN_06:            ; [$86a6]
-    .byte $07,$04,$06,$06,$04,$04,$02,$06   ; [$86a6] byte
-    .byte $03,$03,$03,$03,$03,$03,$07,$0f   ; [$86ae] byte
+SPRITE_TILES_NPC_SITTING_MAN_06:
+    .byte $07,$04,$06,$06,$04,$04,$02,$06   ; byte
+    .byte $03,$03,$03,$03,$03,$03,$07,$0f   ; byte
 
 
 ;
@@ -1723,9 +1720,9 @@ SPRITE_TILES_NPC_SITTING_MAN_06:            ; [$86a6]
 ; ░.......
 ; ░.......
 ;
-SPRITE_TILES_NPC_SITTING_MAN_07:            ; [$86b6]
-    .byte $cc,$7a,$5a,$46,$84,$80,$80,$80   ; [$86b6] byte
-    .byte $30,$84,$84,$88,$00,$00,$00,$00   ; [$86be] byte
+SPRITE_TILES_NPC_SITTING_MAN_07:
+    .byte $cc,$7a,$5a,$46,$84,$80,$80,$80   ; byte
+    .byte $30,$84,$84,$88,$00,$00,$00,$00   ; byte
 
 
 ;
@@ -1738,9 +1735,9 @@ SPRITE_TILES_NPC_SITTING_MAN_07:            ; [$86b6]
 ; ▒████▒░░
 ; .▒▒▒▒▒▒░
 ;
-SPRITE_TILES_NPC_SITTING_MAN_08:            ; [$86c6]
-    .byte $13,$39,$7f,$7f,$dc,$e4,$7b,$01   ; [$86c6] byte
-    .byte $0c,$37,$78,$0c,$e3,$fb,$fc,$7e   ; [$86ce] byte
+SPRITE_TILES_NPC_SITTING_MAN_08:
+    .byte $13,$39,$7f,$7f,$dc,$e4,$7b,$01   ; byte
+    .byte $0c,$37,$78,$0c,$e3,$fb,$fc,$7e   ; byte
 
 
 ;
@@ -1753,9 +1750,9 @@ SPRITE_TILES_NPC_SITTING_MAN_08:            ; [$86c6]
 ; ▒▒▒▒▒░░.
 ; ░▒▒▒░░..
 ;
-SPRITE_TILES_NPC_SITTING_MAN_09:            ; [$86d6]
-    .byte $90,$58,$fc,$fa,$8a,$76,$06,$8c   ; [$86d6] byte
-    .byte $60,$b8,$7c,$04,$f4,$f8,$f8,$70   ; [$86de] byte
+SPRITE_TILES_NPC_SITTING_MAN_09:
+    .byte $90,$58,$fc,$fa,$8a,$76,$06,$8c   ; byte
+    .byte $60,$b8,$7c,$04,$f4,$f8,$f8,$70   ; byte
 
 
 ;============================================================================
@@ -1778,9 +1775,9 @@ SPRITE_TILES_NPC_SITTING_MAN_09:            ; [$86d6]
 ; XREFS:
 ;     BANK7_SPRITEADDRS_START [$PRG7::801e]
 ;
-SPRITE_TILES_NPC_MEAT_SALESMAN_00:          ; [$86e6]
-    .byte $02,$04,$01,$0d,$00,$06,$0e,$07   ; [$86e6] byte
-    .byte $01,$03,$07,$07,$0a,$0f,$01,$0e   ; [$86ee] byte
+SPRITE_TILES_NPC_MEAT_SALESMAN_00:
+    .byte $02,$04,$01,$0d,$00,$06,$0e,$07   ; byte
+    .byte $01,$03,$07,$07,$0a,$0f,$01,$0e   ; byte
 
 
 ;
@@ -1793,9 +1790,9 @@ SPRITE_TILES_NPC_MEAT_SALESMAN_00:          ; [$86e6]
 ; █▒▒░░...
 ; ▒▒▒░░...
 ;
-SPRITE_TILES_NPC_MEAT_SALESMAN_01:          ; [$86f6]
-    .byte $a0,$f0,$30,$f8,$a8,$28,$98,$18   ; [$86f6] byte
-    .byte $c0,$80,$c0,$80,$d0,$d0,$e0,$e0   ; [$86fe] byte
+SPRITE_TILES_NPC_MEAT_SALESMAN_01:
+    .byte $a0,$f0,$30,$f8,$a8,$28,$98,$18   ; byte
+    .byte $c0,$80,$c0,$80,$d0,$d0,$e0,$e0   ; byte
 
 
 ;
@@ -1808,9 +1805,9 @@ SPRITE_TILES_NPC_MEAT_SALESMAN_01:          ; [$86f6]
 ; .░▒█████
 ; .░▒███░░
 ;
-SPRITE_TILES_NPC_MEAT_SALESMAN_02:          ; [$8706]
-    .byte $01,$18,$37,$2c,$7f,$4f,$5f,$5f   ; [$8706] byte
-    .byte $0e,$07,$08,$1b,$18,$3f,$3f,$3c   ; [$870e] byte
+SPRITE_TILES_NPC_MEAT_SALESMAN_02:
+    .byte $01,$18,$37,$2c,$7f,$4f,$5f,$5f   ; byte
+    .byte $0e,$07,$08,$1b,$18,$3f,$3f,$3c   ; byte
 
 
 ;
@@ -1823,9 +1820,9 @@ SPRITE_TILES_NPC_MEAT_SALESMAN_02:          ; [$8706]
 ; ░░█░▒█▒░
 ; █▒░░░▒█░
 ;
-SPRITE_TILES_NPC_MEAT_SALESMAN_03:          ; [$8716]
-    .byte $38,$ee,$dc,$bb,$65,$f3,$f5,$bb   ; [$8716] byte
-    .byte $c0,$1c,$3a,$76,$fe,$ee,$2e,$c6   ; [$871e] byte
+SPRITE_TILES_NPC_MEAT_SALESMAN_03:
+    .byte $38,$ee,$dc,$bb,$65,$f3,$f5,$bb   ; byte
+    .byte $c0,$1c,$3a,$76,$fe,$ee,$2e,$c6   ; byte
 
 
 ;
@@ -1838,9 +1835,9 @@ SPRITE_TILES_NPC_MEAT_SALESMAN_03:          ; [$8716]
 ; ..░░▒▒▒█
 ; ..░░░░▒░
 ;
-SPRITE_TILES_NPC_MEAT_SALESMAN_04:          ; [$8726]
-    .byte $5d,$5c,$0e,$3f,$33,$21,$31,$3d   ; [$8726] byte
-    .byte $3a,$3b,$39,$00,$0f,$1f,$0f,$02   ; [$872e] byte
+SPRITE_TILES_NPC_MEAT_SALESMAN_04:
+    .byte $5d,$5c,$0e,$3f,$33,$21,$31,$3d   ; byte
+    .byte $3a,$3b,$39,$00,$0f,$1f,$0f,$02   ; byte
 
 
 ;
@@ -1853,9 +1850,9 @@ SPRITE_TILES_NPC_MEAT_SALESMAN_04:          ; [$8726]
 ; ▒██░....
 ; ░██░....
 ;
-SPRITE_TILES_NPC_MEAT_SALESMAN_05:          ; [$8736]
-    .byte $c5,$7c,$0a,$f8,$f0,$d0,$70,$f0   ; [$8736] byte
-    .byte $7e,$fe,$f4,$00,$00,$e0,$e0,$60   ; [$873e] byte
+SPRITE_TILES_NPC_MEAT_SALESMAN_05:
+    .byte $c5,$7c,$0a,$f8,$f0,$d0,$70,$f0   ; byte
+    .byte $7e,$fe,$f4,$00,$00,$e0,$e0,$60   ; byte
 
 
 ;
@@ -1868,9 +1865,9 @@ SPRITE_TILES_NPC_MEAT_SALESMAN_05:          ; [$8736]
 ; ..▒▒▒░.░
 ; .▒▒▒▒░░▒
 ;
-SPRITE_TILES_NPC_MEAT_SALESMAN_06:          ; [$8746]
-    .byte $3f,$3f,$3d,$1d,$1d,$1d,$05,$06   ; [$8746] byte
-    .byte $00,$00,$00,$00,$00,$00,$38,$79   ; [$874e] byte
+SPRITE_TILES_NPC_MEAT_SALESMAN_06:
+    .byte $3f,$3f,$3d,$1d,$1d,$1d,$05,$06   ; byte
+    .byte $00,$00,$00,$00,$00,$00,$38,$79   ; byte
 
 
 ;
@@ -1883,9 +1880,9 @@ SPRITE_TILES_NPC_MEAT_SALESMAN_06:          ; [$8746]
 ; ▒▒▒.....
 ; ▒▒░.....
 ;
-SPRITE_TILES_NPC_MEAT_SALESMAN_07:          ; [$8756]
-    .byte $70,$00,$60,$c0,$20,$20,$00,$20   ; [$8756] byte
-    .byte $80,$e0,$80,$60,$e0,$e0,$e0,$c0   ; [$875e] byte
+SPRITE_TILES_NPC_MEAT_SALESMAN_07:
+    .byte $70,$00,$60,$c0,$20,$20,$00,$20   ; byte
+    .byte $80,$e0,$80,$60,$e0,$e0,$e0,$c0   ; byte
 
 
 ;
@@ -1898,9 +1895,9 @@ SPRITE_TILES_NPC_MEAT_SALESMAN_07:          ; [$8756]
 ; ....▒░▒▒
 ; ....░░░░
 ;
-SPRITE_TILES_NPC_MEAT_SALESMAN_08:          ; [$8766]
-    .byte $02,$04,$01,$0d,$00,$06,$04,$0f   ; [$8766] byte
-    .byte $01,$03,$07,$07,$0a,$0f,$0b,$00   ; [$876e] byte
+SPRITE_TILES_NPC_MEAT_SALESMAN_08:
+    .byte $02,$04,$01,$0d,$00,$06,$04,$0f   ; byte
+    .byte $01,$03,$07,$07,$0a,$0f,$0b,$00   ; byte
 
 
 ;
@@ -1913,9 +1910,9 @@ SPRITE_TILES_NPC_MEAT_SALESMAN_08:          ; [$8766]
 ; .░▒█████
 ; .░▒███░░
 ;
-SPRITE_TILES_NPC_MEAT_SALESMAN_09:          ; [$8776]
-    .byte $01,$18,$37,$2c,$7f,$4f,$5f,$5f   ; [$8776] byte
-    .byte $0e,$07,$08,$1b,$18,$3f,$3f,$3c   ; [$877e] byte
+SPRITE_TILES_NPC_MEAT_SALESMAN_09:
+    .byte $01,$18,$37,$2c,$7f,$4f,$5f,$5f   ; byte
+    .byte $0e,$07,$08,$1b,$18,$3f,$3f,$3c   ; byte
 
 
 ;
@@ -1928,9 +1925,9 @@ SPRITE_TILES_NPC_MEAT_SALESMAN_09:          ; [$8776]
 ; ...░▒▒▒█
 ; ...░░░▒░
 ;
-SPRITE_TILES_NPC_MEAT_SALESMAN_10:          ; [$8786]
-    .byte $5e,$5e,$07,$3f,$33,$21,$11,$1d   ; [$8786] byte
-    .byte $3d,$3d,$38,$00,$0f,$1f,$0f,$02   ; [$878e] byte
+SPRITE_TILES_NPC_MEAT_SALESMAN_10:
+    .byte $5e,$5e,$07,$3f,$33,$21,$11,$1d   ; byte
+    .byte $3d,$3d,$38,$00,$0f,$1f,$0f,$02   ; byte
 
 
 ;
@@ -1943,9 +1940,9 @@ SPRITE_TILES_NPC_MEAT_SALESMAN_10:          ; [$8786]
 ; .....░▒▒
 ; ....░▒▒▒
 ;
-SPRITE_TILES_NPC_MEAT_SALESMAN_11:          ; [$8796]
-    .byte $0f,$0e,$06,$03,$02,$06,$04,$08   ; [$8796] byte
-    .byte $00,$01,$01,$00,$01,$01,$03,$07   ; [$879e] byte
+SPRITE_TILES_NPC_MEAT_SALESMAN_11:
+    .byte $0f,$0e,$06,$03,$02,$06,$04,$08   ; byte
+    .byte $00,$01,$01,$00,$01,$01,$03,$07   ; byte
 
 
 ;
@@ -1958,9 +1955,9 @@ SPRITE_TILES_NPC_MEAT_SALESMAN_11:          ; [$8796]
 ; ▒▒......
 ; ▒░......
 ;
-SPRITE_TILES_NPC_MEAT_SALESMAN_12:          ; [$87a6]
-    .byte $70,$20,$20,$20,$60,$60,$00,$40   ; [$87a6] byte
-    .byte $80,$c0,$c0,$c0,$c0,$c0,$c0,$80   ; [$87ae] byte
+SPRITE_TILES_NPC_MEAT_SALESMAN_12:
+    .byte $70,$20,$20,$20,$60,$60,$00,$40   ; byte
+    .byte $80,$c0,$c0,$c0,$c0,$c0,$c0,$80   ; byte
 
 
 ;============================================================================
@@ -1983,9 +1980,9 @@ SPRITE_TILES_NPC_MEAT_SALESMAN_12:          ; [$87a6]
 ; XREFS:
 ;     BANK7_SPRITEADDRS_START [$PRG7::8020]
 ;
-SPRITE_TILES_NPC_LADY_BLUE_WITH_CUP_00:     ; [$87b6]
-    .byte $00,$00,$00,$00,$01,$03,$02,$02   ; [$87b6] byte
-    .byte $00,$00,$00,$00,$01,$02,$01,$03   ; [$87be] byte
+SPRITE_TILES_NPC_LADY_BLUE_WITH_CUP_00:
+    .byte $00,$00,$00,$00,$01,$03,$02,$02   ; byte
+    .byte $00,$00,$00,$00,$01,$02,$01,$03   ; byte
 
 
 ;
@@ -1998,9 +1995,9 @@ SPRITE_TILES_NPC_LADY_BLUE_WITH_CUP_00:     ; [$87b6]
 ; ░██▒....
 ; █░██....
 ;
-SPRITE_TILES_NPC_LADY_BLUE_WITH_CUP_01:     ; [$87c6]
-    .byte $00,$00,$00,$00,$e0,$e0,$e0,$f0   ; [$87c6] byte
-    .byte $00,$00,$00,$00,$c0,$e0,$70,$b0   ; [$87ce] byte
+SPRITE_TILES_NPC_LADY_BLUE_WITH_CUP_01:
+    .byte $00,$00,$00,$00,$e0,$e0,$e0,$f0   ; byte
+    .byte $00,$00,$00,$00,$c0,$e0,$70,$b0   ; byte
 
 
 ;
@@ -2013,9 +2010,9 @@ SPRITE_TILES_NPC_LADY_BLUE_WITH_CUP_01:     ; [$87c6]
 ; .....▒██
 ; .....░▒▒
 ;
-SPRITE_TILES_NPC_LADY_BLUE_WITH_CUP_02:     ; [$87d6]
-    .byte $02,$00,$01,$00,$02,$04,$03,$04   ; [$87d6] byte
-    .byte $01,$03,$02,$01,$03,$07,$07,$03   ; [$87de] byte
+SPRITE_TILES_NPC_LADY_BLUE_WITH_CUP_02:
+    .byte $02,$00,$01,$00,$02,$04,$03,$04   ; byte
+    .byte $01,$03,$02,$01,$03,$07,$07,$03   ; byte
 
 
 ;
@@ -2028,9 +2025,9 @@ SPRITE_TILES_NPC_LADY_BLUE_WITH_CUP_02:     ; [$87d6]
 ; █▒▒██▒..
 ; ▒▒░██▒..
 ;
-SPRITE_TILES_NPC_LADY_BLUE_WITH_CUP_03:     ; [$87e6]
-    .byte $b0,$10,$30,$60,$c4,$58,$98,$38   ; [$87e6] byte
-    .byte $78,$f8,$d8,$98,$38,$fc,$fc,$dc   ; [$87ee] byte
+SPRITE_TILES_NPC_LADY_BLUE_WITH_CUP_03:
+    .byte $b0,$10,$30,$60,$c4,$58,$98,$38   ; byte
+    .byte $78,$f8,$d8,$98,$38,$fc,$fc,$dc   ; byte
 
 
 ;
@@ -2043,9 +2040,9 @@ SPRITE_TILES_NPC_LADY_BLUE_WITH_CUP_03:     ; [$87e6]
 ; ....▒███
 ; ....▒███
 ;
-SPRITE_TILES_NPC_LADY_BLUE_WITH_CUP_04:     ; [$87f6]
-    .byte $1f,$3f,$1b,$0d,$0f,$03,$07,$07   ; [$87f6] byte
-    .byte $0e,$33,$36,$1e,$00,$0f,$0f,$0f   ; [$87fe] byte
+SPRITE_TILES_NPC_LADY_BLUE_WITH_CUP_04:
+    .byte $1f,$3f,$1b,$0d,$0f,$03,$07,$07   ; byte
+    .byte $0e,$33,$36,$1e,$00,$0f,$0f,$0f   ; byte
 
 
 ;
@@ -2058,9 +2055,9 @@ SPRITE_TILES_NPC_LADY_BLUE_WITH_CUP_04:     ; [$87f6]
 ; █▒░░░░░.
 ; ██░░░░░.
 ;
-SPRITE_TILES_NPC_LADY_BLUE_WITH_CUP_05:     ; [$8806]
-    .byte $dc,$f4,$f4,$04,$fc,$3e,$be,$fe   ; [$8806] byte
-    .byte $00,$18,$f8,$f8,$00,$c0,$c0,$c0   ; [$880e] byte
+SPRITE_TILES_NPC_LADY_BLUE_WITH_CUP_05:
+    .byte $dc,$f4,$f4,$04,$fc,$3e,$be,$fe   ; byte
+    .byte $00,$18,$f8,$f8,$00,$c0,$c0,$c0   ; byte
 
 
 ;
@@ -2073,9 +2070,9 @@ SPRITE_TILES_NPC_LADY_BLUE_WITH_CUP_05:     ; [$8806]
 ; ....░░█▒
 ; ...░░░.░
 ;
-SPRITE_TILES_NPC_LADY_BLUE_WITH_CUP_06:     ; [$8816]
-    .byte $07,$03,$0c,$09,$02,$0a,$0e,$1d   ; [$8816] byte
-    .byte $0f,$0f,$0b,$0e,$0f,$07,$03,$00   ; [$881e] byte
+SPRITE_TILES_NPC_LADY_BLUE_WITH_CUP_06:
+    .byte $07,$03,$0c,$09,$02,$0a,$0e,$1d   ; byte
+    .byte $0f,$0f,$0b,$0e,$0f,$07,$03,$00   ; byte
 
 
 ;
@@ -2088,9 +2085,9 @@ SPRITE_TILES_NPC_LADY_BLUE_WITH_CUP_06:     ; [$8816]
 ; ▒█▒▒░▒▒.
 ; ░░░░░.░.
 ;
-SPRITE_TILES_NPC_LADY_BLUE_WITH_CUP_07:     ; [$8826]
-    .byte $f6,$b2,$22,$d2,$42,$42,$48,$fa   ; [$8826] byte
-    .byte $d8,$dc,$dc,$3c,$fc,$fc,$f6,$00   ; [$882e] byte
+SPRITE_TILES_NPC_LADY_BLUE_WITH_CUP_07:
+    .byte $f6,$b2,$22,$d2,$42,$42,$48,$fa   ; byte
+    .byte $d8,$dc,$dc,$3c,$fc,$fc,$f6,$00   ; byte
 
 
 ;
@@ -2103,9 +2100,9 @@ SPRITE_TILES_NPC_LADY_BLUE_WITH_CUP_07:     ; [$8826]
 ; .....░▒░
 ; .....█▒█
 ;
-SPRITE_TILES_NPC_LADY_BLUE_WITH_CUP_08:     ; [$8836]
-    .byte $00,$00,$00,$00,$03,$07,$05,$05   ; [$8836] byte
-    .byte $00,$00,$00,$00,$03,$05,$02,$07   ; [$883e] byte
+SPRITE_TILES_NPC_LADY_BLUE_WITH_CUP_08:
+    .byte $00,$00,$00,$00,$03,$07,$05,$05   ; byte
+    .byte $00,$00,$00,$00,$03,$05,$02,$07   ; byte
 
 
 ;
@@ -2118,9 +2115,9 @@ SPRITE_TILES_NPC_LADY_BLUE_WITH_CUP_08:     ; [$8836]
 ; ██▒.....
 ; ░██.....
 ;
-SPRITE_TILES_NPC_LADY_BLUE_WITH_CUP_09:     ; [$8846]
-    .byte $00,$00,$00,$00,$c0,$c0,$c0,$e0   ; [$8846] byte
-    .byte $00,$00,$00,$00,$80,$c0,$e0,$60   ; [$884e] byte
+SPRITE_TILES_NPC_LADY_BLUE_WITH_CUP_09:
+    .byte $00,$00,$00,$00,$c0,$c0,$c0,$e0   ; byte
+    .byte $00,$00,$00,$00,$80,$c0,$e0,$60   ; byte
 
 
 ;
@@ -2133,9 +2130,9 @@ SPRITE_TILES_NPC_LADY_BLUE_WITH_CUP_09:     ; [$8846]
 ; ....▒███
 ; ....░▒▒▒
 ;
-SPRITE_TILES_NPC_LADY_BLUE_WITH_CUP_10:     ; [$8856]
-    .byte $05,$00,$02,$00,$05,$08,$07,$08   ; [$8856] byte
-    .byte $02,$07,$05,$03,$06,$0f,$0f,$07   ; [$885e] byte
+SPRITE_TILES_NPC_LADY_BLUE_WITH_CUP_10:
+    .byte $05,$00,$02,$00,$05,$08,$07,$08   ; byte
+    .byte $02,$07,$05,$03,$06,$0f,$0f,$07   ; byte
 
 
 ;
@@ -2148,9 +2145,9 @@ SPRITE_TILES_NPC_LADY_BLUE_WITH_CUP_10:     ; [$8856]
 ; ▒▒██▒...
 ; ▒░▒█▒...
 ;
-SPRITE_TILES_NPC_LADY_BLUE_WITH_CUP_11:     ; [$8866]
-    .byte $60,$20,$60,$c0,$88,$a0,$30,$50   ; [$8866] byte
-    .byte $f0,$f0,$b0,$30,$70,$f8,$f8,$b8   ; [$886e] byte
+SPRITE_TILES_NPC_LADY_BLUE_WITH_CUP_11:
+    .byte $60,$20,$60,$c0,$88,$a0,$30,$50   ; byte
+    .byte $f0,$f0,$b0,$30,$70,$f8,$f8,$b8   ; byte
 
 
 ;
@@ -2163,9 +2160,9 @@ SPRITE_TILES_NPC_LADY_BLUE_WITH_CUP_11:     ; [$8866]
 ; ....▒███
 ; ....▒▒██
 ;
-SPRITE_TILES_NPC_LADY_BLUE_WITH_CUP_12:     ; [$8876]
-    .byte $1e,$3f,$36,$0d,$0f,$03,$07,$03   ; [$8876] byte
-    .byte $1f,$33,$1b,$1e,$00,$0f,$0f,$0f   ; [$887e] byte
+SPRITE_TILES_NPC_LADY_BLUE_WITH_CUP_12:
+    .byte $1e,$3f,$36,$0d,$0f,$03,$07,$03   ; byte
+    .byte $1f,$33,$1b,$1e,$00,$0f,$0f,$0f   ; byte
 
 
 ;
@@ -2178,9 +2175,9 @@ SPRITE_TILES_NPC_LADY_BLUE_WITH_CUP_12:     ; [$8876]
 ; █▒░░░░░.
 ; ██░░▒░░.
 ;
-SPRITE_TILES_NPC_LADY_BLUE_WITH_CUP_13:     ; [$8886]
-    .byte $f8,$70,$f4,$0c,$fc,$3e,$be,$f6   ; [$8886] byte
-    .byte $00,$98,$78,$f0,$00,$c0,$c0,$c8   ; [$888e] byte
+SPRITE_TILES_NPC_LADY_BLUE_WITH_CUP_13:
+    .byte $f8,$70,$f4,$0c,$fc,$3e,$be,$f6   ; byte
+    .byte $00,$98,$78,$f0,$00,$c0,$c0,$c8   ; byte
 
 
 ;
@@ -2193,9 +2190,9 @@ SPRITE_TILES_NPC_LADY_BLUE_WITH_CUP_13:     ; [$8886]
 ; .....░▒▒
 ; .....░░.
 ;
-SPRITE_TILES_NPC_LADY_BLUE_WITH_CUP_14:     ; [$8896]
-    .byte $0b,$09,$0a,$0a,$0a,$0c,$04,$06   ; [$8896] byte
-    .byte $07,$07,$05,$07,$07,$03,$03,$00   ; [$889e] byte
+SPRITE_TILES_NPC_LADY_BLUE_WITH_CUP_14:
+    .byte $0b,$09,$0a,$0a,$0a,$0c,$04,$06   ; byte
+    .byte $07,$07,$05,$07,$07,$03,$03,$00   ; byte
 
 
 ;
@@ -2208,9 +2205,9 @@ SPRITE_TILES_NPC_LADY_BLUE_WITH_CUP_14:     ; [$8896]
 ; █▒▒█▒▒▒.
 ; ░░░░░▒..
 ;
-SPRITE_TILES_NPC_LADY_BLUE_WITH_CUP_15:     ; [$88a6]
-    .byte $fa,$da,$12,$ea,$92,$92,$90,$f8   ; [$88a6] byte
-    .byte $ec,$ec,$ec,$1c,$fc,$fc,$fe,$04   ; [$88ae] byte
+SPRITE_TILES_NPC_LADY_BLUE_WITH_CUP_15:
+    .byte $fa,$da,$12,$ea,$92,$92,$90,$f8   ; byte
+    .byte $ec,$ec,$ec,$1c,$fc,$fc,$fe,$04   ; byte
 
 
 ;============================================================================
@@ -2233,9 +2230,9 @@ SPRITE_TILES_NPC_LADY_BLUE_WITH_CUP_15:     ; [$88a6]
 ; XREFS:
 ;     BANK7_SPRITEADDRS_START [$PRG7::8022]
 ;
-SPRITE_TILES_NPC_GUARD_00:                  ; [$88b6]
-    .byte $00,$00,$00,$1c,$0c,$0c,$0c,$1c   ; [$88b6] byte
-    .byte $00,$00,$08,$08,$18,$18,$18,$08   ; [$88be] byte
+SPRITE_TILES_NPC_GUARD_00:
+    .byte $00,$00,$00,$1c,$0c,$0c,$0c,$1c   ; byte
+    .byte $00,$00,$08,$08,$18,$18,$18,$08   ; byte
 
 
 ;
@@ -2248,9 +2245,9 @@ SPRITE_TILES_NPC_GUARD_00:                  ; [$88b6]
 ; █▒█░█░█░
 ; .█▒░█░█░
 ;
-SPRITE_TILES_NPC_GUARD_01:                  ; [$88c6]
-    .byte $10,$78,$f4,$62,$fe,$7a,$bf,$5f   ; [$88c6] byte
-    .byte $10,$10,$f8,$fc,$00,$0e,$ea,$6a   ; [$88ce] byte
+SPRITE_TILES_NPC_GUARD_01:
+    .byte $10,$78,$f4,$62,$fe,$7a,$bf,$5f   ; byte
+    .byte $10,$10,$f8,$fc,$00,$0e,$ea,$6a   ; byte
 
 
 ;
@@ -2263,9 +2260,9 @@ SPRITE_TILES_NPC_GUARD_01:                  ; [$88c6]
 ; ...▒█░▒░
 ; ...░░░▒░
 ;
-SPRITE_TILES_NPC_GUARD_02:                  ; [$88d6]
-    .byte $08,$0c,$0c,$0c,$14,$18,$0d,$1d   ; [$88d6] byte
-    .byte $08,$00,$08,$08,$08,$1c,$1a,$02   ; [$88de] byte
+SPRITE_TILES_NPC_GUARD_02:
+    .byte $08,$0c,$0c,$0c,$14,$18,$0d,$1d   ; byte
+    .byte $08,$00,$08,$08,$08,$1c,$1a,$02   ; byte
 
 
 ;
@@ -2278,9 +2275,9 @@ SPRITE_TILES_NPC_GUARD_02:                  ; [$88d6]
 ; ▒█▒░░░▒░
 ; ▒█▒░██▒░
 ;
-SPRITE_TILES_NPC_GUARD_03:                  ; [$88e6]
-    .byte $1e,$78,$b6,$fe,$5d,$fd,$5d,$5d   ; [$88e6] byte
-    .byte $60,$06,$6f,$69,$e6,$06,$e2,$ee   ; [$88ee] byte
+SPRITE_TILES_NPC_GUARD_03:
+    .byte $1e,$78,$b6,$fe,$5d,$fd,$5d,$5d   ; byte
+    .byte $60,$06,$6f,$69,$e6,$06,$e2,$ee   ; byte
 
 
 ;
@@ -2293,9 +2290,9 @@ SPRITE_TILES_NPC_GUARD_03:                  ; [$88e6]
 ; ....▒...
 ; ....█...
 ;
-SPRITE_TILES_NPC_GUARD_04:                  ; [$88f6]
-    .byte $0f,$08,$08,$08,$08,$08,$00,$08   ; [$88f6] byte
-    .byte $08,$08,$08,$08,$08,$08,$08,$08   ; [$88fe] byte
+SPRITE_TILES_NPC_GUARD_04:
+    .byte $0f,$08,$08,$08,$08,$08,$00,$08   ; byte
+    .byte $08,$08,$08,$08,$08,$08,$08,$08   ; byte
 
 
 ;
@@ -2308,9 +2305,9 @@ SPRITE_TILES_NPC_GUARD_04:                  ; [$88f6]
 ; ░▒█▒░...
 ; ░▒█▒░...
 ;
-SPRITE_TILES_NPC_GUARD_05:                  ; [$8906]
-    .byte $39,$ba,$f6,$fc,$f4,$f0,$a8,$a8   ; [$8906] byte
-    .byte $de,$5c,$88,$a2,$aa,$08,$70,$70   ; [$890e] byte
+SPRITE_TILES_NPC_GUARD_05:
+    .byte $39,$ba,$f6,$fc,$f4,$f0,$a8,$a8   ; byte
+    .byte $de,$5c,$88,$a2,$aa,$08,$70,$70   ; byte
 
 
 ;
@@ -2323,9 +2320,9 @@ SPRITE_TILES_NPC_GUARD_05:                  ; [$8906]
 ; ....█...
 ; ....▒..▒
 ;
-SPRITE_TILES_NPC_GUARD_06:                  ; [$8916]
-    .byte $08,$00,$08,$08,$08,$08,$08,$00   ; [$8916] byte
-    .byte $08,$08,$08,$08,$08,$08,$08,$09   ; [$891e] byte
+SPRITE_TILES_NPC_GUARD_06:
+    .byte $08,$00,$08,$08,$08,$08,$08,$00   ; byte
+    .byte $08,$08,$08,$08,$08,$08,$08,$09   ; byte
 
 
 ;
@@ -2338,9 +2335,9 @@ SPRITE_TILES_NPC_GUARD_06:                  ; [$8916]
 ; ░█▒▒░...
 ; █▒▒▒▒...
 ;
-SPRITE_TILES_NPC_GUARD_07:                  ; [$8926]
-    .byte $08,$78,$28,$28,$08,$78,$c8,$80   ; [$8926] byte
-    .byte $70,$00,$70,$70,$70,$00,$70,$f8   ; [$892e] byte
+SPRITE_TILES_NPC_GUARD_07:
+    .byte $08,$78,$28,$28,$08,$78,$c8,$80   ; byte
+    .byte $70,$00,$70,$70,$70,$00,$70,$f8   ; byte
 
 
 ;
@@ -2353,9 +2350,9 @@ SPRITE_TILES_NPC_GUARD_07:                  ; [$8926]
 ; ...▒█░..
 ; ...░█░..
 ;
-SPRITE_TILES_NPC_GUARD_08:                  ; [$8936]
-    .byte $00,$00,$1c,$0c,$0c,$0c,$0c,$1c   ; [$8936] byte
-    .byte $00,$08,$08,$18,$18,$18,$18,$08   ; [$893e] byte
+SPRITE_TILES_NPC_GUARD_08:
+    .byte $00,$00,$1c,$0c,$0c,$0c,$0c,$1c   ; byte
+    .byte $00,$08,$08,$18,$18,$18,$18,$08   ; byte
 
 
 ;
@@ -2368,9 +2365,9 @@ SPRITE_TILES_NPC_GUARD_08:                  ; [$8936]
 ; .░░░█▒█.
 ; █▒█░█░█░
 ;
-SPRITE_TILES_NPC_GUARD_09:                  ; [$8946]
-    .byte $00,$10,$78,$e4,$62,$fe,$7a,$bf   ; [$8946] byte
-    .byte $00,$10,$10,$f8,$fc,$00,$0e,$ea   ; [$894e] byte
+SPRITE_TILES_NPC_GUARD_09:
+    .byte $00,$10,$78,$e4,$62,$fe,$7a,$bf   ; byte
+    .byte $00,$10,$10,$f8,$fc,$00,$0e,$ea   ; byte
 
 
 ;
@@ -2383,9 +2380,9 @@ SPRITE_TILES_NPC_GUARD_09:                  ; [$8946]
 ; ...░▒░░░
 ; ....░░░░
 ;
-SPRITE_TILES_NPC_GUARD_10:                  ; [$8956]
-    .byte $08,$0c,$0c,$0c,$0a,$09,$17,$0f   ; [$8956] byte
-    .byte $00,$08,$08,$00,$1c,$1e,$08,$00   ; [$895e] byte
+SPRITE_TILES_NPC_GUARD_10:
+    .byte $08,$0c,$0c,$0c,$0a,$09,$17,$0f   ; byte
+    .byte $00,$08,$08,$00,$1c,$1e,$08,$00   ; byte
 
 
 ;
@@ -2398,9 +2395,9 @@ SPRITE_TILES_NPC_GUARD_10:                  ; [$8956]
 ; ░░░░█▒░░
 ; ▒▒░▒█▒░.
 ;
-SPRITE_TILES_NPC_GUARD_11:                  ; [$8966]
-    .byte $5f,$1e,$78,$b6,$fc,$56,$fb,$2a   ; [$8966] byte
-    .byte $6a,$60,$06,$6f,$63,$ed,$0c,$dc   ; [$896e] byte
+SPRITE_TILES_NPC_GUARD_11:
+    .byte $5f,$1e,$78,$b6,$fc,$56,$fb,$2a   ; byte
+    .byte $6a,$60,$06,$6f,$63,$ed,$0c,$dc   ; byte
 
 
 ;
@@ -2413,9 +2410,9 @@ SPRITE_TILES_NPC_GUARD_11:                  ; [$8966]
 ; ....▒...
 ; ....█...
 ;
-SPRITE_TILES_NPC_GUARD_12:                  ; [$8976]
-    .byte $09,$08,$08,$09,$09,$08,$00,$08   ; [$8976] byte
-    .byte $08,$08,$08,$08,$08,$08,$08,$08   ; [$897e] byte
+SPRITE_TILES_NPC_GUARD_12:
+    .byte $09,$08,$08,$09,$09,$08,$00,$08   ; byte
+    .byte $08,$08,$08,$08,$08,$08,$08,$08   ; byte
 
 
 ;
@@ -2428,9 +2425,9 @@ SPRITE_TILES_NPC_GUARD_12:                  ; [$8976]
 ; ▒▒░▒█▒░.
 ; █▒░▒█▒░.
 ;
-SPRITE_TILES_NPC_GUARD_13:                  ; [$8986]
-    .byte $76,$e4,$4e,$f4,$fc,$f2,$2a,$aa   ; [$8986] byte
-    .byte $b8,$78,$b0,$8a,$aa,$24,$dc,$dc   ; [$898e] byte
+SPRITE_TILES_NPC_GUARD_13:
+    .byte $76,$e4,$4e,$f4,$fc,$f2,$2a,$aa   ; byte
+    .byte $b8,$78,$b0,$8a,$aa,$24,$dc,$dc   ; byte
 
 
 ;
@@ -2443,9 +2440,9 @@ SPRITE_TILES_NPC_GUARD_13:                  ; [$8986]
 ; ....▒..█
 ; ......██
 ;
-SPRITE_TILES_NPC_GUARD_14:                  ; [$8996]
-    .byte $08,$00,$08,$08,$00,$00,$01,$03   ; [$8996] byte
-    .byte $08,$08,$08,$08,$08,$08,$09,$03   ; [$899e] byte
+SPRITE_TILES_NPC_GUARD_14:
+    .byte $08,$00,$08,$08,$00,$00,$01,$03   ; byte
+    .byte $08,$08,$08,$08,$08,$08,$09,$03   ; byte
 
 
 ;
@@ -2458,9 +2455,9 @@ SPRITE_TILES_NPC_GUARD_14:                  ; [$8996]
 ; ▒░..░█▒░
 ; █░.░▒▒░.
 ;
-SPRITE_TILES_NPC_GUARD_15:                  ; [$89a6]
-    .byte $36,$fd,$a5,$a4,$22,$26,$4d,$d2   ; [$89a6] byte
-    .byte $c8,$06,$c6,$c7,$c3,$c7,$86,$8c   ; [$89ae] byte
+SPRITE_TILES_NPC_GUARD_15:
+    .byte $36,$fd,$a5,$a4,$22,$26,$4d,$d2   ; byte
+    .byte $c8,$06,$c6,$c7,$c3,$c7,$86,$8c   ; byte
 
 
 ;============================================================================
@@ -2483,9 +2480,9 @@ SPRITE_TILES_NPC_GUARD_15:                  ; [$89a6]
 ; XREFS:
 ;     BANK7_SPRITEADDRS_START [$PRG7::8024]
 ;
-SPRITE_TILES_NPC_DOCTOR_00:                 ; [$89b6]
-    .byte $01,$07,$07,$0c,$03,$04,$02,$01   ; [$89b6] byte
-    .byte $07,$0f,$0f,$03,$04,$03,$05,$00   ; [$89be] byte
+SPRITE_TILES_NPC_DOCTOR_00:
+    .byte $01,$07,$07,$0c,$03,$04,$02,$01   ; byte
+    .byte $07,$0f,$0f,$03,$04,$03,$05,$00   ; byte
 
 
 ;
@@ -2498,9 +2495,9 @@ SPRITE_TILES_NPC_DOCTOR_00:                 ; [$89b6]
 ; ░▒░█▒▒░.
 ; ██▒░█▒▒░
 ;
-SPRITE_TILES_NPC_DOCTOR_01:                 ; [$89c6]
-    .byte $80,$d0,$f0,$f8,$ac,$62,$b2,$d9   ; [$89c6] byte
-    .byte $e0,$e0,$e0,$70,$50,$fc,$5c,$ee   ; [$89ce] byte
+SPRITE_TILES_NPC_DOCTOR_01:
+    .byte $80,$d0,$f0,$f8,$ac,$62,$b2,$d9   ; byte
+    .byte $e0,$e0,$e0,$70,$50,$fc,$5c,$ee   ; byte
 
 
 ;
@@ -2513,9 +2510,9 @@ SPRITE_TILES_NPC_DOCTOR_01:                 ; [$89c6]
 ; ........
 ; ........
 ;
-SPRITE_TILES_NPC_DOCTOR_02:                 ; [$89d6]
-    .byte $39,$5e,$00,$31,$0e,$00,$00,$00   ; [$89d6] byte
-    .byte $07,$3f,$3f,$0e,$00,$00,$00,$00   ; [$89de] byte
+SPRITE_TILES_NPC_DOCTOR_02:
+    .byte $39,$5e,$00,$31,$0e,$00,$00,$00   ; byte
+    .byte $07,$3f,$3f,$0e,$00,$00,$00,$00   ; byte
 
 
 ;
@@ -2528,9 +2525,9 @@ SPRITE_TILES_NPC_DOCTOR_02:                 ; [$89d6]
 ; ░▒▒░░░░░
 ; ▒▒▒██▒▒░
 ;
-SPRITE_TILES_NPC_DOCTOR_03:                 ; [$89e6]
-    .byte $99,$31,$35,$c9,$f1,$f3,$9f,$19   ; [$89e6] byte
-    .byte $ee,$ce,$da,$36,$0e,$0c,$60,$fe   ; [$89ee] byte
+SPRITE_TILES_NPC_DOCTOR_03:
+    .byte $99,$31,$35,$c9,$f1,$f3,$9f,$19   ; byte
+    .byte $ee,$ce,$da,$36,$0e,$0c,$60,$fe   ; byte
 
 
 ;
@@ -2543,9 +2540,9 @@ SPRITE_TILES_NPC_DOCTOR_03:                 ; [$89e6]
 ; ....██▒░
 ; ....██▒░
 ;
-SPRITE_TILES_NPC_DOCTOR_04:                 ; [$89f6]
-    .byte $06,$0a,$17,$1d,$19,$1d,$0d,$0d   ; [$89f6] byte
-    .byte $01,$05,$0e,$0e,$0e,$0e,$0e,$0e   ; [$89fe] byte
+SPRITE_TILES_NPC_DOCTOR_04:
+    .byte $06,$0a,$17,$1d,$19,$1d,$0d,$0d   ; byte
+    .byte $01,$05,$0e,$0e,$0e,$0e,$0e,$0e   ; byte
 
 
 ;
@@ -2558,9 +2555,9 @@ SPRITE_TILES_NPC_DOCTOR_04:                 ; [$89f6]
 ; ........
 ; ........
 ;
-SPRITE_TILES_NPC_DOCTOR_05:                 ; [$8a06]
-    .byte $79,$c1,$03,$fe,$00,$00,$00,$00   ; [$8a06] byte
-    .byte $fe,$fe,$fc,$00,$00,$00,$00,$00   ; [$8a0e] byte
+SPRITE_TILES_NPC_DOCTOR_05:
+    .byte $79,$c1,$03,$fe,$00,$00,$00,$00   ; byte
+    .byte $fe,$fe,$fc,$00,$00,$00,$00,$00   ; byte
 
 
 ;
@@ -2573,9 +2570,9 @@ SPRITE_TILES_NPC_DOCTOR_05:                 ; [$8a06]
 ; ........
 ; ........
 ;
-SPRITE_TILES_NPC_DOCTOR_06:                 ; [$8a16]
-    .byte $0a,$0a,$1a,$22,$7c,$00,$00,$00   ; [$8a16] byte
-    .byte $0c,$0c,$3c,$7c,$00,$00,$00,$00   ; [$8a1e] byte
+SPRITE_TILES_NPC_DOCTOR_06:
+    .byte $0a,$0a,$1a,$22,$7c,$00,$00,$00   ; byte
+    .byte $0c,$0c,$3c,$7c,$00,$00,$00,$00   ; byte
 
 
 ;
@@ -2588,9 +2585,9 @@ SPRITE_TILES_NPC_DOCTOR_06:                 ; [$8a16]
 ; .....▒░▒
 ; ..░▒▒..█
 ;
-SPRITE_TILES_NPC_DOCTOR_07:                 ; [$8a26]
-    .byte $01,$07,$07,$0c,$03,$04,$02,$21   ; [$8a26] byte
-    .byte $07,$0f,$0f,$03,$04,$03,$05,$19   ; [$8a2e] byte
+SPRITE_TILES_NPC_DOCTOR_07:
+    .byte $01,$07,$07,$0c,$03,$04,$02,$21   ; byte
+    .byte $07,$0f,$0f,$03,$04,$03,$05,$19   ; byte
 
 
 ;
@@ -2603,9 +2600,9 @@ SPRITE_TILES_NPC_DOCTOR_07:                 ; [$8a26]
 ; ........
 ; .......░
 ;
-SPRITE_TILES_NPC_DOCTOR_08:                 ; [$8a36]
-    .byte $2f,$10,$18,$0f,$00,$00,$00,$01   ; [$8a36] byte
-    .byte $1f,$0f,$07,$00,$00,$00,$00,$00   ; [$8a3e] byte
+SPRITE_TILES_NPC_DOCTOR_08:
+    .byte $2f,$10,$18,$0f,$00,$00,$00,$01   ; byte
+    .byte $1f,$0f,$07,$00,$00,$00,$00,$00   ; byte
 
 
 ;
@@ -2618,9 +2615,9 @@ SPRITE_TILES_NPC_DOCTOR_08:                 ; [$8a36]
 ; ....▒█▒░
 ; ....░█▒░
 ;
-SPRITE_TILES_NPC_DOCTOR_09:                 ; [$8a46]
-    .byte $06,$0a,$17,$1d,$1d,$05,$05,$0d   ; [$8a46] byte
-    .byte $01,$05,$0e,$0e,$0e,$0e,$0e,$06   ; [$8a4e] byte
+SPRITE_TILES_NPC_DOCTOR_09:
+    .byte $06,$0a,$17,$1d,$1d,$05,$05,$0d   ; byte
+    .byte $01,$05,$0e,$0e,$0e,$0e,$0e,$06   ; byte
 
 
 ;
@@ -2633,9 +2630,9 @@ SPRITE_TILES_NPC_DOCTOR_09:                 ; [$8a46]
 ; ........
 ; ........
 ;
-SPRITE_TILES_NPC_DOCTOR_10:                 ; [$8a56]
-    .byte $0d,$0d,$19,$13,$3c,$00,$00,$00   ; [$8a56] byte
-    .byte $06,$06,$0e,$3c,$00,$00,$00,$00   ; [$8a5e] byte
+SPRITE_TILES_NPC_DOCTOR_10:
+    .byte $0d,$0d,$19,$13,$3c,$00,$00,$00   ; byte
+    .byte $06,$06,$0e,$3c,$00,$00,$00,$00   ; byte
 
 
 ;============================================================================
@@ -2658,9 +2655,9 @@ SPRITE_TILES_NPC_DOCTOR_10:                 ; [$8a56]
 ; XREFS:
 ;     BANK7_SPRITEADDRS_START [$PRG7::8026]
 ;
-SPRITE_TILES_NPC_NURSE_00:                  ; [$8a66]
-    .byte $00,$00,$08,$0f,$0f,$09,$0b,$0b   ; [$8a66] byte
-    .byte $00,$00,$0f,$0f,$0f,$06,$0f,$05   ; [$8a6e] byte
+SPRITE_TILES_NPC_NURSE_00:
+    .byte $00,$00,$08,$0f,$0f,$09,$0b,$0b   ; byte
+    .byte $00,$00,$0f,$0f,$0f,$06,$0f,$05   ; byte
 
 
 ;
@@ -2673,9 +2670,9 @@ SPRITE_TILES_NPC_NURSE_00:                  ; [$8a66]
 ; ░▒░.....
 ; ░▒░.....
 ;
-SPRITE_TILES_NPC_NURSE_01:                  ; [$8a76]
-    .byte $00,$00,$00,$c0,$c0,$e0,$a0,$a0   ; [$8a76] byte
-    .byte $00,$00,$80,$00,$c0,$00,$40,$40   ; [$8a7e] byte
+SPRITE_TILES_NPC_NURSE_01:
+    .byte $00,$00,$00,$c0,$c0,$e0,$a0,$a0   ; byte
+    .byte $00,$00,$80,$00,$c0,$00,$40,$40   ; byte
 
 
 ;
@@ -2688,9 +2685,9 @@ SPRITE_TILES_NPC_NURSE_01:                  ; [$8a76]
 ; ...░▒▒▒▒
 ; ....░██▒
 ;
-SPRITE_TILES_NPC_NURSE_02:                  ; [$8a86]
-    .byte $00,$04,$03,$0f,$0f,$0e,$10,$0e   ; [$8a86] byte
-    .byte $0f,$0b,$04,$09,$1b,$1f,$0f,$07   ; [$8a8e] byte
+SPRITE_TILES_NPC_NURSE_02:
+    .byte $00,$04,$03,$0f,$0f,$0e,$10,$0e   ; byte
+    .byte $0f,$0b,$04,$09,$1b,$1f,$0f,$07   ; byte
 
 
 ;
@@ -2703,9 +2700,9 @@ SPRITE_TILES_NPC_NURSE_02:                  ; [$8a86]
 ; ░░░▒....
 ; ░░█▒....
 ;
-SPRITE_TILES_NPC_NURSE_03:                  ; [$8a96]
-    .byte $60,$f0,$38,$e0,$70,$70,$e0,$e0   ; [$8a96] byte
-    .byte $80,$00,$c0,$e0,$f0,$e0,$10,$30   ; [$8a9e] byte
+SPRITE_TILES_NPC_NURSE_03:
+    .byte $60,$f0,$38,$e0,$70,$70,$e0,$e0   ; byte
+    .byte $80,$00,$c0,$e0,$f0,$e0,$10,$30   ; byte
 
 
 ;
@@ -2718,9 +2715,9 @@ SPRITE_TILES_NPC_NURSE_03:                  ; [$8a96]
 ; ...░███▒
 ; ...░▒█▒█
 ;
-SPRITE_TILES_NPC_NURSE_04:                  ; [$8aa6]
-    .byte $07,$0a,$0c,$3c,$07,$15,$1e,$15   ; [$8aa6] byte
-    .byte $08,$17,$37,$07,$0e,$0f,$0f,$0f   ; [$8aae] byte
+SPRITE_TILES_NPC_NURSE_04:
+    .byte $07,$0a,$0c,$3c,$07,$15,$1e,$15   ; byte
+    .byte $08,$17,$37,$07,$0e,$0f,$0f,$0f   ; byte
 
 
 ;
@@ -2733,9 +2730,9 @@ SPRITE_TILES_NPC_NURSE_04:                  ; [$8aa6]
 ; ▒▒░░....
 ; ▒▒▒░....
 ;
-SPRITE_TILES_NPC_NURSE_05:                  ; [$8ab6]
-    .byte $e0,$60,$d0,$d0,$30,$f0,$30,$10   ; [$8ab6] byte
-    .byte $30,$b0,$60,$e0,$c0,$00,$c0,$e0   ; [$8abe] byte
+SPRITE_TILES_NPC_NURSE_05:
+    .byte $e0,$60,$d0,$d0,$30,$f0,$30,$10   ; byte
+    .byte $30,$b0,$60,$e0,$c0,$00,$c0,$e0   ; byte
 
 
 ;
@@ -2748,9 +2745,9 @@ SPRITE_TILES_NPC_NURSE_05:                  ; [$8ab6]
 ; ....░▒▒.
 ; ...░▒█░.
 ;
-SPRITE_TILES_NPC_NURSE_06:                  ; [$8ac6]
-    .byte $1e,$15,$16,$19,$07,$00,$08,$16   ; [$8ac6] byte
-    .byte $0f,$0f,$0f,$06,$00,$06,$06,$0c   ; [$8ace] byte
+SPRITE_TILES_NPC_NURSE_06:
+    .byte $1e,$15,$16,$19,$07,$00,$08,$16   ; byte
+    .byte $0f,$0f,$0f,$06,$00,$06,$06,$0c   ; byte
 
 
 ;
@@ -2763,9 +2760,9 @@ SPRITE_TILES_NPC_NURSE_06:                  ; [$8ac6]
 ; .█......
 ; █▒......
 ;
-SPRITE_TILES_NPC_NURSE_07:                  ; [$8ad6]
-    .byte $90,$00,$00,$e0,$a0,$80,$40,$80   ; [$8ad6] byte
-    .byte $e0,$f0,$f0,$00,$40,$60,$40,$c0   ; [$8ade] byte
+SPRITE_TILES_NPC_NURSE_07:
+    .byte $90,$00,$00,$e0,$a0,$80,$40,$80   ; byte
+    .byte $e0,$f0,$f0,$00,$40,$60,$40,$c0   ; byte
 
 
 ;
@@ -2778,9 +2775,9 @@ SPRITE_TILES_NPC_NURSE_07:                  ; [$8ad6]
 ; ...░▒▒▒▒
 ; ....░██▒
 ;
-SPRITE_TILES_NPC_NURSE_08:                  ; [$8ae6]
-    .byte $00,$04,$03,$0f,$0f,$0e,$10,$0e   ; [$8ae6] byte
-    .byte $0f,$0b,$04,$09,$1b,$1f,$0f,$07   ; [$8aee] byte
+SPRITE_TILES_NPC_NURSE_08:
+    .byte $00,$04,$03,$0f,$0f,$0e,$10,$0e   ; byte
+    .byte $0f,$0b,$04,$09,$1b,$1f,$0f,$07   ; byte
 
 
 ;
@@ -2793,9 +2790,9 @@ SPRITE_TILES_NPC_NURSE_08:                  ; [$8ae6]
 ; ░░░░....
 ; ░█▒░....
 ;
-SPRITE_TILES_NPC_NURSE_09:                  ; [$8af6]
-    .byte $60,$f0,$38,$e0,$70,$70,$f0,$d0   ; [$8af6] byte
-    .byte $80,$00,$c0,$e0,$f0,$e0,$00,$60   ; [$8afe] byte
+SPRITE_TILES_NPC_NURSE_09:
+    .byte $60,$f0,$38,$e0,$70,$70,$f0,$d0   ; byte
+    .byte $80,$00,$c0,$e0,$f0,$e0,$00,$60   ; byte
 
 
 ;
@@ -2808,9 +2805,9 @@ SPRITE_TILES_NPC_NURSE_09:                  ; [$8af6]
 ; ...░███▒
 ; ...░▒█▒█
 ;
-SPRITE_TILES_NPC_NURSE_10:                  ; [$8b06]
-    .byte $0f,$0b,$1f,$17,$17,$15,$1e,$15   ; [$8b06] byte
-    .byte $00,$06,$05,$0d,$0e,$0f,$0f,$0f   ; [$8b0e] byte
+SPRITE_TILES_NPC_NURSE_10:
+    .byte $0f,$0b,$1f,$17,$17,$15,$1e,$15   ; byte
+    .byte $00,$06,$05,$0d,$0e,$0f,$0f,$0f   ; byte
 
 
 ;
@@ -2823,9 +2820,9 @@ SPRITE_TILES_NPC_NURSE_10:                  ; [$8b06]
 ; ▒▒░░....
 ; ▒▒▒░....
 ;
-SPRITE_TILES_NPC_NURSE_11:                  ; [$8b16]
-    .byte $c0,$40,$a0,$70,$f0,$f0,$30,$10   ; [$8b16] byte
-    .byte $60,$e0,$c0,$80,$00,$00,$c0,$e0   ; [$8b1e] byte
+SPRITE_TILES_NPC_NURSE_11:
+    .byte $c0,$40,$a0,$70,$f0,$f0,$30,$10   ; byte
+    .byte $60,$e0,$c0,$80,$00,$00,$c0,$e0   ; byte
 
 
 ;
@@ -2838,9 +2835,9 @@ SPRITE_TILES_NPC_NURSE_11:                  ; [$8b16]
 ; ......▒░
 ; .....█░█
 ;
-SPRITE_TILES_NPC_NURSE_12:                  ; [$8b26]
-    .byte $1e,$15,$16,$19,$03,$03,$01,$07   ; [$8b26] byte
-    .byte $0f,$0f,$0f,$06,$00,$00,$02,$05   ; [$8b2e] byte
+SPRITE_TILES_NPC_NURSE_12:
+    .byte $1e,$15,$16,$19,$03,$03,$01,$07   ; byte
+    .byte $0f,$0f,$0f,$06,$00,$00,$02,$05   ; byte
 
 
 ;
@@ -2853,9 +2850,9 @@ SPRITE_TILES_NPC_NURSE_12:                  ; [$8b26]
 ; █▒......
 ; █▒......
 ;
-SPRITE_TILES_NPC_NURSE_13:                  ; [$8b36]
-    .byte $90,$00,$00,$c0,$40,$40,$80,$80   ; [$8b36] byte
-    .byte $e0,$f0,$f0,$00,$80,$80,$c0,$c0   ; [$8b3e] byte
+SPRITE_TILES_NPC_NURSE_13:
+    .byte $90,$00,$00,$c0,$40,$40,$80,$80   ; byte
+    .byte $e0,$f0,$f0,$00,$80,$80,$c0,$c0   ; byte
 
 
 ;============================================================================
@@ -2878,9 +2875,9 @@ SPRITE_TILES_NPC_NURSE_13:                  ; [$8b36]
 ; XREFS:
 ;     BANK7_SPRITEADDRS_START [$PRG7::8028]
 ;
-SPRITE_TILES_NPC_WALKING_WOMAN_00:          ; [$8b46]
-    .byte $00,$00,$07,$0f,$0b,$09,$0b,$0b   ; [$8b46] byte
-    .byte $00,$00,$00,$00,$04,$06,$0f,$05   ; [$8b4e] byte
+SPRITE_TILES_NPC_WALKING_WOMAN_00:
+    .byte $00,$00,$07,$0f,$0b,$09,$0b,$0b   ; byte
+    .byte $00,$00,$00,$00,$04,$06,$0f,$05   ; byte
 
 
 ;
@@ -2893,9 +2890,9 @@ SPRITE_TILES_NPC_WALKING_WOMAN_00:          ; [$8b46]
 ; ░▒░.....
 ; ▒▒░.....
 ;
-SPRITE_TILES_NPC_WALKING_WOMAN_01:          ; [$8b56]
-    .byte $00,$00,$80,$c0,$c0,$e0,$a0,$20   ; [$8b56] byte
-    .byte $00,$00,$00,$00,$00,$00,$40,$c0   ; [$8b5e] byte
+SPRITE_TILES_NPC_WALKING_WOMAN_01:
+    .byte $00,$00,$80,$c0,$c0,$e0,$a0,$20   ; byte
+    .byte $00,$00,$00,$00,$00,$00,$40,$c0   ; byte
 
 
 ;
@@ -2908,9 +2905,9 @@ SPRITE_TILES_NPC_WALKING_WOMAN_01:          ; [$8b56]
 ; ....▒▒▒▒
 ; ....░███
 ;
-SPRITE_TILES_NPC_WALKING_WOMAN_02:          ; [$8b66]
-    .byte $00,$04,$03,$0f,$1f,$0e,$00,$0f   ; [$8b66] byte
-    .byte $0f,$0b,$04,$09,$1b,$1f,$0f,$07   ; [$8b6e] byte
+SPRITE_TILES_NPC_WALKING_WOMAN_02:
+    .byte $00,$04,$03,$0f,$1f,$0e,$00,$0f   ; byte
+    .byte $0f,$0b,$04,$09,$1b,$1f,$0f,$07   ; byte
 
 
 ;
@@ -2923,9 +2920,9 @@ SPRITE_TILES_NPC_WALKING_WOMAN_02:          ; [$8b66]
 ; ░░░▒....
 ; ░░█▒....
 ;
-SPRITE_TILES_NPC_WALKING_WOMAN_03:          ; [$8b76]
-    .byte $60,$f0,$38,$e0,$70,$70,$e0,$e0   ; [$8b76] byte
-    .byte $80,$00,$c0,$e0,$f0,$e0,$10,$30   ; [$8b7e] byte
+SPRITE_TILES_NPC_WALKING_WOMAN_03:
+    .byte $60,$f0,$38,$e0,$70,$70,$e0,$e0   ; byte
+    .byte $80,$00,$c0,$e0,$f0,$e0,$10,$30   ; byte
 
 
 ;
@@ -2938,9 +2935,9 @@ SPRITE_TILES_NPC_WALKING_WOMAN_03:          ; [$8b76]
 ; ..░██▒▒▒
 ; ..░▒█▒█▒
 ;
-SPRITE_TILES_NPC_WALKING_WOMAN_04:          ; [$8b86]
-    .byte $17,$6e,$75,$0d,$0d,$2e,$38,$2a   ; [$8b86] byte
-    .byte $18,$37,$0e,$1e,$1e,$1f,$1f,$1f   ; [$8b8e] byte
+SPRITE_TILES_NPC_WALKING_WOMAN_04:
+    .byte $17,$6e,$75,$0d,$0d,$2e,$38,$2a   ; byte
+    .byte $18,$37,$0e,$1e,$1e,$1f,$1f,$1f   ; byte
 
 
 ;
@@ -2953,9 +2950,9 @@ SPRITE_TILES_NPC_WALKING_WOMAN_04:          ; [$8b86]
 ; ▒▒▒░▒░..
 ; █▒░▒░░..
 ;
-SPRITE_TILES_NPC_WALKING_WOMAN_05:          ; [$8b96]
-    .byte $f0,$f0,$d0,$b8,$f8,$a8,$14,$ac   ; [$8b96] byte
-    .byte $20,$60,$e0,$c0,$00,$50,$e8,$d0   ; [$8b9e] byte
+SPRITE_TILES_NPC_WALKING_WOMAN_05:
+    .byte $f0,$f0,$d0,$b8,$f8,$a8,$14,$ac   ; byte
+    .byte $20,$60,$e0,$c0,$00,$50,$e8,$d0   ; byte
 
 
 ;
@@ -2968,9 +2965,9 @@ SPRITE_TILES_NPC_WALKING_WOMAN_05:          ; [$8b96]
 ; ..▒░░▒▒▒
 ; ..░▒░░░░
 ;
-SPRITE_TILES_NPC_WALKING_WOMAN_06:          ; [$8ba6]
-    .byte $14,$19,$14,$0a,$14,$05,$18,$2f   ; [$8ba6] byte
-    .byte $3f,$3f,$3f,$3f,$3f,$3f,$27,$10   ; [$8bae] byte
+SPRITE_TILES_NPC_WALKING_WOMAN_06:
+    .byte $14,$19,$14,$0a,$14,$05,$18,$2f   ; byte
+    .byte $3f,$3f,$3f,$3f,$3f,$3f,$27,$10   ; byte
 
 
 ;
@@ -2983,9 +2980,9 @@ SPRITE_TILES_NPC_WALKING_WOMAN_06:          ; [$8ba6]
 ; ▒░░▒░░..
 ; ░░░.░░..
 ;
-SPRITE_TILES_NPC_WALKING_WOMAN_07:          ; [$8bb6]
-    .byte $14,$3c,$1c,$ac,$34,$1c,$6c,$ec   ; [$8bb6] byte
-    .byte $e8,$c0,$e0,$d0,$c8,$e0,$90,$00   ; [$8bbe] byte
+SPRITE_TILES_NPC_WALKING_WOMAN_07:
+    .byte $14,$3c,$1c,$ac,$34,$1c,$6c,$ec   ; byte
+    .byte $e8,$c0,$e0,$d0,$c8,$e0,$90,$00   ; byte
 
 
 ;
@@ -2998,9 +2995,9 @@ SPRITE_TILES_NPC_WALKING_WOMAN_07:          ; [$8bb6]
 ; ░░░▒....
 ; ░█▒▒....
 ;
-SPRITE_TILES_NPC_WALKING_WOMAN_08:          ; [$8bc6]
-    .byte $60,$f0,$38,$e0,$70,$70,$e0,$c0   ; [$8bc6] byte
-    .byte $80,$00,$c0,$e0,$f0,$e0,$10,$70   ; [$8bce] byte
+SPRITE_TILES_NPC_WALKING_WOMAN_08:
+    .byte $60,$f0,$38,$e0,$70,$70,$e0,$c0   ; byte
+    .byte $80,$00,$c0,$e0,$f0,$e0,$10,$70   ; byte
 
 
 ;
@@ -3013,9 +3010,9 @@ SPRITE_TILES_NPC_WALKING_WOMAN_08:          ; [$8bc6]
 ; ..░██▒▒▒
 ; ..░▒█▒█▒
 ;
-SPRITE_TILES_NPC_WALKING_WOMAN_09:          ; [$8bd6]
-    .byte $0f,$0f,$17,$0f,$0e,$2f,$38,$2a   ; [$8bd6] byte
-    .byte $08,$16,$0e,$1d,$1d,$1e,$1f,$1f   ; [$8bde] byte
+SPRITE_TILES_NPC_WALKING_WOMAN_09:
+    .byte $0f,$0f,$17,$0f,$0e,$2f,$38,$2a   ; byte
+    .byte $08,$16,$0e,$1d,$1d,$1e,$1f,$1f   ; byte
 
 
 ;
@@ -3028,9 +3025,9 @@ SPRITE_TILES_NPC_WALKING_WOMAN_09:          ; [$8bd6]
 ; ▒▒▒░▒░..
 ; █▒░▒░░..
 ;
-SPRITE_TILES_NPC_WALKING_WOMAN_10:          ; [$8be6]
-    .byte $d0,$d0,$b0,$78,$f8,$a8,$14,$ac   ; [$8be6] byte
-    .byte $60,$e0,$c0,$80,$00,$50,$e8,$d0   ; [$8bee] byte
+SPRITE_TILES_NPC_WALKING_WOMAN_10:
+    .byte $d0,$d0,$b0,$78,$f8,$a8,$14,$ac   ; byte
+    .byte $60,$e0,$c0,$80,$00,$50,$e8,$d0   ; byte
 
 
 ;
@@ -3043,9 +3040,9 @@ SPRITE_TILES_NPC_WALKING_WOMAN_10:          ; [$8be6]
 ; ..░▒░░░░
 ; ..░░▒█▒░
 ;
-SPRITE_TILES_NPC_WALKING_WOMAN_11:          ; [$8bf6]
-    .byte $14,$19,$14,$0a,$3c,$35,$2f,$35   ; [$8bf6] byte
-    .byte $3f,$3f,$3f,$3f,$1f,$1f,$10,$0e   ; [$8bfe] byte
+SPRITE_TILES_NPC_WALKING_WOMAN_11:
+    .byte $14,$19,$14,$0a,$3c,$35,$2f,$35   ; byte
+    .byte $3f,$3f,$3f,$3f,$1f,$1f,$10,$0e   ; byte
 
 
 ;
@@ -3058,9 +3055,9 @@ SPRITE_TILES_NPC_WALKING_WOMAN_11:          ; [$8bf6]
 ; ▒▒░▒▒░..
 ; ░░░.░░░.
 ;
-SPRITE_TILES_NPC_WALKING_WOMAN_12:          ; [$8c06]
-    .byte $14,$2c,$14,$ac,$14,$0c,$24,$ee   ; [$8c06] byte
-    .byte $e8,$d0,$e8,$d0,$e8,$f0,$d8,$00   ; [$8c0e] byte
+SPRITE_TILES_NPC_WALKING_WOMAN_12:
+    .byte $14,$2c,$14,$ac,$14,$0c,$24,$ee   ; byte
+    .byte $e8,$d0,$e8,$d0,$e8,$f0,$d8,$00   ; byte
 
 
 ;============================================================================
@@ -3083,9 +3080,9 @@ SPRITE_TILES_NPC_WALKING_WOMAN_12:          ; [$8c06]
 ; XREFS:
 ;     BANK7_SPRITEADDRS_START [$PRG7::802c]
 ;
-SPRITE_TILES_ENEMY_ZOZURA_00:               ; [$8c16]
-    .byte $83,$fe,$fd,$3b,$5b,$3b,$2f,$b2   ; [$8c16] byte
-    .byte $80,$c3,$76,$75,$25,$0c,$12,$cd   ; [$8c1e] byte
+SPRITE_TILES_ENEMY_ZOZURA_00:
+    .byte $83,$fe,$fd,$3b,$5b,$3b,$2f,$b2   ; byte
+    .byte $80,$c3,$76,$75,$25,$0c,$12,$cd   ; byte
 
 
 ;
@@ -3098,9 +3095,9 @@ SPRITE_TILES_ENEMY_ZOZURA_00:               ; [$8c16]
 ; ░░▒░░░█▒
 ; ░▒░▒░██░
 ;
-SPRITE_TILES_ENEMY_ZOZURA_01:               ; [$8c26]
-    .byte $98,$b8,$e0,$d0,$d0,$3b,$de,$af   ; [$8c26] byte
-    .byte $18,$70,$f0,$e0,$e0,$c1,$23,$56   ; [$8c2e] byte
+SPRITE_TILES_ENEMY_ZOZURA_01:
+    .byte $98,$b8,$e0,$d0,$d0,$3b,$de,$af   ; byte
+    .byte $18,$70,$f0,$e0,$e0,$c1,$23,$56   ; byte
 
 
 ;
@@ -3113,9 +3110,9 @@ SPRITE_TILES_ENEMY_ZOZURA_01:               ; [$8c26]
 ; .░░▒▒░░.
 ; ..░░░░..
 ;
-SPRITE_TILES_ENEMY_ZOZURA_02:               ; [$8c36]
-    .byte $e9,$f5,$fe,$b6,$cd,$7f,$66,$3c   ; [$8c36] byte
-    .byte $f6,$7a,$79,$79,$32,$00,$18,$00   ; [$8c3e] byte
+SPRITE_TILES_ENEMY_ZOZURA_02:
+    .byte $e9,$f5,$fe,$b6,$cd,$7f,$66,$3c   ; byte
+    .byte $f6,$7a,$79,$79,$32,$00,$18,$00   ; byte
 
 
 ;
@@ -3128,9 +3125,9 @@ SPRITE_TILES_ENEMY_ZOZURA_02:               ; [$8c36]
 ; ░░▒▒▒░..
 ; .░░░░...
 ;
-SPRITE_TILES_ENEMY_ZOZURA_03:               ; [$8c46]
-    .byte $1d,$3c,$fa,$f2,$66,$ba,$c4,$78   ; [$8c46] byte
-    .byte $ee,$de,$3c,$3c,$98,$44,$38,$00   ; [$8c4e] byte
+SPRITE_TILES_ENEMY_ZOZURA_03:
+    .byte $1d,$3c,$fa,$f2,$66,$ba,$c4,$78   ; byte
+    .byte $ee,$de,$3c,$3c,$98,$44,$38,$00   ; byte
 
 
 ;
@@ -3143,9 +3140,9 @@ SPRITE_TILES_ENEMY_ZOZURA_03:               ; [$8c46]
 ; ██░░░▒░░
 ; ▒██░▒░▒░
 ;
-SPRITE_TILES_ENEMY_ZOZURA_04:               ; [$8c56]
-    .byte $19,$1d,$07,$0b,$0b,$dc,$fb,$75   ; [$8c56] byte
-    .byte $18,$0e,$0f,$07,$07,$83,$c4,$ea   ; [$8c5e] byte
+SPRITE_TILES_ENEMY_ZOZURA_04:
+    .byte $19,$1d,$07,$0b,$0b,$dc,$fb,$75   ; byte
+    .byte $18,$0e,$0f,$07,$07,$83,$c4,$ea   ; byte
 
 
 ;
@@ -3158,9 +3155,9 @@ SPRITE_TILES_ENEMY_ZOZURA_04:               ; [$8c56]
 ; ░█░░▒░░.
 ; ▒░▒▒░░░.
 ;
-SPRITE_TILES_ENEMY_ZOZURA_05:               ; [$8c66]
-    .byte $c1,$7f,$bf,$dc,$da,$dc,$f6,$4e   ; [$8c66] byte
-    .byte $01,$c3,$6e,$ae,$a4,$30,$48,$b0   ; [$8c6e] byte
+SPRITE_TILES_ENEMY_ZOZURA_05:
+    .byte $c1,$7f,$bf,$dc,$da,$dc,$f6,$4e   ; byte
+    .byte $01,$c3,$6e,$ae,$a4,$30,$48,$b0   ; byte
 
 
 ;
@@ -3173,9 +3170,9 @@ SPRITE_TILES_ENEMY_ZOZURA_05:               ; [$8c66]
 ; ..░▒▒▒░░
 ; ...░░░░.
 ;
-SPRITE_TILES_ENEMY_ZOZURA_06:               ; [$8c76]
-    .byte $f8,$3c,$7f,$5f,$66,$5d,$23,$1e   ; [$8c76] byte
-    .byte $77,$7b,$3c,$3c,$19,$22,$1c,$00   ; [$8c7e] byte
+SPRITE_TILES_ENEMY_ZOZURA_06:
+    .byte $f8,$3c,$7f,$5f,$66,$5d,$23,$1e   ; byte
+    .byte $77,$7b,$3c,$3c,$19,$22,$1c,$00   ; byte
 
 
 ;
@@ -3188,9 +3185,9 @@ SPRITE_TILES_ENEMY_ZOZURA_06:               ; [$8c76]
 ; ░░░▒▒░..
 ; ..░░░░..
 ;
-SPRITE_TILES_ENEMY_ZOZURA_07:               ; [$8c86]
-    .byte $9b,$af,$6c,$62,$b6,$fe,$e4,$3c   ; [$8c86] byte
-    .byte $67,$5e,$9e,$9c,$48,$00,$18,$00   ; [$8c8e] byte
+SPRITE_TILES_ENEMY_ZOZURA_07:
+    .byte $9b,$af,$6c,$62,$b6,$fe,$e4,$3c   ; byte
+    .byte $67,$5e,$9e,$9c,$48,$00,$18,$00   ; byte
 
 
 ;============================================================================
@@ -3213,9 +3210,9 @@ SPRITE_TILES_ENEMY_ZOZURA_07:               ; [$8c86]
 ; XREFS:
 ;     BANK7_SPRITEADDRS_START [$PRG7::802a]
 ;
-SPRITE_TILES_ENEMY_UNUSED_EYEBALL_00:       ; [$8c96]
-    .byte $07,$18,$30,$60,$4f,$df,$5f,$df   ; [$8c96] byte
-    .byte $0f,$3f,$7f,$7f,$fc,$e0,$e8,$e0   ; [$8c9e] byte
+SPRITE_TILES_ENEMY_UNUSED_EYEBALL_00:
+    .byte $07,$18,$30,$60,$4f,$df,$5f,$df   ; byte
+    .byte $0f,$3f,$7f,$7f,$fc,$e0,$e8,$e0   ; byte
 
 
 ;
@@ -3228,9 +3225,9 @@ SPRITE_TILES_ENEMY_UNUSED_EYEBALL_00:       ; [$8c96]
 ; ░▒▒░██▒░
 ; ░▒▒░█▒░░
 ;
-SPRITE_TILES_ENEMY_UNUSED_EYEBALL_01:       ; [$8ca6]
-    .byte $a0,$c8,$74,$3a,$1a,$99,$9d,$9b   ; [$8ca6] byte
-    .byte $e0,$f0,$b8,$d4,$fc,$6e,$6e,$6c   ; [$8cae] byte
+SPRITE_TILES_ENEMY_UNUSED_EYEBALL_01:
+    .byte $a0,$c8,$74,$3a,$1a,$99,$9d,$9b   ; byte
+    .byte $e0,$f0,$b8,$d4,$fc,$6e,$6e,$6c   ; byte
 
 
 ;
@@ -3243,9 +3240,9 @@ SPRITE_TILES_ENEMY_UNUSED_EYEBALL_01:       ; [$8ca6]
 ; ...░▒▒█▒
 ; ....░░░░
 ;
-SPRITE_TILES_ENEMY_UNUSED_EYEBALL_02:       ; [$8cb6]
-    .byte $cf,$60,$60,$3f,$1d,$2b,$12,$0f   ; [$8cb6] byte
-    .byte $f0,$ff,$ff,$78,$7f,$1f,$0f,$00   ; [$8cbe] byte
+SPRITE_TILES_ENEMY_UNUSED_EYEBALL_02:
+    .byte $cf,$60,$60,$3f,$1d,$2b,$12,$0f   ; byte
+    .byte $f0,$ff,$ff,$78,$7f,$1f,$0f,$00   ; byte
 
 
 ;
@@ -3258,9 +3255,9 @@ SPRITE_TILES_ENEMY_UNUSED_EYEBALL_02:       ; [$8cb6]
 ; ▒░░░░...
 ; ░░░.....
 ;
-SPRITE_TILES_ENEMY_UNUSED_EYEBALL_03:       ; [$8cc6]
-    .byte $3d,$2d,$f3,$f6,$ce,$bc,$78,$e0   ; [$8cc6] byte
-    .byte $da,$de,$3c,$e8,$f0,$60,$80,$00   ; [$8cce] byte
+SPRITE_TILES_ENEMY_UNUSED_EYEBALL_03:
+    .byte $3d,$2d,$f3,$f6,$ce,$bc,$78,$e0   ; byte
+    .byte $da,$de,$3c,$e8,$f0,$60,$80,$00   ; byte
 
 
 ;
@@ -3273,9 +3270,9 @@ SPRITE_TILES_ENEMY_UNUSED_EYEBALL_03:       ; [$8cc6]
 ; ░░█░▒▒▒░
 ; ▒███▒▒▒░
 ;
-SPRITE_TILES_ENEMY_UNUSED_EYEBALL_04:       ; [$8cd6]
-    .byte $01,$0f,$37,$3c,$58,$70,$f1,$71   ; [$8cd6] byte
-    .byte $0f,$3b,$5f,$77,$ff,$df,$2e,$fe   ; [$8cde] byte
+SPRITE_TILES_ENEMY_UNUSED_EYEBALL_04:
+    .byte $01,$0f,$37,$3c,$58,$70,$f1,$71   ; byte
+    .byte $0f,$3b,$5f,$77,$ff,$df,$2e,$fe   ; byte
 
 
 ;
@@ -3288,9 +3285,9 @@ SPRITE_TILES_ENEMY_UNUSED_EYEBALL_04:       ; [$8cd6]
 ; █░░▒░█▒░
 ; ░░░▒░█▒▒
 ;
-SPRITE_TILES_ENEMY_UNUSED_EYEBALL_05:       ; [$8ce6]
-    .byte $c0,$68,$f4,$12,$1a,$cd,$ed,$ec   ; [$8ce6] byte
-    .byte $60,$f0,$f8,$fc,$ec,$36,$96,$17   ; [$8cee] byte
+SPRITE_TILES_ENEMY_UNUSED_EYEBALL_05:
+    .byte $c0,$68,$f4,$12,$1a,$cd,$ed,$ec   ; byte
+    .byte $60,$f0,$f8,$fc,$ec,$36,$96,$17   ; byte
 
 
 ;
@@ -3303,9 +3300,9 @@ SPRITE_TILES_ENEMY_UNUSED_EYEBALL_05:       ; [$8ce6]
 ; ...░▒░▒█
 ; ....░▒░░
 ;
-SPRITE_TILES_ENEMY_UNUSED_EYEBALL_06:       ; [$8cf6]
-    .byte $f0,$28,$d8,$2e,$4f,$37,$15,$0b   ; [$8cf6] byte
-    .byte $5f,$ff,$3f,$7b,$37,$1a,$0b,$04   ; [$8cfe] byte
+SPRITE_TILES_ENEMY_UNUSED_EYEBALL_06:
+    .byte $f0,$28,$d8,$2e,$4f,$37,$15,$0b   ; byte
+    .byte $5f,$ff,$3f,$7b,$37,$1a,$0b,$04   ; byte
 
 
 ;
@@ -3318,9 +3315,9 @@ SPRITE_TILES_ENEMY_UNUSED_EYEBALL_06:       ; [$8cf6]
 ; ▒░░░░...
 ; ░▒░.....
 ;
-SPRITE_TILES_ENEMY_UNUSED_EYEBALL_07:       ; [$8d06]
-    .byte $c9,$17,$2f,$fe,$ca,$9c,$78,$a0   ; [$8d06] byte
-    .byte $36,$ee,$dc,$38,$f4,$f0,$80,$40   ; [$8d0e] byte
+SPRITE_TILES_ENEMY_UNUSED_EYEBALL_07:
+    .byte $c9,$17,$2f,$fe,$ca,$9c,$78,$a0   ; byte
+    .byte $36,$ee,$dc,$38,$f4,$f0,$80,$40   ; byte
 
 
 ;============================================================================
@@ -3345,9 +3342,9 @@ SPRITE_TILES_ENEMY_UNUSED_EYEBALL_07:       ; [$8d06]
 ;     BANK7_SPRITEADDRS_START [$PRG7::802e]
 ;     BANK7_SPRITEADDRS_START [$PRG7::805c]
 ;
-SPRITE_TILES_ITEM_GLOVE_00:                 ; [$8d16]
-    .byte $00,$04,$1e,$3f,$3f,$7f,$fd,$f1   ; [$8d16] byte
-    .byte $00,$08,$28,$2a,$2a,$aa,$aa,$be   ; [$8d1e] byte
+SPRITE_TILES_ITEM_GLOVE_00:
+    .byte $00,$04,$1e,$3f,$3f,$7f,$fd,$f1   ; byte
+    .byte $00,$08,$28,$2a,$2a,$aa,$aa,$be   ; byte
 
 
 ;
@@ -3360,9 +3357,9 @@ SPRITE_TILES_ITEM_GLOVE_00:                 ; [$8d16]
 ; ..░█▒░▒░
 ; ..░█░░░░
 ;
-SPRITE_TILES_ITEM_GLOVE_01:                 ; [$8d26]
-    .byte $f1,$61,$e3,$62,$2e,$02,$35,$3f   ; [$8d26] byte
-    .byte $fe,$fe,$7c,$3c,$30,$3c,$1a,$10   ; [$8d2e] byte
+SPRITE_TILES_ITEM_GLOVE_01:
+    .byte $f1,$61,$e3,$62,$2e,$02,$35,$3f   ; byte
+    .byte $fe,$fe,$7c,$3c,$30,$3c,$1a,$10   ; byte
 
 
 ;============================================================================
@@ -3385,9 +3382,9 @@ SPRITE_TILES_ITEM_GLOVE_01:                 ; [$8d26]
 ; XREFS:
 ;     BANK7_SPRITEADDRS_START [$PRG7::8030]
 ;
-SPRITE_TILES_ITEM_BLACK_ONYX_00:            ; [$8d36]
-    .byte $00,$02,$03,$0f,$07,$07,$0f,$07   ; [$8d36] byte
-    .byte $00,$01,$04,$01,$08,$08,$00,$08   ; [$8d3e] byte
+SPRITE_TILES_ITEM_BLACK_ONYX_00:
+    .byte $00,$02,$03,$0f,$07,$07,$0f,$07   ; byte
+    .byte $00,$01,$04,$01,$08,$08,$00,$08   ; byte
 
 
 ;
@@ -3400,9 +3397,9 @@ SPRITE_TILES_ITEM_BLACK_ONYX_00:            ; [$8d36]
 ; .....░▒█
 ; ....░▒██
 ;
-SPRITE_TILES_ITEM_BLACK_ONYX_01:            ; [$8d46]
-    .byte $17,$2b,$14,$03,$09,$07,$05,$0b   ; [$8d46] byte
-    .byte $18,$24,$23,$10,$0b,$08,$03,$07   ; [$8d4e] byte
+SPRITE_TILES_ITEM_BLACK_ONYX_01:
+    .byte $17,$2b,$14,$03,$09,$07,$05,$0b   ; byte
+    .byte $18,$24,$23,$10,$0b,$08,$03,$07   ; byte
 
 
 ;============================================================================
@@ -3425,9 +3422,9 @@ SPRITE_TILES_ITEM_BLACK_ONYX_01:            ; [$8d46]
 ; XREFS:
 ;     BANK7_SPRITEADDRS_START [$PRG7::8032]
 ;
-SPRITE_TILES_ITEM_PENDANT_00:               ; [$8d56]
-    .byte $01,$04,$00,$12,$04,$1c,$3a,$7d   ; [$8d56] byte
-    .byte $01,$06,$08,$13,$14,$18,$26,$43   ; [$8d5e] byte
+SPRITE_TILES_ITEM_PENDANT_00:
+    .byte $01,$04,$00,$12,$04,$1c,$3a,$7d   ; byte
+    .byte $01,$06,$08,$13,$14,$18,$26,$43   ; byte
 
 
 ;
@@ -3440,9 +3437,9 @@ SPRITE_TILES_ITEM_PENDANT_00:               ; [$8d56]
 ; ..▒....▒
 ; ...█...█
 ;
-SPRITE_TILES_ITEM_PENDANT_01:               ; [$8d66]
-    .byte $40,$10,$00,$84,$00,$22,$00,$11   ; [$8d66] byte
-    .byte $c0,$30,$08,$84,$42,$22,$21,$11   ; [$8d6e] byte
+SPRITE_TILES_ITEM_PENDANT_01:
+    .byte $40,$10,$00,$84,$00,$22,$00,$11   ; byte
+    .byte $c0,$30,$08,$84,$42,$22,$21,$11   ; byte
 
 
 ;
@@ -3455,9 +3452,9 @@ SPRITE_TILES_ITEM_PENDANT_01:               ; [$8d66]
 ; ...███..
 ; ........
 ;
-SPRITE_TILES_ITEM_PENDANT_02:               ; [$8d76]
-    .byte $7d,$7d,$7d,$7d,$7c,$3a,$1c,$00   ; [$8d76] byte
-    .byte $53,$53,$43,$43,$43,$26,$1c,$00   ; [$8d7e] byte
+SPRITE_TILES_ITEM_PENDANT_02:
+    .byte $7d,$7d,$7d,$7d,$7c,$3a,$1c,$00   ; byte
+    .byte $53,$53,$43,$43,$43,$26,$1c,$00   ; byte
 
 
 ;
@@ -3470,9 +3467,9 @@ SPRITE_TILES_ITEM_PENDANT_02:               ; [$8d76]
 ; ........
 ; ........
 ;
-SPRITE_TILES_ITEM_PENDANT_03:               ; [$8d86]
-    .byte $00,$11,$00,$0a,$00,$00,$00,$00   ; [$8d86] byte
-    .byte $11,$11,$12,$0a,$04,$00,$00,$00   ; [$8d8e] byte
+SPRITE_TILES_ITEM_PENDANT_03:
+    .byte $00,$11,$00,$0a,$00,$00,$00,$00   ; byte
+    .byte $11,$11,$12,$0a,$04,$00,$00,$00   ; byte
 
 
 ;============================================================================
@@ -3501,9 +3498,9 @@ SPRITE_TILES_ITEM_PENDANT_03:               ; [$8d86]
 ;     BANK7_SPRITEADDRS_START [$PRG7::8058]
 ;     BANK7_SPRITEADDRS_START [$PRG7::805a]
 ;
-SPRITE_TILES_ITEM_POTION_POISON_00:         ; [$8d96]
-    .byte $18,$3c,$3c,$18,$2c,$18,$08,$08   ; [$8d96] byte
-    .byte $00,$10,$00,$00,$10,$00,$10,$10   ; [$8d9e] byte
+SPRITE_TILES_ITEM_POTION_POISON_00:
+    .byte $18,$3c,$3c,$18,$2c,$18,$08,$08   ; byte
+    .byte $00,$10,$00,$00,$10,$00,$10,$10   ; byte
 
 
 ;
@@ -3516,9 +3513,9 @@ SPRITE_TILES_ITEM_POTION_POISON_00:         ; [$8d96]
 ; ░░▒▒▒▒░░
 ; .░░░░░░.
 ;
-SPRITE_TILES_ITEM_POTION_POISON_01:         ; [$8da6]
-    .byte $3c,$7e,$ff,$ff,$e1,$e1,$c3,$7e   ; [$8da6] byte
-    .byte $00,$20,$40,$40,$5e,$1e,$3c,$00   ; [$8dae] byte
+SPRITE_TILES_ITEM_POTION_POISON_01:
+    .byte $3c,$7e,$ff,$ff,$e1,$e1,$c3,$7e   ; byte
+    .byte $00,$20,$40,$40,$5e,$1e,$3c,$00   ; byte
 
 
 ;============================================================================
@@ -3541,9 +3538,9 @@ SPRITE_TILES_ITEM_POTION_POISON_01:         ; [$8da6]
 ; XREFS:
 ;     BANK7_SPRITEADDRS_START [$PRG7::8038]
 ;
-SPRITE_TILES_ITEM_ELIXIR_00:                ; [$8db6]
-    .byte $01,$03,$23,$51,$48,$4b,$49,$47   ; [$8db6] byte
-    .byte $00,$01,$30,$40,$40,$41,$00,$40   ; [$8dbe] byte
+SPRITE_TILES_ITEM_ELIXIR_00:
+    .byte $01,$03,$23,$51,$48,$4b,$49,$47   ; byte
+    .byte $00,$01,$30,$40,$40,$41,$00,$40   ; byte
 
 
 ;
@@ -3556,9 +3553,9 @@ SPRITE_TILES_ITEM_ELIXIR_00:                ; [$8db6]
 ; ░...░..░
 ; ░░▒▒...█
 ;
-SPRITE_TILES_ITEM_ELIXIR_01:                ; [$8dc6]
-    .byte $c0,$e0,$e2,$c5,$89,$e9,$89,$c1   ; [$8dc6] byte
-    .byte $00,$80,$02,$05,$08,$89,$00,$31   ; [$8dce] byte
+SPRITE_TILES_ITEM_ELIXIR_01:
+    .byte $c0,$e0,$e2,$c5,$89,$e9,$89,$c1   ; byte
+    .byte $00,$80,$02,$05,$08,$89,$00,$31   ; byte
 
 
 ;
@@ -3571,9 +3568,9 @@ SPRITE_TILES_ITEM_ELIXIR_01:                ; [$8dc6]
 ; .......░
 ; .....░▒█
 ;
-SPRITE_TILES_ITEM_ELIXIR_02:                ; [$8dd6]
-    .byte $2b,$1f,$1f,$1f,$0f,$07,$01,$05   ; [$8dd6] byte
-    .byte $26,$04,$04,$00,$00,$00,$00,$03   ; [$8dde] byte
+SPRITE_TILES_ITEM_ELIXIR_02:
+    .byte $2b,$1f,$1f,$1f,$0f,$07,$01,$05   ; byte
+    .byte $26,$04,$04,$00,$00,$00,$00,$03   ; byte
 
 
 ;
@@ -3586,9 +3583,9 @@ SPRITE_TILES_ITEM_ELIXIR_02:                ; [$8dd6]
 ; ░░......
 ; ▒░░▒....
 ;
-SPRITE_TILES_ITEM_ELIXIR_03:                ; [$8de6]
-    .byte $e2,$f0,$f0,$f0,$e0,$c0,$c0,$60   ; [$8de6] byte
-    .byte $1a,$0c,$0c,$0c,$18,$30,$00,$90   ; [$8dee] byte
+SPRITE_TILES_ITEM_ELIXIR_03:
+    .byte $e2,$f0,$f0,$f0,$e0,$c0,$c0,$60   ; byte
+    .byte $1a,$0c,$0c,$0c,$18,$30,$00,$90   ; byte
 
 
 ;============================================================================
@@ -3613,9 +3610,9 @@ SPRITE_TILES_ITEM_ELIXIR_03:                ; [$8de6]
 ;     BANK7_SPRITEADDRS_START [$PRG7::803a]
 ;     BANK7_SPRITEADDRS_START [$PRG7::805e]
 ;
-SPRITE_TILES_ITEM_OINTMENT_00:              ; [$8df6]
-    .byte $07,$0f,$0b,$05,$03,$02,$07,$08   ; [$8df6] byte
-    .byte $03,$04,$04,$03,$00,$01,$01,$07   ; [$8dfe] byte
+SPRITE_TILES_ITEM_OINTMENT_00:
+    .byte $07,$0f,$0b,$05,$03,$02,$07,$08   ; byte
+    .byte $03,$04,$04,$03,$00,$01,$01,$07   ; byte
 
 
 ;
@@ -3628,9 +3625,9 @@ SPRITE_TILES_ITEM_OINTMENT_00:              ; [$8df6]
 ; ....▒░░░
 ; .....▒▒▒
 ;
-SPRITE_TILES_ITEM_OINTMENT_01:              ; [$8e06]
-    .byte $10,$31,$23,$23,$31,$18,$07,$00   ; [$8e06] byte
-    .byte $0f,$0f,$1f,$1f,$0f,$07,$08,$07   ; [$8e0e] byte
+SPRITE_TILES_ITEM_OINTMENT_01:
+    .byte $10,$31,$23,$23,$31,$18,$07,$00   ; byte
+    .byte $0f,$0f,$1f,$1f,$0f,$07,$08,$07   ; byte
 
 
 ;============================================================================
@@ -3655,9 +3652,9 @@ SPRITE_TILES_ITEM_OINTMENT_01:              ; [$8e06]
 ;     BANK7_SPRITEADDRS_START [$PRG7::803e]
 ;     BANK7_SPRITEADDRS_START [$PRG7::8054]
 ;
-SPRITE_TILES_ITEM_MATTOCK_00:               ; [$8e16]
-    .byte $01,$0e,$7f,$f5,$43,$81,$01,$01   ; [$8e16] byte
-    .byte $01,$1f,$3f,$7b,$e0,$c1,$80,$01   ; [$8e1e] byte
+SPRITE_TILES_ITEM_MATTOCK_00:
+    .byte $01,$0e,$7f,$f5,$43,$81,$01,$01   ; byte
+    .byte $01,$1f,$3f,$7b,$e0,$c1,$80,$01   ; byte
 
 
 ;
@@ -3670,9 +3667,9 @@ SPRITE_TILES_ITEM_MATTOCK_00:               ; [$8e16]
 ; .......█
 ; .......░
 ;
-SPRITE_TILES_ITEM_MATTOCK_01:               ; [$8e26]
-    .byte $01,$01,$01,$01,$01,$01,$01,$01   ; [$8e26] byte
-    .byte $01,$01,$01,$01,$01,$01,$01,$00   ; [$8e2e] byte
+SPRITE_TILES_ITEM_MATTOCK_01:
+    .byte $01,$01,$01,$01,$01,$01,$01,$01   ; byte
+    .byte $01,$01,$01,$01,$01,$01,$01,$00   ; byte
 
 
 ;============================================================================
@@ -3701,9 +3698,9 @@ SPRITE_TILES_ITEM_MATTOCK_01:               ; [$8e26]
 ;     BANK7_SPRITEADDRS_START [$PRG7::8062]
 ;     BANK7_SPRITEADDRS_START [$PRG7::8064]
 ;
-SPRITE_TILES_EFFECT_FOUNTAIN_00:            ; [$8e36]
-    .byte $00,$00,$05,$0b,$0c,$36,$73,$7b   ; [$8e36] byte
-    .byte $00,$00,$00,$04,$07,$0f,$3f,$3f   ; [$8e3e] byte
+SPRITE_TILES_EFFECT_FOUNTAIN_00:
+    .byte $00,$00,$05,$0b,$0c,$36,$73,$7b   ; byte
+    .byte $00,$00,$00,$04,$07,$0f,$3f,$3f   ; byte
 
 
 ;
@@ -3716,9 +3713,9 @@ SPRITE_TILES_EFFECT_FOUNTAIN_00:            ; [$8e36]
 ; ████████
 ; █▒██████
 ;
-SPRITE_TILES_EFFECT_FOUNTAIN_01:            ; [$8e46]
-    .byte $61,$92,$69,$71,$2b,$7f,$ff,$bf   ; [$8e46] byte
-    .byte $00,$61,$f3,$ff,$ff,$ff,$ff,$ff   ; [$8e4e] byte
+SPRITE_TILES_EFFECT_FOUNTAIN_01:
+    .byte $61,$92,$69,$71,$2b,$7f,$ff,$bf   ; byte
+    .byte $00,$61,$f3,$ff,$ff,$ff,$ff,$ff   ; byte
 
 
 ;
@@ -3731,9 +3728,9 @@ SPRITE_TILES_EFFECT_FOUNTAIN_01:            ; [$8e46]
 ; .....░░▒
 ; .....░▒█
 ;
-SPRITE_TILES_EFFECT_FOUNTAIN_02:            ; [$8e56]
-    .byte $c7,$9d,$7e,$52,$48,$35,$06,$05   ; [$8e56] byte
-    .byte $7f,$6f,$1f,$3f,$37,$02,$01,$03   ; [$8e5e] byte
+SPRITE_TILES_EFFECT_FOUNTAIN_02:
+    .byte $c7,$9d,$7e,$52,$48,$35,$06,$05   ; byte
+    .byte $7f,$6f,$1f,$3f,$37,$02,$01,$03   ; byte
 
 
 ;
@@ -3746,9 +3743,9 @@ SPRITE_TILES_EFFECT_FOUNTAIN_02:            ; [$8e56]
 ; ░█▒▒█▒▒█
 ; ▒▒█▒██▒█
 ;
-SPRITE_TILES_EFFECT_FOUNTAIN_03:            ; [$8e66]
-    .byte $fb,$bb,$99,$0a,$ad,$b1,$c9,$2d   ; [$8e66] byte
-    .byte $ff,$ff,$ff,$fd,$5b,$4f,$7f,$ff   ; [$8e6e] byte
+SPRITE_TILES_EFFECT_FOUNTAIN_03:
+    .byte $fb,$bb,$99,$0a,$ad,$b1,$c9,$2d   ; byte
+    .byte $ff,$ff,$ff,$fd,$5b,$4f,$7f,$ff   ; byte
 
 
 ;
@@ -3761,9 +3758,9 @@ SPRITE_TILES_EFFECT_FOUNTAIN_03:            ; [$8e66]
 ; .....█▒█
 ; .....░▒█
 ;
-SPRITE_TILES_EFFECT_FOUNTAIN_04:            ; [$8e76]
-    .byte $01,$04,$07,$02,$05,$02,$05,$05   ; [$8e76] byte
-    .byte $03,$03,$03,$07,$07,$07,$07,$03   ; [$8e7e] byte
+SPRITE_TILES_EFFECT_FOUNTAIN_04:
+    .byte $01,$04,$07,$02,$05,$02,$05,$05   ; byte
+    .byte $03,$03,$03,$07,$07,$07,$07,$03   ; byte
 
 
 ;
@@ -3776,9 +3773,9 @@ SPRITE_TILES_EFFECT_FOUNTAIN_04:            ; [$8e76]
 ; ▒█▒█▒█▒█
 ; █▒██▒█▒█
 ;
-SPRITE_TILES_EFFECT_FOUNTAIN_05:            ; [$8e86]
-    .byte $58,$5e,$6a,$6a,$37,$5a,$55,$b5   ; [$8e86] byte
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$8e8e] byte
+SPRITE_TILES_EFFECT_FOUNTAIN_05:
+    .byte $58,$5e,$6a,$6a,$37,$5a,$55,$b5   ; byte
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; byte
 
 
 ;
@@ -3791,9 +3788,9 @@ SPRITE_TILES_EFFECT_FOUNTAIN_05:            ; [$8e86]
 ; .....░▒░
 ; ....░▒█▒
 ;
-SPRITE_TILES_EFFECT_FOUNTAIN_06:            ; [$8e96]
-    .byte $00,$00,$00,$00,$00,$00,$05,$0a   ; [$8e96] byte
-    .byte $00,$00,$00,$00,$00,$00,$02,$07   ; [$8e9e] byte
+SPRITE_TILES_EFFECT_FOUNTAIN_06:
+    .byte $00,$00,$00,$00,$00,$00,$05,$0a   ; byte
+    .byte $00,$00,$00,$00,$00,$00,$02,$07   ; byte
 
 
 ;
@@ -3806,9 +3803,9 @@ SPRITE_TILES_EFFECT_FOUNTAIN_06:            ; [$8e96]
 ; ░▒██▒░▒█
 ; ░▒▒▒▒▒██
 ;
-SPRITE_TILES_EFFECT_FOUNTAIN_07:            ; [$8ea6]
-    .byte $00,$00,$00,$00,$31,$7b,$b5,$83   ; [$8ea6] byte
-    .byte $00,$00,$00,$00,$00,$31,$7b,$7f   ; [$8eae] byte
+SPRITE_TILES_EFFECT_FOUNTAIN_07:
+    .byte $00,$00,$00,$00,$31,$7b,$b5,$83   ; byte
+    .byte $00,$00,$00,$00,$00,$31,$7b,$7f   ; byte
 
 
 ;
@@ -3821,9 +3818,9 @@ SPRITE_TILES_EFFECT_FOUNTAIN_07:            ; [$8ea6]
 ; ..░▒█▒░▒
 ; ...░░▒░░
 ;
-SPRITE_TILES_EFFECT_FOUNTAIN_08:            ; [$8eb6]
-    .byte $13,$20,$58,$4d,$39,$2d,$2a,$1b   ; [$8eb6] byte
-    .byte $0f,$1f,$3f,$3f,$0f,$1f,$1d,$04   ; [$8ebe] byte
+SPRITE_TILES_EFFECT_FOUNTAIN_08:
+    .byte $13,$20,$58,$4d,$39,$2d,$2a,$1b   ; byte
+    .byte $0f,$1f,$3f,$3f,$0f,$1f,$1d,$04   ; byte
 
 
 ;
@@ -3836,9 +3833,9 @@ SPRITE_TILES_EFFECT_FOUNTAIN_08:            ; [$8eb6]
 ; ▒░░█▒▒█▒
 ; ░▒▒▒▒▒█▒
 ;
-SPRITE_TILES_EFFECT_FOUNTAIN_09:            ; [$8ec6]
-    .byte $37,$37,$89,$f4,$b3,$5c,$72,$82   ; [$8ec6] byte
-    .byte $ff,$ff,$77,$bb,$fc,$bf,$9f,$7f   ; [$8ece] byte
+SPRITE_TILES_EFFECT_FOUNTAIN_09:
+    .byte $37,$37,$89,$f4,$b3,$5c,$72,$82   ; byte
+    .byte $ff,$ff,$77,$bb,$fc,$bf,$9f,$7f   ; byte
 
 
 ;
@@ -3851,9 +3848,9 @@ SPRITE_TILES_EFFECT_FOUNTAIN_09:            ; [$8ec6]
 ; ......░▒
 ; ......░▒
 ;
-SPRITE_TILES_EFFECT_FOUNTAIN_10:            ; [$8ed6]
-    .byte $02,$05,$04,$05,$04,$01,$02,$02   ; [$8ed6] byte
-    .byte $01,$03,$03,$03,$03,$03,$01,$01   ; [$8ede] byte
+SPRITE_TILES_EFFECT_FOUNTAIN_10:
+    .byte $02,$05,$04,$05,$04,$01,$02,$02   ; byte
+    .byte $01,$03,$03,$03,$03,$03,$01,$01   ; byte
 
 
 ;
@@ -3866,9 +3863,9 @@ SPRITE_TILES_EFFECT_FOUNTAIN_10:            ; [$8ed6]
 ; █▒█▒█▒█▒
 ; ▒█▒▒█▒█▒
 ;
-SPRITE_TILES_EFFECT_FOUNTAIN_11:            ; [$8ee6]
-    .byte $a7,$a1,$95,$95,$c8,$a5,$aa,$4a   ; [$8ee6] byte
-    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; [$8eee] byte
+SPRITE_TILES_EFFECT_FOUNTAIN_11:
+    .byte $a7,$a1,$95,$95,$c8,$a5,$aa,$4a   ; byte
+    .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; byte
 
 
 ;============================================================================
@@ -3893,9 +3890,9 @@ SPRITE_TILES_EFFECT_FOUNTAIN_11:            ; [$8ee6]
 ;     BANK7_SPRITEADDRS_START [$PRG7::8048]
 ;     BANK7_SPRITEADDRS_START [$PRG7::8056]
 ;
-SPRITE_TILES_ITEM_WINGBOOTS_00:             ; [$8ef6]
-    .byte $00,$03,$01,$03,$01,$01,$01,$01   ; [$8ef6] byte
-    .byte $01,$02,$03,$03,$03,$03,$03,$03   ; [$8efe] byte
+SPRITE_TILES_ITEM_WINGBOOTS_00:
+    .byte $00,$03,$01,$03,$01,$01,$01,$01   ; byte
+    .byte $01,$02,$03,$03,$03,$03,$03,$03   ; byte
 
 
 ;
@@ -3908,9 +3905,9 @@ SPRITE_TILES_ITEM_WINGBOOTS_00:             ; [$8ef6]
 ; ▒░░░████
 ; ▒░░█▒▒▒▒
 ;
-SPRITE_TILES_ITEM_WINGBOOTS_01:             ; [$8f06]
-    .byte $20,$e0,$10,$b0,$30,$b1,$7f,$70   ; [$8f06] byte
-    .byte $c0,$10,$e0,$c0,$c0,$c1,$8f,$9f   ; [$8f0e] byte
+SPRITE_TILES_ITEM_WINGBOOTS_01:
+    .byte $20,$e0,$10,$b0,$30,$b1,$7f,$70   ; byte
+    .byte $c0,$10,$e0,$c0,$c0,$c1,$8f,$9f   ; byte
 
 
 ;
@@ -3923,9 +3920,9 @@ SPRITE_TILES_ITEM_WINGBOOTS_01:             ; [$8f06]
 ; ▒█▒▒▒▒░░
 ; ▒▒▒░░░░░
 ;
-SPRITE_TILES_ITEM_WINGBOOTS_02:             ; [$8f16]
-    .byte $00,$00,$00,$02,$0c,$29,$43,$1f   ; [$8f16] byte
-    .byte $03,$07,$07,$0f,$3f,$7e,$fc,$e0   ; [$8f1e] byte
+SPRITE_TILES_ITEM_WINGBOOTS_02:
+    .byte $00,$00,$00,$02,$0c,$29,$43,$1f   ; byte
+    .byte $03,$07,$07,$0f,$3f,$7e,$fc,$e0   ; byte
 
 
 ;
@@ -3938,9 +3935,9 @@ SPRITE_TILES_ITEM_WINGBOOTS_02:             ; [$8f16]
 ; ░░░░....
 ; ..░░....
 ;
-SPRITE_TILES_ITEM_WINGBOOTS_03:             ; [$8f26]
-    .byte $7e,$e0,$fc,$f0,$f0,$f0,$f0,$30   ; [$8f26] byte
-    .byte $fe,$3e,$fc,$00,$00,$00,$00,$00   ; [$8f2e] byte
+SPRITE_TILES_ITEM_WINGBOOTS_03:
+    .byte $7e,$e0,$fc,$f0,$f0,$f0,$f0,$30   ; byte
+    .byte $fe,$3e,$fc,$00,$00,$00,$00,$00   ; byte
 
 
 ;============================================================================
@@ -3963,9 +3960,9 @@ SPRITE_TILES_ITEM_WINGBOOTS_03:             ; [$8f26]
 ; XREFS:
 ;     BANK7_SPRITEADDRS_START [$PRG7::804a]
 ;
-SPRITE_TILES_ITEM_HOURGLASS_00:             ; [$8f36]
-    .byte $68,$68,$7f,$38,$29,$08,$24,$02   ; [$8f36] byte
-    .byte $17,$17,$00,$00,$01,$20,$20,$20   ; [$8f3e] byte
+SPRITE_TILES_ITEM_HOURGLASS_00:
+    .byte $68,$68,$7f,$38,$29,$08,$24,$02   ; byte
+    .byte $17,$17,$00,$00,$01,$20,$20,$20   ; byte
 
 
 ;
@@ -3978,9 +3975,9 @@ SPRITE_TILES_ITEM_HOURGLASS_00:             ; [$8f36]
 ; .░░▒░▒░▒
 ; .░░░░░░░
 ;
-SPRITE_TILES_ITEM_HOURGLASS_01:             ; [$8f46]
-    .byte $22,$04,$29,$08,$38,$61,$6a,$7f   ; [$8f46] byte
-    .byte $20,$20,$21,$20,$00,$1f,$15,$00   ; [$8f4e] byte
+SPRITE_TILES_ITEM_HOURGLASS_01:
+    .byte $22,$04,$29,$08,$38,$61,$6a,$7f   ; byte
+    .byte $20,$20,$21,$20,$00,$1f,$15,$00   ; byte
 
 
 ;============================================================================
@@ -4003,9 +4000,9 @@ SPRITE_TILES_ITEM_HOURGLASS_01:             ; [$8f46]
 ; XREFS:
 ;     BANK7_SPRITEADDRS_START [$PRG7::804c]
 ;
-SPRITE_TILES_ITEM_MAGICAL_ROD_00:           ; [$8f56]
-    .byte $00,$00,$00,$00,$01,$00,$01,$03   ; [$8f56] byte
-    .byte $00,$00,$00,$00,$00,$01,$03,$00   ; [$8f5e] byte
+SPRITE_TILES_ITEM_MAGICAL_ROD_00:
+    .byte $00,$00,$00,$00,$01,$00,$01,$03   ; byte
+    .byte $00,$00,$00,$00,$00,$01,$03,$00   ; byte
 
 
 ;
@@ -4018,9 +4015,9 @@ SPRITE_TILES_ITEM_MAGICAL_ROD_00:           ; [$8f56]
 ; ███▒....
 ; ░░░░█...
 ;
-SPRITE_TILES_ITEM_MAGICAL_ROD_01:           ; [$8f66]
-    .byte $3c,$1e,$2e,$7a,$e8,$f0,$e0,$f8   ; [$8f66] byte
-    .byte $68,$3c,$1c,$3c,$f0,$90,$f0,$08   ; [$8f6e] byte
+SPRITE_TILES_ITEM_MAGICAL_ROD_01:
+    .byte $3c,$1e,$2e,$7a,$e8,$f0,$e0,$f8   ; byte
+    .byte $68,$3c,$1c,$3c,$f0,$90,$f0,$08   ; byte
 
 
 ;
@@ -4033,9 +4030,9 @@ SPRITE_TILES_ITEM_MAGICAL_ROD_01:           ; [$8f66]
 ; ░█░.....
 ; █░......
 ;
-SPRITE_TILES_ITEM_MAGICAL_ROD_02:           ; [$8f76]
-    .byte $02,$07,$0e,$1c,$38,$70,$e0,$c0   ; [$8f76] byte
-    .byte $03,$06,$0c,$18,$30,$60,$40,$80   ; [$8f7e] byte
+SPRITE_TILES_ITEM_MAGICAL_ROD_02:
+    .byte $02,$07,$0e,$1c,$38,$70,$e0,$c0   ; byte
+    .byte $03,$06,$0c,$18,$30,$60,$40,$80   ; byte
 
 
 ;
@@ -4048,9 +4045,9 @@ SPRITE_TILES_ITEM_MAGICAL_ROD_02:           ; [$8f76]
 ; ........
 ; ........
 ;
-SPRITE_TILES_ITEM_MAGICAL_ROD_03:           ; [$8f86]
-    .byte $10,$00,$00,$00,$00,$00,$00,$00   ; [$8f86] byte
-    .byte $b0,$00,$00,$00,$00,$00,$00,$00   ; [$8f8e] byte
+SPRITE_TILES_ITEM_MAGICAL_ROD_03:
+    .byte $10,$00,$00,$00,$00,$00,$00,$00   ; byte
+    .byte $b0,$00,$00,$00,$00,$00,$00,$00   ; byte
 
 
 ;============================================================================
@@ -4073,9 +4070,9 @@ SPRITE_TILES_ITEM_MAGICAL_ROD_03:           ; [$8f86]
 ; XREFS:
 ;     BANK7_SPRITEADDRS_START [$PRG7::804e]
 ;
-SPRITE_TILES_ITEM_BATTLE_SUIT_00:           ; [$8f96]
-    .byte $93,$77,$ff,$f1,$7d,$fe,$ed,$db   ; [$8f96] byte
-    .byte $b7,$fc,$f3,$0e,$df,$9f,$5e,$c5   ; [$8f9e] byte
+SPRITE_TILES_ITEM_BATTLE_SUIT_00:
+    .byte $93,$77,$ff,$f1,$7d,$fe,$ed,$db   ; byte
+    .byte $b7,$fc,$f3,$0e,$df,$9f,$5e,$c5   ; byte
 
 
 ;
@@ -4088,9 +4085,9 @@ SPRITE_TILES_ITEM_BATTLE_SUIT_00:           ; [$8f96]
 ; ██▒.█░█░
 ; █▒....█░
 ;
-SPRITE_TILES_ITEM_BATTLE_SUIT_01:           ; [$8fa6]
-    .byte $ce,$c6,$8f,$83,$87,$cf,$cf,$83   ; [$8fa6] byte
-    .byte $0f,$cf,$c8,$cf,$c8,$0a,$ea,$c2   ; [$8fae] byte
+SPRITE_TILES_ITEM_BATTLE_SUIT_01:
+    .byte $ce,$c6,$8f,$83,$87,$cf,$cf,$83   ; byte
+    .byte $0f,$cf,$c8,$cf,$c8,$0a,$ea,$c2   ; byte
 
 
 ;============================================================================
@@ -4113,9 +4110,9 @@ SPRITE_TILES_ITEM_BATTLE_SUIT_01:           ; [$8fa6]
 ; XREFS:
 ;     BANK7_SPRITEADDRS_START [$PRG7::8050]
 ;
-SPRITE_TILES_ITEM_BATTLE_HELMET_00:         ; [$8fb6]
-    .byte $03,$17,$3b,$3f,$3f,$3f,$3f,$3f   ; [$8fb6] byte
-    .byte $03,$16,$17,$28,$37,$27,$3c,$10   ; [$8fbe] byte
+SPRITE_TILES_ITEM_BATTLE_HELMET_00:
+    .byte $03,$17,$3b,$3f,$3f,$3f,$3f,$3f   ; byte
+    .byte $03,$16,$17,$28,$37,$27,$3c,$10   ; byte
 
 
 ;
@@ -4128,9 +4125,9 @@ SPRITE_TILES_ITEM_BATTLE_HELMET_00:         ; [$8fb6]
 ; ░▒████░.
 ; ░▒░░██░.
 ;
-SPRITE_TILES_ITEM_BATTLE_HELMET_01:         ; [$8fc6]
-    .byte $c0,$f0,$f8,$fc,$fc,$fe,$be,$be   ; [$8fc6] byte
-    .byte $e0,$f0,$d8,$28,$ec,$9c,$7c,$4c   ; [$8fce] byte
+SPRITE_TILES_ITEM_BATTLE_HELMET_01:
+    .byte $c0,$f0,$f8,$fc,$fc,$fe,$be,$be   ; byte
+    .byte $e0,$f0,$d8,$28,$ec,$9c,$7c,$4c   ; byte
 
 
 ;
@@ -4143,9 +4140,9 @@ SPRITE_TILES_ITEM_BATTLE_HELMET_01:         ; [$8fc6]
 ; ..████..
 ; ..██....
 ;
-SPRITE_TILES_ITEM_BATTLE_HELMET_02:         ; [$8fd6]
-    .byte $1f,$1f,$1f,$2f,$3f,$3e,$3c,$30   ; [$8fd6] byte
-    .byte $00,$08,$10,$33,$3f,$3e,$3c,$30   ; [$8fde] byte
+SPRITE_TILES_ITEM_BATTLE_HELMET_02:
+    .byte $1f,$1f,$1f,$2f,$3f,$3e,$3c,$30   ; byte
+    .byte $00,$08,$10,$33,$3f,$3e,$3c,$30   ; byte
 
 
 ;
@@ -4158,9 +4155,9 @@ SPRITE_TILES_ITEM_BATTLE_HELMET_02:         ; [$8fd6]
 ; ........
 ; ........
 ;
-SPRITE_TILES_ITEM_BATTLE_HELMET_03:         ; [$8fe6]
-    .byte $da,$f8,$f8,$f4,$80,$00,$00,$00   ; [$8fe6] byte
-    .byte $2c,$2c,$ec,$cc,$80,$00,$00,$00   ; [$8fee] byte
+SPRITE_TILES_ITEM_BATTLE_HELMET_03:
+    .byte $da,$f8,$f8,$f4,$80,$00,$00,$00   ; byte
+    .byte $2c,$2c,$ec,$cc,$80,$00,$00,$00   ; byte
 
 
 ;============================================================================
@@ -4183,9 +4180,9 @@ SPRITE_TILES_ITEM_BATTLE_HELMET_03:         ; [$8fe6]
 ; XREFS:
 ;     BANK7_SPRITEADDRS_START [$PRG7::8052]
 ;
-SPRITE_TILES_ITEM_DRAGON_SLAYER_00:         ; [$8ff6]
-    .byte $c0,$e0,$70,$78,$3c,$1a,$0f,$06   ; [$8ff6] byte
-    .byte $c0,$f0,$78,$3c,$1e,$0f,$07,$03   ; [$8ffe] byte
+SPRITE_TILES_ITEM_DRAGON_SLAYER_00:
+    .byte $c0,$e0,$70,$78,$3c,$1a,$0f,$06   ; byte
+    .byte $c0,$f0,$78,$3c,$1e,$0f,$07,$03   ; byte
 
 
 ;
@@ -4198,9 +4195,9 @@ SPRITE_TILES_ITEM_DRAGON_SLAYER_00:         ; [$8ff6]
 ; ▒.......
 ; █▒......
 ;
-SPRITE_TILES_ITEM_DRAGON_SLAYER_01:         ; [$9006]
-    .byte $00,$00,$00,$00,$00,$00,$00,$80   ; [$9006] byte
-    .byte $00,$00,$00,$00,$00,$00,$80,$c0   ; [$900e] byte
+SPRITE_TILES_ITEM_DRAGON_SLAYER_01:
+    .byte $00,$00,$00,$00,$00,$00,$00,$80   ; byte
+    .byte $00,$00,$00,$00,$00,$00,$80,$c0   ; byte
 
 
 ;
@@ -4213,9 +4210,9 @@ SPRITE_TILES_ITEM_DRAGON_SLAYER_01:         ; [$9006]
 ; ........
 ; ........
 ;
-SPRITE_TILES_ITEM_DRAGON_SLAYER_02:         ; [$9016]
-    .byte $03,$01,$00,$00,$00,$00,$00,$00   ; [$9016] byte
-    .byte $01,$00,$00,$00,$00,$00,$00,$00   ; [$901e] byte
+SPRITE_TILES_ITEM_DRAGON_SLAYER_02:
+    .byte $03,$01,$00,$00,$00,$00,$00,$00   ; byte
+    .byte $01,$00,$00,$00,$00,$00,$00,$00   ; byte
 
 
 ;
@@ -4228,9 +4225,9 @@ SPRITE_TILES_ITEM_DRAGON_SLAYER_02:         ; [$9016]
 ; .█.█░░█▒
 ; ..█░..░█
 ;
-SPRITE_TILES_ITEM_DRAGON_SLAYER_03:         ; [$9026]
-    .byte $44,$b2,$de,$7c,$30,$3c,$5e,$33   ; [$9026] byte
-    .byte $e4,$e2,$62,$16,$0c,$16,$53,$21   ; [$902e] byte
+SPRITE_TILES_ITEM_DRAGON_SLAYER_03:
+    .byte $44,$b2,$de,$7c,$30,$3c,$5e,$33   ; byte
+    .byte $e4,$e2,$62,$16,$0c,$16,$53,$21   ; byte
 
 
 ;============================================================================
@@ -4247,7 +4244,7 @@ SPRITE_TILES_ITEM_DRAGON_SLAYER_03:         ; [$9026]
 ; XREFS:
 ;     SPRITE_APPEARANCES_OFFSET [$PRG7::8006]
 ;
-TILEINFO_ENTITY_ADDRS:                      ; [$9036]
+TILEINFO_ENTITY_ADDRS:
     bank_offset_16 SPRITE_TILEINFO_EMPTY    ; [0]: Empty
     bank_offset_16 SPRITE_TILEINFO_ENEMY_RAIDEN_00 ; [1]: Enemy: Raiden  |-
                                                    ; Phase 0
@@ -4630,48 +4627,48 @@ TILEINFO_ENTITY_ADDRS:                      ; [$9036]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9190]
 ;
-BYTE_PRG7__922e:                            ; [$922e]
-    .byte $00,$00,$00,$04,$72,$00           ; [$922e] byte
+BYTE_PRG7__922e:
+    .byte $00,$00,$00,$04,$72,$00           ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::91fe]
 ;
-BYTE_PRG7__9234:                            ; [$9234]
-    .byte $11,$00,$00,$08,$76,$00,$77,$00   ; [$9234] byte
-    .byte $78,$00,$79,$00                   ; [$923c] byte
+BYTE_PRG7__9234:
+    .byte $11,$00,$00,$08,$76,$00,$77,$00   ; byte
+    .byte $78,$00,$79,$00                   ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9200]
 ;
-BYTE_PRG7__9240:                            ; [$9240]
-    .byte $00,$00,$00,$04,$73,$00           ; [$9240] byte
+BYTE_PRG7__9240:
+    .byte $00,$00,$00,$04,$73,$00           ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9202]
 ;
-BYTE_PRG7__9246:                            ; [$9246]
-    .byte $00,$00,$00,$04,$74,$00           ; [$9246] byte
+BYTE_PRG7__9246:
+    .byte $00,$00,$00,$04,$74,$00           ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9204]
 ;
-BYTE_PRG7__924c:                            ; [$924c]
-    .byte $00,$00,$00,$04,$75,$00           ; [$924c] byte
+BYTE_PRG7__924c:
+    .byte $00,$00,$00,$04,$75,$00           ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9036]
 ;
-SPRITE_TILEINFO_EMPTY:                      ; [$9252]
+SPRITE_TILEINFO_EMPTY:
     .byte $00                               ; Rows, cols remaining
     .byte $00                               ; X
     .byte $00                               ; Y
     .byte $04                               ; Next read address
-    .byte $ff                               ; [$9256] byte
+    .byte $ff                               ; byte
 
 
 ;============================================================================
@@ -4718,7 +4715,7 @@ SPRITE_TILEINFO_EMPTY:                      ; [$9252]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9038]
 ;
-SPRITE_TILEINFO_ENEMY_RAIDEN_00:            ; [$9257]
+SPRITE_TILEINFO_ENEMY_RAIDEN_00:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -4786,7 +4783,7 @@ SPRITE_TILEINFO_ENEMY_RAIDEN_00:            ; [$9257]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::903a]
 ;
-SPRITE_TILEINFO_ENEMY_RAIDEN_01:            ; [$926b]
+SPRITE_TILEINFO_ENEMY_RAIDEN_01:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -4854,7 +4851,7 @@ SPRITE_TILEINFO_ENEMY_RAIDEN_01:            ; [$926b]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::903c]
 ;
-SPRITE_TILEINFO_ENEMY_RAIDEN_02:            ; [$927f]
+SPRITE_TILEINFO_ENEMY_RAIDEN_02:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -4922,7 +4919,7 @@ SPRITE_TILEINFO_ENEMY_RAIDEN_02:            ; [$927f]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::903e]
 ;
-SPRITE_TILEINFO_ENEMY_RAIDEN_03:            ; [$9293]
+SPRITE_TILEINFO_ENEMY_RAIDEN_03:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -4997,7 +4994,7 @@ SPRITE_TILEINFO_ENEMY_RAIDEN_03:            ; [$9293]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9040]
 ;
-SPRITE_TILEINFO_ENEMY_NECRON_AIDES_00:      ; [$92a7]
+SPRITE_TILEINFO_ENEMY_NECRON_AIDES_00:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -5073,7 +5070,7 @@ SPRITE_TILEINFO_ENEMY_NECRON_AIDES_00:      ; [$92a7]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9042]
 ;
-SPRITE_TILEINFO_ENEMY_NECRON_AIDES_01:      ; [$92bb]
+SPRITE_TILEINFO_ENEMY_NECRON_AIDES_01:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -5156,7 +5153,7 @@ SPRITE_TILEINFO_ENEMY_NECRON_AIDES_01:      ; [$92bb]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9044]
 ;
-SPRITE_TILEINFO_ENEMY_ZOMBIE_00:            ; [$92cf]
+SPRITE_TILEINFO_ENEMY_ZOMBIE_00:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -5224,7 +5221,7 @@ SPRITE_TILEINFO_ENEMY_ZOMBIE_00:            ; [$92cf]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9046]
 ;
-SPRITE_TILEINFO_ENEMY_ZOMBIE_01:            ; [$92e3]
+SPRITE_TILEINFO_ENEMY_ZOMBIE_01:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -5292,7 +5289,7 @@ SPRITE_TILEINFO_ENEMY_ZOMBIE_01:            ; [$92e3]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9048]
 ;
-SPRITE_TILEINFO_ENEMY_ZOMBIE_02:            ; [$92f7]
+SPRITE_TILEINFO_ENEMY_ZOMBIE_02:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -5351,7 +5348,7 @@ SPRITE_TILEINFO_ENEMY_ZOMBIE_02:            ; [$92f7]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::904a]
 ;
-SPRITE_TILEINFO_ENEMY_HORNET_00:            ; [$930b]
+SPRITE_TILEINFO_ENEMY_HORNET_00:
     .byte $11                               ; 2 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -5391,7 +5388,7 @@ SPRITE_TILEINFO_ENEMY_HORNET_00:            ; [$930b]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::904c]
 ;
-SPRITE_TILEINFO_ENEMY_HORNET_01:            ; [$9317]
+SPRITE_TILEINFO_ENEMY_HORNET_01:
     .byte $11                               ; 2 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -5438,7 +5435,7 @@ SPRITE_TILEINFO_ENEMY_HORNET_01:            ; [$9317]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::904e]
 ;
-SPRITE_TILEINFO_ENEMY_BIHORUDA_00:          ; [$9323]
+SPRITE_TILEINFO_ENEMY_BIHORUDA_00:
     .byte $11                               ; 2 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -5482,7 +5479,7 @@ SPRITE_TILEINFO_ENEMY_BIHORUDA_00:          ; [$9323]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9050]
 ;
-SPRITE_TILEINFO_ENEMY_BIHORUDA_01:          ; [$932f]
+SPRITE_TILEINFO_ENEMY_BIHORUDA_01:
     .byte $11                               ; 2 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -5533,7 +5530,7 @@ SPRITE_TILEINFO_ENEMY_BIHORUDA_01:          ; [$932f]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9052]
 ;
-SPRITE_TILEINFO_ENEMY_LILITH_00:            ; [$933b]
+SPRITE_TILEINFO_ENEMY_LILITH_00:
     .byte $11                               ; 2 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -5573,7 +5570,7 @@ SPRITE_TILEINFO_ENEMY_LILITH_00:            ; [$933b]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9054]
 ;
-SPRITE_TILEINFO_ENEMY_LILITH_01:            ; [$9347]
+SPRITE_TILEINFO_ENEMY_LILITH_01:
     .byte $11                               ; 2 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -5603,25 +5600,25 @@ SPRITE_TILEINFO_ENEMY_LILITH_01:            ; [$9347]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9056]
 ;
-SPRITE_TILEINFO_UNKNOWN_00:                 ; [$9353]
-    .byte $11,$00,$00,$08,$00,$03,$01,$03   ; [$9353] byte
-    .byte $02,$03,$03,$03                   ; [$935b] byte
+SPRITE_TILEINFO_UNKNOWN_00:
+    .byte $11,$00,$00,$08,$00,$03,$01,$03   ; byte
+    .byte $02,$03,$03,$03                   ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9058]
 ;
-SPRITE_TILEINFO_UNKNOWN_01:                 ; [$935f]
-    .byte $11,$00,$00,$08,$04,$03,$01,$03   ; [$935f] byte
-    .byte $02,$03,$03,$03                   ; [$9367] byte
+SPRITE_TILEINFO_UNKNOWN_01:
+    .byte $11,$00,$00,$08,$04,$03,$01,$03   ; byte
+    .byte $02,$03,$03,$03                   ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::905a]
 ;
-SPRITE_TILEINFO_UNKNOWN_02:                 ; [$936b]
-    .byte $11,$00,$00,$08,$04,$03,$01,$03   ; [$936b] byte
-    .byte $05,$03,$06,$03                   ; [$9373] byte
+SPRITE_TILEINFO_UNKNOWN_02:
+    .byte $11,$00,$00,$08,$04,$03,$01,$03   ; byte
+    .byte $05,$03,$06,$03                   ; byte
 
 
 ;============================================================================
@@ -5652,7 +5649,7 @@ SPRITE_TILEINFO_UNKNOWN_02:                 ; [$936b]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::905c]
 ;
-SPRITE_TILEINFO_ENEMY_YUINARU_00:           ; [$9377]
+SPRITE_TILEINFO_ENEMY_YUINARU_00:
     .byte $11                               ; 2 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -5692,7 +5689,7 @@ SPRITE_TILEINFO_ENEMY_YUINARU_00:           ; [$9377]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::905e]
 ;
-SPRITE_TILEINFO_ENEMY_YUINARU_01:           ; [$9383]
+SPRITE_TILEINFO_ENEMY_YUINARU_01:
     .byte $11                               ; 2 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -5755,7 +5752,7 @@ SPRITE_TILEINFO_ENEMY_YUINARU_01:           ; [$9383]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9060]
 ;
-SPRITE_TILEINFO_ENEMY_SNOWMAN_00:           ; [$938f]
+SPRITE_TILEINFO_ENEMY_SNOWMAN_00:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -5823,7 +5820,7 @@ SPRITE_TILEINFO_ENEMY_SNOWMAN_00:           ; [$938f]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9062]
 ;
-SPRITE_TILEINFO_ENEMY_SNOWMAN_01:           ; [$93a3]
+SPRITE_TILEINFO_ENEMY_SNOWMAN_01:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -5898,7 +5895,7 @@ SPRITE_TILEINFO_ENEMY_SNOWMAN_01:           ; [$93a3]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9064]
 ;
-SPRITE_TILEINFO_ENEMY_NASH_00:              ; [$93b7]
+SPRITE_TILEINFO_ENEMY_NASH_00:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -5966,7 +5963,7 @@ SPRITE_TILEINFO_ENEMY_NASH_00:              ; [$93b7]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9066]
 ;
-SPRITE_TILEINFO_ENEMY_NASH_01:              ; [$93cb]
+SPRITE_TILEINFO_ENEMY_NASH_01:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -6034,7 +6031,7 @@ SPRITE_TILEINFO_ENEMY_NASH_01:              ; [$93cb]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9068]
 ;
-SPRITE_TILEINFO_ENEMY_NASH_02:              ; [$93df]
+SPRITE_TILEINFO_ENEMY_NASH_02:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -6109,7 +6106,7 @@ SPRITE_TILEINFO_ENEMY_NASH_02:              ; [$93df]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::906a]
 ;
-SPRITE_TILEINFO_ENEMY_FIRE_GIANT_00:        ; [$93f3]
+SPRITE_TILEINFO_ENEMY_FIRE_GIANT_00:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -6185,7 +6182,7 @@ SPRITE_TILEINFO_ENEMY_FIRE_GIANT_00:        ; [$93f3]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::906c]
 ;
-SPRITE_TILEINFO_ENEMY_FIRE_GIANT_01:        ; [$9407]
+SPRITE_TILEINFO_ENEMY_FIRE_GIANT_01:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -6261,7 +6258,7 @@ SPRITE_TILEINFO_ENEMY_FIRE_GIANT_01:        ; [$9407]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::906e]
 ;
-SPRITE_TILEINFO_ENEMY_FIRE_GIANT_02:        ; [$941b]
+SPRITE_TILEINFO_ENEMY_FIRE_GIANT_02:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -6344,7 +6341,7 @@ SPRITE_TILEINFO_ENEMY_FIRE_GIANT_02:        ; [$941b]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9070]
 ;
-SPRITE_TILEINFO_ENEMY_ISHIISU_00:           ; [$942f]
+SPRITE_TILEINFO_ENEMY_ISHIISU_00:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -6412,7 +6409,7 @@ SPRITE_TILEINFO_ENEMY_ISHIISU_00:           ; [$942f]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9072]
 ;
-SPRITE_TILEINFO_ENEMY_ISHIISU_01:           ; [$9443]
+SPRITE_TILEINFO_ENEMY_ISHIISU_01:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -6480,7 +6477,7 @@ SPRITE_TILEINFO_ENEMY_ISHIISU_01:           ; [$9443]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9074]
 ;
-SPRITE_TILEINFO_ENEMY_ISHIISU_02:           ; [$9457]
+SPRITE_TILEINFO_ENEMY_ISHIISU_02:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -6548,7 +6545,7 @@ SPRITE_TILEINFO_ENEMY_ISHIISU_02:           ; [$9457]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9076]
 ;
-SPRITE_TILEINFO_ENEMY_ISHIISU_03:           ; [$946b]
+SPRITE_TILEINFO_ENEMY_ISHIISU_03:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -6623,7 +6620,7 @@ SPRITE_TILEINFO_ENEMY_ISHIISU_03:           ; [$946b]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9078]
 ;
-SPRITE_TILEINFO_ENEMY_EXECUTION_HOOD_00:    ; [$947f]
+SPRITE_TILEINFO_ENEMY_EXECUTION_HOOD_00:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -6699,7 +6696,7 @@ SPRITE_TILEINFO_ENEMY_EXECUTION_HOOD_00:    ; [$947f]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::907a]
 ;
-SPRITE_TILEINFO_ENEMY_EXECUTION_HOOD_01:    ; [$9493]
+SPRITE_TILEINFO_ENEMY_EXECUTION_HOOD_01:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -6782,7 +6779,7 @@ SPRITE_TILEINFO_ENEMY_EXECUTION_HOOD_01:    ; [$9493]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::907c]
 ;
-SPRITE_TILEINFO_ENEMY_CHARRON_00:           ; [$94a7]
+SPRITE_TILEINFO_ENEMY_CHARRON_00:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -6850,7 +6847,7 @@ SPRITE_TILEINFO_ENEMY_CHARRON_00:           ; [$94a7]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::907e]
 ;
-SPRITE_TILEINFO_ENEMY_CHARRON_01:           ; [$94bb]
+SPRITE_TILEINFO_ENEMY_CHARRON_01:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -6918,7 +6915,7 @@ SPRITE_TILEINFO_ENEMY_CHARRON_01:           ; [$94bb]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9080]
 ;
-SPRITE_TILEINFO_ENEMY_CHARRON_02:           ; [$94cf]
+SPRITE_TILEINFO_ENEMY_CHARRON_02:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -6993,7 +6990,7 @@ SPRITE_TILEINFO_ENEMY_CHARRON_02:           ; [$94cf]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9082]
 ;
-SPRITE_TILEINFO_ENEMY_GERIBUTA_00:          ; [$94e3]
+SPRITE_TILEINFO_ENEMY_GERIBUTA_00:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -7069,7 +7066,7 @@ SPRITE_TILEINFO_ENEMY_GERIBUTA_00:          ; [$94e3]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9084]
 ;
-SPRITE_TILEINFO_ENEMY_GERIBUTA_01:          ; [$94f7]
+SPRITE_TILEINFO_ENEMY_GERIBUTA_01:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -7145,7 +7142,7 @@ SPRITE_TILEINFO_ENEMY_GERIBUTA_01:          ; [$94f7]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9086]
 ;
-SPRITE_TILEINFO_ENEMY_GERIBUTA_02:          ; [$950b]
+SPRITE_TILEINFO_ENEMY_GERIBUTA_02:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -7228,7 +7225,7 @@ SPRITE_TILEINFO_ENEMY_GERIBUTA_02:          ; [$950b]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9088]
 ;
-SPRITE_TILEINFO_ENEMY_SUGATA_00:            ; [$951f]
+SPRITE_TILEINFO_ENEMY_SUGATA_00:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -7296,7 +7293,7 @@ SPRITE_TILEINFO_ENEMY_SUGATA_00:            ; [$951f]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::908a]
 ;
-SPRITE_TILEINFO_ENEMY_SUGATA_01:            ; [$9533]
+SPRITE_TILEINFO_ENEMY_SUGATA_01:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -7371,7 +7368,7 @@ SPRITE_TILEINFO_ENEMY_SUGATA_01:            ; [$9533]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::908c]
 ;
-SPRITE_TILEINFO_ENEMY_GRIMLOCK_00:          ; [$9547]
+SPRITE_TILEINFO_ENEMY_GRIMLOCK_00:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -7447,7 +7444,7 @@ SPRITE_TILEINFO_ENEMY_GRIMLOCK_00:          ; [$9547]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::908e]
 ;
-SPRITE_TILEINFO_ENEMY_GRIMLOCK_01:          ; [$955b]
+SPRITE_TILEINFO_ENEMY_GRIMLOCK_01:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -7523,7 +7520,7 @@ SPRITE_TILEINFO_ENEMY_GRIMLOCK_01:          ; [$955b]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9090]
 ;
-SPRITE_TILEINFO_ENEMY_GRIMLOCK_02:          ; [$956f]
+SPRITE_TILEINFO_ENEMY_GRIMLOCK_02:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -7599,7 +7596,7 @@ SPRITE_TILEINFO_ENEMY_GRIMLOCK_02:          ; [$956f]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9092]
 ;
-SPRITE_TILEINFO_ENEMY_GRIMLOCK_03:          ; [$9583]
+SPRITE_TILEINFO_ENEMY_GRIMLOCK_03:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -7682,7 +7679,7 @@ SPRITE_TILEINFO_ENEMY_GRIMLOCK_03:          ; [$9583]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9094]
 ;
-SPRITE_TILEINFO_ENEMY_GIANT_BEES_00:        ; [$9597]
+SPRITE_TILEINFO_ENEMY_GIANT_BEES_00:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -7758,7 +7755,7 @@ SPRITE_TILEINFO_ENEMY_GIANT_BEES_00:        ; [$9597]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9096]
 ;
-SPRITE_TILEINFO_ENEMY_GIANT_BEES_01:        ; [$95ab]
+SPRITE_TILEINFO_ENEMY_GIANT_BEES_01:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -7841,7 +7838,7 @@ SPRITE_TILEINFO_ENEMY_GIANT_BEES_01:        ; [$95ab]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9098]
 ;
-SPRITE_TILEINFO_ENEMY_MYCONID_00:           ; [$95bf]
+SPRITE_TILEINFO_ENEMY_MYCONID_00:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -7909,7 +7906,7 @@ SPRITE_TILEINFO_ENEMY_MYCONID_00:           ; [$95bf]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::909a]
 ;
-SPRITE_TILEINFO_ENEMY_MYCONID_01:           ; [$95d3]
+SPRITE_TILEINFO_ENEMY_MYCONID_01:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -7984,7 +7981,7 @@ SPRITE_TILEINFO_ENEMY_MYCONID_01:           ; [$95d3]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::909c]
 ;
-SPRITE_TILEINFO_ENEMY_NAGA_00:              ; [$95e7]
+SPRITE_TILEINFO_ENEMY_NAGA_00:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -8052,7 +8049,7 @@ SPRITE_TILEINFO_ENEMY_NAGA_00:              ; [$95e7]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::909e]
 ;
-SPRITE_TILEINFO_ENEMY_NAGA_01:              ; [$95fb]
+SPRITE_TILEINFO_ENEMY_NAGA_01:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -8127,7 +8124,7 @@ SPRITE_TILEINFO_ENEMY_NAGA_01:              ; [$95fb]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::90a0]
 ;
-SPRITE_TILEINFO_ENEMY_UNUSED_SKELETON_KNIGHT_00: ; [$960f]
+SPRITE_TILEINFO_ENEMY_UNUSED_SKELETON_KNIGHT_00:
     .byte $32                               ; 4 rows, 3 columns
     .byte $f8                               ; X offset = -8 (0xF8)
     .byte $00                               ; Y offset = 0
@@ -8213,7 +8210,7 @@ SPRITE_TILEINFO_ENEMY_UNUSED_SKELETON_KNIGHT_00: ; [$960f]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::90a2]
 ;
-SPRITE_TILEINFO_ENEMY_UNUSED_SKELETON_KNIGHT_01: ; [$9629]
+SPRITE_TILEINFO_ENEMY_UNUSED_SKELETON_KNIGHT_01:
     .byte $32                               ; 4 rows, 3 columns
     .byte $f8                               ; X offset = -8 (0xF8)
     .byte $00                               ; Y offset = 0
@@ -8299,7 +8296,7 @@ SPRITE_TILEINFO_ENEMY_UNUSED_SKELETON_KNIGHT_01: ; [$9629]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::90a4]
 ;
-SPRITE_TILEINFO_ENEMY_UNUSED_SKELETON_KNIGHT_02: ; [$9643]
+SPRITE_TILEINFO_ENEMY_UNUSED_SKELETON_KNIGHT_02:
     .byte $33                               ; 4 rows, 4 columns
     .byte $f0                               ; X offset = -16 (0xF0)
     .byte $00                               ; Y offset = 0
@@ -8389,7 +8386,7 @@ SPRITE_TILEINFO_ENEMY_UNUSED_SKELETON_KNIGHT_02: ; [$9643]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::90a6]
 ;
-SPRITE_TILEINFO_ENEMY_UNUSED_SKELETON_KNIGHT_03: ; [$9661]
+SPRITE_TILEINFO_ENEMY_UNUSED_SKELETON_KNIGHT_03:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -8472,7 +8469,7 @@ SPRITE_TILEINFO_ENEMY_UNUSED_SKELETON_KNIGHT_03: ; [$9661]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::90a8]
 ;
-SPRITE_TILEINFO_ENEMY_GIANT_STRIDER_00:     ; [$9675]
+SPRITE_TILEINFO_ENEMY_GIANT_STRIDER_00:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -8548,7 +8545,7 @@ SPRITE_TILEINFO_ENEMY_GIANT_STRIDER_00:     ; [$9675]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::90aa]
 ;
-SPRITE_TILEINFO_ENEMY_GIANT_STRIDER_01:     ; [$9689]
+SPRITE_TILEINFO_ENEMY_GIANT_STRIDER_01:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -8624,7 +8621,7 @@ SPRITE_TILEINFO_ENEMY_GIANT_STRIDER_01:     ; [$9689]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::90ac]
 ;
-SPRITE_TILEINFO_ENEMY_GIANT_STRIDER_02:     ; [$969d]
+SPRITE_TILEINFO_ENEMY_GIANT_STRIDER_02:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -8707,7 +8704,7 @@ SPRITE_TILEINFO_ENEMY_GIANT_STRIDER_02:     ; [$969d]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::90ae]
 ;
-SPRITE_TILEINFO_ENEMY_SIR_GAWAINE_00:       ; [$96b1]
+SPRITE_TILEINFO_ENEMY_SIR_GAWAINE_00:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -8780,7 +8777,7 @@ SPRITE_TILEINFO_ENEMY_SIR_GAWAINE_00:       ; [$96b1]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::90b0]
 ;
-SPRITE_TILEINFO_ENEMY_SIR_GAWAINE_01:       ; [$96c4]
+SPRITE_TILEINFO_ENEMY_SIR_GAWAINE_01:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -8845,7 +8842,7 @@ SPRITE_TILEINFO_ENEMY_SIR_GAWAINE_01:       ; [$96c4]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::90b2]
 ;
-SPRITE_TILEINFO_ENEMY_SIR_GAWAINE_02:       ; [$96d7]
+SPRITE_TILEINFO_ENEMY_SIR_GAWAINE_02:
     .byte $23                               ; 3 rows, 4 columns
     .byte $f0                               ; X offset = -16 (0xF0)
     .byte $08                               ; Y offset = 8 (0x08)
@@ -8935,7 +8932,7 @@ SPRITE_TILEINFO_ENEMY_SIR_GAWAINE_02:       ; [$96d7]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::90b4]
 ;
-SPRITE_TILEINFO_ENEMY_MASKMAN_00:           ; [$96f0]
+SPRITE_TILEINFO_ENEMY_MASKMAN_00:
     .byte $33                               ; 4 rows, 4 columns
     .byte $f0                               ; X offset = -16 (0xF0)
     .byte $00                               ; Y offset = 0
@@ -9025,7 +9022,7 @@ SPRITE_TILEINFO_ENEMY_MASKMAN_00:           ; [$96f0]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::90b6]
 ;
-SPRITE_TILEINFO_ENEMY_MASKMAN_01:           ; [$970f]
+SPRITE_TILEINFO_ENEMY_MASKMAN_01:
     .byte $42                               ; 5 rows, 3 columns
     .byte $00                               ; X offset = 0
     .byte $f8                               ; Y offset = -8 (0xF8)
@@ -9076,19 +9073,19 @@ SPRITE_TILEINFO_ENEMY_MASKMAN_01:           ; [$970f]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::90b8]
 ;
-SPRITE_TILEINFO_NPC_UNUSED_CAVEWOMAN_00:    ; [$972b]
-    .byte $31,$00,$00,$08,$0d,$03,$0e,$03   ; [$972b] byte
-    .byte $0f,$03,$10,$03,$11,$03,$12,$03   ; [$9733] byte
-    .byte $13,$03,$14,$03                   ; [$973b] byte
+SPRITE_TILEINFO_NPC_UNUSED_CAVEWOMAN_00:
+    .byte $31,$00,$00,$08,$0d,$03,$0e,$03   ; byte
+    .byte $0f,$03,$10,$03,$11,$03,$12,$03   ; byte
+    .byte $13,$03,$14,$03                   ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::90ba]
 ;
-SPRITE_TILEINFO_NPC_UNUSED_CAVEWOMAN_01:    ; [$973f]
-    .byte $31,$00,$00,$08,$0d,$03,$0e,$03   ; [$973f] byte
-    .byte $0f,$03,$10,$03,$15,$03,$16,$03   ; [$9747] byte
-    .byte $17,$03,$ff                       ; [$974f] byte
+SPRITE_TILEINFO_NPC_UNUSED_CAVEWOMAN_01:
+    .byte $31,$00,$00,$08,$0d,$03,$0e,$03   ; byte
+    .byte $0f,$03,$10,$03,$15,$03,$16,$03   ; byte
+    .byte $17,$03,$ff                       ; byte
 
 
 ;============================================================================
@@ -9135,7 +9132,7 @@ SPRITE_TILEINFO_NPC_UNUSED_CAVEWOMAN_01:    ; [$973f]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::90bc]
 ;
-SPRITE_TILEINFO_ENEMY_MASKMAN_04:           ; [$9752]
+SPRITE_TILEINFO_ENEMY_MASKMAN_04:
     .byte $33                               ; 4 rows, 4 columns
     .byte $f0                               ; X offset = -16 (0xF0)
     .byte $00                               ; Y offset = 0
@@ -9224,7 +9221,7 @@ SPRITE_TILEINFO_ENEMY_MASKMAN_04:           ; [$9752]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::90be]
 ;
-SPRITE_TILEINFO_ENEMY_WOLFMAN_00:           ; [$9771]
+SPRITE_TILEINFO_ENEMY_WOLFMAN_00:
     .byte $32                               ; 4 rows, 3 columns
     .byte $f8                               ; X offset = -8 (0xF8)
     .byte $00                               ; Y offset = 0
@@ -9298,7 +9295,7 @@ SPRITE_TILEINFO_ENEMY_WOLFMAN_00:           ; [$9771]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::90c0]
 ;
-SPRITE_TILEINFO_ENEMY_WOLFMAN_01:           ; [$978a]
+SPRITE_TILEINFO_ENEMY_WOLFMAN_01:
     .byte $32                               ; 4 rows, 3 columns
     .byte $f8                               ; X offset = -8 (0xF8)
     .byte $00                               ; Y offset = 0
@@ -9372,7 +9369,7 @@ SPRITE_TILEINFO_ENEMY_WOLFMAN_01:           ; [$978a]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::90c2]
 ;
-SPRITE_TILEINFO_ENEMY_WOLFMAN_02:           ; [$97a3]
+SPRITE_TILEINFO_ENEMY_WOLFMAN_02:
     .byte $33                               ; 4 rows, 4 columns
     .byte $f0                               ; X offset = -16 (0xF0)
     .byte $00                               ; Y offset = 0
@@ -9459,7 +9456,7 @@ SPRITE_TILEINFO_ENEMY_WOLFMAN_02:           ; [$97a3]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::90c4]
 ;
-SPRITE_TILEINFO_ENEMY_YAREEKA_00:           ; [$97c1]
+SPRITE_TILEINFO_ENEMY_YAREEKA_00:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -9525,7 +9522,7 @@ SPRITE_TILEINFO_ENEMY_YAREEKA_00:           ; [$97c1]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::90c6]
 ;
-SPRITE_TILEINFO_ENEMY_YAREEKA_01:           ; [$97d4]
+SPRITE_TILEINFO_ENEMY_YAREEKA_01:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -9600,7 +9597,7 @@ SPRITE_TILEINFO_ENEMY_YAREEKA_01:           ; [$97d4]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::90c8]
 ;
-SPRITE_TILEINFO_ENEMY_MAGMAN_00:            ; [$97e8]
+SPRITE_TILEINFO_ENEMY_MAGMAN_00:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -9668,7 +9665,7 @@ SPRITE_TILEINFO_ENEMY_MAGMAN_00:            ; [$97e8]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::90ca]
 ;
-SPRITE_TILEINFO_ENEMY_MAGMAN_01:            ; [$97fc]
+SPRITE_TILEINFO_ENEMY_MAGMAN_01:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -9743,7 +9740,7 @@ SPRITE_TILEINFO_ENEMY_MAGMAN_01:            ; [$97fc]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::90cc]
 ;
-SPRITE_TILEINFO_ENEMY_UNUSED_CURLTAIL_00:   ; [$9810]
+SPRITE_TILEINFO_ENEMY_UNUSED_CURLTAIL_00:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -9819,7 +9816,7 @@ SPRITE_TILEINFO_ENEMY_UNUSED_CURLTAIL_00:   ; [$9810]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::90ce]
 ;
-SPRITE_TILEINFO_ENEMY_UNUSED_CURLTAIL_01:   ; [$9824]
+SPRITE_TILEINFO_ENEMY_UNUSED_CURLTAIL_01:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -9895,7 +9892,7 @@ SPRITE_TILEINFO_ENEMY_UNUSED_CURLTAIL_01:   ; [$9824]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::90d0]
 ;
-SPRITE_TILEINFO_ENEMY_UNUSED_CURLTAIL_02:   ; [$9838]
+SPRITE_TILEINFO_ENEMY_UNUSED_CURLTAIL_02:
     .byte $32                               ; 4 rows, 3 columns
     .byte $f8                               ; X offset = -8 (0xF8)
     .byte $00                               ; Y offset = 0
@@ -9978,7 +9975,7 @@ SPRITE_TILEINFO_ENEMY_UNUSED_CURLTAIL_02:   ; [$9838]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::90d2]
 ;
-SPRITE_TILEINFO_ENEMY_UNUSED_CURLTAIL_03:   ; [$9851]
+SPRITE_TILEINFO_ENEMY_UNUSED_CURLTAIL_03:
     .byte $32                               ; 4 rows, 3 columns
     .byte $f8                               ; X offset = -8 (0xF8)
     .byte $00                               ; Y offset = 0
@@ -10068,7 +10065,7 @@ SPRITE_TILEINFO_ENEMY_UNUSED_CURLTAIL_03:   ; [$9851]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::90d4]
 ;
-SPRITE_TILEINFO_ENEMY_IKEDA_00:             ; [$986a]
+SPRITE_TILEINFO_ENEMY_IKEDA_00:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -10136,7 +10133,7 @@ SPRITE_TILEINFO_ENEMY_IKEDA_00:             ; [$986a]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::90d6]
 ;
-SPRITE_TILEINFO_ENEMY_IKEDA_01:             ; [$987e]
+SPRITE_TILEINFO_ENEMY_IKEDA_01:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -10204,7 +10201,7 @@ SPRITE_TILEINFO_ENEMY_IKEDA_01:             ; [$987e]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::90d8]
 ;
-SPRITE_TILEINFO_ENEMY_IKEDA_02:             ; [$9892]
+SPRITE_TILEINFO_ENEMY_IKEDA_02:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -10279,7 +10276,7 @@ SPRITE_TILEINFO_ENEMY_IKEDA_02:             ; [$9892]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::90da]
 ;
-SPRITE_TILEINFO_ENEMY_UNUSED_MUPPET_GUY_00: ; [$98a6]
+SPRITE_TILEINFO_ENEMY_UNUSED_MUPPET_GUY_00:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -10355,7 +10352,7 @@ SPRITE_TILEINFO_ENEMY_UNUSED_MUPPET_GUY_00: ; [$98a6]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::90dc]
 ;
-SPRITE_TILEINFO_ENEMY_UNUSED_MUPPET_GUY_01: ; [$98ba]
+SPRITE_TILEINFO_ENEMY_UNUSED_MUPPET_GUY_01:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -10438,7 +10435,7 @@ SPRITE_TILEINFO_ENEMY_UNUSED_MUPPET_GUY_01: ; [$98ba]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::90de]
 ;
-SPRITE_TILEINFO_ENEMY_LAMPREY_00:           ; [$98ce]
+SPRITE_TILEINFO_ENEMY_LAMPREY_00:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -10506,7 +10503,7 @@ SPRITE_TILEINFO_ENEMY_LAMPREY_00:           ; [$98ce]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::90e0]
 ;
-SPRITE_TILEINFO_ENEMY_LAMPREY_01:           ; [$98e2]
+SPRITE_TILEINFO_ENEMY_LAMPREY_01:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -10574,7 +10571,7 @@ SPRITE_TILEINFO_ENEMY_LAMPREY_01:           ; [$98e2]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::90e2]
 ;
-SPRITE_TILEINFO_ENEMY_LAMPREY_02:           ; [$98f6]
+SPRITE_TILEINFO_ENEMY_LAMPREY_02:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -10642,7 +10639,7 @@ SPRITE_TILEINFO_ENEMY_LAMPREY_02:           ; [$98f6]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::90e4]
 ;
-SPRITE_TILEINFO_ENEMY_LAMPREY_03:           ; [$990a]
+SPRITE_TILEINFO_ENEMY_LAMPREY_03:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -10717,7 +10714,7 @@ SPRITE_TILEINFO_ENEMY_LAMPREY_03:           ; [$990a]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::90e6]
 ;
-SPRITE_TILEINFO_ENEMY_MONODRON_00:          ; [$991e]
+SPRITE_TILEINFO_ENEMY_MONODRON_00:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -10793,7 +10790,7 @@ SPRITE_TILEINFO_ENEMY_MONODRON_00:          ; [$991e]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::90e8]
 ;
-SPRITE_TILEINFO_ENEMY_MONODRON_01:          ; [$9932]
+SPRITE_TILEINFO_ENEMY_MONODRON_01:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -10869,7 +10866,7 @@ SPRITE_TILEINFO_ENEMY_MONODRON_01:          ; [$9932]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::90ea]
 ;
-SPRITE_TILEINFO_ENEMY_MONODRON_02:          ; [$9946]
+SPRITE_TILEINFO_ENEMY_MONODRON_02:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -10949,7 +10946,7 @@ SPRITE_TILEINFO_ENEMY_MONODRON_02:          ; [$9946]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::90ec]
 ;
-SPRITE_TILEINFO_ENEMY_UNUSED_WINGED_SKELETON_00: ; [$9959]
+SPRITE_TILEINFO_ENEMY_UNUSED_WINGED_SKELETON_00:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -11025,7 +11022,7 @@ SPRITE_TILEINFO_ENEMY_UNUSED_WINGED_SKELETON_00: ; [$9959]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::90ee]
 ;
-SPRITE_TILEINFO_ENEMY_UNUSED_WINGED_SKELETON_01: ; [$996d]
+SPRITE_TILEINFO_ENEMY_UNUSED_WINGED_SKELETON_01:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -11084,7 +11081,7 @@ SPRITE_TILEINFO_ENEMY_UNUSED_WINGED_SKELETON_01: ; [$996d]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::90f0]
 ;
-SPRITE_TILEINFO_ENEMY_TAMAZUTSU_00:         ; [$9981]
+SPRITE_TILEINFO_ENEMY_TAMAZUTSU_00:
     .byte $01                               ; 1 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $18                               ; Y offset = 24 (0x18)
@@ -11112,7 +11109,7 @@ SPRITE_TILEINFO_ENEMY_TAMAZUTSU_00:         ; [$9981]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::90f2]
 ;
-SPRITE_TILEINFO_ENEMY_TAMAZUTSU_01:         ; [$9989]
+SPRITE_TILEINFO_ENEMY_TAMAZUTSU_01:
     .byte $01                               ; 1 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $18                               ; Y offset = 24 (0x18)
@@ -11140,7 +11137,7 @@ SPRITE_TILEINFO_ENEMY_TAMAZUTSU_01:         ; [$9989]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::90f4]
 ;
-SPRITE_TILEINFO_ENEMY_TAMAZUTSU_02:         ; [$9991]
+SPRITE_TILEINFO_ENEMY_TAMAZUTSU_02:
     .byte $01                               ; 1 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $18                               ; Y offset = 24 (0x18)
@@ -11176,7 +11173,7 @@ SPRITE_TILEINFO_ENEMY_TAMAZUTSU_02:         ; [$9991]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::90f6]
 ;
-SPRITE_TILEINFO_ENEMY_TAMAZUTSU_03:         ; [$9999]
+SPRITE_TILEINFO_ENEMY_TAMAZUTSU_03:
     .byte $11                               ; 2 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $10                               ; Y offset = 16 (0x10)
@@ -11228,7 +11225,7 @@ SPRITE_TILEINFO_ENEMY_TAMAZUTSU_03:         ; [$9999]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::90f8]
 ;
-SPRITE_TILEINFO_ENEMY_TAMAZUTSU_04:         ; [$99a5]
+SPRITE_TILEINFO_ENEMY_TAMAZUTSU_04:
     .byte $21                               ; 3 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $08                               ; Y offset = 8 (0x08)
@@ -11296,7 +11293,7 @@ SPRITE_TILEINFO_ENEMY_TAMAZUTSU_04:         ; [$99a5]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::90fa]
 ;
-SPRITE_TILEINFO_ENEMY_TAMAZUTSU_05:         ; [$99b5]
+SPRITE_TILEINFO_ENEMY_TAMAZUTSU_05:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -11372,7 +11369,7 @@ SPRITE_TILEINFO_ENEMY_TAMAZUTSU_05:         ; [$99b5]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::90fc]
 ;
-SPRITE_TILEINFO_ENEMY_TAMAZUTSU_06:         ; [$99c9]
+SPRITE_TILEINFO_ENEMY_TAMAZUTSU_06:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -11422,47 +11419,47 @@ SPRITE_TILEINFO_ENEMY_TAMAZUTSU_06:         ; [$99c9]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::915c]
 ;
-SPRITE_TILEINFO_DROPPED_COIN_00:            ; [$99dd]
-    .byte $00,$04,$08,$04,$40,$00           ; [$99dd] byte
+SPRITE_TILEINFO_DROPPED_COIN_00:
+    .byte $00,$04,$08,$04,$40,$00           ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::915e]
 ;
-BYTE_PRG7__99e3:                            ; [$99e3]
-    .byte $00,$04,$08,$04,$41,$00           ; [$99e3] byte
+BYTE_PRG7__99e3:
+    .byte $00,$04,$08,$04,$41,$00           ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9188]
 ;
-SPRITE_TILEINFO_EFFECT_ENEMY_DEATH_00:      ; [$99e9]
-    .byte $11,$00,$00,$08,$44,$00,$44,$40   ; [$99e9] byte
-    .byte $44,$80,$44,$c0                   ; [$99f1] byte
+SPRITE_TILEINFO_EFFECT_ENEMY_DEATH_00:
+    .byte $11,$00,$00,$08,$44,$00,$44,$40   ; byte
+    .byte $44,$80,$44,$c0                   ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::918a]
 ;
-BYTE_PRG7__99f5:                            ; [$99f5]
-    .byte $11,$00,$00,$08,$4b,$00,$4b,$40   ; [$99f5] byte
-    .byte $4c,$00,$4c,$40                   ; [$99fd] byte
+BYTE_PRG7__99f5:
+    .byte $11,$00,$00,$08,$4b,$00,$4b,$40   ; byte
+    .byte $4c,$00,$4c,$40                   ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::918c]
 ;
-SPRITE_TILEINFO_NPC_UNUSED_BLUE_LADY_00:    ; [$9a01]
-    .byte $11,$00,$00,$08,$4c,$80,$4c,$c0   ; [$9a01] byte
-    .byte $4b,$80,$4b,$c0                   ; [$9a09] byte
+SPRITE_TILEINFO_NPC_UNUSED_BLUE_LADY_00:
+    .byte $11,$00,$00,$08,$4c,$80,$4c,$c0   ; byte
+    .byte $4b,$80,$4b,$c0                   ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::918e]
 ;
-BYTE_PRG7__9a0d:                            ; [$9a0d]
-    .byte $11,$00,$00,$08,$5c,$00,$4c,$00   ; [$9a0d] byte
-    .byte $5c,$80,$4c,$80                   ; [$9a15] byte
+BYTE_PRG7__9a0d:
+    .byte $11,$00,$00,$08,$5c,$00,$4c,$00   ; byte
+    .byte $5c,$80,$4c,$80                   ; byte
 
 
 ;============================================================================
@@ -11509,7 +11506,7 @@ BYTE_PRG7__9a0d:                            ; [$9a0d]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9192]
 ;
-SPRITE_TILEINFO_NPC_WALKING_MAN_00:         ; [$9a19]
+SPRITE_TILEINFO_NPC_WALKING_MAN_00:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -11582,7 +11579,7 @@ SPRITE_TILEINFO_NPC_WALKING_MAN_00:         ; [$9a19]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9194]
 ;
-SPRITE_TILEINFO_NPC_WALKING_MAN_01:         ; [$9a2c]
+SPRITE_TILEINFO_NPC_WALKING_MAN_01:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -11658,7 +11655,7 @@ SPRITE_TILEINFO_NPC_WALKING_MAN_01:         ; [$9a2c]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9196]
 ;
-SPRITE_TILEINFO_NPC_WALKING_MAN_02:         ; [$9a40]
+SPRITE_TILEINFO_NPC_WALKING_MAN_02:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -11734,7 +11731,7 @@ SPRITE_TILEINFO_NPC_WALKING_MAN_02:         ; [$9a40]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9198]
 ;
-SPRITE_TILEINFO_NPC_WALKING_MAN_03:         ; [$9a54]
+SPRITE_TILEINFO_NPC_WALKING_MAN_03:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -11807,7 +11804,7 @@ SPRITE_TILEINFO_NPC_WALKING_MAN_03:         ; [$9a54]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::919a]
 ;
-SPRITE_TILEINFO_NPC_WALKING_MAN_04:         ; [$9a67]
+SPRITE_TILEINFO_NPC_WALKING_MAN_04:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -11883,7 +11880,7 @@ SPRITE_TILEINFO_NPC_WALKING_MAN_04:         ; [$9a67]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::919c]
 ;
-SPRITE_TILEINFO_NPC_WALKING_MAN_05:         ; [$9a7b]
+SPRITE_TILEINFO_NPC_WALKING_MAN_05:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -11958,7 +11955,7 @@ SPRITE_TILEINFO_NPC_WALKING_MAN_05:         ; [$9a7b]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::919e]
 ;
-SPRITE_TILEINFO_NPC_UNUSED_CHILD_00:        ; [$9a8f]
+SPRITE_TILEINFO_NPC_UNUSED_CHILD_00:
     .byte $20                               ; 3 rows, 1 columns
     .byte $00                               ; X offset = 0
     .byte $08                               ; Y offset = 8 (0x08)
@@ -12006,7 +12003,7 @@ SPRITE_TILEINFO_NPC_UNUSED_CHILD_00:        ; [$9a8f]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::91a0]
 ;
-SPRITE_TILEINFO_NPC_UNUSED_CHILD_01:        ; [$9a99]
+SPRITE_TILEINFO_NPC_UNUSED_CHILD_01:
     .byte $21                               ; 3 rows, 2 columns
     .byte $f8                               ; X offset = -8 (0xF8)
     .byte $08                               ; Y offset = 8 (0x08)
@@ -12060,7 +12057,7 @@ SPRITE_TILEINFO_NPC_UNUSED_CHILD_01:        ; [$9a99]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::91a2]
 ;
-SPRITE_TILEINFO_NPC_UNUSED_CHILD_02:        ; [$9aa7]
+SPRITE_TILEINFO_NPC_UNUSED_CHILD_02:
     .byte $21                               ; 3 rows, 2 columns
     .byte $f8                               ; X offset = -8 (0xF8)
     .byte $08                               ; Y offset = 8 (0x08)
@@ -12114,7 +12111,7 @@ SPRITE_TILEINFO_NPC_UNUSED_CHILD_02:        ; [$9aa7]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::91e4]
 ;
-SPRITE_TILEINFO_ENEMY_UNUSED_EYEBALL_00:    ; [$9ab6]
+SPRITE_TILEINFO_ENEMY_UNUSED_EYEBALL_00:
     .byte $11                               ; 2 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -12140,9 +12137,9 @@ SPRITE_TILEINFO_ENEMY_UNUSED_EYEBALL_00:    ; [$9ab6]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::91e6]
 ;
-BYTE_PRG7__9ac2:                            ; [$9ac2]
-    .byte $11,$00,$00,$08,$04,$03,$05,$03   ; [$9ac2] byte
-    .byte $06,$03,$07,$03                   ; [$9aca] byte
+BYTE_PRG7__9ac2:
+    .byte $11,$00,$00,$08,$04,$03,$05,$03   ; byte
+    .byte $06,$03,$07,$03                   ; byte
 
 
 ;============================================================================
@@ -12173,7 +12170,7 @@ BYTE_PRG7__9ac2:                            ; [$9ac2]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::91e8]
 ;
-SPRITE_TILEINFO_ENEMY_ZOZURA_00:            ; [$9ace]
+SPRITE_TILEINFO_ENEMY_ZOZURA_00:
     .byte $11                               ; 2 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -12213,7 +12210,7 @@ SPRITE_TILEINFO_ENEMY_ZOZURA_00:            ; [$9ace]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::91ea]
 ;
-SPRITE_TILEINFO_ENEMY_ZOZURA_01:            ; [$9ada]
+SPRITE_TILEINFO_ENEMY_ZOZURA_01:
     .byte $11                               ; 2 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -12235,55 +12232,55 @@ SPRITE_TILEINFO_ENEMY_ZOZURA_01:            ; [$9ada]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9214]
 ;
-SPRITE_TILEINFO_MAGIC_9ae6_00:              ; [$9ae6]
-    .byte $11,$00,$00,$08,$00,$00,$01,$00   ; [$9ae6] byte
-    .byte $02,$00,$03,$00                   ; [$9aee] byte
+SPRITE_TILEINFO_MAGIC_9ae6_00:
+    .byte $11,$00,$00,$08,$00,$00,$01,$00   ; byte
+    .byte $02,$00,$03,$00                   ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9216]
 ;
-BYTE_PRG7__9af2:                            ; [$9af2]
-    .byte $11,$00,$00,$08,$04,$00,$05,$00   ; [$9af2] byte
-    .byte $04,$80,$05,$80                   ; [$9afa] byte
+BYTE_PRG7__9af2:
+    .byte $11,$00,$00,$08,$04,$00,$05,$00   ; byte
+    .byte $04,$80,$05,$80                   ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::921c]
 ;
-SPRITE_TILEINFO_MAGIC_9afe_00:              ; [$9afe]
-    .byte $11,$00,$00,$08,$86,$00,$86,$40   ; [$9afe] byte
-    .byte $86,$80,$86,$c0                   ; [$9b06] byte
+SPRITE_TILEINFO_MAGIC_9afe_00:
+    .byte $11,$00,$00,$08,$86,$00,$86,$40   ; byte
+    .byte $86,$80,$86,$c0                   ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::921e]
 ;
-BYTE_PRG7__9b0a:                            ; [$9b0a]
-    .byte $11,$00,$00,$08,$87,$00,$87,$40   ; [$9b0a] byte
-    .byte $87,$80,$87,$c0                   ; [$9b12] byte
+BYTE_PRG7__9b0a:
+    .byte $11,$00,$00,$08,$87,$00,$87,$40   ; byte
+    .byte $87,$80,$87,$c0                   ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9220]
 ;
-BYTE_PRG7__9b16:                            ; [$9b16]
-    .byte $11,$00,$00,$08,$88,$00,$88,$40   ; [$9b16] byte
-    .byte $88,$80,$88,$c0                   ; [$9b1e] byte
+BYTE_PRG7__9b16:
+    .byte $11,$00,$00,$08,$88,$00,$88,$40   ; byte
+    .byte $88,$80,$88,$c0                   ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9218]
 ;
-SPRITE_TILEINFO_MAGIC_9b22_00:              ; [$9b22]
-    .byte $00,$00,$00,$04,$42,$00           ; [$9b22] byte
+SPRITE_TILEINFO_MAGIC_9b22_00:
+    .byte $00,$00,$00,$04,$42,$00           ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::921a]
 ;
-BYTE_PRG7__9b28:                            ; [$9b28]
-    .byte $00,$00,$00,$04,$43,$00           ; [$9b28] byte
+BYTE_PRG7__9b28:
+    .byte $00,$00,$00,$04,$43,$00           ; byte
 
 
 ;============================================================================
@@ -12314,7 +12311,7 @@ BYTE_PRG7__9b28:                            ; [$9b28]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::90fe]
 ;
-SPRITE_TILEINFO_BOSS_BORABOHRA_00:          ; [$9b2e]
+SPRITE_TILEINFO_BOSS_BORABOHRA_00:
     .byte $13                               ; 2 rows, 4 columns
     .byte $00                               ; X offset = 0
     .byte $20                               ; Y offset = 32 (0x20)
@@ -12382,7 +12379,7 @@ SPRITE_TILEINFO_BOSS_BORABOHRA_00:          ; [$9b2e]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9100]
 ;
-SPRITE_TILEINFO_BOSS_BORABOHRA_01:          ; [$9b42]
+SPRITE_TILEINFO_BOSS_BORABOHRA_01:
     .byte $23                               ; 3 rows, 4 columns
     .byte $00                               ; X offset = 0
     .byte $18                               ; Y offset = 24 (0x18)
@@ -12468,7 +12465,7 @@ SPRITE_TILEINFO_BOSS_BORABOHRA_01:          ; [$9b42]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9102]
 ;
-SPRITE_TILEINFO_BOSS_BORABOHRA_02:          ; [$9b5c]
+SPRITE_TILEINFO_BOSS_BORABOHRA_02:
     .byte $33                               ; 4 rows, 4 columns
     .byte $00                               ; X offset = 0
     .byte $10                               ; Y offset = 16 (0x10)
@@ -12572,7 +12569,7 @@ SPRITE_TILEINFO_BOSS_BORABOHRA_02:          ; [$9b5c]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9104]
 ;
-SPRITE_TILEINFO_BOSS_BORABOHRA_03:          ; [$9b7c]
+SPRITE_TILEINFO_BOSS_BORABOHRA_03:
     .byte $43                               ; 5 rows, 4 columns
     .byte $00                               ; X offset = 0
     .byte $08                               ; Y offset = 8 (0x08)
@@ -12694,7 +12691,7 @@ SPRITE_TILEINFO_BOSS_BORABOHRA_03:          ; [$9b7c]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9106]
 ;
-SPRITE_TILEINFO_BOSS_BORABOHRA_04:          ; [$9ba2]
+SPRITE_TILEINFO_BOSS_BORABOHRA_04:
     .byte $53                               ; 6 rows, 4 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -12826,7 +12823,7 @@ SPRITE_TILEINFO_BOSS_BORABOHRA_04:          ; [$9ba2]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9108]
 ;
-SPRITE_TILEINFO_BOSS_BORABOHRA_05:          ; [$9bce]
+SPRITE_TILEINFO_BOSS_BORABOHRA_05:
     .byte $53                               ; 6 rows, 4 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -12958,7 +12955,7 @@ SPRITE_TILEINFO_BOSS_BORABOHRA_05:          ; [$9bce]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::910a]
 ;
-SPRITE_TILEINFO_BOSS_BORABOHRA_06:          ; [$9bfa]
+SPRITE_TILEINFO_BOSS_BORABOHRA_06:
     .byte $53                               ; 6 rows, 4 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -13090,7 +13087,7 @@ SPRITE_TILEINFO_BOSS_BORABOHRA_06:          ; [$9bfa]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::910c]
 ;
-SPRITE_TILEINFO_BOSS_BORABOHRA_07:          ; [$9c26]
+SPRITE_TILEINFO_BOSS_BORABOHRA_07:
     .byte $53                               ; 6 rows, 4 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -13197,7 +13194,7 @@ SPRITE_TILEINFO_BOSS_BORABOHRA_07:          ; [$9c26]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::910e]
 ;
-SPRITE_TILEINFO_BOSS_UNUSED_SNAKE_00:       ; [$9c52]
+SPRITE_TILEINFO_BOSS_UNUSED_SNAKE_00:
     .byte $11                               ; 2 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -13241,7 +13238,7 @@ SPRITE_TILEINFO_BOSS_UNUSED_SNAKE_00:       ; [$9c52]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9110]
 ;
-SPRITE_TILEINFO_BOSS_UNUSED_SNAKE_01:       ; [$9c5e]
+SPRITE_TILEINFO_BOSS_UNUSED_SNAKE_01:
     .byte $11                               ; 2 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -13285,7 +13282,7 @@ SPRITE_TILEINFO_BOSS_UNUSED_SNAKE_01:       ; [$9c5e]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9112]
 ;
-SPRITE_TILEINFO_BOSS_UNUSED_SNAKE_02:       ; [$9c6a]
+SPRITE_TILEINFO_BOSS_UNUSED_SNAKE_02:
     .byte $11                               ; 2 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -13329,7 +13326,7 @@ SPRITE_TILEINFO_BOSS_UNUSED_SNAKE_02:       ; [$9c6a]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9114]
 ;
-SPRITE_TILEINFO_BOSS_UNUSED_SNAKE_03:       ; [$9c76]
+SPRITE_TILEINFO_BOSS_UNUSED_SNAKE_03:
     .byte $11                               ; 2 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -13373,7 +13370,7 @@ SPRITE_TILEINFO_BOSS_UNUSED_SNAKE_03:       ; [$9c76]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9116]
 ;
-SPRITE_TILEINFO_BOSS_UNUSED_SNAKE_04:       ; [$9c82]
+SPRITE_TILEINFO_BOSS_UNUSED_SNAKE_04:
     .byte $11                               ; 2 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -13456,7 +13453,7 @@ SPRITE_TILEINFO_BOSS_UNUSED_SNAKE_04:       ; [$9c82]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9118]
 ;
-SPRITE_TILEINFO_BOSS_ROKUSUTAHN_00:         ; [$9c8e]
+SPRITE_TILEINFO_BOSS_ROKUSUTAHN_00:
     .byte $53                               ; 6 rows, 4 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -13588,7 +13585,7 @@ SPRITE_TILEINFO_BOSS_ROKUSUTAHN_00:         ; [$9c8e]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::911a]
 ;
-SPRITE_TILEINFO_BOSS_ROKUSUTAHN_01:         ; [$9cba]
+SPRITE_TILEINFO_BOSS_ROKUSUTAHN_01:
     .byte $53                               ; 6 rows, 4 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -13744,7 +13741,7 @@ SPRITE_TILEINFO_BOSS_ROKUSUTAHN_01:         ; [$9cba]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::911c]
 ;
-SPRITE_TILEINFO_BOSS_ROKUSUTAHN_02:         ; [$9cee]
+SPRITE_TILEINFO_BOSS_ROKUSUTAHN_02:
     .byte $53                               ; 6 rows, 4 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -13897,7 +13894,7 @@ SPRITE_TILEINFO_BOSS_ROKUSUTAHN_02:         ; [$9cee]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::911e]
 ;
-SPRITE_TILEINFO_BOSS_ROKUSUTAHN_03:         ; [$9d21]
+SPRITE_TILEINFO_BOSS_ROKUSUTAHN_03:
     .byte $53                               ; 6 rows, 4 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -14060,7 +14057,7 @@ SPRITE_TILEINFO_BOSS_ROKUSUTAHN_03:         ; [$9d21]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9120]
 ;
-SPRITE_TILEINFO_BOSS_ZORADOHNA_00:          ; [$9d55]
+SPRITE_TILEINFO_BOSS_ZORADOHNA_00:
     .byte $53                               ; 6 rows, 4 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -14216,7 +14213,7 @@ SPRITE_TILEINFO_BOSS_ZORADOHNA_00:          ; [$9d55]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9122]
 ;
-SPRITE_TILEINFO_BOSS_ZORADOHNA_01:          ; [$9d89]
+SPRITE_TILEINFO_BOSS_ZORADOHNA_01:
     .byte $53                               ; 6 rows, 4 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -14372,7 +14369,7 @@ SPRITE_TILEINFO_BOSS_ZORADOHNA_01:          ; [$9d89]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9124]
 ;
-SPRITE_TILEINFO_BOSS_ZORADOHNA_02:          ; [$9dbd]
+SPRITE_TILEINFO_BOSS_ZORADOHNA_02:
     .byte $53                               ; 6 rows, 4 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -14528,7 +14525,7 @@ SPRITE_TILEINFO_BOSS_ZORADOHNA_02:          ; [$9dbd]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9126]
 ;
-SPRITE_TILEINFO_BOSS_ZORADOHNA_03:          ; [$9df1]
+SPRITE_TILEINFO_BOSS_ZORADOHNA_03:
     .byte $53                               ; 6 rows, 4 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -14707,7 +14704,7 @@ SPRITE_TILEINFO_BOSS_ZORADOHNA_03:          ; [$9df1]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9128]
 ;
-SPRITE_TILEINFO_BOSS_RIPASHEIKU_00:         ; [$9e25]
+SPRITE_TILEINFO_BOSS_RIPASHEIKU_00:
     .byte $73                               ; 8 rows, 4 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -14887,7 +14884,7 @@ SPRITE_TILEINFO_BOSS_RIPASHEIKU_00:         ; [$9e25]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::912a]
 ;
-SPRITE_TILEINFO_BOSS_RIPASHEIKU_01:         ; [$9e61]
+SPRITE_TILEINFO_BOSS_RIPASHEIKU_01:
     .byte $73                               ; 8 rows, 4 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -15057,7 +15054,7 @@ SPRITE_TILEINFO_BOSS_RIPASHEIKU_01:         ; [$9e61]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::912c]
 ;
-SPRITE_TILEINFO_BOSS_RIPASHEIKU_02:         ; [$9e9f]
+SPRITE_TILEINFO_BOSS_RIPASHEIKU_02:
     .byte $73                               ; 8 rows, 4 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -15203,7 +15200,7 @@ SPRITE_TILEINFO_BOSS_RIPASHEIKU_02:         ; [$9e9f]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::912e]
 ;
-SPRITE_TILEINFO_BOSS_RIPASHEIKU_03:         ; [$9ed5]
+SPRITE_TILEINFO_BOSS_RIPASHEIKU_03:
     .byte $73                               ; 8 rows, 4 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -15337,7 +15334,7 @@ SPRITE_TILEINFO_BOSS_RIPASHEIKU_03:         ; [$9ed5]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9130]
 ;
-SPRITE_TILEINFO_BOSS_PAKUKAME_00:           ; [$9f0a]
+SPRITE_TILEINFO_BOSS_PAKUKAME_00:
     .byte $33                               ; 4 rows, 4 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -15429,7 +15426,7 @@ SPRITE_TILEINFO_BOSS_PAKUKAME_00:           ; [$9f0a]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9132]
 ;
-SPRITE_TILEINFO_BOSS_PAKUKAME_01:           ; [$9f2e]
+SPRITE_TILEINFO_BOSS_PAKUKAME_01:
     .byte $33                               ; 4 rows, 4 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -15513,7 +15510,7 @@ SPRITE_TILEINFO_BOSS_PAKUKAME_01:           ; [$9f2e]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9134]
 ;
-SPRITE_TILEINFO_BOSS_PAKUKAME_02:           ; [$9f52]
+SPRITE_TILEINFO_BOSS_PAKUKAME_02:
     .byte $23                               ; 3 rows, 4 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -15616,7 +15613,7 @@ SPRITE_TILEINFO_BOSS_PAKUKAME_02:           ; [$9f52]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9136]
 ;
-SPRITE_TILEINFO_BOSS_KING_GRIEVE_00:        ; [$9f6e]
+SPRITE_TILEINFO_BOSS_KING_GRIEVE_00:
     .byte $58                               ; 6 rows, 9 columns
     .byte $00                               ; X offset = 0
     .byte $f8                               ; Y offset = -8 (0xF8)
@@ -15846,7 +15843,7 @@ SPRITE_TILEINFO_BOSS_KING_GRIEVE_00:        ; [$9f6e]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9138]
 ;
-SPRITE_TILEINFO_BOSS_KING_GRIEVE_01:        ; [$9fcc]
+SPRITE_TILEINFO_BOSS_KING_GRIEVE_01:
     .byte $5b                               ; 6 rows, 12 columns
     .byte $f8                               ; X offset = -8 (0xF8)
     .byte $e8                               ; Y offset = -24 (0xE8)
@@ -16111,7 +16108,7 @@ SPRITE_TILEINFO_BOSS_KING_GRIEVE_01:        ; [$9fcc]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::913a]
 ;
-SPRITE_TILEINFO_BOSS_KING_GRIEVE_02:        ; [$a03f]
+SPRITE_TILEINFO_BOSS_KING_GRIEVE_02:
     .byte $69                               ; 7 rows, 10 columns
     .byte $00                               ; X offset = 0
     .byte $e0                               ; Y offset = -32 (0xE0)
@@ -16367,7 +16364,7 @@ SPRITE_TILEINFO_BOSS_KING_GRIEVE_02:        ; [$a03f]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::913c]
 ;
-SPRITE_TILEINFO_BOSS_ZORUGERIRU_00:         ; [$a0b6]
+SPRITE_TILEINFO_BOSS_ZORUGERIRU_00:
     .byte $33                               ; 4 rows, 4 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -16463,7 +16460,7 @@ SPRITE_TILEINFO_BOSS_ZORUGERIRU_00:         ; [$a0b6]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::913e]
 ;
-SPRITE_TILEINFO_BOSS_ZORUGERIRU_01:         ; [$a0d6]
+SPRITE_TILEINFO_BOSS_ZORUGERIRU_01:
     .byte $33                               ; 4 rows, 4 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -16559,7 +16556,7 @@ SPRITE_TILEINFO_BOSS_ZORUGERIRU_01:         ; [$a0d6]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9140]
 ;
-SPRITE_TILEINFO_BOSS_ZORUGERIRU_02:         ; [$a0f6]
+SPRITE_TILEINFO_BOSS_ZORUGERIRU_02:
     .byte $33                               ; 4 rows, 4 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -16639,7 +16636,7 @@ SPRITE_TILEINFO_BOSS_ZORUGERIRU_02:         ; [$a0f6]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9142]
 ;
-SPRITE_TILEINFO_BOSS_ZORUGERIRU_03:         ; [$a116]
+SPRITE_TILEINFO_BOSS_ZORUGERIRU_03:
     .byte $11                               ; 2 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -16683,7 +16680,7 @@ SPRITE_TILEINFO_BOSS_ZORUGERIRU_03:         ; [$a116]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9144]
 ;
-SPRITE_TILEINFO_BOSS_ZORUGERIRU_04:         ; [$a122]
+SPRITE_TILEINFO_BOSS_ZORUGERIRU_04:
     .byte $11                               ; 2 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -16719,7 +16716,7 @@ SPRITE_TILEINFO_BOSS_ZORUGERIRU_04:         ; [$a122]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9146]
 ;
-SPRITE_TILEINFO_BOSS_ZORUGERIRU_05:         ; [$a12e]
+SPRITE_TILEINFO_BOSS_ZORUGERIRU_05:
     .byte $01                               ; 1 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $08                               ; Y offset = 8 (0x08)
@@ -16826,7 +16823,7 @@ SPRITE_TILEINFO_BOSS_ZORUGERIRU_05:         ; [$a12e]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9148]
 ;
-SPRITE_TILEINFO_BOSS_SHADOW_EURA_00:        ; [$a136]
+SPRITE_TILEINFO_BOSS_SHADOW_EURA_00:
     .byte $95                               ; 10 rows, 6 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -17098,7 +17095,7 @@ SPRITE_TILEINFO_BOSS_SHADOW_EURA_00:        ; [$a136]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::914a]
 ;
-SPRITE_TILEINFO_BOSS_SHADOW_EURA_01:        ; [$a19e]
+SPRITE_TILEINFO_BOSS_SHADOW_EURA_01:
     .byte $95                               ; 10 rows, 6 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -17375,7 +17372,7 @@ SPRITE_TILEINFO_BOSS_SHADOW_EURA_01:        ; [$a19e]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::914c]
 ;
-SPRITE_TILEINFO_BOSS_SHADOW_EURA_02:        ; [$a205]
+SPRITE_TILEINFO_BOSS_SHADOW_EURA_02:
     .byte $a5                               ; 11 rows, 6 columns
     .byte $00                               ; X offset = 0
     .byte $f8                               ; Y offset = -8 (0xF8)
@@ -17664,7 +17661,7 @@ SPRITE_TILEINFO_BOSS_SHADOW_EURA_02:        ; [$a205]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::914e]
 ;
-SPRITE_TILEINFO_BOSS_SHADOW_EURA_03:        ; [$a274]
+SPRITE_TILEINFO_BOSS_SHADOW_EURA_03:
     .byte $a5                               ; 11 rows, 6 columns
     .byte $00                               ; X offset = 0
     .byte $f8                               ; Y offset = -8 (0xF8)
@@ -17948,7 +17945,7 @@ SPRITE_TILEINFO_BOSS_SHADOW_EURA_03:        ; [$a274]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9150]
 ;
-SPRITE_TILEINFO_BOSS_SHADOW_EURA_04:        ; [$a2e4]
+SPRITE_TILEINFO_BOSS_SHADOW_EURA_04:
     .byte $95                               ; 10 rows, 6 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -18220,7 +18217,7 @@ SPRITE_TILEINFO_BOSS_SHADOW_EURA_04:        ; [$a2e4]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9152]
 ;
-SPRITE_TILEINFO_BOSS_SHADOW_EURA_05:        ; [$a34c]
+SPRITE_TILEINFO_BOSS_SHADOW_EURA_05:
     .byte $95                               ; 10 rows, 6 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -18492,7 +18489,7 @@ SPRITE_TILEINFO_BOSS_SHADOW_EURA_05:        ; [$a34c]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9154]
 ;
-SPRITE_TILEINFO_BOSS_SHADOW_EURA_06:        ; [$a3b4]
+SPRITE_TILEINFO_BOSS_SHADOW_EURA_06:
     .byte $95                               ; 10 rows, 6 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -18766,7 +18763,7 @@ SPRITE_TILEINFO_BOSS_SHADOW_EURA_06:        ; [$a3b4]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9156]
 ;
-SPRITE_TILEINFO_BOSS_SHADOW_EURA_07:        ; [$a41a]
+SPRITE_TILEINFO_BOSS_SHADOW_EURA_07:
     .byte $a5                               ; 11 rows, 6 columns
     .byte $00                               ; X offset = 0
     .byte $f8                               ; Y offset = -8 (0xF8)
@@ -19055,7 +19052,7 @@ SPRITE_TILEINFO_BOSS_SHADOW_EURA_07:        ; [$a41a]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9158]
 ;
-SPRITE_TILEINFO_BOSS_SHADOW_EURA_08:        ; [$a489]
+SPRITE_TILEINFO_BOSS_SHADOW_EURA_08:
     .byte $a5                               ; 11 rows, 6 columns
     .byte $00                               ; X offset = 0
     .byte $f8                               ; Y offset = -8 (0xF8)
@@ -19339,7 +19336,7 @@ SPRITE_TILEINFO_BOSS_SHADOW_EURA_08:        ; [$a489]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::915a]
 ;
-SPRITE_TILEINFO_BOSS_SHADOW_EURA_09:        ; [$a4f9]
+SPRITE_TILEINFO_BOSS_SHADOW_EURA_09:
     .byte $95                               ; 10 rows, 6 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -19531,162 +19528,162 @@ SPRITE_TILEINFO_BOSS_SHADOW_EURA_09:        ; [$a4f9]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9160]
 ;
-SPRITE_TILEINFO_ENEMY_FIREBALL_00:          ; [$a55f]
-    .byte $11,$00,$00,$08,$50,$00,$51,$00   ; [$a55f] byte
-    .byte $50,$80,$51,$80                   ; [$a567] byte
+SPRITE_TILEINFO_ENEMY_FIREBALL_00:
+    .byte $11,$00,$00,$08,$50,$00,$51,$00   ; byte
+    .byte $50,$80,$51,$80                   ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9162]
 ;
-BYTE_PRG7__a56b:                            ; [$a56b]
-    .byte $11,$00,$00,$08,$52,$00,$53,$00   ; [$a56b] byte
-    .byte $52,$80,$53,$80                   ; [$a573] byte
+BYTE_PRG7__a56b:
+    .byte $11,$00,$00,$08,$52,$00,$53,$00   ; byte
+    .byte $52,$80,$53,$80                   ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9164]
 ;
-BYTE_PRG7__a577:                            ; [$a577]
-    .byte $11,$00,$00,$08,$54,$00,$55,$00   ; [$a577] byte
-    .byte $54,$80,$55,$80                   ; [$a57f] byte
+BYTE_PRG7__a577:
+    .byte $11,$00,$00,$08,$54,$00,$55,$00   ; byte
+    .byte $54,$80,$55,$80                   ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9166]
 ;
-BYTE_PRG7__a583:                            ; [$a583]
-    .byte $11,$00,$00,$08,$56,$00,$57,$00   ; [$a583] byte
-    .byte $56,$80,$57,$80                   ; [$a58b] byte
+BYTE_PRG7__a583:
+    .byte $11,$00,$00,$08,$56,$00,$57,$00   ; byte
+    .byte $56,$80,$57,$80                   ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9168]
 ;
-BYTE_PRG7__a58f:                            ; [$a58f]
-    .byte $11,$00,$08,$08,$46,$01,$47,$01   ; [$a58f] byte
-    .byte $46,$81,$47,$81                   ; [$a597] byte
+BYTE_PRG7__a58f:
+    .byte $11,$00,$08,$08,$46,$01,$47,$01   ; byte
+    .byte $46,$81,$47,$81                   ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::916a]
 ;
-BYTE_PRG7__a59b:                            ; [$a59b]
-    .byte $31,$00,$00,$08,$48,$01,$49,$01   ; [$a59b] byte
-    .byte $58,$01,$59,$01,$58,$81,$59,$81   ; [$a5a3] byte
-    .byte $48,$81,$49,$81                   ; [$a5ab] byte
+BYTE_PRG7__a59b:
+    .byte $31,$00,$00,$08,$48,$01,$49,$01   ; byte
+    .byte $58,$01,$59,$01,$58,$81,$59,$81   ; byte
+    .byte $48,$81,$49,$81                   ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::916c]
 ;
-BYTE_PRG7__a5af:                            ; [$a5af]
-    .byte $31,$00,$00,$08,$65,$00,$66,$00   ; [$a5af] byte
-    .byte $7a,$00,$7b,$00,$7a,$80,$7b,$80   ; [$a5b7] byte
-    .byte $65,$80,$66,$80                   ; [$a5bf] byte
+BYTE_PRG7__a5af:
+    .byte $31,$00,$00,$08,$65,$00,$66,$00   ; byte
+    .byte $7a,$00,$7b,$00,$7a,$80,$7b,$80   ; byte
+    .byte $65,$80,$66,$80                   ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::916e]
 ;
-BYTE_PRG7__a5c3:                            ; [$a5c3]
-    .byte $31,$00,$00,$08,$ff,$7e,$00,$7c   ; [$a5c3] byte
-    .byte $00,$7d,$00,$7c,$80,$7d,$80,$ff   ; [$a5cb] byte
-    .byte $66,$80                           ; [$a5d3] byte
+BYTE_PRG7__a5c3:
+    .byte $31,$00,$00,$08,$ff,$7e,$00,$7c   ; byte
+    .byte $00,$7d,$00,$7c,$80,$7d,$80,$ff   ; byte
+    .byte $66,$80                           ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9170]
 ;
-BYTE_PRG7__a5d5:                            ; [$a5d5]
-    .byte $11,$00,$00,$08,$4d,$00,$4e,$00   ; [$a5d5] byte
-    .byte $5d,$00,$5e,$00                   ; [$a5dd] byte
+BYTE_PRG7__a5d5:
+    .byte $11,$00,$00,$08,$4d,$00,$4e,$00   ; byte
+    .byte $5d,$00,$5e,$00                   ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9172]
 ;
-BYTE_PRG7__a5e1:                            ; [$a5e1]
-    .byte $11,$00,$00,$08,$63,$00,$64,$00   ; [$a5e1] byte
-    .byte $6a,$00,$6b,$00                   ; [$a5e9] byte
+BYTE_PRG7__a5e1:
+    .byte $11,$00,$00,$08,$63,$00,$64,$00   ; byte
+    .byte $6a,$00,$6b,$00                   ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9174]
 ;
-BYTE_PRG7__a5ed:                            ; [$a5ed]
-    .byte $11,$00,$00,$08,$5e,$c0,$5d,$c0   ; [$a5ed] byte
-    .byte $4e,$c0,$4d,$c0                   ; [$a5f5] byte
+BYTE_PRG7__a5ed:
+    .byte $11,$00,$00,$08,$5e,$c0,$5d,$c0   ; byte
+    .byte $4e,$c0,$4d,$c0                   ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9176]
 ;
-BYTE_PRG7__a5f9:                            ; [$a5f9]
-    .byte $11,$00,$00,$08,$6b,$c0,$6a,$c0   ; [$a5f9] byte
-    .byte $64,$c0,$63,$c0                   ; [$a601] byte
+BYTE_PRG7__a5f9:
+    .byte $11,$00,$00,$08,$6b,$c0,$6a,$c0   ; byte
+    .byte $64,$c0,$63,$c0                   ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9178]
 ;
-BYTE_PRG7__a605:                            ; [$a605]
-    .byte $00,$00,$00,$04,$4a,$00           ; [$a605] byte
+BYTE_PRG7__a605:
+    .byte $00,$00,$00,$04,$4a,$00           ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::917a]
 ;
-BYTE_PRG7__a60b:                            ; [$a60b]
-    .byte $00,$00,$00,$04,$5a,$00           ; [$a60b] byte
+BYTE_PRG7__a60b:
+    .byte $00,$00,$00,$04,$5a,$00           ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::917c]
 ;
-BYTE_PRG7__a611:                            ; [$a611]
-    .byte $11,$00,$00,$08,$60,$00,$61,$00   ; [$a611] byte
-    .byte $67,$00,$68,$00                   ; [$a619] byte
+BYTE_PRG7__a611:
+    .byte $11,$00,$00,$08,$60,$00,$61,$00   ; byte
+    .byte $67,$00,$68,$00                   ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::917e]
 ;
-BYTE_PRG7__a61d:                            ; [$a61d]
-    .byte $11,$00,$00,$08,$62,$00,$6c,$00   ; [$a61d] byte
-    .byte $69,$00,$6d,$00                   ; [$a625] byte
+BYTE_PRG7__a61d:
+    .byte $11,$00,$00,$08,$62,$00,$6c,$00   ; byte
+    .byte $69,$00,$6d,$00                   ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9180]
 ;
-BYTE_PRG7__a629:                            ; [$a629]
-    .byte $11,$00,$00,$08,$6e,$00,$6f,$00   ; [$a629] byte
-    .byte $70,$00,$71,$00                   ; [$a631] byte
+BYTE_PRG7__a629:
+    .byte $11,$00,$00,$08,$6e,$00,$6f,$00   ; byte
+    .byte $70,$00,$71,$00                   ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9182]
 ;
-BYTE_PRG7__a635:                            ; [$a635]
-    .byte $11,$00,$00,$08,$70,$80,$71,$80   ; [$a635] byte
-    .byte $6e,$80,$6f,$80                   ; [$a63d] byte
+BYTE_PRG7__a635:
+    .byte $11,$00,$00,$08,$70,$80,$71,$80   ; byte
+    .byte $6e,$80,$6f,$80                   ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9184]
 ;
-BYTE_PRG7__a641:                            ; [$a641]
-    .byte $11,$00,$00,$08,$6f,$40,$6e,$40   ; [$a641] byte
-    .byte $71,$40,$70,$40                   ; [$a649] byte
+BYTE_PRG7__a641:
+    .byte $11,$00,$00,$08,$6f,$40,$6e,$40   ; byte
+    .byte $71,$40,$70,$40                   ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9186]
 ;
-BYTE_PRG7__a64d:                            ; [$a64d]
-    .byte $11,$00,$00,$08,$71,$c0,$70,$c0   ; [$a64d] byte
-    .byte $6f,$c0,$6e,$c0                   ; [$a655] byte
+BYTE_PRG7__a64d:
+    .byte $11,$00,$00,$08,$71,$c0,$70,$c0   ; byte
+    .byte $6f,$c0,$6e,$c0                   ; byte
 
 
 ;============================================================================
@@ -19717,7 +19714,7 @@ BYTE_PRG7__a64d:                            ; [$a64d]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::91a4]
 ;
-SPRITE_TILEINFO_NPC_ARMOR_SALESMAN_00:      ; [$a659]
+SPRITE_TILEINFO_NPC_ARMOR_SALESMAN_00:
     .byte $11                               ; 2 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -19761,7 +19758,7 @@ SPRITE_TILEINFO_NPC_ARMOR_SALESMAN_00:      ; [$a659]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::91a6]
 ;
-SPRITE_TILEINFO_NPC_ARMOR_SALESMAN_01:      ; [$a665]
+SPRITE_TILEINFO_NPC_ARMOR_SALESMAN_01:
     .byte $11                               ; 2 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -19828,7 +19825,7 @@ SPRITE_TILEINFO_NPC_ARMOR_SALESMAN_01:      ; [$a665]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::91a8]
 ;
-SPRITE_TILEINFO_NPC_MARTIAL_ARTIST_00:      ; [$a671]
+SPRITE_TILEINFO_NPC_MARTIAL_ARTIST_00:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -19904,7 +19901,7 @@ SPRITE_TILEINFO_NPC_MARTIAL_ARTIST_00:      ; [$a671]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::91aa]
 ;
-SPRITE_TILEINFO_NPC_MARTIAL_ARTIST_01:      ; [$a685]
+SPRITE_TILEINFO_NPC_MARTIAL_ARTIST_01:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -19987,7 +19984,7 @@ SPRITE_TILEINFO_NPC_MARTIAL_ARTIST_01:      ; [$a685]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::91ac]
 ;
-SPRITE_TILEINFO_NPC_GURU_00:                ; [$a699]
+SPRITE_TILEINFO_NPC_GURU_00:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -20055,7 +20052,7 @@ SPRITE_TILEINFO_NPC_GURU_00:                ; [$a699]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::91ae]
 ;
-SPRITE_TILEINFO_NPC_GURU_01:                ; [$a6ad]
+SPRITE_TILEINFO_NPC_GURU_01:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -20130,7 +20127,7 @@ SPRITE_TILEINFO_NPC_GURU_01:                ; [$a6ad]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::91b0]
 ;
-SPRITE_TILEINFO_NPC_KING_00:                ; [$a6c1]
+SPRITE_TILEINFO_NPC_KING_00:
     .byte $32                               ; 4 rows, 3 columns
     .byte $f8                               ; X offset = -8 (0xF8)
     .byte $00                               ; Y offset = 0
@@ -20198,7 +20195,7 @@ SPRITE_TILEINFO_NPC_KING_00:                ; [$a6c1]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::91b2]
 ;
-SPRITE_TILEINFO_NPC_KING_01:                ; [$a6d7]
+SPRITE_TILEINFO_NPC_KING_01:
     .byte $32                               ; 4 rows, 3 columns
     .byte $f8                               ; X offset = -8 (0xF8)
     .byte $00                               ; Y offset = 0
@@ -20266,7 +20263,7 @@ SPRITE_TILEINFO_NPC_KING_01:                ; [$a6d7]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::91b4]
 ;
-SPRITE_TILEINFO_NPC_KING_02:                ; [$a6ed]
+SPRITE_TILEINFO_NPC_KING_02:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -20334,7 +20331,7 @@ SPRITE_TILEINFO_NPC_KING_02:                ; [$a6ed]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::91b6]
 ;
-SPRITE_TILEINFO_NPC_KING_03:                ; [$a701]
+SPRITE_TILEINFO_NPC_KING_03:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -20409,7 +20406,7 @@ SPRITE_TILEINFO_NPC_KING_03:                ; [$a701]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::91b8]
 ;
-SPRITE_TILEINFO_NPC_MAGIC_TEACHER_00:       ; [$a715]
+SPRITE_TILEINFO_NPC_MAGIC_TEACHER_00:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -20485,7 +20482,7 @@ SPRITE_TILEINFO_NPC_MAGIC_TEACHER_00:       ; [$a715]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::91ba]
 ;
-SPRITE_TILEINFO_NPC_MAGIC_TEACHER_01:       ; [$a729]
+SPRITE_TILEINFO_NPC_MAGIC_TEACHER_01:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -20568,7 +20565,7 @@ SPRITE_TILEINFO_NPC_MAGIC_TEACHER_01:       ; [$a729]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::91bc]
 ;
-SPRITE_TILEINFO_NPC_KEY_SALESMAN_00:        ; [$a73d]
+SPRITE_TILEINFO_NPC_KEY_SALESMAN_00:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -20641,7 +20638,7 @@ SPRITE_TILEINFO_NPC_KEY_SALESMAN_00:        ; [$a73d]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::91be]
 ;
-SPRITE_TILEINFO_NPC_KEY_SALESMAN_01:        ; [$a750]
+SPRITE_TILEINFO_NPC_KEY_SALESMAN_01:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -20721,7 +20718,7 @@ SPRITE_TILEINFO_NPC_KEY_SALESMAN_01:        ; [$a750]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::91c0]
 ;
-SPRITE_TILEINFO_NPC_SMOKING_MAN_00:         ; [$a763]
+SPRITE_TILEINFO_NPC_SMOKING_MAN_00:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -20797,7 +20794,7 @@ SPRITE_TILEINFO_NPC_SMOKING_MAN_00:         ; [$a763]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::91c2]
 ;
-SPRITE_TILEINFO_NPC_SMOKING_MAN_01:         ; [$a777]
+SPRITE_TILEINFO_NPC_SMOKING_MAN_01:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -20880,7 +20877,7 @@ SPRITE_TILEINFO_NPC_SMOKING_MAN_01:         ; [$a777]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::91c4]
 ;
-SPRITE_TILEINFO_NPC_MAN_IN_CHAIR_00:        ; [$a78b]
+SPRITE_TILEINFO_NPC_MAN_IN_CHAIR_00:
     .byte $32                               ; 4 rows, 3 columns
     .byte $f8                               ; X offset = -8 (0xF8)
     .byte $00                               ; Y offset = 0
@@ -20966,7 +20963,7 @@ SPRITE_TILEINFO_NPC_MAN_IN_CHAIR_00:        ; [$a78b]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::91c6]
 ;
-SPRITE_TILEINFO_NPC_MAN_IN_CHAIR_01:        ; [$a7a5]
+SPRITE_TILEINFO_NPC_MAN_IN_CHAIR_01:
     .byte $32                               ; 4 rows, 3 columns
     .byte $f8                               ; X offset = -8 (0xF8)
     .byte $00                               ; Y offset = 0
@@ -21059,7 +21056,7 @@ SPRITE_TILEINFO_NPC_MAN_IN_CHAIR_01:        ; [$a7a5]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::91c8]
 ;
-SPRITE_TILEINFO_NPC_SITTING_MAN_00:         ; [$a7bf]
+SPRITE_TILEINFO_NPC_SITTING_MAN_00:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -21135,7 +21132,7 @@ SPRITE_TILEINFO_NPC_SITTING_MAN_00:         ; [$a7bf]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::91ca]
 ;
-SPRITE_TILEINFO_NPC_SITTING_MAN_01:         ; [$a7d3]
+SPRITE_TILEINFO_NPC_SITTING_MAN_01:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -21218,7 +21215,7 @@ SPRITE_TILEINFO_NPC_SITTING_MAN_01:         ; [$a7d3]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::91cc]
 ;
-SPRITE_TILEINFO_NPC_MEAT_SALESMAN_00:       ; [$a7e7]
+SPRITE_TILEINFO_NPC_MEAT_SALESMAN_00:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -21294,7 +21291,7 @@ SPRITE_TILEINFO_NPC_MEAT_SALESMAN_00:       ; [$a7e7]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::91ce]
 ;
-SPRITE_TILEINFO_NPC_MEAT_SALESMAN_01:       ; [$a7fb]
+SPRITE_TILEINFO_NPC_MEAT_SALESMAN_01:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -21377,7 +21374,7 @@ SPRITE_TILEINFO_NPC_MEAT_SALESMAN_01:       ; [$a7fb]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::91d0]
 ;
-SPRITE_TILEINFO_NPC_LADY_BLUE_WITH_CUP_00:  ; [$a80f]
+SPRITE_TILEINFO_NPC_LADY_BLUE_WITH_CUP_00:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -21453,7 +21450,7 @@ SPRITE_TILEINFO_NPC_LADY_BLUE_WITH_CUP_00:  ; [$a80f]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::91d2]
 ;
-SPRITE_TILEINFO_NPC_LADY_BLUE_WITH_CUP_01:  ; [$a823]
+SPRITE_TILEINFO_NPC_LADY_BLUE_WITH_CUP_01:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -21536,7 +21533,7 @@ SPRITE_TILEINFO_NPC_LADY_BLUE_WITH_CUP_01:  ; [$a823]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::91d4]
 ;
-SPRITE_TILEINFO_NPC_GUARD_00:               ; [$a837]
+SPRITE_TILEINFO_NPC_GUARD_00:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -21604,7 +21601,7 @@ SPRITE_TILEINFO_NPC_GUARD_00:               ; [$a837]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::91d6]
 ;
-SPRITE_TILEINFO_NPC_GUARD_01:               ; [$a84b]
+SPRITE_TILEINFO_NPC_GUARD_01:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -21679,7 +21676,7 @@ SPRITE_TILEINFO_NPC_GUARD_01:               ; [$a84b]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::91d8]
 ;
-SPRITE_TILEINFO_NPC_DOCTOR_00:              ; [$a85f]
+SPRITE_TILEINFO_NPC_DOCTOR_00:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -21745,7 +21742,7 @@ SPRITE_TILEINFO_NPC_DOCTOR_00:              ; [$a85f]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::91da]
 ;
-SPRITE_TILEINFO_NPC_DOCTOR_01:              ; [$a872]
+SPRITE_TILEINFO_NPC_DOCTOR_01:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -21818,7 +21815,7 @@ SPRITE_TILEINFO_NPC_DOCTOR_01:              ; [$a872]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::91dc]
 ;
-SPRITE_TILEINFO_NPC_NURSE_00:               ; [$a885]
+SPRITE_TILEINFO_NPC_NURSE_00:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -21886,7 +21883,7 @@ SPRITE_TILEINFO_NPC_NURSE_00:               ; [$a885]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::91de]
 ;
-SPRITE_TILEINFO_NPC_NURSE_01:               ; [$a899]
+SPRITE_TILEINFO_NPC_NURSE_01:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -21961,7 +21958,7 @@ SPRITE_TILEINFO_NPC_NURSE_01:               ; [$a899]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::91e0]
 ;
-SPRITE_TILEINFO_NPC_WALKING_WOMAN_00:       ; [$a8ad]
+SPRITE_TILEINFO_NPC_WALKING_WOMAN_00:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -22037,7 +22034,7 @@ SPRITE_TILEINFO_NPC_WALKING_WOMAN_00:       ; [$a8ad]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::91e2]
 ;
-SPRITE_TILEINFO_NPC_WALKING_WOMAN_01:       ; [$a8c1]
+SPRITE_TILEINFO_NPC_WALKING_WOMAN_01:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -22079,8 +22076,8 @@ SPRITE_TILEINFO_NPC_WALKING_WOMAN_01:       ; [$a8c1]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::91ec]
 ;
-SPRITE_TILEINFO_DROP_BREAD_00:              ; [$a8d5]
-    .byte $01,$00,$08,$08,$45,$00,$4f,$00   ; [$a8d5] byte
+SPRITE_TILEINFO_DROP_BREAD_00:
+    .byte $01,$00,$08,$08,$45,$00,$4f,$00   ; byte
 
 
 ;============================================================================
@@ -22113,7 +22110,7 @@ SPRITE_TILEINFO_DROP_BREAD_00:              ; [$a8d5]
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::91ee]
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::91f6]
 ;
-SPRITE_TILEINFO_ITEM_GLOVE_POISON_00:       ; [$a8dd]
+SPRITE_TILEINFO_ITEM_GLOVE_POISON_00:
     .byte $10                               ; 2 rows, 1 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -22154,7 +22151,7 @@ SPRITE_TILEINFO_ITEM_GLOVE_POISON_00:       ; [$a8dd]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::91f4]
 ;
-SPRITE_TILEINFO_ITEM_POTION_00:             ; [$a8e5]
+SPRITE_TILEINFO_ITEM_POTION_00:
     .byte $10                               ; 2 rows, 1 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -22197,7 +22194,7 @@ SPRITE_TILEINFO_ITEM_POTION_00:             ; [$a8e5]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::91f8]
 ;
-SPRITE_TILEINFO_ITEM_ELIXIR_00:             ; [$a8ed]
+SPRITE_TILEINFO_ITEM_ELIXIR_00:
     .byte $11                               ; 2 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -22246,7 +22243,7 @@ SPRITE_TILEINFO_ITEM_ELIXIR_00:             ; [$a8ed]
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::91fa]
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::91fc]
 ;
-SPRITE_TILEINFO_ITEM_OINTMENT_MATTOCK_00:   ; [$a8f9]
+SPRITE_TILEINFO_ITEM_OINTMENT_MATTOCK_00:
     .byte $11                               ; 2 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -22293,7 +22290,7 @@ SPRITE_TILEINFO_ITEM_OINTMENT_MATTOCK_00:   ; [$a8f9]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9222]
 ;
-SPRITE_TILEINFO_ITEM_WINGBOOTS_00:          ; [$a905]
+SPRITE_TILEINFO_ITEM_WINGBOOTS_00:
     .byte $11                               ; 2 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -22344,7 +22341,7 @@ SPRITE_TILEINFO_ITEM_WINGBOOTS_00:          ; [$a905]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9224]
 ;
-SPRITE_TILEINFO_ITEM_HOURGLASS_00:          ; [$a911]
+SPRITE_TILEINFO_ITEM_HOURGLASS_00:
     .byte $11                               ; 2 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -22387,7 +22384,7 @@ SPRITE_TILEINFO_ITEM_HOURGLASS_00:          ; [$a911]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9206]
 ;
-SPRITE_TILEINFO_EFFECT_FOUNTAIN_00:         ; [$a91d]
+SPRITE_TILEINFO_EFFECT_FOUNTAIN_00:
     .byte $03                               ; 1 rows, 4 columns
     .byte $00                               ; X offset = 0
     .byte $18                               ; Y offset = 24 (0x18)
@@ -22423,7 +22420,7 @@ SPRITE_TILEINFO_EFFECT_FOUNTAIN_00:         ; [$a91d]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9208]
 ;
-SPRITE_TILEINFO_EFFECT_FOUNTAIN_01:         ; [$a929]
+SPRITE_TILEINFO_EFFECT_FOUNTAIN_01:
     .byte $03                               ; 1 rows, 4 columns
     .byte $00                               ; X offset = 0
     .byte $18                               ; Y offset = 24 (0x18)
@@ -22467,7 +22464,7 @@ SPRITE_TILEINFO_EFFECT_FOUNTAIN_01:         ; [$a929]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::920a]
 ;
-SPRITE_TILEINFO_EFFECT_FOUNTAIN_02:         ; [$a935]
+SPRITE_TILEINFO_EFFECT_FOUNTAIN_02:
     .byte $13                               ; 2 rows, 4 columns
     .byte $00                               ; X offset = 0
     .byte $10                               ; Y offset = 16 (0x10)
@@ -22527,7 +22524,7 @@ SPRITE_TILEINFO_EFFECT_FOUNTAIN_02:         ; [$a935]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::920c]
 ;
-SPRITE_TILEINFO_EFFECT_FOUNTAIN_03:         ; [$a949]
+SPRITE_TILEINFO_EFFECT_FOUNTAIN_03:
     .byte $13                               ; 2 rows, 4 columns
     .byte $00                               ; X offset = 0
     .byte $10                               ; Y offset = 16 (0x10)
@@ -22595,7 +22592,7 @@ SPRITE_TILEINFO_EFFECT_FOUNTAIN_03:         ; [$a949]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::920e]
 ;
-SPRITE_TILEINFO_EFFECT_FOUNTAIN_04:         ; [$a95d]
+SPRITE_TILEINFO_EFFECT_FOUNTAIN_04:
     .byte $23                               ; 3 rows, 4 columns
     .byte $00                               ; X offset = 0
     .byte $08                               ; Y offset = 8 (0x08)
@@ -22687,7 +22684,7 @@ SPRITE_TILEINFO_EFFECT_FOUNTAIN_04:         ; [$a95d]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9210]
 ;
-SPRITE_TILEINFO_EFFECT_FOUNTAIN_05:         ; [$a979]
+SPRITE_TILEINFO_EFFECT_FOUNTAIN_05:
     .byte $33                               ; 4 rows, 4 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -22795,7 +22792,7 @@ SPRITE_TILEINFO_EFFECT_FOUNTAIN_05:         ; [$a979]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9212]
 ;
-SPRITE_TILEINFO_EFFECT_FOUNTAIN_06:         ; [$a99d]
+SPRITE_TILEINFO_EFFECT_FOUNTAIN_06:
     .byte $33                               ; 4 rows, 4 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -22894,7 +22891,7 @@ SPRITE_TILEINFO_EFFECT_FOUNTAIN_06:         ; [$a99d]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::91f0]
 ;
-SPRITE_TILEINFO_ITEM_BLACK_ONYX_00:         ; [$a9c1]
+SPRITE_TILEINFO_ITEM_BLACK_ONYX_00:
     .byte $11                               ; 2 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -22949,7 +22946,7 @@ SPRITE_TILEINFO_ITEM_BLACK_ONYX_00:         ; [$a9c1]
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::922a]
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::922c]
 ;
-SPRITE_TILEINFO_ITEM_PENDANT_BATTLEHELMET_DRAGONSLAYER_00: ; [$a9cd]
+SPRITE_TILEINFO_ITEM_PENDANT_BATTLEHELMET_DRAGONSLAYER_00:
     .byte $11                               ; 2 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -22996,7 +22993,7 @@ SPRITE_TILEINFO_ITEM_PENDANT_BATTLEHELMET_DRAGONSLAYER_00: ; [$a9cd]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9226]
 ;
-SPRITE_TILEINFO_ITEM_MAGICAL_ROD_00:        ; [$a9d9]
+SPRITE_TILEINFO_ITEM_MAGICAL_ROD_00:
     .byte $11                               ; 2 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -23047,7 +23044,7 @@ SPRITE_TILEINFO_ITEM_MAGICAL_ROD_00:        ; [$a9d9]
 ; XREFS:
 ;     TILEINFO_ENTITY_ADDRS [$PRG7::9228]
 ;
-SPRITE_TILEINFO_ITEM_BATTLE_SUIT_00:        ; [$a9e5]
+SPRITE_TILEINFO_ITEM_BATTLE_SUIT_00:
     .byte $11                               ; 2 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -23081,7 +23078,7 @@ SPRITE_TILEINFO_ITEM_BATTLE_SUIT_00:        ; [$a9e5]
 ; XREFS:
 ;     PLAYER_APPEARANCES_OFFSET [$PRG7::8008]
 ;
-TILEINFO_PLAYER_ADDRS:                      ; [$a9f1]
+TILEINFO_PLAYER_ADDRS:
     bank_offset_16 SPRITE_TILEINFO_PLAYER_ARMOR_LEATHER_00 ; [0]: Walking
                                                            ; (frame 1)
     bank_offset_16 SPRITE_TILEINFO_PLAYER_ARMOR_LEATHER_01 ; [1]: Walking
@@ -23232,7 +23229,7 @@ TILEINFO_PLAYER_ADDRS:                      ; [$a9f1]
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::a9f1]
 ;
-SPRITE_TILEINFO_PLAYER_ARMOR_LEATHER_00:    ; [$aac7]
+SPRITE_TILEINFO_PLAYER_ARMOR_LEATHER_00:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -23308,7 +23305,7 @@ SPRITE_TILEINFO_PLAYER_ARMOR_LEATHER_00:    ; [$aac7]
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::a9f3]
 ;
-SPRITE_TILEINFO_PLAYER_ARMOR_LEATHER_01:    ; [$aadb]
+SPRITE_TILEINFO_PLAYER_ARMOR_LEATHER_01:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -23381,7 +23378,7 @@ SPRITE_TILEINFO_PLAYER_ARMOR_LEATHER_01:    ; [$aadb]
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::a9f5]
 ;
-SPRITE_TILEINFO_PLAYER_ARMOR_LEATHER_02:    ; [$aaee]
+SPRITE_TILEINFO_PLAYER_ARMOR_LEATHER_02:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -23457,7 +23454,7 @@ SPRITE_TILEINFO_PLAYER_ARMOR_LEATHER_02:    ; [$aaee]
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::a9f7]
 ;
-SPRITE_TILEINFO_PLAYER_ARMOR_LEATHER_03:    ; [$ab02]
+SPRITE_TILEINFO_PLAYER_ARMOR_LEATHER_03:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -23533,7 +23530,7 @@ SPRITE_TILEINFO_PLAYER_ARMOR_LEATHER_03:    ; [$ab02]
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::a9f9]
 ;
-SPRITE_TILEINFO_PLAYER_ARMOR_LEATHER_04:    ; [$ab16]
+SPRITE_TILEINFO_PLAYER_ARMOR_LEATHER_04:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -23609,7 +23606,7 @@ SPRITE_TILEINFO_PLAYER_ARMOR_LEATHER_04:    ; [$ab16]
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::a9fb]
 ;
-SPRITE_TILEINFO_PLAYER_ARMOR_LEATHER_05:    ; [$ab2a]
+SPRITE_TILEINFO_PLAYER_ARMOR_LEATHER_05:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -23685,7 +23682,7 @@ SPRITE_TILEINFO_PLAYER_ARMOR_LEATHER_05:    ; [$ab2a]
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::a9fd]
 ;
-SPRITE_TILEINFO_PLAYER_ARMOR_LEATHER_06:    ; [$ab3e]
+SPRITE_TILEINFO_PLAYER_ARMOR_LEATHER_06:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -23761,7 +23758,7 @@ SPRITE_TILEINFO_PLAYER_ARMOR_LEATHER_06:    ; [$ab3e]
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::a9ff]
 ;
-SPRITE_TILEINFO_PLAYER_ARMOR_LEATHER_07:    ; [$ab52]
+SPRITE_TILEINFO_PLAYER_ARMOR_LEATHER_07:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -23837,7 +23834,7 @@ SPRITE_TILEINFO_PLAYER_ARMOR_LEATHER_07:    ; [$ab52]
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa11]
 ;
-SPRITE_TILEINFO_PLAYER_ARMOR_STUDDED_00:    ; [$ab66]
+SPRITE_TILEINFO_PLAYER_ARMOR_STUDDED_00:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -23913,7 +23910,7 @@ SPRITE_TILEINFO_PLAYER_ARMOR_STUDDED_00:    ; [$ab66]
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa13]
 ;
-SPRITE_TILEINFO_PLAYER_ARMOR_STUDDED_01:    ; [$ab7a]
+SPRITE_TILEINFO_PLAYER_ARMOR_STUDDED_01:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -23986,7 +23983,7 @@ SPRITE_TILEINFO_PLAYER_ARMOR_STUDDED_01:    ; [$ab7a]
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa15]
 ;
-SPRITE_TILEINFO_PLAYER_ARMOR_STUDDED_02:    ; [$ab8d]
+SPRITE_TILEINFO_PLAYER_ARMOR_STUDDED_02:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -24062,7 +24059,7 @@ SPRITE_TILEINFO_PLAYER_ARMOR_STUDDED_02:    ; [$ab8d]
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa17]
 ;
-SPRITE_TILEINFO_PLAYER_ARMOR_STUDDED_03:    ; [$aba1]
+SPRITE_TILEINFO_PLAYER_ARMOR_STUDDED_03:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -24138,7 +24135,7 @@ SPRITE_TILEINFO_PLAYER_ARMOR_STUDDED_03:    ; [$aba1]
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa19]
 ;
-SPRITE_TILEINFO_PLAYER_ARMOR_STUDDED_04:    ; [$abb5]
+SPRITE_TILEINFO_PLAYER_ARMOR_STUDDED_04:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -24214,7 +24211,7 @@ SPRITE_TILEINFO_PLAYER_ARMOR_STUDDED_04:    ; [$abb5]
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa1b]
 ;
-SPRITE_TILEINFO_PLAYER_ARMOR_STUDDED_05:    ; [$abc9]
+SPRITE_TILEINFO_PLAYER_ARMOR_STUDDED_05:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -24290,7 +24287,7 @@ SPRITE_TILEINFO_PLAYER_ARMOR_STUDDED_05:    ; [$abc9]
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa1d]
 ;
-SPRITE_TILEINFO_PLAYER_ARMOR_STUDDED_06:    ; [$abdd]
+SPRITE_TILEINFO_PLAYER_ARMOR_STUDDED_06:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -24366,7 +24363,7 @@ SPRITE_TILEINFO_PLAYER_ARMOR_STUDDED_06:    ; [$abdd]
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa1f]
 ;
-SPRITE_TILEINFO_PLAYER_ARMOR_STUDDED_07:    ; [$abf1]
+SPRITE_TILEINFO_PLAYER_ARMOR_STUDDED_07:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -24442,7 +24439,7 @@ SPRITE_TILEINFO_PLAYER_ARMOR_STUDDED_07:    ; [$abf1]
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa31]
 ;
-SPRITE_TILEINFO_PLAYER_ARMOR_FULL_PLATE_00: ; [$ac05]
+SPRITE_TILEINFO_PLAYER_ARMOR_FULL_PLATE_00:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -24518,7 +24515,7 @@ SPRITE_TILEINFO_PLAYER_ARMOR_FULL_PLATE_00: ; [$ac05]
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa33]
 ;
-SPRITE_TILEINFO_PLAYER_ARMOR_FULL_PLATE_01: ; [$ac19]
+SPRITE_TILEINFO_PLAYER_ARMOR_FULL_PLATE_01:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -24594,7 +24591,7 @@ SPRITE_TILEINFO_PLAYER_ARMOR_FULL_PLATE_01: ; [$ac19]
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa35]
 ;
-SPRITE_TILEINFO_PLAYER_ARMOR_FULL_PLATE_02: ; [$ac2d]
+SPRITE_TILEINFO_PLAYER_ARMOR_FULL_PLATE_02:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -24670,7 +24667,7 @@ SPRITE_TILEINFO_PLAYER_ARMOR_FULL_PLATE_02: ; [$ac2d]
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa37]
 ;
-SPRITE_TILEINFO_PLAYER_ARMOR_FULL_PLATE_03: ; [$ac41]
+SPRITE_TILEINFO_PLAYER_ARMOR_FULL_PLATE_03:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -24746,7 +24743,7 @@ SPRITE_TILEINFO_PLAYER_ARMOR_FULL_PLATE_03: ; [$ac41]
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa39]
 ;
-SPRITE_TILEINFO_PLAYER_ARMOR_FULL_PLATE_04: ; [$ac55]
+SPRITE_TILEINFO_PLAYER_ARMOR_FULL_PLATE_04:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -24822,7 +24819,7 @@ SPRITE_TILEINFO_PLAYER_ARMOR_FULL_PLATE_04: ; [$ac55]
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa3b]
 ;
-SPRITE_TILEINFO_PLAYER_ARMOR_FULL_PLATE_05: ; [$ac69]
+SPRITE_TILEINFO_PLAYER_ARMOR_FULL_PLATE_05:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -24898,7 +24895,7 @@ SPRITE_TILEINFO_PLAYER_ARMOR_FULL_PLATE_05: ; [$ac69]
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa3d]
 ;
-SPRITE_TILEINFO_PLAYER_ARMOR_FULL_PLATE_06: ; [$ac7d]
+SPRITE_TILEINFO_PLAYER_ARMOR_FULL_PLATE_06:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -24974,7 +24971,7 @@ SPRITE_TILEINFO_PLAYER_ARMOR_FULL_PLATE_06: ; [$ac7d]
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa3f]
 ;
-SPRITE_TILEINFO_PLAYER_ARMOR_FULL_PLATE_07: ; [$ac91]
+SPRITE_TILEINFO_PLAYER_ARMOR_FULL_PLATE_07:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -25051,7 +25048,7 @@ SPRITE_TILEINFO_PLAYER_ARMOR_FULL_PLATE_07: ; [$ac91]
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa51]
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa61]
 ;
-SPRITE_TILEINFO_PLAYER_ARMOR_BATTLE_SUIT_00: ; [$aca5]
+SPRITE_TILEINFO_PLAYER_ARMOR_BATTLE_SUIT_00:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -25128,7 +25125,7 @@ SPRITE_TILEINFO_PLAYER_ARMOR_BATTLE_SUIT_00: ; [$aca5]
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa53]
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa63]
 ;
-SPRITE_TILEINFO_PLAYER_ARMOR_BATTLE_SUIT_01: ; [$acb9]
+SPRITE_TILEINFO_PLAYER_ARMOR_BATTLE_SUIT_01:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -25205,7 +25202,7 @@ SPRITE_TILEINFO_PLAYER_ARMOR_BATTLE_SUIT_01: ; [$acb9]
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa55]
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa65]
 ;
-SPRITE_TILEINFO_PLAYER_ARMOR_BATTLE_SUIT_02: ; [$accd]
+SPRITE_TILEINFO_PLAYER_ARMOR_BATTLE_SUIT_02:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -25282,7 +25279,7 @@ SPRITE_TILEINFO_PLAYER_ARMOR_BATTLE_SUIT_02: ; [$accd]
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa57]
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa67]
 ;
-SPRITE_TILEINFO_PLAYER_ARMOR_BATTLE_SUIT_03: ; [$ace1]
+SPRITE_TILEINFO_PLAYER_ARMOR_BATTLE_SUIT_03:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -25359,7 +25356,7 @@ SPRITE_TILEINFO_PLAYER_ARMOR_BATTLE_SUIT_03: ; [$ace1]
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa59]
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa69]
 ;
-SPRITE_TILEINFO_PLAYER_ARMOR_BATTLE_SUIT_04: ; [$acf5]
+SPRITE_TILEINFO_PLAYER_ARMOR_BATTLE_SUIT_04:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -25436,7 +25433,7 @@ SPRITE_TILEINFO_PLAYER_ARMOR_BATTLE_SUIT_04: ; [$acf5]
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa5b]
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa6b]
 ;
-SPRITE_TILEINFO_PLAYER_ARMOR_BATTLE_SUIT_05: ; [$ad09]
+SPRITE_TILEINFO_PLAYER_ARMOR_BATTLE_SUIT_05:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -25513,7 +25510,7 @@ SPRITE_TILEINFO_PLAYER_ARMOR_BATTLE_SUIT_05: ; [$ad09]
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa5d]
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa6d]
 ;
-SPRITE_TILEINFO_PLAYER_ARMOR_BATTLE_SUIT_06: ; [$ad1d]
+SPRITE_TILEINFO_PLAYER_ARMOR_BATTLE_SUIT_06:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -25587,7 +25584,7 @@ SPRITE_TILEINFO_PLAYER_ARMOR_BATTLE_SUIT_06: ; [$ad1d]
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa5f]
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa6f]
 ;
-SPRITE_TILEINFO_PLAYER_ARMOR_BATTLE_SUIT_07: ; [$ad30]
+SPRITE_TILEINFO_PLAYER_ARMOR_BATTLE_SUIT_07:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -25663,7 +25660,7 @@ SPRITE_TILEINFO_PLAYER_ARMOR_BATTLE_SUIT_07: ; [$ad30]
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa01]
 ;
-SPRITE_TILEINFO_PLAYER_ARMOR_LEATHER_WSHIELD_00: ; [$ad44]
+SPRITE_TILEINFO_PLAYER_ARMOR_LEATHER_WSHIELD_00:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -25739,7 +25736,7 @@ SPRITE_TILEINFO_PLAYER_ARMOR_LEATHER_WSHIELD_00: ; [$ad44]
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa03]
 ;
-SPRITE_TILEINFO_PLAYER_ARMOR_LEATHER_WSHIELD_01: ; [$ad58]
+SPRITE_TILEINFO_PLAYER_ARMOR_LEATHER_WSHIELD_01:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -25812,7 +25809,7 @@ SPRITE_TILEINFO_PLAYER_ARMOR_LEATHER_WSHIELD_01: ; [$ad58]
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa05]
 ;
-SPRITE_TILEINFO_PLAYER_ARMOR_LEATHER_WSHIELD_02: ; [$ad6b]
+SPRITE_TILEINFO_PLAYER_ARMOR_LEATHER_WSHIELD_02:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -25888,7 +25885,7 @@ SPRITE_TILEINFO_PLAYER_ARMOR_LEATHER_WSHIELD_02: ; [$ad6b]
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa07]
 ;
-SPRITE_TILEINFO_PLAYER_ARMOR_LEATHER_WSHIELD_03: ; [$ad7f]
+SPRITE_TILEINFO_PLAYER_ARMOR_LEATHER_WSHIELD_03:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -25964,7 +25961,7 @@ SPRITE_TILEINFO_PLAYER_ARMOR_LEATHER_WSHIELD_03: ; [$ad7f]
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa09]
 ;
-SPRITE_TILEINFO_PLAYER_ARMOR_LEATHER_WSHIELD_04: ; [$ad93]
+SPRITE_TILEINFO_PLAYER_ARMOR_LEATHER_WSHIELD_04:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -26040,7 +26037,7 @@ SPRITE_TILEINFO_PLAYER_ARMOR_LEATHER_WSHIELD_04: ; [$ad93]
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa0b]
 ;
-SPRITE_TILEINFO_PLAYER_ARMOR_LEATHER_WSHIELD_05: ; [$ada7]
+SPRITE_TILEINFO_PLAYER_ARMOR_LEATHER_WSHIELD_05:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -26116,7 +26113,7 @@ SPRITE_TILEINFO_PLAYER_ARMOR_LEATHER_WSHIELD_05: ; [$ada7]
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa0d]
 ;
-SPRITE_TILEINFO_PLAYER_ARMOR_LEATHER_WSHIELD_06: ; [$adbb]
+SPRITE_TILEINFO_PLAYER_ARMOR_LEATHER_WSHIELD_06:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -26192,7 +26189,7 @@ SPRITE_TILEINFO_PLAYER_ARMOR_LEATHER_WSHIELD_06: ; [$adbb]
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa0f]
 ;
-SPRITE_TILEINFO_PLAYER_ARMOR_LEATHER_WSHIELD_07: ; [$adcf]
+SPRITE_TILEINFO_PLAYER_ARMOR_LEATHER_WSHIELD_07:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -26268,7 +26265,7 @@ SPRITE_TILEINFO_PLAYER_ARMOR_LEATHER_WSHIELD_07: ; [$adcf]
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa21]
 ;
-SPRITE_TILEINFO_PLAYER_ARMOR_STUDDED_WSHIELD_00: ; [$ade3]
+SPRITE_TILEINFO_PLAYER_ARMOR_STUDDED_WSHIELD_00:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -26344,7 +26341,7 @@ SPRITE_TILEINFO_PLAYER_ARMOR_STUDDED_WSHIELD_00: ; [$ade3]
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa23]
 ;
-SPRITE_TILEINFO_PLAYER_ARMOR_STUDDED_WSHIELD_01: ; [$adf7]
+SPRITE_TILEINFO_PLAYER_ARMOR_STUDDED_WSHIELD_01:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -26417,7 +26414,7 @@ SPRITE_TILEINFO_PLAYER_ARMOR_STUDDED_WSHIELD_01: ; [$adf7]
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa25]
 ;
-SPRITE_TILEINFO_PLAYER_ARMOR_STUDDED_WSHIELD_02: ; [$ae0a]
+SPRITE_TILEINFO_PLAYER_ARMOR_STUDDED_WSHIELD_02:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -26493,7 +26490,7 @@ SPRITE_TILEINFO_PLAYER_ARMOR_STUDDED_WSHIELD_02: ; [$ae0a]
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa27]
 ;
-SPRITE_TILEINFO_PLAYER_ARMOR_STUDDED_WSHIELD_03: ; [$ae1e]
+SPRITE_TILEINFO_PLAYER_ARMOR_STUDDED_WSHIELD_03:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -26569,7 +26566,7 @@ SPRITE_TILEINFO_PLAYER_ARMOR_STUDDED_WSHIELD_03: ; [$ae1e]
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa29]
 ;
-SPRITE_TILEINFO_PLAYER_ARMOR_STUDDED_WSHIELD_04: ; [$ae32]
+SPRITE_TILEINFO_PLAYER_ARMOR_STUDDED_WSHIELD_04:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -26645,7 +26642,7 @@ SPRITE_TILEINFO_PLAYER_ARMOR_STUDDED_WSHIELD_04: ; [$ae32]
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa2b]
 ;
-SPRITE_TILEINFO_PLAYER_ARMOR_STUDDED_WSHIELD_05: ; [$ae46]
+SPRITE_TILEINFO_PLAYER_ARMOR_STUDDED_WSHIELD_05:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -26721,7 +26718,7 @@ SPRITE_TILEINFO_PLAYER_ARMOR_STUDDED_WSHIELD_05: ; [$ae46]
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa2d]
 ;
-SPRITE_TILEINFO_PLAYER_ARMOR_STUDDED_WSHIELD_06: ; [$ae5a]
+SPRITE_TILEINFO_PLAYER_ARMOR_STUDDED_WSHIELD_06:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -26797,7 +26794,7 @@ SPRITE_TILEINFO_PLAYER_ARMOR_STUDDED_WSHIELD_06: ; [$ae5a]
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa2f]
 ;
-SPRITE_TILEINFO_PLAYER_ARMOR_STUDDED_WSHIELD_07: ; [$ae6e]
+SPRITE_TILEINFO_PLAYER_ARMOR_STUDDED_WSHIELD_07:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -26873,7 +26870,7 @@ SPRITE_TILEINFO_PLAYER_ARMOR_STUDDED_WSHIELD_07: ; [$ae6e]
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa41]
 ;
-SPRITE_TILEINFO_PLAYER_ARMOR_FULL_PLATE_WSHIELD_00: ; [$ae82]
+SPRITE_TILEINFO_PLAYER_ARMOR_FULL_PLATE_WSHIELD_00:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -26949,7 +26946,7 @@ SPRITE_TILEINFO_PLAYER_ARMOR_FULL_PLATE_WSHIELD_00: ; [$ae82]
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa43]
 ;
-SPRITE_TILEINFO_PLAYER_ARMOR_FULL_PLATE_WSHIELD_01: ; [$ae96]
+SPRITE_TILEINFO_PLAYER_ARMOR_FULL_PLATE_WSHIELD_01:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -27025,7 +27022,7 @@ SPRITE_TILEINFO_PLAYER_ARMOR_FULL_PLATE_WSHIELD_01: ; [$ae96]
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa45]
 ;
-SPRITE_TILEINFO_PLAYER_ARMOR_FULL_PLATE_WSHIELD_02: ; [$aeaa]
+SPRITE_TILEINFO_PLAYER_ARMOR_FULL_PLATE_WSHIELD_02:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -27101,7 +27098,7 @@ SPRITE_TILEINFO_PLAYER_ARMOR_FULL_PLATE_WSHIELD_02: ; [$aeaa]
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa47]
 ;
-SPRITE_TILEINFO_PLAYER_ARMOR_FULL_PLATE_WSHIELD_03: ; [$aebe]
+SPRITE_TILEINFO_PLAYER_ARMOR_FULL_PLATE_WSHIELD_03:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -27177,7 +27174,7 @@ SPRITE_TILEINFO_PLAYER_ARMOR_FULL_PLATE_WSHIELD_03: ; [$aebe]
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa49]
 ;
-SPRITE_TILEINFO_PLAYER_ARMOR_FULL_PLATE_WSHIELD_04: ; [$aed2]
+SPRITE_TILEINFO_PLAYER_ARMOR_FULL_PLATE_WSHIELD_04:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -27253,7 +27250,7 @@ SPRITE_TILEINFO_PLAYER_ARMOR_FULL_PLATE_WSHIELD_04: ; [$aed2]
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa4b]
 ;
-SPRITE_TILEINFO_PLAYER_ARMOR_FULL_PLATE_WSHIELD_05: ; [$aee6]
+SPRITE_TILEINFO_PLAYER_ARMOR_FULL_PLATE_WSHIELD_05:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -27329,7 +27326,7 @@ SPRITE_TILEINFO_PLAYER_ARMOR_FULL_PLATE_WSHIELD_05: ; [$aee6]
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa4d]
 ;
-SPRITE_TILEINFO_PLAYER_ARMOR_FULL_PLATE_WSHIELD_06: ; [$aefa]
+SPRITE_TILEINFO_PLAYER_ARMOR_FULL_PLATE_WSHIELD_06:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -27405,7 +27402,7 @@ SPRITE_TILEINFO_PLAYER_ARMOR_FULL_PLATE_WSHIELD_06: ; [$aefa]
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa4f]
 ;
-SPRITE_TILEINFO_PLAYER_ARMOR_FULL_PLATE_WSHIELD_07: ; [$af0e]
+SPRITE_TILEINFO_PLAYER_ARMOR_FULL_PLATE_WSHIELD_07:
     .byte $31                               ; 4 rows, 2 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -27447,51 +27444,51 @@ SPRITE_TILEINFO_PLAYER_ARMOR_FULL_PLATE_WSHIELD_07: ; [$af0e]
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aab7]
 ;
-BYTE_PRG7__af22:                            ; [$af22]
-    .byte $00,$00,$08,$04,$25,$00           ; [$af22] byte
+BYTE_PRG7__af22:
+    .byte $00,$00,$08,$04,$25,$00           ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aab9]
 ;
-BYTE_PRG7__af28:                            ; [$af28]
-    .byte $00,$00,$08,$04,$25,$01           ; [$af28] byte
+BYTE_PRG7__af28:
+    .byte $00,$00,$08,$04,$25,$01           ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aabb]
 ;
-BYTE_PRG7__af2e:                            ; [$af2e]
-    .byte $00,$00,$08,$04,$26,$01           ; [$af2e] byte
+BYTE_PRG7__af2e:
+    .byte $00,$00,$08,$04,$26,$01           ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aabd]
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aac5]
 ;
-BYTE_PRG7__af34:                            ; [$af34]
-    .byte $00,$00,$08,$04,$24,$01           ; [$af34] byte
+BYTE_PRG7__af34:
+    .byte $00,$00,$08,$04,$24,$01           ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aabf]
 ;
-BYTE_PRG7__af3a:                            ; [$af3a]
-    .byte $00,$00,$08,$04,$19,$00           ; [$af3a] byte
+BYTE_PRG7__af3a:
+    .byte $00,$00,$08,$04,$19,$00           ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aac1]
 ;
-BYTE_PRG7__af40:                            ; [$af40]
-    .byte $00,$00,$08,$04,$19,$01           ; [$af40] byte
+BYTE_PRG7__af40:
+    .byte $00,$00,$08,$04,$19,$01           ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aac3]
 ;
-BYTE_PRG7__af46:                            ; [$af46]
-    .byte $00,$00,$08,$04,$1a,$01           ; [$af46] byte
+BYTE_PRG7__af46:
+    .byte $00,$00,$08,$04,$1a,$01           ; byte
 
 ;
 ; XREFS:
@@ -27504,53 +27501,53 @@ BYTE_PRG7__af46:                            ; [$af46]
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa9f]
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aaaf]
 ;
-BYTE_PRG7__af4c:                            ; [$af4c]
-    .byte $00,$00,$00,$04,$ff               ; [$af4c] byte
+BYTE_PRG7__af4c:
+    .byte $00,$00,$00,$04,$ff               ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa71]
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa77]
 ;
-BYTE_PRG7__af51:                            ; [$af51]
-    .byte $00,$00,$00,$04,$01,$01           ; [$af51] byte
+BYTE_PRG7__af51:
+    .byte $00,$00,$00,$04,$01,$01           ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa73]
 ;
-BYTE_PRG7__af57:                            ; [$af57]
-    .byte $00,$00,$00,$04,$02,$01           ; [$af57] byte
+BYTE_PRG7__af57:
+    .byte $00,$00,$00,$04,$02,$01           ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa7b]
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa7d]
 ;
-BYTE_PRG7__af5d:                            ; [$af5d]
-    .byte $00,$00,$00,$04,$00,$01           ; [$af5d] byte
+BYTE_PRG7__af5d:
+    .byte $00,$00,$00,$04,$00,$01           ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa81]
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa87]
 ;
-BYTE_PRG7__af63:                            ; [$af63]
-    .byte $10,$00,$00,$04,$02,$01,$03,$01   ; [$af63] byte
+BYTE_PRG7__af63:
+    .byte $10,$00,$00,$04,$02,$01,$03,$01   ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa83]
 ;
-BYTE_PRG7__af6b:                            ; [$af6b]
-    .byte $00,$00,$00,$04,$04,$01           ; [$af6b] byte
+BYTE_PRG7__af6b:
+    .byte $00,$00,$00,$04,$04,$01           ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa85]
 ;
-BYTE_PRG7__af71:                            ; [$af71]
-    .byte $00,$00,$00,$04,$05,$01           ; [$af71] byte
+BYTE_PRG7__af71:
+    .byte $00,$00,$00,$04,$05,$01           ; byte
 
 ;
 ; XREFS:
@@ -27559,90 +27556,90 @@ BYTE_PRG7__af71:                            ; [$af71]
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa9b]
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa9d]
 ;
-BYTE_PRG7__af77:                            ; [$af77]
-    .byte $01,$00,$00,$08,$00,$01,$01,$01   ; [$af77] byte
+BYTE_PRG7__af77:
+    .byte $01,$00,$00,$08,$00,$01,$01,$01   ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa91]
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa97]
 ;
-BYTE_PRG7__af7f:                            ; [$af7f]
-    .byte $11,$00,$00,$08,$02,$01,$03,$01   ; [$af7f] byte
-    .byte $ff,$04,$01                       ; [$af87] byte
+BYTE_PRG7__af7f:
+    .byte $11,$00,$00,$08,$02,$01,$03,$01   ; byte
+    .byte $ff,$04,$01                       ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa93]
 ;
-BYTE_PRG7__af8a:                            ; [$af8a]
-    .byte $00,$00,$00,$04,$05,$01           ; [$af8a] byte
+BYTE_PRG7__af8a:
+    .byte $00,$00,$00,$04,$05,$01           ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aa95]
 ;
-BYTE_PRG7__af90:                            ; [$af90]
-    .byte $00,$00,$00,$04,$06,$01           ; [$af90] byte
+BYTE_PRG7__af90:
+    .byte $00,$00,$00,$04,$06,$01           ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aaa1]
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aaa7]
 ;
-BYTE_PRG7__af96:                            ; [$af96]
-    .byte $11,$00,$00,$08,$05,$01,$06,$01   ; [$af96] byte
-    .byte $ff,$07,$01                       ; [$af9e] byte
+BYTE_PRG7__af96:
+    .byte $11,$00,$00,$08,$05,$01,$06,$01   ; byte
+    .byte $ff,$07,$01                       ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aaa3]
 ;
-BYTE_PRG7__afa1:                            ; [$afa1]
-    .byte $00,$00,$00,$04,$08,$01           ; [$afa1] byte
+BYTE_PRG7__afa1:
+    .byte $00,$00,$00,$04,$08,$01           ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aaa5]
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aaa9]
 ;
-BYTE_PRG7__afa7:                            ; [$afa7]
-    .byte $00,$00,$00,$04,$00,$01           ; [$afa7] byte
+BYTE_PRG7__afa7:
+    .byte $00,$00,$00,$04,$00,$01           ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aaab]
 ;
-BYTE_PRG7__afad:                            ; [$afad]
-    .byte $01,$00,$00,$08,$01,$01,$02,$01   ; [$afad] byte
+BYTE_PRG7__afad:
+    .byte $01,$00,$00,$08,$01,$01,$02,$01   ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aaad]
 ;
-BYTE_PRG7__afb5:                            ; [$afb5]
-    .byte $01,$00,$00,$08,$03,$01,$04,$01   ; [$afb5] byte
+BYTE_PRG7__afb5:
+    .byte $01,$00,$00,$08,$03,$01,$04,$01   ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aab1]
 ;
-BYTE_PRG7__afbd:                            ; [$afbd]
-    .byte $10,$00,$00,$04,$00,$01,$01,$01   ; [$afbd] byte
+BYTE_PRG7__afbd:
+    .byte $10,$00,$00,$04,$00,$01,$01,$01   ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aab3]
 ;
-BYTE_PRG7__afc5:                            ; [$afc5]
-    .byte $10,$00,$00,$04,$02,$01,$03,$01   ; [$afc5] byte
+BYTE_PRG7__afc5:
+    .byte $10,$00,$00,$04,$02,$01,$03,$01   ; byte
 
 ;
 ; XREFS:
 ;     TILEINFO_PLAYER_ADDRS [$PRG7::aab5]
 ;
-BYTE_PRG7__afcd:                            ; [$afcd]
-    .byte $10,$00,$00,$04,$04,$01,$05,$01   ; [$afcd] byte
+BYTE_PRG7__afcd:
+    .byte $10,$00,$00,$04,$04,$01,$05,$01   ; byte
 
 
 ;============================================================================
@@ -27664,7 +27661,7 @@ BYTE_PRG7__afcd:                            ; [$afcd]
 ; XREFS:
 ;     PORTRAIT_APPEARANCES_OFFSET [$PRG7::800a]
 ;
-TILEINFO_PORTRAITS_ADDRS:                   ; [$afd5]
+TILEINFO_PORTRAITS_ADDRS:
     bank_offset_16 SPRITE_TILEINFO_PORTRAIT_KING ; [0]:
     bank_offset_16 SPRITE_TILEINFO_PORTRAIT_KING_EYES_01 ; [1]:
     bank_offset_16 SPRITE_TILEINFO_PORTRAIT_KING_EYES_02 ; [2]:
@@ -27791,7 +27788,7 @@ TILEINFO_PORTRAITS_ADDRS:                   ; [$afd5]
 ; XREFS:
 ;     TILEINFO_PORTRAITS_ADDRS [$PRG7::afd5]
 ;
-SPRITE_TILEINFO_PORTRAIT_KING:              ; [$b043]
+SPRITE_TILEINFO_PORTRAIT_KING:
     .byte $75                               ; 8 rows, 6 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -27925,7 +27922,7 @@ SPRITE_TILEINFO_PORTRAIT_KING:              ; [$b043]
 ; XREFS:
 ;     TILEINFO_PORTRAITS_ADDRS [$PRG7::afd7]
 ;
-SPRITE_TILEINFO_PORTRAIT_KING_EYES_01:      ; [$b09b]
+SPRITE_TILEINFO_PORTRAIT_KING_EYES_01:
     .byte $01                               ; 1 rows, 2 columns
     .byte $10                               ; X offset = 16 (0x10)
     .byte $10                               ; Y offset = 16 (0x10)
@@ -27951,7 +27948,7 @@ SPRITE_TILEINFO_PORTRAIT_KING_EYES_01:      ; [$b09b]
 ; XREFS:
 ;     TILEINFO_PORTRAITS_ADDRS [$PRG7::afd9]
 ;
-SPRITE_TILEINFO_PORTRAIT_KING_EYES_02:      ; [$b0a3]
+SPRITE_TILEINFO_PORTRAIT_KING_EYES_02:
     .byte $01                               ; 1 rows, 2 columns
     .byte $10                               ; X offset = 16 (0x10)
     .byte $10                               ; Y offset = 16 (0x10)
@@ -27977,7 +27974,7 @@ SPRITE_TILEINFO_PORTRAIT_KING_EYES_02:      ; [$b0a3]
 ; XREFS:
 ;     TILEINFO_PORTRAITS_ADDRS [$PRG7::afdb]
 ;
-SPRITE_TILEINFO_PORTRAIT_KING_MOUTH_01:     ; [$b0ab]
+SPRITE_TILEINFO_PORTRAIT_KING_MOUTH_01:
     .byte $01                               ; 1 rows, 2 columns
     .byte $10                               ; X offset = 16 (0x10)
     .byte $18                               ; Y offset = 24 (0x18)
@@ -28003,7 +28000,7 @@ SPRITE_TILEINFO_PORTRAIT_KING_MOUTH_01:     ; [$b0ab]
 ; XREFS:
 ;     TILEINFO_PORTRAITS_ADDRS [$PRG7::afdd]
 ;
-SPRITE_TILEINFO_PORTRAIT_KING_MOUTH_02:     ; [$b0b3]
+SPRITE_TILEINFO_PORTRAIT_KING_MOUTH_02:
     .byte $01                               ; 1 rows, 2 columns
     .byte $10                               ; X offset = 16 (0x10)
     .byte $18                               ; Y offset = 24 (0x18)
@@ -28085,7 +28082,7 @@ SPRITE_TILEINFO_PORTRAIT_KING_MOUTH_02:     ; [$b0b3]
 ; XREFS:
 ;     TILEINFO_PORTRAITS_ADDRS [$PRG7::afdf]
 ;
-SPRITE_TILEINFO_PORTRAIT_GURU:              ; [$b0bb]
+SPRITE_TILEINFO_PORTRAIT_GURU:
     .byte $75                               ; 8 rows, 6 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -28211,7 +28208,7 @@ SPRITE_TILEINFO_PORTRAIT_GURU:              ; [$b0bb]
 ; XREFS:
 ;     TILEINFO_PORTRAITS_ADDRS [$PRG7::afe1]
 ;
-SPRITE_TILEINFO_PORTRAIT_GURU_EYES_01:      ; [$b113]
+SPRITE_TILEINFO_PORTRAIT_GURU_EYES_01:
     .byte $01                               ; 1 rows, 2 columns
     .byte $10                               ; X offset = 16 (0x10)
     .byte $08                               ; Y offset = 8 (0x08)
@@ -28237,7 +28234,7 @@ SPRITE_TILEINFO_PORTRAIT_GURU_EYES_01:      ; [$b113]
 ; XREFS:
 ;     TILEINFO_PORTRAITS_ADDRS [$PRG7::afe3]
 ;
-SPRITE_TILEINFO_PORTRAIT_GURU_EYES_02:      ; [$b11b]
+SPRITE_TILEINFO_PORTRAIT_GURU_EYES_02:
     .byte $01                               ; 1 rows, 2 columns
     .byte $10                               ; X offset = 16 (0x10)
     .byte $08                               ; Y offset = 8 (0x08)
@@ -28263,7 +28260,7 @@ SPRITE_TILEINFO_PORTRAIT_GURU_EYES_02:      ; [$b11b]
 ; XREFS:
 ;     TILEINFO_PORTRAITS_ADDRS [$PRG7::afe5]
 ;
-SPRITE_TILEINFO_PORTRAIT_GURU_MOUTH_01:     ; [$b123]
+SPRITE_TILEINFO_PORTRAIT_GURU_MOUTH_01:
     .byte $01                               ; 1 rows, 2 columns
     .byte $10                               ; X offset = 16 (0x10)
     .byte $18                               ; Y offset = 24 (0x18)
@@ -28289,7 +28286,7 @@ SPRITE_TILEINFO_PORTRAIT_GURU_MOUTH_01:     ; [$b123]
 ; XREFS:
 ;     TILEINFO_PORTRAITS_ADDRS [$PRG7::afe7]
 ;
-SPRITE_TILEINFO_PORTRAIT_GURU_MOUTH_02:     ; [$b12b]
+SPRITE_TILEINFO_PORTRAIT_GURU_MOUTH_02:
     .byte $01                               ; 1 rows, 2 columns
     .byte $10                               ; X offset = 16 (0x10)
     .byte $18                               ; Y offset = 24 (0x18)
@@ -28371,7 +28368,7 @@ SPRITE_TILEINFO_PORTRAIT_GURU_MOUTH_02:     ; [$b12b]
 ; XREFS:
 ;     TILEINFO_PORTRAITS_ADDRS [$PRG7::afe9]
 ;
-SPRITE_TILEINFO_PORTRAIT_MARTIAL_ARTIST:    ; [$b133]
+SPRITE_TILEINFO_PORTRAIT_MARTIAL_ARTIST:
     .byte $75                               ; 8 rows, 6 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -28547,7 +28544,7 @@ SPRITE_TILEINFO_PORTRAIT_MARTIAL_ARTIST:    ; [$b133]
 ; XREFS:
 ;     TILEINFO_PORTRAITS_ADDRS [$PRG7::afeb]
 ;
-SPRITE_TILEINFO_PORTRAIT_MARTIAL_ARTIST_EYES_01: ; [$b18b]
+SPRITE_TILEINFO_PORTRAIT_MARTIAL_ARTIST_EYES_01:
     .byte $01                               ; 1 rows, 2 columns
     .byte $10                               ; X offset = 16 (0x10)
     .byte $08                               ; Y offset = 8 (0x08)
@@ -28575,7 +28572,7 @@ SPRITE_TILEINFO_PORTRAIT_MARTIAL_ARTIST_EYES_01: ; [$b18b]
 ; XREFS:
 ;     TILEINFO_PORTRAITS_ADDRS [$PRG7::afed]
 ;
-SPRITE_TILEINFO_PORTRAIT_MARTIAL_ARTIST_EYES_02: ; [$b193]
+SPRITE_TILEINFO_PORTRAIT_MARTIAL_ARTIST_EYES_02:
     .byte $01                               ; 1 rows, 2 columns
     .byte $10                               ; X offset = 16 (0x10)
     .byte $08                               ; Y offset = 8 (0x08)
@@ -28603,7 +28600,7 @@ SPRITE_TILEINFO_PORTRAIT_MARTIAL_ARTIST_EYES_02: ; [$b193]
 ; XREFS:
 ;     TILEINFO_PORTRAITS_ADDRS [$PRG7::afef]
 ;
-SPRITE_TILEINFO_PORTRAIT_MARTIAL_ARTIST_MOUTH_01: ; [$b19b]
+SPRITE_TILEINFO_PORTRAIT_MARTIAL_ARTIST_MOUTH_01:
     .byte $01                               ; 1 rows, 2 columns
     .byte $10                               ; X offset = 16 (0x10)
     .byte $18                               ; Y offset = 24 (0x18)
@@ -28631,7 +28628,7 @@ SPRITE_TILEINFO_PORTRAIT_MARTIAL_ARTIST_MOUTH_01: ; [$b19b]
 ; XREFS:
 ;     TILEINFO_PORTRAITS_ADDRS [$PRG7::aff1]
 ;
-SPRITE_TILEINFO_PORTRAIT_MARTIAL_ARTIST_MOUTH_02: ; [$b1a3]
+SPRITE_TILEINFO_PORTRAIT_MARTIAL_ARTIST_MOUTH_02:
     .byte $01                               ; 1 rows, 2 columns
     .byte $10                               ; X offset = 16 (0x10)
     .byte $18                               ; Y offset = 24 (0x18)
@@ -28715,7 +28712,7 @@ SPRITE_TILEINFO_PORTRAIT_MARTIAL_ARTIST_MOUTH_02: ; [$b1a3]
 ; XREFS:
 ;     TILEINFO_PORTRAITS_ADDRS [$PRG7::aff3]
 ;
-SPRITE_TILEINFO_PORTRAIT_MAGICIAN:          ; [$b1ab]
+SPRITE_TILEINFO_PORTRAIT_MAGICIAN:
     .byte $75                               ; 8 rows, 6 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -28859,7 +28856,7 @@ SPRITE_TILEINFO_PORTRAIT_MAGICIAN:          ; [$b1ab]
 ; XREFS:
 ;     TILEINFO_PORTRAITS_ADDRS [$PRG7::aff5]
 ;
-SPRITE_TILEINFO_PORTRAIT_MAGICIAN_EYES_01:  ; [$b203]
+SPRITE_TILEINFO_PORTRAIT_MAGICIAN_EYES_01:
     .byte $01                               ; 1 rows, 2 columns
     .byte $10                               ; X offset = 16 (0x10)
     .byte $08                               ; Y offset = 8 (0x08)
@@ -28887,7 +28884,7 @@ SPRITE_TILEINFO_PORTRAIT_MAGICIAN_EYES_01:  ; [$b203]
 ; XREFS:
 ;     TILEINFO_PORTRAITS_ADDRS [$PRG7::aff7]
 ;
-SPRITE_TILEINFO_PORTRAIT_MAGICIAN_EYES_02:  ; [$b20b]
+SPRITE_TILEINFO_PORTRAIT_MAGICIAN_EYES_02:
     .byte $01                               ; 1 rows, 2 columns
     .byte $10                               ; X offset = 16 (0x10)
     .byte $08                               ; Y offset = 8 (0x08)
@@ -28915,7 +28912,7 @@ SPRITE_TILEINFO_PORTRAIT_MAGICIAN_EYES_02:  ; [$b20b]
 ; XREFS:
 ;     TILEINFO_PORTRAITS_ADDRS [$PRG7::aff9]
 ;
-SPRITE_TILEINFO_PORTRAIT_MAGICIAN_MOUTH_01: ; [$b213]
+SPRITE_TILEINFO_PORTRAIT_MAGICIAN_MOUTH_01:
     .byte $01                               ; 1 rows, 2 columns
     .byte $10                               ; X offset = 16 (0x10)
     .byte $18                               ; Y offset = 24 (0x18)
@@ -28943,7 +28940,7 @@ SPRITE_TILEINFO_PORTRAIT_MAGICIAN_MOUTH_01: ; [$b213]
 ; XREFS:
 ;     TILEINFO_PORTRAITS_ADDRS [$PRG7::affb]
 ;
-SPRITE_TILEINFO_PORTRAIT_MAGICIAN_MOUTH_02: ; [$b21b]
+SPRITE_TILEINFO_PORTRAIT_MAGICIAN_MOUTH_02:
     .byte $01                               ; 1 rows, 2 columns
     .byte $10                               ; X offset = 16 (0x10)
     .byte $18                               ; Y offset = 24 (0x18)
@@ -29019,7 +29016,7 @@ SPRITE_TILEINFO_PORTRAIT_MAGICIAN_MOUTH_02: ; [$b21b]
 ; XREFS:
 ;     TILEINFO_PORTRAITS_ADDRS [$PRG7::affd]
 ;
-SPRITE_TILEINFO_PORTRAIT_DOCTOR:            ; [$b223]
+SPRITE_TILEINFO_PORTRAIT_DOCTOR:
     .byte $75                               ; 8 rows, 6 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -29143,7 +29140,7 @@ SPRITE_TILEINFO_PORTRAIT_DOCTOR:            ; [$b223]
 ; XREFS:
 ;     TILEINFO_PORTRAITS_ADDRS [$PRG7::afff]
 ;
-SPRITE_TILEINFO_PORTRAIT_DOCTOR_EYES_01:    ; [$b277]
+SPRITE_TILEINFO_PORTRAIT_DOCTOR_EYES_01:
     .byte $01                               ; 1 rows, 2 columns
     .byte $10                               ; X offset = 16 (0x10)
     .byte $18                               ; Y offset = 24 (0x18)
@@ -29167,7 +29164,7 @@ SPRITE_TILEINFO_PORTRAIT_DOCTOR_EYES_01:    ; [$b277]
 ; XREFS:
 ;     TILEINFO_PORTRAITS_ADDRS [$PRG7::b001]
 ;
-SPRITE_TILEINFO_PORTRAIT_DOCTOR_EYES_02:    ; [$b27f]
+SPRITE_TILEINFO_PORTRAIT_DOCTOR_EYES_02:
     .byte $01                               ; 1 rows, 2 columns
     .byte $10                               ; X offset = 16 (0x10)
     .byte $18                               ; Y offset = 24 (0x18)
@@ -29191,7 +29188,7 @@ SPRITE_TILEINFO_PORTRAIT_DOCTOR_EYES_02:    ; [$b27f]
 ; XREFS:
 ;     TILEINFO_PORTRAITS_ADDRS [$PRG7::b003]
 ;
-SPRITE_TILEINFO_PORTRAIT_DOCTOR_MOUTH_01:   ; [$b287]
+SPRITE_TILEINFO_PORTRAIT_DOCTOR_MOUTH_01:
     .byte $01                               ; 1 rows, 2 columns
     .byte $10                               ; X offset = 16 (0x10)
     .byte $20                               ; Y offset = 32 (0x20)
@@ -29219,7 +29216,7 @@ SPRITE_TILEINFO_PORTRAIT_DOCTOR_MOUTH_01:   ; [$b287]
 ; XREFS:
 ;     TILEINFO_PORTRAITS_ADDRS [$PRG7::b005]
 ;
-SPRITE_TILEINFO_PORTRAIT_DOCTOR_MOUTH_02:   ; [$b28f]
+SPRITE_TILEINFO_PORTRAIT_DOCTOR_MOUTH_02:
     .byte $01                               ; 1 rows, 2 columns
     .byte $10                               ; X offset = 16 (0x10)
     .byte $20                               ; Y offset = 32 (0x20)
@@ -29303,7 +29300,7 @@ SPRITE_TILEINFO_PORTRAIT_DOCTOR_MOUTH_02:   ; [$b28f]
 ; XREFS:
 ;     TILEINFO_PORTRAITS_ADDRS [$PRG7::b007]
 ;
-SPRITE_TILEINFO_PORTRAIT_NURSE:             ; [$b297]
+SPRITE_TILEINFO_PORTRAIT_NURSE:
     .byte $75                               ; 8 rows, 6 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -29451,7 +29448,7 @@ SPRITE_TILEINFO_PORTRAIT_NURSE:             ; [$b297]
 ; XREFS:
 ;     TILEINFO_PORTRAITS_ADDRS [$PRG7::b009]
 ;
-SPRITE_TILEINFO_PORTRAIT_NURSE_EYES_01:     ; [$b2eb]
+SPRITE_TILEINFO_PORTRAIT_NURSE_EYES_01:
     .byte $01                               ; 1 rows, 2 columns
     .byte $10                               ; X offset = 16 (0x10)
     .byte $10                               ; Y offset = 16 (0x10)
@@ -29479,7 +29476,7 @@ SPRITE_TILEINFO_PORTRAIT_NURSE_EYES_01:     ; [$b2eb]
 ; XREFS:
 ;     TILEINFO_PORTRAITS_ADDRS [$PRG7::b00b]
 ;
-SPRITE_TILEINFO_PORTRAIT_NURSE_EYES_02:     ; [$b2f3]
+SPRITE_TILEINFO_PORTRAIT_NURSE_EYES_02:
     .byte $01                               ; 1 rows, 2 columns
     .byte $10                               ; X offset = 16 (0x10)
     .byte $10                               ; Y offset = 16 (0x10)
@@ -29507,7 +29504,7 @@ SPRITE_TILEINFO_PORTRAIT_NURSE_EYES_02:     ; [$b2f3]
 ; XREFS:
 ;     TILEINFO_PORTRAITS_ADDRS [$PRG7::b00d]
 ;
-SPRITE_TILEINFO_PORTRAIT_NURSE_MOUTH_01:    ; [$b2fb]
+SPRITE_TILEINFO_PORTRAIT_NURSE_MOUTH_01:
     .byte $00                               ; 1 rows, 1 columns
     .byte $18                               ; X offset = 24 (0x18)
     .byte $18                               ; Y offset = 24 (0x18)
@@ -29531,7 +29528,7 @@ SPRITE_TILEINFO_PORTRAIT_NURSE_MOUTH_01:    ; [$b2fb]
 ; XREFS:
 ;     TILEINFO_PORTRAITS_ADDRS [$PRG7::b00f]
 ;
-SPRITE_TILEINFO_PORTRAIT_NURSE_MOUTH_02:    ; [$b301]
+SPRITE_TILEINFO_PORTRAIT_NURSE_MOUTH_02:
     .byte $00                               ; 1 rows, 1 columns
     .byte $18                               ; X offset = 24 (0x18)
     .byte $18                               ; Y offset = 24 (0x18)
@@ -29611,7 +29608,7 @@ SPRITE_TILEINFO_PORTRAIT_NURSE_MOUTH_02:    ; [$b301]
 ; XREFS:
 ;     TILEINFO_PORTRAITS_ADDRS [$PRG7::b011]
 ;
-SPRITE_TILEINFO_PORTRAIT_PINKSHIRT:         ; [$b307]
+SPRITE_TILEINFO_PORTRAIT_PINKSHIRT:
     .byte $75                               ; 8 rows, 6 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -29737,7 +29734,7 @@ SPRITE_TILEINFO_PORTRAIT_PINKSHIRT:         ; [$b307]
 ; XREFS:
 ;     TILEINFO_PORTRAITS_ADDRS [$PRG7::b013]
 ;
-SPRITE_TILEINFO_PORTRAIT_PINKSHIRT_EYES_01: ; [$b35d]
+SPRITE_TILEINFO_PORTRAIT_PINKSHIRT_EYES_01:
     .byte $01                               ; 1 row, 2 columns
     .byte $10                               ; X offset = 16 (0x10)
     .byte $08                               ; Y offset = 8 (0x08)
@@ -29765,7 +29762,7 @@ SPRITE_TILEINFO_PORTRAIT_PINKSHIRT_EYES_01: ; [$b35d]
 ; XREFS:
 ;     TILEINFO_PORTRAITS_ADDRS [$PRG7::b015]
 ;
-SPRITE_TILEINFO_PORTRAIT_PINKSHIRT_EYES_02: ; [$b365]
+SPRITE_TILEINFO_PORTRAIT_PINKSHIRT_EYES_02:
     .byte $01                               ; 1 row, 2 columns
     .byte $10                               ; X offset = 16 (0x10)
     .byte $08                               ; Y offset = 8 (0x08)
@@ -29801,7 +29798,7 @@ SPRITE_TILEINFO_PORTRAIT_PINKSHIRT_EYES_02: ; [$b365]
 ; XREFS:
 ;     TILEINFO_PORTRAITS_ADDRS [$PRG7::b017]
 ;
-SPRITE_TILEINFO_PORTRAIT_PINKSHIRT_MOUTH_01: ; [$b36d]
+SPRITE_TILEINFO_PORTRAIT_PINKSHIRT_MOUTH_01:
     .byte $11                               ; 2 rows, 2 columns
     .byte $10                               ; X offset = 16 (0x10)
     .byte $10                               ; Y offset = 16 (0x10)
@@ -29845,7 +29842,7 @@ SPRITE_TILEINFO_PORTRAIT_PINKSHIRT_MOUTH_01: ; [$b36d]
 ; XREFS:
 ;     TILEINFO_PORTRAITS_ADDRS [$PRG7::b019]
 ;
-SPRITE_TILEINFO_PORTRAIT_PINKSHIRT_MOUTH_02: ; [$b379]
+SPRITE_TILEINFO_PORTRAIT_PINKSHIRT_MOUTH_02:
     .byte $11                               ; 2 rows, 2 columns
     .byte $10                               ; X offset = 16 (0x10)
     .byte $10                               ; Y offset = 16 (0x10)
@@ -29937,7 +29934,7 @@ SPRITE_TILEINFO_PORTRAIT_PINKSHIRT_MOUTH_02: ; [$b379]
 ; XREFS:
 ;     TILEINFO_PORTRAITS_ADDRS [$PRG7::b01b]
 ;
-SPRITE_TILEINFO_PORTRAIT_SMOKING_GUY:       ; [$b385]
+SPRITE_TILEINFO_PORTRAIT_SMOKING_GUY:
     .byte $75                               ; 8 rows, 6 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -30053,7 +30050,7 @@ SPRITE_TILEINFO_PORTRAIT_SMOKING_GUY:       ; [$b385]
 ; XREFS:
 ;     TILEINFO_PORTRAITS_ADDRS [$PRG7::b01d]
 ;
-SPRITE_TILEINFO_PORTRAIT_SMOKING_GUY_EYES_01: ; [$b3d9]
+SPRITE_TILEINFO_PORTRAIT_SMOKING_GUY_EYES_01:
     .byte $01                               ; 1 row, 2 columns
     .byte $10                               ; X offset = 16 (0x10)
     .byte $08                               ; Y offset = 8 (0x08)
@@ -30081,7 +30078,7 @@ SPRITE_TILEINFO_PORTRAIT_SMOKING_GUY_EYES_01: ; [$b3d9]
 ; XREFS:
 ;     TILEINFO_PORTRAITS_ADDRS [$PRG7::b01f]
 ;
-SPRITE_TILEINFO_PORTRAIT_SMOKING_GUY_EYES_02: ; [$b3e1]
+SPRITE_TILEINFO_PORTRAIT_SMOKING_GUY_EYES_02:
     .byte $01                               ; 1 row, 2 columns
     .byte $10                               ; X offset = 16 (0x10)
     .byte $08                               ; Y offset = 8 (0x08)
@@ -30109,7 +30106,7 @@ SPRITE_TILEINFO_PORTRAIT_SMOKING_GUY_EYES_02: ; [$b3e1]
 ; XREFS:
 ;     TILEINFO_PORTRAITS_ADDRS [$PRG7::b021]
 ;
-SPRITE_TILEINFO_PORTRAIT_SMOKING_GUY_MOUTH_01: ; [$b3e9]
+SPRITE_TILEINFO_PORTRAIT_SMOKING_GUY_MOUTH_01:
     .byte $01                               ; 1 row, 2 columns
     .byte $18                               ; X offset = 24 (0x18)
     .byte $18                               ; Y offset = 24 (0x18)
@@ -30133,7 +30130,7 @@ SPRITE_TILEINFO_PORTRAIT_SMOKING_GUY_MOUTH_01: ; [$b3e9]
 ; XREFS:
 ;     TILEINFO_PORTRAITS_ADDRS [$PRG7::b023]
 ;
-SPRITE_TILEINFO_PORTRAIT_SMOKING_GUY_MOUTH_02: ; [$b3f1]
+SPRITE_TILEINFO_PORTRAIT_SMOKING_GUY_MOUTH_02:
     .byte $01                               ; 1 row, 2 columns
     .byte $18                               ; X offset = 24 (0x18)
     .byte $18                               ; Y offset = 24 (0x18)
@@ -30213,7 +30210,7 @@ SPRITE_TILEINFO_PORTRAIT_SMOKING_GUY_MOUTH_02: ; [$b3f1]
 ; XREFS:
 ;     TILEINFO_PORTRAITS_ADDRS [$PRG7::b025]
 ;
-SPRITE_TILEINFO_PORTRAIT_MEAT_SALESMAN:     ; [$b3f9]
+SPRITE_TILEINFO_PORTRAIT_MEAT_SALESMAN:
     .byte $75                               ; 8 rows, 6 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -30367,7 +30364,7 @@ SPRITE_TILEINFO_PORTRAIT_MEAT_SALESMAN:     ; [$b3f9]
 ; XREFS:
 ;     TILEINFO_PORTRAITS_ADDRS [$PRG7::b027]
 ;
-SPRITE_TILEINFO_PORTRAIT_MEAT_SALESMAN_EYES_01: ; [$b44f]
+SPRITE_TILEINFO_PORTRAIT_MEAT_SALESMAN_EYES_01:
     .byte $02                               ; 1 row, 3 columns
     .byte $08                               ; X offset = 8 (0x08)
     .byte $08                               ; Y offset = 8 (0x08)
@@ -30399,7 +30396,7 @@ SPRITE_TILEINFO_PORTRAIT_MEAT_SALESMAN_EYES_01: ; [$b44f]
 ; XREFS:
 ;     TILEINFO_PORTRAITS_ADDRS [$PRG7::b029]
 ;
-SPRITE_TILEINFO_PORTRAIT_MEAT_SALESMAN_EYES_02: ; [$b459]
+SPRITE_TILEINFO_PORTRAIT_MEAT_SALESMAN_EYES_02:
     .byte $02                               ; 1 row, 3 columns
     .byte $08                               ; X offset = 8 (0x08)
     .byte $08                               ; Y offset = 8 (0x08)
@@ -30431,7 +30428,7 @@ SPRITE_TILEINFO_PORTRAIT_MEAT_SALESMAN_EYES_02: ; [$b459]
 ; XREFS:
 ;     TILEINFO_PORTRAITS_ADDRS [$PRG7::b02b]
 ;
-SPRITE_TILEINFO_PORTRAIT_MEAT_SALESMAN_MOUTH_01: ; [$b463]
+SPRITE_TILEINFO_PORTRAIT_MEAT_SALESMAN_MOUTH_01:
     .byte $01                               ; 1 row, 2 columns
     .byte $08                               ; X offset = 8 (0x08)
     .byte $10                               ; Y offset = 16 (0x10)
@@ -30459,7 +30456,7 @@ SPRITE_TILEINFO_PORTRAIT_MEAT_SALESMAN_MOUTH_01: ; [$b463]
 ; XREFS:
 ;     TILEINFO_PORTRAITS_ADDRS [$PRG7::b02d]
 ;
-SPRITE_TILEINFO_PORTRAIT_MEAT_SALESMAN_MOUTH_02: ; [$b46b]
+SPRITE_TILEINFO_PORTRAIT_MEAT_SALESMAN_MOUTH_02:
     .byte $01                               ; 1 row, 2 columns
     .byte $08                               ; X offset = 8 (0x08)
     .byte $10                               ; Y offset = 16 (0x10)
@@ -30543,7 +30540,7 @@ SPRITE_TILEINFO_PORTRAIT_MEAT_SALESMAN_MOUTH_02: ; [$b46b]
 ; XREFS:
 ;     TILEINFO_PORTRAITS_ADDRS [$PRG7::b02f]
 ;
-SPRITE_TILEINFO_PORTRAIT_TOOLS_SALESMAN:    ; [$b473]
+SPRITE_TILEINFO_PORTRAIT_TOOLS_SALESMAN:
     .byte $75                               ; 8 rows, 6 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -30691,7 +30688,7 @@ SPRITE_TILEINFO_PORTRAIT_TOOLS_SALESMAN:    ; [$b473]
 ; XREFS:
 ;     TILEINFO_PORTRAITS_ADDRS [$PRG7::b031]
 ;
-SPRITE_TILEINFO_PORTRAIT_TOOLS_SALESMAN_EYES_01: ; [$b4cb]
+SPRITE_TILEINFO_PORTRAIT_TOOLS_SALESMAN_EYES_01:
     .byte $01                               ; 1 rows, 2 columns
     .byte $10                               ; X offset = 16 (0x10)
     .byte $10                               ; Y offset = 16 (0x10)
@@ -30715,7 +30712,7 @@ SPRITE_TILEINFO_PORTRAIT_TOOLS_SALESMAN_EYES_01: ; [$b4cb]
 ; XREFS:
 ;     TILEINFO_PORTRAITS_ADDRS [$PRG7::b033]
 ;
-SPRITE_TILEINFO_PORTRAIT_TOOLS_SALESMAN_EYES_02: ; [$b4d3]
+SPRITE_TILEINFO_PORTRAIT_TOOLS_SALESMAN_EYES_02:
     .byte $01                               ; 1 rows, 2 columns
     .byte $10                               ; X offset = 16 (0x10)
     .byte $10                               ; Y offset = 16 (0x10)
@@ -30739,7 +30736,7 @@ SPRITE_TILEINFO_PORTRAIT_TOOLS_SALESMAN_EYES_02: ; [$b4d3]
 ; XREFS:
 ;     TILEINFO_PORTRAITS_ADDRS [$PRG7::b035]
 ;
-SPRITE_TILEINFO_PORTRAIT_TOOLS_SALESMAN_MOUTH_01: ; [$b4db]
+SPRITE_TILEINFO_PORTRAIT_TOOLS_SALESMAN_MOUTH_01:
     .byte $01                               ; 1 rows, 2 columns
     .byte $10                               ; X offset = 16 (0x10)
     .byte $18                               ; Y offset = 24 (0x18)
@@ -30767,7 +30764,7 @@ SPRITE_TILEINFO_PORTRAIT_TOOLS_SALESMAN_MOUTH_01: ; [$b4db]
 ; XREFS:
 ;     TILEINFO_PORTRAITS_ADDRS [$PRG7::b037]
 ;
-SPRITE_TILEINFO_PORTRAIT_TOOLS_SALESMAN_MOUTH_02: ; [$b4e3]
+SPRITE_TILEINFO_PORTRAIT_TOOLS_SALESMAN_MOUTH_02:
     .byte $01                               ; 1 rows, 2 columns
     .byte $10                               ; X offset = 16 (0x10)
     .byte $18                               ; Y offset = 24 (0x18)
@@ -30851,7 +30848,7 @@ SPRITE_TILEINFO_PORTRAIT_TOOLS_SALESMAN_MOUTH_02: ; [$b4e3]
 ; XREFS:
 ;     TILEINFO_PORTRAITS_ADDRS [$PRG7::b039]
 ;
-SPRITE_TILEINFO_PORTRAIT_KEY_SALESMAN:      ; [$b4eb]
+SPRITE_TILEINFO_PORTRAIT_KEY_SALESMAN:
     .byte $75                               ; 8 rows, 6 columns
     .byte $00                               ; X offset = 0
     .byte $00                               ; Y offset = 0
@@ -30991,7 +30988,7 @@ SPRITE_TILEINFO_PORTRAIT_KEY_SALESMAN:      ; [$b4eb]
 ; XREFS:
 ;     TILEINFO_PORTRAITS_ADDRS [$PRG7::b03b]
 ;
-SPRITE_TILEINFO_PORTRAIT_KEY_SALESMAN_EYES_01: ; [$b543]
+SPRITE_TILEINFO_PORTRAIT_KEY_SALESMAN_EYES_01:
     .byte $01                               ; 1 row, 2 columns
     .byte $10                               ; X offset = 16 (0x10)
     .byte $10                               ; Y offset = 16 (0x10)
@@ -31019,7 +31016,7 @@ SPRITE_TILEINFO_PORTRAIT_KEY_SALESMAN_EYES_01: ; [$b543]
 ; XREFS:
 ;     TILEINFO_PORTRAITS_ADDRS [$PRG7::b03d]
 ;
-SPRITE_TILEINFO_PORTRAIT_KEY_SALESMAN_EYES_02: ; [$b54b]
+SPRITE_TILEINFO_PORTRAIT_KEY_SALESMAN_EYES_02:
     .byte $01                               ; 1 row, 2 columns
     .byte $10                               ; X offset = 16 (0x10)
     .byte $10                               ; Y offset = 16 (0x10)
@@ -31047,7 +31044,7 @@ SPRITE_TILEINFO_PORTRAIT_KEY_SALESMAN_EYES_02: ; [$b54b]
 ; XREFS:
 ;     TILEINFO_PORTRAITS_ADDRS [$PRG7::b03f]
 ;
-SPRITE_TILEINFO_PORTRAIT_KEY_SALESMAN_MOUTH_01: ; [$b553]
+SPRITE_TILEINFO_PORTRAIT_KEY_SALESMAN_MOUTH_01:
     .byte $01                               ; 1 row, 2 columns
     .byte $18                               ; X offset = 24 (0x18)
     .byte $18                               ; Y offset = 24 (0x18)
@@ -31071,7 +31068,7 @@ SPRITE_TILEINFO_PORTRAIT_KEY_SALESMAN_MOUTH_01: ; [$b553]
 ; XREFS:
 ;     TILEINFO_PORTRAITS_ADDRS [$PRG7::b041]
 ;
-SPRITE_TILEINFO_PORTRAIT_KEY_SALESMAN_MOUTH_02: ; [$b55b]
+SPRITE_TILEINFO_PORTRAIT_KEY_SALESMAN_MOUTH_02:
     .byte $01                               ; 1 row, 2 columns
     .byte $18                               ; X offset = 24 (0x18)
     .byte $18                               ; Y offset = 24 (0x18)
@@ -31081,346 +31078,346 @@ SPRITE_TILEINFO_PORTRAIT_KEY_SALESMAN_MOUTH_02: ; [$b55b]
     .byte $26                               ; 0, 1: PRG8::a0bb %
     .byte $00                               ; Palette 0
 
-POST_PORTRAITS_TODO:                        ; [$b563]
-    .byte $ff                               ; [$b563] byte
+POST_PORTRAITS_TODO:
+    .byte $ff                               ; byte
 
-    .word $ffbf,$77ff,$ff00,$fff6           ; [$b566] ushort
-    .word $ffff,$ffb7,$ff00,$ffef           ; [$b56c] ushort
-    .word $ffff,$1dff,$ff00,$ffff           ; [$b574] ushort
-    .word $f7ff,$c2df,$ff00,$ffe7           ; [$b57c] ushort
-    .word $ffbd,$bdff,$ff00,$ffbf           ; [$b584] ushort
-    .byte $ef,$ff,$ff,$6f,$00,$ff,$7f,$ff   ; [$b58c] byte
-    .byte $df,$ff,$ff,$e6,$00,$ff,$f5,$ff   ; [$b594] byte
-    .byte $bf,$ff,$ff,$52,$00,$ff,$3d,$ff   ; [$b59c] byte
-    .byte $7f,$ff,$bf,$7f,$00,$ff,$b7,$ff   ; [$b5a4] byte
-    .byte $ef,$ff,$ff,$cd,$00,$ff,$7f,$ff   ; [$b5ac] byte
-    .byte $ff,$ef,$ff,$96,$00,$ff,$f9,$ff   ; [$b5b4] byte
-    .byte $ff,$ff,$fa,$3c,$00,$00,$00,$ea   ; [$b5bc] byte
-    .byte $00,$00,$00,$00,$00,$00,$00,$01   ; [$b5c4] byte
-    .byte $00,$00,$00,$00,$00,$00,$00,$00   ; [$b5cc] byte
-    .byte $00,$40,$00,$00,$00,$00,$00,$26   ; [$b5d4] byte
-    .byte $00,$00,$00,$00,$00,$ff,$45,$ff   ; [$b5dc] byte
-    .byte $fb,$ff,$dc,$20,$00,$ff,$fd,$ff   ; [$b5e4] byte
-    .byte $fb,$ff,$ff,$87,$00,$ff,$bf,$ff   ; [$b5ec] byte
-    .byte $ff,$fb,$ff,$e0,$00,$ff,$7f,$ff   ; [$b5f4] byte
-    .byte $ff,$ff,$ff,$1f,$00,$ff,$ff,$ff   ; [$b5fc] byte
-    .byte $eb,$ff,$ad,$7d,$00,$ff,$b4,$ff   ; [$b604] byte
-    .byte $ff,$ff,$ff,$ff,$00,$ff,$ff,$ff   ; [$b60c] byte
-    .byte $fb,$ff,$7f,$a7,$00,$ff,$77,$ff   ; [$b614] byte
-    .byte $fe,$ff,$ff,$82,$00,$ff,$f5,$ff   ; [$b61c] byte
-    .byte $ff,$ff,$df,$ff,$00,$ff,$da,$ff   ; [$b624] byte
-    .byte $ff,$ff,$ff,$ee,$00,$ff,$ce,$ff   ; [$b62c] byte
-    .byte $ff,$ff,$ff,$53,$00,$ff,$ff,$ff   ; [$b634] byte
-    .byte $bf,$ff,$fe,$17,$00,$ff,$89,$ff   ; [$b63c] byte
-    .byte $7a,$ff,$f6,$ff,$00,$ff,$df,$ff   ; [$b644] byte
-    .byte $ff,$ff,$fb,$ff,$00,$ff,$d2,$ff   ; [$b64c] byte
-    .byte $ff,$7f,$ff,$da,$00,$ff,$1d,$ff   ; [$b654] byte
-    .byte $ff,$ff,$ff,$54,$00,$ff,$6b,$ff   ; [$b65c] byte
-    .byte $ff,$ff,$bf,$d0,$00,$ff,$ff,$ff   ; [$b664] byte
-    .byte $ff,$ff,$ff,$bf,$00,$ff,$6f,$ff   ; [$b66c] byte
-    .byte $ff,$ff,$bf,$ea,$00,$ff,$f5,$ff   ; [$b674] byte
-    .byte $ff,$ff,$ff,$91,$00,$ff,$85,$ff   ; [$b67c] byte
-    .byte $7f,$ff,$f5,$a5,$00,$ff,$ff,$ff   ; [$b684] byte
-    .byte $ff,$ff,$ff,$27,$00,$ff,$fd,$ff   ; [$b68c] byte
-    .byte $ff,$ff,$fa,$d9,$00,$ff,$f7,$ff   ; [$b694] byte
-    .byte $ff,$ff,$ff,$8d,$00,$ff,$6f,$ff   ; [$b69c] byte
-    .byte $df,$ff,$fb,$ef,$00,$ff,$ef,$ff   ; [$b6a4] byte
-    .byte $ff,$ff,$fd,$b5,$00,$ff,$9c,$ff   ; [$b6ac] byte
-    .byte $cf,$ff,$bf,$06,$00,$ff,$fe,$ff   ; [$b6b4] byte
-    .byte $ef,$bf,$ff,$13,$00,$ff,$da,$ff   ; [$b6bc] byte
-    .byte $ff,$ff,$fb,$5e,$00,$ff,$df,$ff   ; [$b6c4] byte
-    .byte $ff,$ff,$ff,$f3,$00,$ff,$7f,$ff   ; [$b6cc] byte
-    .byte $77,$fe,$ff,$dc,$00,$ff,$bf,$ff   ; [$b6d4] byte
-    .byte $ff,$ff,$fd,$69,$00,$ff,$11,$ff   ; [$b6dc] byte
-    .byte $7f,$ff,$27,$fb,$00,$ff,$88,$ff   ; [$b6e4] byte
-    .byte $fb,$ff,$f6,$97,$00,$ff,$75,$ff   ; [$b6ec] byte
-    .byte $9f,$ff,$7e,$47,$00,$ef,$b7,$ff   ; [$b6f4] byte
-    .byte $ff,$ff,$df,$3f,$00,$ff,$b1,$ff   ; [$b6fc] byte
-    .byte $fd,$ff,$b7,$ff,$00,$ff,$5f,$ff   ; [$b704] byte
-    .byte $ff,$ff,$ff,$ef,$00,$ff,$fe,$ff   ; [$b70c] byte
-    .byte $ff,$ff,$ff,$bf,$00,$ff,$17,$ff   ; [$b714] byte
-    .byte $fb,$ff,$ff,$39,$00,$ff,$a3,$ff   ; [$b71c] byte
-    .byte $56,$ff,$eb,$bf,$00,$ff,$df,$ff   ; [$b724] byte
-    .byte $fb,$ff,$fe,$5f,$00,$ff,$ef,$ff   ; [$b72c] byte
-    .byte $bf,$ff,$ff,$5a,$00,$ff,$7f,$ff   ; [$b734] byte
-    .byte $ff,$ff,$ff,$1d,$00,$ff,$c8,$ff   ; [$b73c] byte
-    .byte $7f,$ff,$bb,$f3,$00,$ff,$c5,$ff   ; [$b744] byte
-    .byte $ff,$ff,$37,$bf,$00,$ff,$5c,$ff   ; [$b74c] byte
-    .byte $ff,$ff,$ff,$2e,$00,$ff,$7f,$ff   ; [$b754] byte
-    .byte $ff,$ff,$ff,$78,$00,$ff,$6f,$ff   ; [$b75c] byte
-    .byte $fe,$ff,$ff,$fb,$00,$ff,$7d,$ff   ; [$b764] byte
-    .byte $ff,$ff,$ff,$5e,$00,$ff,$f7,$ff   ; [$b76c] byte
-    .byte $fe,$ff,$7d,$0b,$00,$ff,$fd,$ff   ; [$b774] byte
-    .byte $ff,$ff,$ff,$89,$00,$ff,$75,$ff   ; [$b77c] byte
-    .byte $fe,$ff,$5c,$df,$00,$ff,$de,$ff   ; [$b784] byte
-    .byte $f3,$ff,$ff,$0f,$00,$ff,$77,$ff   ; [$b78c] byte
-    .byte $77,$ff,$ff,$ef,$00,$ff,$76,$ff   ; [$b794] byte
-    .byte $fd,$ef,$ff,$4d,$00,$ff,$5c,$ff   ; [$b79c] byte
-    .byte $fd,$ff,$fa,$47,$00,$ff,$ef,$ff   ; [$b7a4] byte
-    .byte $df,$df,$ff,$90,$80,$ff,$cd,$ff   ; [$b7ac] byte
-    .byte $ff,$ff,$cd,$cd,$00,$ff,$be,$ff   ; [$b7b4] byte
-    .byte $ff,$ff,$fd,$43,$00,$ff,$4a,$ff   ; [$b7bc] byte
-    .byte $ff,$ff,$3f,$f7,$00,$ff,$f4,$ff   ; [$b7c4] byte
-    .byte $ff,$ff,$df,$ba,$00,$ff,$fe,$ff   ; [$b7cc] byte
-    .byte $df,$ff,$fe,$03,$00,$ff,$fe,$ff   ; [$b7d4] byte
-    .byte $ff,$ff,$f7,$30,$00,$ff,$11,$ff   ; [$b7dc] byte
-    .byte $ff,$ff,$fd,$b7,$00,$ff,$7d,$ff   ; [$b7e4] byte
-    .byte $77,$fb,$7f,$be,$00,$ff,$ae,$ff   ; [$b7ec] byte
-    .byte $ff,$ff,$fb,$72,$00,$ff,$7f,$ff   ; [$b7f4] byte
-    .byte $ff,$ff,$ff,$dc,$00,$ff,$5c,$ff   ; [$b7fc] byte
-    .byte $fd,$ff,$f7,$df,$00,$ff,$7e,$ff   ; [$b804] byte
-    .byte $ff,$ff,$ff,$cf,$00,$ff,$fb,$ff   ; [$b80c] byte
-    .byte $ff,$ff,$ff,$86,$00,$ff,$fe,$ff   ; [$b814] byte
-    .byte $ff,$ff,$ff,$cb,$00,$ff,$3f,$ff   ; [$b81c] byte
-    .byte $ec,$ff,$ef,$7d,$00,$ff,$fa,$ff   ; [$b824] byte
-    .byte $ff,$ff,$ff,$df,$00,$ff,$ed,$ff   ; [$b82c] byte
-    .byte $fd,$ff,$ff,$56,$00,$ff,$ff,$ff   ; [$b834] byte
-    .byte $ff,$ff,$ff,$44,$00,$ff,$dd,$ff   ; [$b83c] byte
-    .byte $9f,$ff,$ff,$ff,$00,$ff,$ca,$ff   ; [$b844] byte
-    .byte $ff,$ff,$ff,$af,$00,$ff,$5f,$ff   ; [$b84c] byte
-    .byte $ff,$ff,$ff,$33,$00,$ff,$ff,$ff   ; [$b854] byte
-    .byte $ff,$ff,$ff,$01,$00,$ff,$68,$ff   ; [$b85c] byte
-    .byte $f7,$ff,$6e,$fa,$00,$ff,$ef,$ff   ; [$b864] byte
-    .byte $ff,$ff,$fb,$7e,$00,$ff,$fb,$ff   ; [$b86c] byte
-    .byte $ff,$ff,$fe,$42,$00,$ff,$ff,$ff   ; [$b874] byte
-    .byte $ff,$ff,$5f,$9b,$00,$ff,$e7,$bf   ; [$b87c] byte
-    .byte $ff,$ff,$77,$f5,$00,$ff,$fa,$ff   ; [$b884] byte
-    .byte $ff,$ff,$ff,$fa,$00,$ff,$f7,$ff   ; [$b88c] byte
-    .byte $ff,$ff,$df,$e5,$00,$ff,$df,$ff   ; [$b894] byte
-    .byte $ff,$ff,$ff,$5b,$00,$ff,$f4,$ff   ; [$b89c] byte
-    .byte $97,$ff,$ff,$ef,$00,$ff,$fb,$ff   ; [$b8a4] byte
-    .byte $7f,$ff,$fb,$de,$00,$ff,$db,$ff   ; [$b8ac] byte
-    .byte $fe,$ff,$ff,$18,$00,$ff,$fc,$f7   ; [$b8b4] byte
-    .byte $fa,$ff,$ef,$b4,$00,$ff,$7f,$ff   ; [$b8bc] byte
-    .byte $79,$ff,$b7,$fe,$00,$ff,$db,$ff   ; [$b8c4] byte
-    .byte $fb,$ff,$af,$5f,$00,$ff,$be,$ff   ; [$b8cc] byte
-    .byte $ff,$ff,$ff,$58,$00,$ff,$ff,$ff   ; [$b8d4] byte
-    .byte $ff,$ff,$bb,$56,$00,$ff,$88,$ff   ; [$b8dc] byte
-    .byte $9c,$ff,$af,$ff,$00,$ff,$b7,$ff   ; [$b8e4] byte
-    .byte $ff,$ff,$fe,$af,$00,$ff,$fa,$ff   ; [$b8ec] byte
-    .byte $ff,$bf,$ff,$69,$00,$ff,$ce,$ff   ; [$b8f4] byte
-    .byte $ff,$df,$f7,$0e,$00,$ff,$cb,$ff   ; [$b8fc] byte
-    .byte $ef,$ff,$ff,$7f,$00,$ff,$ff,$ff   ; [$b904] byte
-    .byte $ff,$ff,$5e,$ff,$00,$ff,$ec,$ff   ; [$b90c] byte
-    .byte $ff,$ff,$ff,$ef,$00,$ff,$fd,$ff   ; [$b914] byte
-    .byte $ff,$ff,$ff,$33,$00,$ff,$83,$ff   ; [$b91c] byte
-    .byte $7f,$ff,$e9,$ff,$00,$ff,$b6,$ff   ; [$b924] byte
-    .byte $fd,$ff,$ff,$5f,$00,$ff,$af,$ff   ; [$b92c] byte
-    .byte $fb,$ff,$ff,$8f,$80,$ff,$ff,$ff   ; [$b934] byte
-    .byte $ff,$ff,$bf,$1b,$00,$ff,$be,$ff   ; [$b93c] byte
-    .byte $7f,$ff,$fd,$d7,$00,$ff,$cf,$ff   ; [$b944] byte
-    .byte $ff,$ff,$fe,$1f,$00,$ff,$7d,$ff   ; [$b94c] byte
-    .byte $f5,$ff,$ff,$4e,$00,$ff,$3f,$ff   ; [$b954] byte
-    .byte $ff,$ff,$ff,$24,$00,$ff,$b5,$ff   ; [$b95c] byte
-    .byte $7f,$ff,$ff,$9b,$00,$ff,$f4,$ff   ; [$b964] byte
-    .byte $ff,$ff,$ef,$3d,$00,$ff,$bf,$ff   ; [$b96c] byte
-    .byte $ff,$ff,$ff,$f8,$00,$ff,$ff,$ff   ; [$b974] byte
-    .byte $ff,$ff,$ff,$f0,$00,$ff,$a7,$ff   ; [$b97c] byte
-    .byte $ff,$ff,$ff,$f7,$00,$ff,$ef,$ff   ; [$b984] byte
-    .byte $fd,$ff,$bf,$7f,$00,$f7,$2d,$ff   ; [$b98c] byte
-    .byte $ef,$ff,$ff,$97,$00,$ff,$f3,$ff   ; [$b994] byte
-    .byte $ff,$ff,$df,$fd,$00,$ff,$9b,$ff   ; [$b99c] byte
-    .byte $fd,$ff,$ff,$ff,$00,$ff,$bf,$ff   ; [$b9a4] byte
-    .byte $ff,$ff,$fb,$5f,$00,$ff,$6f,$ff   ; [$b9ac] byte
-    .byte $ff,$bf,$bf,$a8,$00,$ff,$ff,$ff   ; [$b9b4] byte
-    .byte $f7,$ff,$ff,$41,$00,$ff,$a1,$ff   ; [$b9bc] byte
-    .byte $f2,$ff,$7e,$da,$00,$ff,$fc,$ff   ; [$b9c4] byte
-    .byte $ff,$ff,$ef,$ae,$00,$ff,$97,$ff   ; [$b9cc] byte
-    .byte $f9,$ff,$fd,$82,$00,$ff,$f9,$ff   ; [$b9d4] byte
-    .byte $ff,$ff,$ff,$a9,$00,$ff,$1e,$ff   ; [$b9dc] byte
-    .byte $7f,$ff,$6f,$fe,$00,$ff,$af,$ff   ; [$b9e4] byte
-    .byte $7f,$ff,$ff,$76,$00,$ff,$de,$ff   ; [$b9ec] byte
-    .byte $df,$ff,$df,$31,$00,$f7,$ff,$ff   ; [$b9f4] byte
-    .byte $df,$ff,$ff,$06,$00,$ff,$77,$ff   ; [$b9fc] byte
-    .byte $ff,$ff,$f7,$bf,$00,$ff,$e9,$ff   ; [$ba04] byte
-    .byte $fe,$ff,$ff,$fe,$00,$ff,$f6,$ff   ; [$ba0c] byte
-    .byte $b7,$ff,$ff,$dd,$00,$ff,$fb,$ff   ; [$ba14] byte
-    .byte $ff,$ff,$ef,$18,$00,$ff,$b7,$ff   ; [$ba1c] byte
-    .byte $d6,$ff,$76,$ff,$00,$ff,$d9,$ff   ; [$ba24] byte
-    .byte $7f,$ff,$ff,$f7,$00,$ff,$bb,$ff   ; [$ba2c] byte
-    .byte $ff,$ff,$ff,$f0,$00,$ff,$ff,$ff   ; [$ba34] byte
-    .byte $ff,$7f,$ff,$08,$00,$ff,$ab,$ff   ; [$ba3c] byte
-    .byte $ff,$ff,$fd,$ff,$00,$ff,$d1,$ff   ; [$ba44] byte
-    .byte $ff,$ff,$ff,$ef,$00,$ff,$ce,$ff   ; [$ba4c] byte
-    .byte $df,$ff,$ff,$2e,$00,$ff,$bf,$ff   ; [$ba54] byte
-    .byte $ff,$ff,$ff,$98,$00,$ff,$ff,$ff   ; [$ba5c] byte
-    .byte $ff,$ff,$ff,$fa,$00,$ff,$8e,$ff   ; [$ba64] byte
-    .byte $cf,$ff,$fe,$97,$00,$ff,$2e,$ff   ; [$ba6c] byte
-    .byte $ff,$ff,$ff,$ce,$00,$ff,$ff,$ff   ; [$ba74] byte
-    .byte $ff,$ff,$ff,$31,$00,$ff,$8d,$ff   ; [$ba7c] byte
-    .byte $eb,$ff,$f7,$9d,$00,$ff,$6b,$ff   ; [$ba84] byte
-    .byte $f2,$df,$77,$72,$00,$ff,$ff,$ff   ; [$ba8c] byte
-    .byte $dd,$ff,$ef,$5e,$00,$ff,$7b,$ff   ; [$ba94] byte
-    .byte $ff,$ef,$fe,$24,$00,$ff,$ef,$ff   ; [$ba9c] byte
-    .byte $e8,$ff,$f3,$7f,$00,$ff,$d7,$ff   ; [$baa4] byte
-    .byte $df,$ff,$fd,$3e,$00,$ff,$fb,$ff   ; [$baac] byte
-    .byte $f7,$ff,$ff,$ce,$00,$ff,$7f,$ff   ; [$bab4] byte
-    .byte $ff,$fd,$ff,$36,$00,$ff,$bf,$ff   ; [$babc] byte
-    .byte $db,$ff,$ff,$3f,$00,$ff,$5a,$ff   ; [$bac4] byte
-    .byte $7f,$ff,$df,$5b,$00,$ff,$73,$ff   ; [$bacc] byte
-    .byte $fc,$df,$f6,$9c,$00,$ff,$b2,$ff   ; [$bad4] byte
-    .byte $ff,$f7,$ff,$03,$00,$ff,$cb,$ff   ; [$badc] byte
-    .byte $fa,$ff,$ff,$ae,$00,$ff,$d3,$ff   ; [$bae4] byte
-    .byte $ff,$ff,$ff,$3c,$00,$ff,$fe,$ff   ; [$baec] byte
-    .byte $ff,$ff,$f7,$14,$00,$ff,$bf,$ff   ; [$baf4] byte
-    .byte $ff,$bf,$ff,$01,$00,$ff,$86,$ff   ; [$bafc] byte
-    .byte $ef,$ff,$b5,$ff,$00,$ff,$59,$ff   ; [$bb04] byte
-    .byte $ff,$ff,$ff,$96,$00,$ff,$7e,$ff   ; [$bb0c] byte
-    .byte $ff,$7f,$ff,$da,$00,$ff,$ff,$ff   ; [$bb14] byte
-    .byte $ff,$ff,$ff,$14,$00,$ff,$21,$ff   ; [$bb1c] byte
-    .byte $db,$ff,$fb,$7f,$00,$ff,$b7,$ff   ; [$bb24] byte
-    .byte $ef,$ff,$b3,$fb,$00,$ff,$ff,$ff   ; [$bb2c] byte
-    .byte $df,$ff,$f3,$7f,$00,$ff,$f7,$ff   ; [$bb34] byte
-    .byte $ff,$ff,$ff,$60,$00,$ff,$d4,$ff   ; [$bb3c] byte
-    .byte $ff,$ff,$bd,$7f,$00,$ff,$be,$ff   ; [$bb44] byte
-    .byte $ff,$ff,$ff,$df,$00,$ff,$7b,$ff   ; [$bb4c] byte
-    .byte $ef,$ff,$ff,$cf,$00,$ff,$f7,$ff   ; [$bb54] byte
-    .byte $ff,$ff,$ff,$5f,$00,$ff,$a9,$ff   ; [$bb5c] byte
-    .byte $f7,$ff,$f7,$fe,$00,$ff,$44,$ff   ; [$bb64] byte
-    .byte $ff,$ff,$ef,$6f,$00,$ff,$6b,$ff   ; [$bb6c] byte
-    .byte $fd,$ff,$ff,$be,$00,$ff,$ff,$ff   ; [$bb74] byte
-    .byte $ff,$3f,$ff,$56,$00,$ff,$c2,$ff   ; [$bb7c] byte
-    .byte $ff,$ff,$fb,$fb,$00,$ff,$26,$ff   ; [$bb84] byte
-    .byte $ff,$ff,$fb,$c1,$00,$ff,$5f,$ff   ; [$bb8c] byte
-    .byte $f3,$ff,$ff,$e0,$00,$ff,$fe,$ff   ; [$bb94] byte
-    .byte $ef,$ff,$7f,$c0,$00,$ff,$e8,$ff   ; [$bb9c] byte
-    .byte $ed,$ff,$ff,$9f,$00,$ff,$6e,$ff   ; [$bba4] byte
-    .byte $f7,$ff,$df,$47,$00,$ff,$ea,$ff   ; [$bbac] byte
-    .byte $fd,$ff,$ff,$6d,$00,$ff,$ff,$ff   ; [$bbb4] byte
-    .byte $bf,$ff,$ef,$a8,$00,$ff,$c4,$ff   ; [$bbbc] byte
-    .byte $ed,$ff,$fb,$ef,$00,$ff,$3a,$ff   ; [$bbc4] byte
-    .byte $ff,$ff,$fd,$72,$00,$ff,$93,$ff   ; [$bbcc] byte
-    .byte $fd,$fd,$bd,$45,$00,$ff,$ef,$ff   ; [$bbd4] byte
-    .byte $ff,$ff,$ff,$f0,$00,$ff,$25,$ff   ; [$bbdc] byte
-    .byte $fb,$ff,$fa,$57,$00,$ff,$cf,$ff   ; [$bbe4] byte
-    .byte $ff,$ff,$e3,$4c,$00,$ff,$a7,$ff   ; [$bbec] byte
-    .byte $f7,$ff,$fe,$8e,$00,$ff,$e0,$ff   ; [$bbf4] byte
-    .byte $ff,$ff,$f7,$47,$00,$ff,$bf,$ff   ; [$bbfc] byte
-    .byte $bf,$ff,$ff,$ff,$00,$ff,$fe,$ff   ; [$bc04] byte
-    .byte $ff,$ff,$ee,$f7,$00,$ff,$ff,$ff   ; [$bc0c] byte
-    .byte $fb,$ff,$ff,$ce,$00,$ff,$bf,$ff   ; [$bc14] byte
-    .byte $fe,$ff,$ff,$f6,$00,$ff,$1a,$ff   ; [$bc1c] byte
-    .byte $ef,$ff,$f5,$ff,$00,$ff,$df,$ff   ; [$bc24] byte
-    .byte $f7,$ff,$fd,$bf,$00,$ff,$f7,$ff   ; [$bc2c] byte
-    .byte $af,$fd,$ff,$6f,$00,$ff,$ff,$ff   ; [$bc34] byte
-    .byte $ff,$fb,$ff,$93,$00,$ff,$97,$ff   ; [$bc3c] byte
-    .byte $ff,$ff,$ef,$ff,$00,$ff,$fe,$ff   ; [$bc44] byte
-    .byte $ef,$ff,$df,$fb,$00,$ff,$f4,$ff   ; [$bc4c] byte
-    .byte $f7,$ff,$fe,$d1,$00,$ff,$f6,$ff   ; [$bc54] byte
-    .byte $ff,$ff,$bf,$73,$00,$ff,$5d,$ff   ; [$bc5c] byte
-    .byte $fa,$ff,$ff,$ff,$00,$ff,$ff,$fd   ; [$bc64] byte
-    .byte $ff,$ff,$ff,$ff,$00,$ff,$ff,$ff   ; [$bc6c] byte
-    .byte $ff,$ef,$fd,$1e,$00,$ff,$bf,$ff   ; [$bc74] byte
-    .byte $ff,$ff,$ff,$2d,$00,$ff,$0b,$ff   ; [$bc7c] byte
-    .byte $de,$ff,$d7,$bf,$00,$ff,$3f,$ff   ; [$bc84] byte
-    .byte $ff,$ff,$fd,$fd,$00,$ff,$7f,$ff   ; [$bc8c] byte
-    .byte $ef,$ff,$ff,$ac,$00,$ff,$fb,$ff   ; [$bc94] byte
-    .byte $ff,$df,$f7,$d7,$00,$ff,$a4,$ff   ; [$bc9c] byte
-    .byte $bf,$ff,$fd,$60,$00,$ff,$f7,$ff   ; [$bca4] byte
-    .byte $ff,$ff,$bf,$ff,$00,$ff,$5f,$ff   ; [$bcac] byte
-    .byte $ff,$ff,$ff,$ac,$00,$ff,$ef,$ff   ; [$bcb4] byte
-    .byte $ff,$ff,$ff,$ae,$00,$ff,$20,$ff   ; [$bcbc] byte
-    .byte $ff,$ff,$ef,$d6,$00,$ff,$ec,$ff   ; [$bcc4] byte
-    .byte $bf,$ff,$ff,$de,$00,$ff,$e7,$ff   ; [$bccc] byte
-    .byte $df,$ff,$ff,$16,$00,$ff,$df,$ff   ; [$bcd4] byte
-    .byte $ff,$ff,$ff,$51,$00,$ff,$ed,$ff   ; [$bcdc] byte
-    .byte $bf,$ff,$3f,$67,$00,$ff,$de,$ff   ; [$bce4] byte
-    .byte $ff,$ff,$cf,$2d,$00,$ff,$b5,$ff   ; [$bcec] byte
-    .byte $df,$ff,$ff,$17,$00,$ff,$fd,$ff   ; [$bcf4] byte
-    .byte $b7,$bf,$bf,$85,$00,$ff,$d0,$ff   ; [$bcfc] byte
-    .byte $ff,$ff,$f7,$fd,$00,$ff,$fb,$ff   ; [$bd04] byte
-    .byte $e6,$ff,$c5,$af,$00,$ff,$d5,$ff   ; [$bd0c] byte
-    .byte $7f,$ff,$ff,$4f,$00,$ff,$fb,$ff   ; [$bd14] byte
-    .byte $ff,$ff,$ff,$2f,$00,$ff,$da,$ff   ; [$bd1c] byte
-    .byte $f7,$ff,$ef,$fd,$00,$ff,$ae,$ff   ; [$bd24] byte
-    .byte $ff,$ff,$db,$e6,$00,$ff,$fe,$ff   ; [$bd2c] byte
-    .byte $ff,$ff,$ff,$0c,$00,$ff,$ff,$ff   ; [$bd34] byte
-    .byte $f7,$ff,$bf,$dd,$00,$ff,$1b,$ff   ; [$bd3c] byte
-    .byte $ad,$ff,$fe,$ff,$00,$ff,$ff,$ff   ; [$bd44] byte
-    .byte $ff,$ff,$ef,$fe,$00,$ff,$cf,$ff   ; [$bd4c] byte
-    .byte $ff,$ff,$ff,$77,$00,$ff,$ff,$ff   ; [$bd54] byte
-    .byte $ff,$ff,$ff,$70,$00,$ff,$f9,$ff   ; [$bd5c] byte
-    .byte $f7,$ff,$fd,$7f,$00,$ff,$bf,$ff   ; [$bd64] byte
-    .byte $ff,$ff,$ff,$a4,$00,$ff,$7f,$ff   ; [$bd6c] byte
-    .byte $fb,$ff,$ff,$49,$00,$ff,$5f,$ff   ; [$bd74] byte
-    .byte $ff,$ff,$ff,$ad,$00,$ff,$8a,$ff   ; [$bd7c] byte
-    .byte $e7,$ff,$ff,$ff,$00,$ff,$f9,$ff   ; [$bd84] byte
-    .byte $fb,$ff,$ff,$fb,$00,$ff,$de,$ff   ; [$bd8c] byte
-    .byte $ff,$ff,$df,$01,$00,$ff,$ef,$bf   ; [$bd94] byte
-    .byte $fe,$ff,$ef,$3e,$00,$ff,$f3,$ff   ; [$bd9c] byte
-    .byte $ff,$ff,$bf,$ef,$00,$ff,$39,$ff   ; [$bda4] byte
-    .byte $7f,$ff,$df,$2b,$00,$ff,$fe,$ff   ; [$bdac] byte
-    .byte $ff,$ff,$ff,$a2,$00,$ff,$fb,$ff   ; [$bdb4] byte
-    .byte $ff,$ff,$ff,$fb,$00,$ff,$ff,$ff   ; [$bdbc] byte
-    .byte $ff,$ff,$3b,$0d,$00,$ff,$af,$ff   ; [$bdc4] byte
-    .byte $ff,$ff,$ef,$37,$00,$ff,$fc,$ff   ; [$bdcc] byte
-    .byte $bf,$fe,$ff,$48,$00,$ff,$bf,$ff   ; [$bdd4] byte
-    .byte $ff,$ff,$ff,$10,$00,$ff,$e7,$ff   ; [$bddc] byte
-    .byte $ff,$ff,$3d,$5f,$00,$ff,$6e,$ff   ; [$bde4] byte
-    .byte $fd,$ff,$ff,$96,$00,$ff,$59,$ff   ; [$bdec] byte
-    .byte $fa,$ff,$fb,$ea,$00,$ff,$7e,$ff   ; [$bdf4] byte
-    .byte $ff,$fb,$fd,$00,$00,$ff,$70,$ff   ; [$bdfc] byte
-    .byte $fb,$ff,$ad,$ff,$00,$ff,$7c,$ff   ; [$be04] byte
-    .byte $fe,$ff,$ff,$ff,$00,$ff,$bf,$ff   ; [$be0c] byte
-    .byte $ff,$ff,$ff,$5f,$00,$ff,$fb,$ff   ; [$be14] byte
-    .byte $ff,$ff,$ff,$c8,$00,$ff,$1d,$ff   ; [$be1c] byte
-    .byte $fb,$ff,$6f,$ff,$00,$ff,$12,$ff   ; [$be24] byte
-    .byte $ff,$ff,$fb,$ff,$00,$ff,$ff,$ff   ; [$be2c] byte
-    .byte $ff,$ff,$7e,$bf,$00,$ff,$ff,$ff   ; [$be34] byte
-    .byte $ff,$ff,$ff,$f9,$00,$ff,$dc,$ff   ; [$be3c] byte
-    .byte $ff,$ff,$ff,$3f,$00,$ff,$b3,$ff   ; [$be44] byte
-    .byte $f7,$ff,$ff,$fe,$00,$ff,$7e,$ff   ; [$be4c] byte
-    .byte $ff,$ff,$ff,$3a,$00,$ff,$f7,$ff   ; [$be54] byte
-    .byte $bf,$ff,$ff,$09,$00,$ff,$d8,$ff   ; [$be5c] byte
-    .byte $bd,$ff,$15,$af,$00,$ff,$e3,$ff   ; [$be64] byte
-    .byte $ff,$ff,$f7,$dd,$00,$ff,$79,$ff   ; [$be6c] byte
-    .byte $ff,$ff,$bf,$68,$00,$ff,$ef,$ff   ; [$be74] byte
-    .byte $ff,$ff,$ff,$02,$00,$ff,$57,$ff   ; [$be7c] byte
-    .byte $7f,$ff,$f3,$ff,$00,$ff,$23,$ff   ; [$be84] byte
-    .byte $f7,$ff,$ff,$f3,$00,$ff,$7b,$ff   ; [$be8c] byte
-    .byte $ff,$ff,$ff,$a4,$00,$ff,$fe,$ff   ; [$be94] byte
-    .byte $ff,$ff,$ff,$08,$00,$ff,$f8,$ff   ; [$be9c] byte
-    .byte $ff,$ff,$df,$9e,$00,$ff,$f2,$ff   ; [$bea4] byte
-    .byte $ff,$ff,$fe,$3e,$00,$ff,$fb,$ff   ; [$beac] byte
-    .byte $ff,$ff,$ff,$22,$00,$ff,$ed,$ff   ; [$beb4] byte
-    .byte $ff,$ff,$ff,$d9,$00,$ff,$1f,$ff   ; [$bebc] byte
-    .byte $af,$ff,$f7,$fc,$00,$ff,$dd,$ff   ; [$bec4] byte
-    .byte $ff,$ff,$fe,$8b,$00,$ff,$ff,$ff   ; [$becc] byte
-    .byte $ff,$ff,$fd,$ed,$00,$ff,$df,$ff   ; [$bed4] byte
-    .byte $ff,$ff,$ff,$40,$00,$ff,$f7,$ff   ; [$bedc] byte
-    .byte $fd,$ff,$4e,$1d,$00,$ff,$f9,$ff   ; [$bee4] byte
-    .byte $fd,$ff,$cf,$f6,$00,$ff,$7f,$ff   ; [$beec] byte
-    .byte $bf,$ff,$7b,$61,$00,$ff,$f7,$ff   ; [$bef4] byte
-    .byte $df,$ff,$ff,$21,$00,$ff,$6f,$ff   ; [$befc] byte
-    .byte $ff,$ff,$fb,$7f,$00,$ff,$df,$ff   ; [$bf04] byte
-    .byte $f7,$ff,$ff,$9f,$00,$ff,$bf,$ff   ; [$bf0c] byte
-    .byte $f7,$ff,$ff,$b7,$00,$ff,$ff,$ff   ; [$bf14] byte
-    .byte $fe,$ff,$ff,$91,$00,$ff,$83,$ff   ; [$bf1c] byte
-    .byte $7f,$ff,$6d,$ff,$00,$ff,$b5,$ff   ; [$bf24] byte
-    .byte $ff,$ff,$ff,$eb,$00,$ff,$fd,$ff   ; [$bf2c] byte
-    .byte $ff,$ff,$ef,$b5,$00,$ff,$bf,$ff   ; [$bf34] byte
-    .byte $ff,$ff,$ff,$7a,$00,$ff,$d0,$ff   ; [$bf3c] byte
-    .byte $bc,$ff,$ed,$ff,$00,$ff,$dd,$ff   ; [$bf44] byte
-    .byte $fb,$ff,$ff,$b3,$00,$ff,$ff,$ff   ; [$bf4c] byte
-    .byte $ff,$ff,$fd,$6a,$00,$ff,$f7,$ff   ; [$bf54] byte
-    .byte $df,$ff,$ff,$34,$00,$ff,$67,$ff   ; [$bf5c] byte
-    .byte $ff,$ff,$b5,$fd,$00,$ff,$da,$ff   ; [$bf64] byte
-    .byte $ff,$ff,$ff,$fa,$00,$ff,$7e,$ff   ; [$bf6c] byte
-    .byte $df,$ff,$ff,$49,$00,$ff,$de,$ff   ; [$bf74] byte
-    .byte $ff,$ff,$ef,$27,$00,$ff,$e7,$ff   ; [$bf7c] byte
-    .byte $3d,$ff,$fb,$39,$00,$ff,$fa,$ff   ; [$bf84] byte
-    .byte $fb,$ff,$fd,$fb,$00,$ff,$ff,$ff   ; [$bf8c] byte
-    .byte $ff,$ff,$ef,$26,$00,$ff,$ff,$ff   ; [$bf94] byte
-    .byte $ff,$ff,$df,$89,$00,$ff,$98,$ff   ; [$bf9c] byte
-    .byte $7f,$ff,$fd,$da,$00,$ff,$f1,$ff   ; [$bfa4] byte
-    .byte $ef,$ff,$ff,$5f,$00,$ff,$b2,$ff   ; [$bfac] byte
-    .byte $ef,$ff,$ff,$4e,$00,$ff,$ff,$ff   ; [$bfb4] byte
-    .byte $ff,$ff,$3f,$1a,$00,$ff,$18,$ff   ; [$bfbc] byte
-    .byte $eb,$ff,$df,$4b,$00,$ff,$fb,$ff   ; [$bfc4] byte
-    .byte $ef,$ff,$fd,$58,$00,$ff,$f3,$fe   ; [$bfcc] byte
-    .byte $ff,$ff,$ff,$02,$00,$ff,$ff,$ff   ; [$bfd4] byte
-    .byte $ff,$ff,$ef,$60,$00,$ff,$72,$ff   ; [$bfdc] byte
-    .byte $ef,$ff,$fe,$0a,$00,$ff,$cd,$ff   ; [$bfe4] byte
-    .byte $ff,$ff,$6e,$fc,$00,$fe,$ed,$ff   ; [$bfec] byte
-    .byte $ff,$ff,$df,$d7,$00,$ff,$f3,$ff   ; [$bff4] byte
-    .byte $fe,$ff,$ff,$09                   ; [$bffc] byte
+    .word $ffbf,$77ff,$ff00,$fff6           ; ushort
+    .word $ffff,$ffb7,$ff00,$ffef           ; ushort
+    .word $ffff,$1dff,$ff00,$ffff           ; ushort
+    .word $f7ff,$c2df,$ff00,$ffe7           ; ushort
+    .word $ffbd,$bdff,$ff00,$ffbf           ; ushort
+    .byte $ef,$ff,$ff,$6f,$00,$ff,$7f,$ff   ; byte
+    .byte $df,$ff,$ff,$e6,$00,$ff,$f5,$ff   ; byte
+    .byte $bf,$ff,$ff,$52,$00,$ff,$3d,$ff   ; byte
+    .byte $7f,$ff,$bf,$7f,$00,$ff,$b7,$ff   ; byte
+    .byte $ef,$ff,$ff,$cd,$00,$ff,$7f,$ff   ; byte
+    .byte $ff,$ef,$ff,$96,$00,$ff,$f9,$ff   ; byte
+    .byte $ff,$ff,$fa,$3c,$00,$00,$00,$ea   ; byte
+    .byte $00,$00,$00,$00,$00,$00,$00,$01   ; byte
+    .byte $00,$00,$00,$00,$00,$00,$00,$00   ; byte
+    .byte $00,$40,$00,$00,$00,$00,$00,$26   ; byte
+    .byte $00,$00,$00,$00,$00,$ff,$45,$ff   ; byte
+    .byte $fb,$ff,$dc,$20,$00,$ff,$fd,$ff   ; byte
+    .byte $fb,$ff,$ff,$87,$00,$ff,$bf,$ff   ; byte
+    .byte $ff,$fb,$ff,$e0,$00,$ff,$7f,$ff   ; byte
+    .byte $ff,$ff,$ff,$1f,$00,$ff,$ff,$ff   ; byte
+    .byte $eb,$ff,$ad,$7d,$00,$ff,$b4,$ff   ; byte
+    .byte $ff,$ff,$ff,$ff,$00,$ff,$ff,$ff   ; byte
+    .byte $fb,$ff,$7f,$a7,$00,$ff,$77,$ff   ; byte
+    .byte $fe,$ff,$ff,$82,$00,$ff,$f5,$ff   ; byte
+    .byte $ff,$ff,$df,$ff,$00,$ff,$da,$ff   ; byte
+    .byte $ff,$ff,$ff,$ee,$00,$ff,$ce,$ff   ; byte
+    .byte $ff,$ff,$ff,$53,$00,$ff,$ff,$ff   ; byte
+    .byte $bf,$ff,$fe,$17,$00,$ff,$89,$ff   ; byte
+    .byte $7a,$ff,$f6,$ff,$00,$ff,$df,$ff   ; byte
+    .byte $ff,$ff,$fb,$ff,$00,$ff,$d2,$ff   ; byte
+    .byte $ff,$7f,$ff,$da,$00,$ff,$1d,$ff   ; byte
+    .byte $ff,$ff,$ff,$54,$00,$ff,$6b,$ff   ; byte
+    .byte $ff,$ff,$bf,$d0,$00,$ff,$ff,$ff   ; byte
+    .byte $ff,$ff,$ff,$bf,$00,$ff,$6f,$ff   ; byte
+    .byte $ff,$ff,$bf,$ea,$00,$ff,$f5,$ff   ; byte
+    .byte $ff,$ff,$ff,$91,$00,$ff,$85,$ff   ; byte
+    .byte $7f,$ff,$f5,$a5,$00,$ff,$ff,$ff   ; byte
+    .byte $ff,$ff,$ff,$27,$00,$ff,$fd,$ff   ; byte
+    .byte $ff,$ff,$fa,$d9,$00,$ff,$f7,$ff   ; byte
+    .byte $ff,$ff,$ff,$8d,$00,$ff,$6f,$ff   ; byte
+    .byte $df,$ff,$fb,$ef,$00,$ff,$ef,$ff   ; byte
+    .byte $ff,$ff,$fd,$b5,$00,$ff,$9c,$ff   ; byte
+    .byte $cf,$ff,$bf,$06,$00,$ff,$fe,$ff   ; byte
+    .byte $ef,$bf,$ff,$13,$00,$ff,$da,$ff   ; byte
+    .byte $ff,$ff,$fb,$5e,$00,$ff,$df,$ff   ; byte
+    .byte $ff,$ff,$ff,$f3,$00,$ff,$7f,$ff   ; byte
+    .byte $77,$fe,$ff,$dc,$00,$ff,$bf,$ff   ; byte
+    .byte $ff,$ff,$fd,$69,$00,$ff,$11,$ff   ; byte
+    .byte $7f,$ff,$27,$fb,$00,$ff,$88,$ff   ; byte
+    .byte $fb,$ff,$f6,$97,$00,$ff,$75,$ff   ; byte
+    .byte $9f,$ff,$7e,$47,$00,$ef,$b7,$ff   ; byte
+    .byte $ff,$ff,$df,$3f,$00,$ff,$b1,$ff   ; byte
+    .byte $fd,$ff,$b7,$ff,$00,$ff,$5f,$ff   ; byte
+    .byte $ff,$ff,$ff,$ef,$00,$ff,$fe,$ff   ; byte
+    .byte $ff,$ff,$ff,$bf,$00,$ff,$17,$ff   ; byte
+    .byte $fb,$ff,$ff,$39,$00,$ff,$a3,$ff   ; byte
+    .byte $56,$ff,$eb,$bf,$00,$ff,$df,$ff   ; byte
+    .byte $fb,$ff,$fe,$5f,$00,$ff,$ef,$ff   ; byte
+    .byte $bf,$ff,$ff,$5a,$00,$ff,$7f,$ff   ; byte
+    .byte $ff,$ff,$ff,$1d,$00,$ff,$c8,$ff   ; byte
+    .byte $7f,$ff,$bb,$f3,$00,$ff,$c5,$ff   ; byte
+    .byte $ff,$ff,$37,$bf,$00,$ff,$5c,$ff   ; byte
+    .byte $ff,$ff,$ff,$2e,$00,$ff,$7f,$ff   ; byte
+    .byte $ff,$ff,$ff,$78,$00,$ff,$6f,$ff   ; byte
+    .byte $fe,$ff,$ff,$fb,$00,$ff,$7d,$ff   ; byte
+    .byte $ff,$ff,$ff,$5e,$00,$ff,$f7,$ff   ; byte
+    .byte $fe,$ff,$7d,$0b,$00,$ff,$fd,$ff   ; byte
+    .byte $ff,$ff,$ff,$89,$00,$ff,$75,$ff   ; byte
+    .byte $fe,$ff,$5c,$df,$00,$ff,$de,$ff   ; byte
+    .byte $f3,$ff,$ff,$0f,$00,$ff,$77,$ff   ; byte
+    .byte $77,$ff,$ff,$ef,$00,$ff,$76,$ff   ; byte
+    .byte $fd,$ef,$ff,$4d,$00,$ff,$5c,$ff   ; byte
+    .byte $fd,$ff,$fa,$47,$00,$ff,$ef,$ff   ; byte
+    .byte $df,$df,$ff,$90,$80,$ff,$cd,$ff   ; byte
+    .byte $ff,$ff,$cd,$cd,$00,$ff,$be,$ff   ; byte
+    .byte $ff,$ff,$fd,$43,$00,$ff,$4a,$ff   ; byte
+    .byte $ff,$ff,$3f,$f7,$00,$ff,$f4,$ff   ; byte
+    .byte $ff,$ff,$df,$ba,$00,$ff,$fe,$ff   ; byte
+    .byte $df,$ff,$fe,$03,$00,$ff,$fe,$ff   ; byte
+    .byte $ff,$ff,$f7,$30,$00,$ff,$11,$ff   ; byte
+    .byte $ff,$ff,$fd,$b7,$00,$ff,$7d,$ff   ; byte
+    .byte $77,$fb,$7f,$be,$00,$ff,$ae,$ff   ; byte
+    .byte $ff,$ff,$fb,$72,$00,$ff,$7f,$ff   ; byte
+    .byte $ff,$ff,$ff,$dc,$00,$ff,$5c,$ff   ; byte
+    .byte $fd,$ff,$f7,$df,$00,$ff,$7e,$ff   ; byte
+    .byte $ff,$ff,$ff,$cf,$00,$ff,$fb,$ff   ; byte
+    .byte $ff,$ff,$ff,$86,$00,$ff,$fe,$ff   ; byte
+    .byte $ff,$ff,$ff,$cb,$00,$ff,$3f,$ff   ; byte
+    .byte $ec,$ff,$ef,$7d,$00,$ff,$fa,$ff   ; byte
+    .byte $ff,$ff,$ff,$df,$00,$ff,$ed,$ff   ; byte
+    .byte $fd,$ff,$ff,$56,$00,$ff,$ff,$ff   ; byte
+    .byte $ff,$ff,$ff,$44,$00,$ff,$dd,$ff   ; byte
+    .byte $9f,$ff,$ff,$ff,$00,$ff,$ca,$ff   ; byte
+    .byte $ff,$ff,$ff,$af,$00,$ff,$5f,$ff   ; byte
+    .byte $ff,$ff,$ff,$33,$00,$ff,$ff,$ff   ; byte
+    .byte $ff,$ff,$ff,$01,$00,$ff,$68,$ff   ; byte
+    .byte $f7,$ff,$6e,$fa,$00,$ff,$ef,$ff   ; byte
+    .byte $ff,$ff,$fb,$7e,$00,$ff,$fb,$ff   ; byte
+    .byte $ff,$ff,$fe,$42,$00,$ff,$ff,$ff   ; byte
+    .byte $ff,$ff,$5f,$9b,$00,$ff,$e7,$bf   ; byte
+    .byte $ff,$ff,$77,$f5,$00,$ff,$fa,$ff   ; byte
+    .byte $ff,$ff,$ff,$fa,$00,$ff,$f7,$ff   ; byte
+    .byte $ff,$ff,$df,$e5,$00,$ff,$df,$ff   ; byte
+    .byte $ff,$ff,$ff,$5b,$00,$ff,$f4,$ff   ; byte
+    .byte $97,$ff,$ff,$ef,$00,$ff,$fb,$ff   ; byte
+    .byte $7f,$ff,$fb,$de,$00,$ff,$db,$ff   ; byte
+    .byte $fe,$ff,$ff,$18,$00,$ff,$fc,$f7   ; byte
+    .byte $fa,$ff,$ef,$b4,$00,$ff,$7f,$ff   ; byte
+    .byte $79,$ff,$b7,$fe,$00,$ff,$db,$ff   ; byte
+    .byte $fb,$ff,$af,$5f,$00,$ff,$be,$ff   ; byte
+    .byte $ff,$ff,$ff,$58,$00,$ff,$ff,$ff   ; byte
+    .byte $ff,$ff,$bb,$56,$00,$ff,$88,$ff   ; byte
+    .byte $9c,$ff,$af,$ff,$00,$ff,$b7,$ff   ; byte
+    .byte $ff,$ff,$fe,$af,$00,$ff,$fa,$ff   ; byte
+    .byte $ff,$bf,$ff,$69,$00,$ff,$ce,$ff   ; byte
+    .byte $ff,$df,$f7,$0e,$00,$ff,$cb,$ff   ; byte
+    .byte $ef,$ff,$ff,$7f,$00,$ff,$ff,$ff   ; byte
+    .byte $ff,$ff,$5e,$ff,$00,$ff,$ec,$ff   ; byte
+    .byte $ff,$ff,$ff,$ef,$00,$ff,$fd,$ff   ; byte
+    .byte $ff,$ff,$ff,$33,$00,$ff,$83,$ff   ; byte
+    .byte $7f,$ff,$e9,$ff,$00,$ff,$b6,$ff   ; byte
+    .byte $fd,$ff,$ff,$5f,$00,$ff,$af,$ff   ; byte
+    .byte $fb,$ff,$ff,$8f,$80,$ff,$ff,$ff   ; byte
+    .byte $ff,$ff,$bf,$1b,$00,$ff,$be,$ff   ; byte
+    .byte $7f,$ff,$fd,$d7,$00,$ff,$cf,$ff   ; byte
+    .byte $ff,$ff,$fe,$1f,$00,$ff,$7d,$ff   ; byte
+    .byte $f5,$ff,$ff,$4e,$00,$ff,$3f,$ff   ; byte
+    .byte $ff,$ff,$ff,$24,$00,$ff,$b5,$ff   ; byte
+    .byte $7f,$ff,$ff,$9b,$00,$ff,$f4,$ff   ; byte
+    .byte $ff,$ff,$ef,$3d,$00,$ff,$bf,$ff   ; byte
+    .byte $ff,$ff,$ff,$f8,$00,$ff,$ff,$ff   ; byte
+    .byte $ff,$ff,$ff,$f0,$00,$ff,$a7,$ff   ; byte
+    .byte $ff,$ff,$ff,$f7,$00,$ff,$ef,$ff   ; byte
+    .byte $fd,$ff,$bf,$7f,$00,$f7,$2d,$ff   ; byte
+    .byte $ef,$ff,$ff,$97,$00,$ff,$f3,$ff   ; byte
+    .byte $ff,$ff,$df,$fd,$00,$ff,$9b,$ff   ; byte
+    .byte $fd,$ff,$ff,$ff,$00,$ff,$bf,$ff   ; byte
+    .byte $ff,$ff,$fb,$5f,$00,$ff,$6f,$ff   ; byte
+    .byte $ff,$bf,$bf,$a8,$00,$ff,$ff,$ff   ; byte
+    .byte $f7,$ff,$ff,$41,$00,$ff,$a1,$ff   ; byte
+    .byte $f2,$ff,$7e,$da,$00,$ff,$fc,$ff   ; byte
+    .byte $ff,$ff,$ef,$ae,$00,$ff,$97,$ff   ; byte
+    .byte $f9,$ff,$fd,$82,$00,$ff,$f9,$ff   ; byte
+    .byte $ff,$ff,$ff,$a9,$00,$ff,$1e,$ff   ; byte
+    .byte $7f,$ff,$6f,$fe,$00,$ff,$af,$ff   ; byte
+    .byte $7f,$ff,$ff,$76,$00,$ff,$de,$ff   ; byte
+    .byte $df,$ff,$df,$31,$00,$f7,$ff,$ff   ; byte
+    .byte $df,$ff,$ff,$06,$00,$ff,$77,$ff   ; byte
+    .byte $ff,$ff,$f7,$bf,$00,$ff,$e9,$ff   ; byte
+    .byte $fe,$ff,$ff,$fe,$00,$ff,$f6,$ff   ; byte
+    .byte $b7,$ff,$ff,$dd,$00,$ff,$fb,$ff   ; byte
+    .byte $ff,$ff,$ef,$18,$00,$ff,$b7,$ff   ; byte
+    .byte $d6,$ff,$76,$ff,$00,$ff,$d9,$ff   ; byte
+    .byte $7f,$ff,$ff,$f7,$00,$ff,$bb,$ff   ; byte
+    .byte $ff,$ff,$ff,$f0,$00,$ff,$ff,$ff   ; byte
+    .byte $ff,$7f,$ff,$08,$00,$ff,$ab,$ff   ; byte
+    .byte $ff,$ff,$fd,$ff,$00,$ff,$d1,$ff   ; byte
+    .byte $ff,$ff,$ff,$ef,$00,$ff,$ce,$ff   ; byte
+    .byte $df,$ff,$ff,$2e,$00,$ff,$bf,$ff   ; byte
+    .byte $ff,$ff,$ff,$98,$00,$ff,$ff,$ff   ; byte
+    .byte $ff,$ff,$ff,$fa,$00,$ff,$8e,$ff   ; byte
+    .byte $cf,$ff,$fe,$97,$00,$ff,$2e,$ff   ; byte
+    .byte $ff,$ff,$ff,$ce,$00,$ff,$ff,$ff   ; byte
+    .byte $ff,$ff,$ff,$31,$00,$ff,$8d,$ff   ; byte
+    .byte $eb,$ff,$f7,$9d,$00,$ff,$6b,$ff   ; byte
+    .byte $f2,$df,$77,$72,$00,$ff,$ff,$ff   ; byte
+    .byte $dd,$ff,$ef,$5e,$00,$ff,$7b,$ff   ; byte
+    .byte $ff,$ef,$fe,$24,$00,$ff,$ef,$ff   ; byte
+    .byte $e8,$ff,$f3,$7f,$00,$ff,$d7,$ff   ; byte
+    .byte $df,$ff,$fd,$3e,$00,$ff,$fb,$ff   ; byte
+    .byte $f7,$ff,$ff,$ce,$00,$ff,$7f,$ff   ; byte
+    .byte $ff,$fd,$ff,$36,$00,$ff,$bf,$ff   ; byte
+    .byte $db,$ff,$ff,$3f,$00,$ff,$5a,$ff   ; byte
+    .byte $7f,$ff,$df,$5b,$00,$ff,$73,$ff   ; byte
+    .byte $fc,$df,$f6,$9c,$00,$ff,$b2,$ff   ; byte
+    .byte $ff,$f7,$ff,$03,$00,$ff,$cb,$ff   ; byte
+    .byte $fa,$ff,$ff,$ae,$00,$ff,$d3,$ff   ; byte
+    .byte $ff,$ff,$ff,$3c,$00,$ff,$fe,$ff   ; byte
+    .byte $ff,$ff,$f7,$14,$00,$ff,$bf,$ff   ; byte
+    .byte $ff,$bf,$ff,$01,$00,$ff,$86,$ff   ; byte
+    .byte $ef,$ff,$b5,$ff,$00,$ff,$59,$ff   ; byte
+    .byte $ff,$ff,$ff,$96,$00,$ff,$7e,$ff   ; byte
+    .byte $ff,$7f,$ff,$da,$00,$ff,$ff,$ff   ; byte
+    .byte $ff,$ff,$ff,$14,$00,$ff,$21,$ff   ; byte
+    .byte $db,$ff,$fb,$7f,$00,$ff,$b7,$ff   ; byte
+    .byte $ef,$ff,$b3,$fb,$00,$ff,$ff,$ff   ; byte
+    .byte $df,$ff,$f3,$7f,$00,$ff,$f7,$ff   ; byte
+    .byte $ff,$ff,$ff,$60,$00,$ff,$d4,$ff   ; byte
+    .byte $ff,$ff,$bd,$7f,$00,$ff,$be,$ff   ; byte
+    .byte $ff,$ff,$ff,$df,$00,$ff,$7b,$ff   ; byte
+    .byte $ef,$ff,$ff,$cf,$00,$ff,$f7,$ff   ; byte
+    .byte $ff,$ff,$ff,$5f,$00,$ff,$a9,$ff   ; byte
+    .byte $f7,$ff,$f7,$fe,$00,$ff,$44,$ff   ; byte
+    .byte $ff,$ff,$ef,$6f,$00,$ff,$6b,$ff   ; byte
+    .byte $fd,$ff,$ff,$be,$00,$ff,$ff,$ff   ; byte
+    .byte $ff,$3f,$ff,$56,$00,$ff,$c2,$ff   ; byte
+    .byte $ff,$ff,$fb,$fb,$00,$ff,$26,$ff   ; byte
+    .byte $ff,$ff,$fb,$c1,$00,$ff,$5f,$ff   ; byte
+    .byte $f3,$ff,$ff,$e0,$00,$ff,$fe,$ff   ; byte
+    .byte $ef,$ff,$7f,$c0,$00,$ff,$e8,$ff   ; byte
+    .byte $ed,$ff,$ff,$9f,$00,$ff,$6e,$ff   ; byte
+    .byte $f7,$ff,$df,$47,$00,$ff,$ea,$ff   ; byte
+    .byte $fd,$ff,$ff,$6d,$00,$ff,$ff,$ff   ; byte
+    .byte $bf,$ff,$ef,$a8,$00,$ff,$c4,$ff   ; byte
+    .byte $ed,$ff,$fb,$ef,$00,$ff,$3a,$ff   ; byte
+    .byte $ff,$ff,$fd,$72,$00,$ff,$93,$ff   ; byte
+    .byte $fd,$fd,$bd,$45,$00,$ff,$ef,$ff   ; byte
+    .byte $ff,$ff,$ff,$f0,$00,$ff,$25,$ff   ; byte
+    .byte $fb,$ff,$fa,$57,$00,$ff,$cf,$ff   ; byte
+    .byte $ff,$ff,$e3,$4c,$00,$ff,$a7,$ff   ; byte
+    .byte $f7,$ff,$fe,$8e,$00,$ff,$e0,$ff   ; byte
+    .byte $ff,$ff,$f7,$47,$00,$ff,$bf,$ff   ; byte
+    .byte $bf,$ff,$ff,$ff,$00,$ff,$fe,$ff   ; byte
+    .byte $ff,$ff,$ee,$f7,$00,$ff,$ff,$ff   ; byte
+    .byte $fb,$ff,$ff,$ce,$00,$ff,$bf,$ff   ; byte
+    .byte $fe,$ff,$ff,$f6,$00,$ff,$1a,$ff   ; byte
+    .byte $ef,$ff,$f5,$ff,$00,$ff,$df,$ff   ; byte
+    .byte $f7,$ff,$fd,$bf,$00,$ff,$f7,$ff   ; byte
+    .byte $af,$fd,$ff,$6f,$00,$ff,$ff,$ff   ; byte
+    .byte $ff,$fb,$ff,$93,$00,$ff,$97,$ff   ; byte
+    .byte $ff,$ff,$ef,$ff,$00,$ff,$fe,$ff   ; byte
+    .byte $ef,$ff,$df,$fb,$00,$ff,$f4,$ff   ; byte
+    .byte $f7,$ff,$fe,$d1,$00,$ff,$f6,$ff   ; byte
+    .byte $ff,$ff,$bf,$73,$00,$ff,$5d,$ff   ; byte
+    .byte $fa,$ff,$ff,$ff,$00,$ff,$ff,$fd   ; byte
+    .byte $ff,$ff,$ff,$ff,$00,$ff,$ff,$ff   ; byte
+    .byte $ff,$ef,$fd,$1e,$00,$ff,$bf,$ff   ; byte
+    .byte $ff,$ff,$ff,$2d,$00,$ff,$0b,$ff   ; byte
+    .byte $de,$ff,$d7,$bf,$00,$ff,$3f,$ff   ; byte
+    .byte $ff,$ff,$fd,$fd,$00,$ff,$7f,$ff   ; byte
+    .byte $ef,$ff,$ff,$ac,$00,$ff,$fb,$ff   ; byte
+    .byte $ff,$df,$f7,$d7,$00,$ff,$a4,$ff   ; byte
+    .byte $bf,$ff,$fd,$60,$00,$ff,$f7,$ff   ; byte
+    .byte $ff,$ff,$bf,$ff,$00,$ff,$5f,$ff   ; byte
+    .byte $ff,$ff,$ff,$ac,$00,$ff,$ef,$ff   ; byte
+    .byte $ff,$ff,$ff,$ae,$00,$ff,$20,$ff   ; byte
+    .byte $ff,$ff,$ef,$d6,$00,$ff,$ec,$ff   ; byte
+    .byte $bf,$ff,$ff,$de,$00,$ff,$e7,$ff   ; byte
+    .byte $df,$ff,$ff,$16,$00,$ff,$df,$ff   ; byte
+    .byte $ff,$ff,$ff,$51,$00,$ff,$ed,$ff   ; byte
+    .byte $bf,$ff,$3f,$67,$00,$ff,$de,$ff   ; byte
+    .byte $ff,$ff,$cf,$2d,$00,$ff,$b5,$ff   ; byte
+    .byte $df,$ff,$ff,$17,$00,$ff,$fd,$ff   ; byte
+    .byte $b7,$bf,$bf,$85,$00,$ff,$d0,$ff   ; byte
+    .byte $ff,$ff,$f7,$fd,$00,$ff,$fb,$ff   ; byte
+    .byte $e6,$ff,$c5,$af,$00,$ff,$d5,$ff   ; byte
+    .byte $7f,$ff,$ff,$4f,$00,$ff,$fb,$ff   ; byte
+    .byte $ff,$ff,$ff,$2f,$00,$ff,$da,$ff   ; byte
+    .byte $f7,$ff,$ef,$fd,$00,$ff,$ae,$ff   ; byte
+    .byte $ff,$ff,$db,$e6,$00,$ff,$fe,$ff   ; byte
+    .byte $ff,$ff,$ff,$0c,$00,$ff,$ff,$ff   ; byte
+    .byte $f7,$ff,$bf,$dd,$00,$ff,$1b,$ff   ; byte
+    .byte $ad,$ff,$fe,$ff,$00,$ff,$ff,$ff   ; byte
+    .byte $ff,$ff,$ef,$fe,$00,$ff,$cf,$ff   ; byte
+    .byte $ff,$ff,$ff,$77,$00,$ff,$ff,$ff   ; byte
+    .byte $ff,$ff,$ff,$70,$00,$ff,$f9,$ff   ; byte
+    .byte $f7,$ff,$fd,$7f,$00,$ff,$bf,$ff   ; byte
+    .byte $ff,$ff,$ff,$a4,$00,$ff,$7f,$ff   ; byte
+    .byte $fb,$ff,$ff,$49,$00,$ff,$5f,$ff   ; byte
+    .byte $ff,$ff,$ff,$ad,$00,$ff,$8a,$ff   ; byte
+    .byte $e7,$ff,$ff,$ff,$00,$ff,$f9,$ff   ; byte
+    .byte $fb,$ff,$ff,$fb,$00,$ff,$de,$ff   ; byte
+    .byte $ff,$ff,$df,$01,$00,$ff,$ef,$bf   ; byte
+    .byte $fe,$ff,$ef,$3e,$00,$ff,$f3,$ff   ; byte
+    .byte $ff,$ff,$bf,$ef,$00,$ff,$39,$ff   ; byte
+    .byte $7f,$ff,$df,$2b,$00,$ff,$fe,$ff   ; byte
+    .byte $ff,$ff,$ff,$a2,$00,$ff,$fb,$ff   ; byte
+    .byte $ff,$ff,$ff,$fb,$00,$ff,$ff,$ff   ; byte
+    .byte $ff,$ff,$3b,$0d,$00,$ff,$af,$ff   ; byte
+    .byte $ff,$ff,$ef,$37,$00,$ff,$fc,$ff   ; byte
+    .byte $bf,$fe,$ff,$48,$00,$ff,$bf,$ff   ; byte
+    .byte $ff,$ff,$ff,$10,$00,$ff,$e7,$ff   ; byte
+    .byte $ff,$ff,$3d,$5f,$00,$ff,$6e,$ff   ; byte
+    .byte $fd,$ff,$ff,$96,$00,$ff,$59,$ff   ; byte
+    .byte $fa,$ff,$fb,$ea,$00,$ff,$7e,$ff   ; byte
+    .byte $ff,$fb,$fd,$00,$00,$ff,$70,$ff   ; byte
+    .byte $fb,$ff,$ad,$ff,$00,$ff,$7c,$ff   ; byte
+    .byte $fe,$ff,$ff,$ff,$00,$ff,$bf,$ff   ; byte
+    .byte $ff,$ff,$ff,$5f,$00,$ff,$fb,$ff   ; byte
+    .byte $ff,$ff,$ff,$c8,$00,$ff,$1d,$ff   ; byte
+    .byte $fb,$ff,$6f,$ff,$00,$ff,$12,$ff   ; byte
+    .byte $ff,$ff,$fb,$ff,$00,$ff,$ff,$ff   ; byte
+    .byte $ff,$ff,$7e,$bf,$00,$ff,$ff,$ff   ; byte
+    .byte $ff,$ff,$ff,$f9,$00,$ff,$dc,$ff   ; byte
+    .byte $ff,$ff,$ff,$3f,$00,$ff,$b3,$ff   ; byte
+    .byte $f7,$ff,$ff,$fe,$00,$ff,$7e,$ff   ; byte
+    .byte $ff,$ff,$ff,$3a,$00,$ff,$f7,$ff   ; byte
+    .byte $bf,$ff,$ff,$09,$00,$ff,$d8,$ff   ; byte
+    .byte $bd,$ff,$15,$af,$00,$ff,$e3,$ff   ; byte
+    .byte $ff,$ff,$f7,$dd,$00,$ff,$79,$ff   ; byte
+    .byte $ff,$ff,$bf,$68,$00,$ff,$ef,$ff   ; byte
+    .byte $ff,$ff,$ff,$02,$00,$ff,$57,$ff   ; byte
+    .byte $7f,$ff,$f3,$ff,$00,$ff,$23,$ff   ; byte
+    .byte $f7,$ff,$ff,$f3,$00,$ff,$7b,$ff   ; byte
+    .byte $ff,$ff,$ff,$a4,$00,$ff,$fe,$ff   ; byte
+    .byte $ff,$ff,$ff,$08,$00,$ff,$f8,$ff   ; byte
+    .byte $ff,$ff,$df,$9e,$00,$ff,$f2,$ff   ; byte
+    .byte $ff,$ff,$fe,$3e,$00,$ff,$fb,$ff   ; byte
+    .byte $ff,$ff,$ff,$22,$00,$ff,$ed,$ff   ; byte
+    .byte $ff,$ff,$ff,$d9,$00,$ff,$1f,$ff   ; byte
+    .byte $af,$ff,$f7,$fc,$00,$ff,$dd,$ff   ; byte
+    .byte $ff,$ff,$fe,$8b,$00,$ff,$ff,$ff   ; byte
+    .byte $ff,$ff,$fd,$ed,$00,$ff,$df,$ff   ; byte
+    .byte $ff,$ff,$ff,$40,$00,$ff,$f7,$ff   ; byte
+    .byte $fd,$ff,$4e,$1d,$00,$ff,$f9,$ff   ; byte
+    .byte $fd,$ff,$cf,$f6,$00,$ff,$7f,$ff   ; byte
+    .byte $bf,$ff,$7b,$61,$00,$ff,$f7,$ff   ; byte
+    .byte $df,$ff,$ff,$21,$00,$ff,$6f,$ff   ; byte
+    .byte $ff,$ff,$fb,$7f,$00,$ff,$df,$ff   ; byte
+    .byte $f7,$ff,$ff,$9f,$00,$ff,$bf,$ff   ; byte
+    .byte $f7,$ff,$ff,$b7,$00,$ff,$ff,$ff   ; byte
+    .byte $fe,$ff,$ff,$91,$00,$ff,$83,$ff   ; byte
+    .byte $7f,$ff,$6d,$ff,$00,$ff,$b5,$ff   ; byte
+    .byte $ff,$ff,$ff,$eb,$00,$ff,$fd,$ff   ; byte
+    .byte $ff,$ff,$ef,$b5,$00,$ff,$bf,$ff   ; byte
+    .byte $ff,$ff,$ff,$7a,$00,$ff,$d0,$ff   ; byte
+    .byte $bc,$ff,$ed,$ff,$00,$ff,$dd,$ff   ; byte
+    .byte $fb,$ff,$ff,$b3,$00,$ff,$ff,$ff   ; byte
+    .byte $ff,$ff,$fd,$6a,$00,$ff,$f7,$ff   ; byte
+    .byte $df,$ff,$ff,$34,$00,$ff,$67,$ff   ; byte
+    .byte $ff,$ff,$b5,$fd,$00,$ff,$da,$ff   ; byte
+    .byte $ff,$ff,$ff,$fa,$00,$ff,$7e,$ff   ; byte
+    .byte $df,$ff,$ff,$49,$00,$ff,$de,$ff   ; byte
+    .byte $ff,$ff,$ef,$27,$00,$ff,$e7,$ff   ; byte
+    .byte $3d,$ff,$fb,$39,$00,$ff,$fa,$ff   ; byte
+    .byte $fb,$ff,$fd,$fb,$00,$ff,$ff,$ff   ; byte
+    .byte $ff,$ff,$ef,$26,$00,$ff,$ff,$ff   ; byte
+    .byte $ff,$ff,$df,$89,$00,$ff,$98,$ff   ; byte
+    .byte $7f,$ff,$fd,$da,$00,$ff,$f1,$ff   ; byte
+    .byte $ef,$ff,$ff,$5f,$00,$ff,$b2,$ff   ; byte
+    .byte $ef,$ff,$ff,$4e,$00,$ff,$ff,$ff   ; byte
+    .byte $ff,$ff,$3f,$1a,$00,$ff,$18,$ff   ; byte
+    .byte $eb,$ff,$df,$4b,$00,$ff,$fb,$ff   ; byte
+    .byte $ef,$ff,$fd,$58,$00,$ff,$f3,$fe   ; byte
+    .byte $ff,$ff,$ff,$02,$00,$ff,$ff,$ff   ; byte
+    .byte $ff,$ff,$ef,$60,$00,$ff,$72,$ff   ; byte
+    .byte $ef,$ff,$fe,$0a,$00,$ff,$cd,$ff   ; byte
+    .byte $ff,$ff,$6e,$fc,$00,$fe,$ed,$ff   ; byte
+    .byte $ff,$ff,$df,$d7,$00,$ff,$f3,$ff   ; byte
+    .byte $fe,$ff,$ff,$09                   ; byte

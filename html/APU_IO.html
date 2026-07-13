@@ -29,9 +29,10 @@ a:visited {
 pre {
   display: grid;
   grid-template-columns: minmax(6ch, min-content)
+                         minmax(10ch, min-content)
                          minmax(70ch, max-content)
                          1fr;
-  gap: 0 3em;
+  gap: 0 3ch;
   margin: 0;
   padding: 0;
 }
@@ -52,6 +53,13 @@ pre {
   color: #9bdeff;
 }
 
+.b {
+  color: #95956B;
+  grid-column: 2;
+  grid-row: 1;
+  text-wrap: wrap;
+}
+
 .equs {
   display: grid;
   grid-template-columns: minmax(50ch, max-content) min-content auto;
@@ -68,7 +76,7 @@ pre {
 .c,
 .cp,
 .equs {
-  grid-column: 2;
+  grid-column: 3;
 }
 
 .cp {
@@ -84,11 +92,13 @@ pre {
 }
 
 .cd {
-  grid-column: 2 / 3;
+  grid-column: 3 / -1;
+  grid-row: 1;
 }
 
 .ce {
   grid-column: -1;
+  grid-row: 1;
   text-wrap: wrap;
   text-indent: 2ch hanging;
 }
@@ -100,7 +110,7 @@ pre {
 .la,
 .lla {
   font-weight: bold;
-  grid-column: 2 / 3;
+  grid-column: 3 / -1;
 }
 
 .la,
@@ -123,7 +133,7 @@ pre {
 
 .idx {
   display: grid;
-  grid-column: 2 / 3;
+  grid-column: 3 / -1;
   grid-template-columns: minmax(50ch, max-content) auto;
   gap: 0 1em;
 }
@@ -161,8 +171,8 @@ pre {
 ;     <a href="PRG5.html#Music_UpdateSQVolRegister">Music_UpdateSQVolRegister</a>
 ;     <a href="PRG5.html#SoundEffect_PlayerDied_OnTick">SoundEffect_PlayerDied_OnTick</a>
 ;
-</div><span class="l"><a class="anc" name="4000" href="#4000">[4000]</a><a href="#SQ1_VOL" class="la">SQ1_VOL:</a><span class="ce">; [$4000]</span></span>
-<span class="l"><a class="anc" name="4000" href="#4000">[4000]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [$4000] undefined</span></span>
+</div><span class="l"><a class="anc" name="4000" href="#4000">[4000]</a><a href="#SQ1_VOL" class="la">SQ1_VOL:</a></span>
+<span class="l"><a class="anc" name="4000" href="#4000">[4000]</a><span class="b">00</span><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; undefined</span></span>
 <span class="l"></span>
 <a name="SQ1_SWEEP"></a><div class="c">;
 ; XREFS:
@@ -170,8 +180,8 @@ pre {
 ;     <a href="PRG5.html#Music_SetupWave">Music_SetupWave</a>
 ;     <a href="PRG5.html#SoundEffect_PlayerDied_OnTick">SoundEffect_PlayerDied_OnTick</a>
 ;
-</div><span class="l"><a class="anc" name="4001" href="#4001">[4001]</a><a href="#SQ1_SWEEP" class="la">SQ1_SWEEP:</a><span class="ce">; [$4001]</span></span>
-<span class="l"><a class="anc" name="4001" href="#4001">[4001]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [$4001] undefined</span></span>
+</div><span class="l"><a class="anc" name="4001" href="#4001">[4001]</a><a href="#SQ1_SWEEP" class="la">SQ1_SWEEP:</a></span>
+<span class="l"><a class="anc" name="4001" href="#4001">[4001]</a><span class="b">00</span><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; undefined</span></span>
 <span class="l"></span>
 <a name="SQ1_LO"></a><div class="c">;
 ; XREFS:
@@ -180,8 +190,8 @@ pre {
 ;     <a href="PRG5.html#Music_SetupWave">Music_SetupWave</a>
 ;     <a href="PRG5.html#SoundEffect_PlayerDied_OnTick">SoundEffect_PlayerDied_OnTick</a>
 ;
-</div><span class="l"><a class="anc" name="4002" href="#4002">[4002]</a><a href="#SQ1_LO" class="la">SQ1_LO:</a><span class="ce">; [$4002]</span></span>
-<span class="l"><a class="anc" name="4002" href="#4002">[4002]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [$4002] undefined</span></span>
+</div><span class="l"><a class="anc" name="4002" href="#4002">[4002]</a><a href="#SQ1_LO" class="la">SQ1_LO:</a></span>
+<span class="l"><a class="anc" name="4002" href="#4002">[4002]</a><span class="b">00</span><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; undefined</span></span>
 <span class="l"></span>
 <a name="SQ1_HI"></a><div class="c">;
 ; XREFS:
@@ -189,8 +199,8 @@ pre {
 ;     <a href="PRG5.html#Music_SetupWave">Music_SetupWave</a>
 ;     <a href="PRG5.html#SoundEffect_PlayerDied_OnTick">SoundEffect_PlayerDied_OnTick</a>
 ;
-</div><span class="l"><a class="anc" name="4003" href="#4003">[4003]</a><a href="#SQ1_HI" class="la">SQ1_HI:</a><span class="ce">; [$4003]</span></span>
-<span class="l"><a class="anc" name="4003" href="#4003">[4003]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [$4003] undefined</span></span>
+</div><span class="l"><a class="anc" name="4003" href="#4003">[4003]</a><a href="#SQ1_HI" class="la">SQ1_HI:</a></span>
+<span class="l"><a class="anc" name="4003" href="#4003">[4003]</a><span class="b">00</span><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; undefined</span></span>
 <span class="l"></span>
 <a name="SQ2_VOL"></a><div class="c">;
 ; XREFS:
@@ -217,8 +227,8 @@ pre {
 ;     <a href="PRG5.html#SoundEffect_ShowPlayerMenu_OnTick">SoundEffect_ShowPlayerMenu_OnTick</a>
 ;     <a href="PRG5.html#SoundEffect_Tilte_OnTick">SoundEffect_Tilte_OnTick</a>
 ;
-</div><span class="l"><a class="anc" name="4004" href="#4004">[4004]</a><a href="#SQ2_VOL" class="la">SQ2_VOL:</a><span class="ce">; [$4004]</span></span>
-<span class="l"><a class="anc" name="4004" href="#4004">[4004]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [$4004] undefined</span></span>
+</div><span class="l"><a class="anc" name="4004" href="#4004">[4004]</a><a href="#SQ2_VOL" class="la">SQ2_VOL:</a></span>
+<span class="l"><a class="anc" name="4004" href="#4004">[4004]</a><span class="b">00</span><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; undefined</span></span>
 <span class="l"></span>
 <a name="SQ2_SWEEP"></a><div class="c">;
 ; XREFS:
@@ -246,8 +256,8 @@ pre {
 ;     <a href="PRG5.html#SoundEffect_ShowPlayerMenu_OnTick">SoundEffect_ShowPlayerMenu_OnTick</a>
 ;     <a href="PRG5.html#SoundEffect_Tilte_OnTick">SoundEffect_Tilte_OnTick</a>
 ;
-</div><span class="l"><a class="anc" name="4005" href="#4005">[4005]</a><a href="#SQ2_SWEEP" class="la">SQ2_SWEEP:</a><span class="ce">; [$4005]</span></span>
-<span class="l"><a class="anc" name="4005" href="#4005">[4005]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [$4005] undefined</span></span>
+</div><span class="l"><a class="anc" name="4005" href="#4005">[4005]</a><a href="#SQ2_SWEEP" class="la">SQ2_SWEEP:</a></span>
+<span class="l"><a class="anc" name="4005" href="#4005">[4005]</a><span class="b">00</span><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; undefined</span></span>
 <span class="l"></span>
 <a name="SQ2_LO"></a><div class="c">;
 ; XREFS:
@@ -275,8 +285,8 @@ pre {
 ;     <a href="PRG5.html#SoundEffect_ShowPlayerMenu_OnTick">SoundEffect_ShowPlayerMenu_OnTick</a>
 ;     <a href="PRG5.html#SoundEffect_Tilte_OnTick">SoundEffect_Tilte_OnTick</a>
 ;
-</div><span class="l"><a class="anc" name="4006" href="#4006">[4006]</a><a href="#SQ2_LO" class="la">SQ2_LO:</a><span class="ce">; [$4006]</span></span>
-<span class="l"><a class="anc" name="4006" href="#4006">[4006]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [$4006] undefined</span></span>
+</div><span class="l"><a class="anc" name="4006" href="#4006">[4006]</a><a href="#SQ2_LO" class="la">SQ2_LO:</a></span>
+<span class="l"><a class="anc" name="4006" href="#4006">[4006]</a><span class="b">00</span><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; undefined</span></span>
 <span class="l"></span>
 <a name="SQ2_HI"></a><div class="c">;
 ; XREFS:
@@ -304,8 +314,8 @@ pre {
 ;     <a href="PRG5.html#SoundEffect_ShowPlayerMenu_OnTick">SoundEffect_ShowPlayerMenu_OnTick</a>
 ;     <a href="PRG5.html#SoundEffect_Tilte_OnTick">SoundEffect_Tilte_OnTick</a>
 ;
-</div><span class="l"><a class="anc" name="4007" href="#4007">[4007]</a><a href="#SQ2_HI" class="la">SQ2_HI:</a><span class="ce">; [$4007]</span></span>
-<span class="l"><a class="anc" name="4007" href="#4007">[4007]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [$4007] undefined</span></span>
+</div><span class="l"><a class="anc" name="4007" href="#4007">[4007]</a><a href="#SQ2_HI" class="la">SQ2_HI:</a></span>
+<span class="l"><a class="anc" name="4007" href="#4007">[4007]</a><span class="b">00</span><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; undefined</span></span>
 <span class="l"></span>
 <a name="TRI_LINEAR"></a><div class="c">;
 ; XREFS:
@@ -314,8 +324,8 @@ pre {
 ;     <a href="PRG5.html#Music_SetupWave">Music_SetupWave</a>
 ;     <a href="PRG5.html#SoundEffect_PlayerDied_OnTick">SoundEffect_PlayerDied_OnTick</a>
 ;
-</div><span class="l"><a class="anc" name="4008" href="#4008">[4008]</a><a href="#TRI_LINEAR" class="la">TRI_LINEAR:</a><span class="ce">; [$4008]</span></span>
-<span class="l"><a class="anc" name="4008" href="#4008">[4008]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00</span></span><span class="ce">; [$4008] undefined</span></span>
+</div><span class="l"><a class="anc" name="4008" href="#4008">[4008]</a><a href="#TRI_LINEAR" class="la">TRI_LINEAR:</a></span>
+<span class="l"><a class="anc" name="4008" href="#4008">[4008]</a><span class="b">00 00</span><span class="cd"><span class="i">.byte</span> <span class="o">$00,$00</span></span><span class="ce">; undefined</span></span>
 <span class="l"></span>
 <a name="TRI_LO"></a><div class="c">;
 ; XREFS:
@@ -323,16 +333,16 @@ pre {
 ;     <a href="PRG5.html#Music_SetupWave">Music_SetupWave</a>
 ;     <a href="PRG5.html#SoundEffect_PlayerDied_OnTick">SoundEffect_PlayerDied_OnTick</a>
 ;
-</div><span class="l"><a class="anc" name="400a" href="#400a">[400a]</a><a href="#TRI_LO" class="la">TRI_LO:</a><span class="ce">; [$400a]</span></span>
-<span class="l"><a class="anc" name="400a" href="#400a">[400a]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [$400a] undefined</span></span>
+</div><span class="l"><a class="anc" name="400a" href="#400a">[400a]</a><a href="#TRI_LO" class="la">TRI_LO:</a></span>
+<span class="l"><a class="anc" name="400a" href="#400a">[400a]</a><span class="b">00</span><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; undefined</span></span>
 <span class="l"></span>
 <a name="TRI_HI"></a><div class="c">;
 ; XREFS:
 ;     <a href="PRG5.html#Audio_Reset">Audio_Reset</a>
 ;     <a href="PRG5.html#Music_SetupWave">Music_SetupWave</a>
 ;
-</div><span class="l"><a class="anc" name="400b" href="#400b">[400b]</a><a href="#TRI_HI" class="la">TRI_HI:</a><span class="ce">; [$400b]</span></span>
-<span class="l"><a class="anc" name="400b" href="#400b">[400b]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [$400b] undefined</span></span>
+</div><span class="l"><a class="anc" name="400b" href="#400b">[400b]</a><a href="#TRI_HI" class="la">TRI_HI:</a></span>
+<span class="l"><a class="anc" name="400b" href="#400b">[400b]</a><span class="b">00</span><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; undefined</span></span>
 <span class="l"></span>
 <a name="NOISE_VOL"></a><div class="c">;
 ; XREFS:
@@ -351,15 +361,15 @@ pre {
 ;     <a href="PRG5.html#SoundEffect_PushBlock_OnTick">SoundEffect_PushBlock_OnTick</a>
 ;     <a href="PRG5.html#SoundEffect_Tilte_OnTick">SoundEffect_Tilte_OnTick</a>
 ;
-</div><span class="l"><a class="anc" name="400c" href="#400c">[400c]</a><a href="#NOISE_VOL" class="la">NOISE_VOL:</a><span class="ce">; [$400c]</span></span>
-<span class="l"><a class="anc" name="400c" href="#400c">[400c]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [$400c] undefined1</span></span>
+</div><span class="l"><a class="anc" name="400c" href="#400c">[400c]</a><a href="#NOISE_VOL" class="la">NOISE_VOL:</a></span>
+<span class="l"><a class="anc" name="400c" href="#400c">[400c]</a><span class="b">00</span><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; undefined1</span></span>
 <span class="l"></span>
 <a name="DAT_400d"></a><div class="c">;
 ; XREFS:
 ;     <a href="PRG5.html#Music_PlayNoise">Music_PlayNoise</a>
 ;
-</div><span class="l"><a class="anc" name="400d" href="#400d">[400d]</a><a href="#DAT_400d" class="la">DAT_400d:</a><span class="ce">; [$400d]</span></span>
-<span class="l"><a class="anc" name="400d" href="#400d">[400d]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [$400d] undefined1</span></span>
+</div><span class="l"><a class="anc" name="400d" href="#400d">[400d]</a><a href="#DAT_400d" class="la">DAT_400d:</a></span>
+<span class="l"><a class="anc" name="400d" href="#400d">[400d]</a><span class="b">00</span><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; undefined1</span></span>
 <span class="l"></span>
 <a name="NOISE_LO"></a><div class="c">;
 ; XREFS:
@@ -377,8 +387,8 @@ pre {
 ;     <a href="PRG5.html#SoundEffect_PushBlock_OnTick">SoundEffect_PushBlock_OnTick</a>
 ;     <a href="PRG5.html#SoundEffect_Tilte_OnTick">SoundEffect_Tilte_OnTick</a>
 ;
-</div><span class="l"><a class="anc" name="400e" href="#400e">[400e]</a><a href="#NOISE_LO" class="la">NOISE_LO:</a><span class="ce">; [$400e]</span></span>
-<span class="l"><a class="anc" name="400e" href="#400e">[400e]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [$400e] undefined</span></span>
+</div><span class="l"><a class="anc" name="400e" href="#400e">[400e]</a><a href="#NOISE_LO" class="la">NOISE_LO:</a></span>
+<span class="l"><a class="anc" name="400e" href="#400e">[400e]</a><span class="b">00</span><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; undefined</span></span>
 <span class="l"></span>
 <a name="NOISE_HI"></a><div class="c">;
 ; XREFS:
@@ -396,53 +406,53 @@ pre {
 ;     <a href="PRG5.html#SoundEffect_PushBlock_OnTick">SoundEffect_PushBlock_OnTick</a>
 ;     <a href="PRG5.html#SoundEffect_Tilte_OnTick">SoundEffect_Tilte_OnTick</a>
 ;
-</div><span class="l"><a class="anc" name="400f" href="#400f">[400f]</a><a href="#NOISE_HI" class="la">NOISE_HI:</a><span class="ce">; [$400f]</span></span>
-<span class="l"><a class="anc" name="400f" href="#400f">[400f]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [$400f] undefined</span></span>
+</div><span class="l"><a class="anc" name="400f" href="#400f">[400f]</a><a href="#NOISE_HI" class="la">NOISE_HI:</a></span>
+<span class="l"><a class="anc" name="400f" href="#400f">[400f]</a><span class="b">00</span><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; undefined</span></span>
 <span class="l"></span>
-<a name="DMC_FREQ"></a><span class="l"><a class="anc" name="4010" href="#4010">[4010]</a><a href="#DMC_FREQ" class="la">DMC_FREQ:</a><span class="ce">; [$4010]</span></span>
-<span class="l"><a class="anc" name="4010" href="#4010">[4010]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [$4010] undefined</span></span>
+<a name="DMC_FREQ"></a><span class="l"><a class="anc" name="4010" href="#4010">[4010]</a><a href="#DMC_FREQ" class="la">DMC_FREQ:</a></span>
+<span class="l"><a class="anc" name="4010" href="#4010">[4010]</a><span class="b">00</span><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; undefined</span></span>
 <span class="l"></span>
 <a name="DMC_RAW"></a><div class="c">;
 ; XREFS:
 ;     <a href="PRG5.html#SoundEffects_Init">SoundEffects_Init</a>
 ;
-</div><span class="l"><a class="anc" name="4011" href="#4011">[4011]</a><a href="#DMC_RAW" class="la">DMC_RAW:</a><span class="ce">; [$4011]</span></span>
-<span class="l"><a class="anc" name="4011" href="#4011">[4011]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [$4011] undefined</span></span>
+</div><span class="l"><a class="anc" name="4011" href="#4011">[4011]</a><a href="#DMC_RAW" class="la">DMC_RAW:</a></span>
+<span class="l"><a class="anc" name="4011" href="#4011">[4011]</a><span class="b">00</span><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; undefined</span></span>
 <span class="l"></span>
-<a name="DMC_START"></a><span class="l"><a class="anc" name="4012" href="#4012">[4012]</a><a href="#DMC_START" class="la">DMC_START:</a><span class="ce">; [$4012]</span></span>
-<span class="l"><a class="anc" name="4012" href="#4012">[4012]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [$4012] undefined</span></span>
+<a name="DMC_START"></a><span class="l"><a class="anc" name="4012" href="#4012">[4012]</a><a href="#DMC_START" class="la">DMC_START:</a></span>
+<span class="l"><a class="anc" name="4012" href="#4012">[4012]</a><span class="b">00</span><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; undefined</span></span>
 <span class="l"></span>
-<a name="DMC_LEN"></a><span class="l"><a class="anc" name="4013" href="#4013">[4013]</a><a href="#DMC_LEN" class="la">DMC_LEN:</a><span class="ce">; [$4013]</span></span>
-<span class="l"><a class="anc" name="4013" href="#4013">[4013]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [$4013] undefined</span></span>
+<a name="DMC_LEN"></a><span class="l"><a class="anc" name="4013" href="#4013">[4013]</a><a href="#DMC_LEN" class="la">DMC_LEN:</a></span>
+<span class="l"><a class="anc" name="4013" href="#4013">[4013]</a><span class="b">00</span><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; undefined</span></span>
 <span class="l"></span>
 <a name="OAMDMA"></a><div class="c">;
 ; XREFS:
 ;     <a href="PRG15_MIRROR.html#OnInterrupt">OnInterrupt</a>
 ;
-</div><span class="l"><a class="anc" name="4014" href="#4014">[4014]</a><a href="#OAMDMA" class="la">OAMDMA:</a><span class="ce">; [$4014]</span></span>
-<span class="l"><a class="anc" name="4014" href="#4014">[4014]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [$4014] undefined</span></span>
+</div><span class="l"><a class="anc" name="4014" href="#4014">[4014]</a><a href="#OAMDMA" class="la">OAMDMA:</a></span>
+<span class="l"><a class="anc" name="4014" href="#4014">[4014]</a><span class="b">00</span><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; undefined</span></span>
 <span class="l"></span>
 <a name="SND_CHN"></a><div class="c">;
 ; XREFS:
 ;     <a href="PRG5.html#Audio_InitPlayingState">Audio_InitPlayingState</a>
 ;     <a href="PRG5.html#SoundEffects_Init">SoundEffects_Init</a>
 ;
-</div><span class="l"><a class="anc" name="4015" href="#4015">[4015]</a><a href="#SND_CHN" class="la">SND_CHN:</a><span class="ce">; [$4015]</span></span>
-<span class="l"><a class="anc" name="4015" href="#4015">[4015]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [$4015] SoundChannelsBitmask</span></span>
+</div><span class="l"><a class="anc" name="4015" href="#4015">[4015]</a><a href="#SND_CHN" class="la">SND_CHN:</a></span>
+<span class="l"><a class="anc" name="4015" href="#4015">[4015]</a><span class="b">00</span><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; SoundChannelsBitmask</span></span>
 <span class="l"></span>
 <a name="JOY1"></a><div class="c">;
 ; XREFS:
 ;     <a href="PRG15_MIRROR.html#Input_HandleOnInterrupt">Input_HandleOnInterrupt</a>
 ;
-</div><span class="l"><a class="anc" name="4016" href="#4016">[4016]</a><a href="#JOY1" class="la">JOY1:</a><span class="ce">; [$4016]</span></span>
-<span class="l"><a class="anc" name="4016" href="#4016">[4016]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [$4016] undefined1</span></span>
+</div><span class="l"><a class="anc" name="4016" href="#4016">[4016]</a><a href="#JOY1" class="la">JOY1:</a></span>
+<span class="l"><a class="anc" name="4016" href="#4016">[4016]</a><span class="b">00</span><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; undefined1</span></span>
 <span class="l"></span>
 <a name="JOY2"></a><div class="c">;
 ; XREFS:
 ;     <a href="PRG15_MIRROR.html#Input_HandleOnInterrupt">Input_HandleOnInterrupt</a>
 ;
-</div><span class="l"><a class="anc" name="4017" href="#4017">[4017]</a><a href="#JOY2" class="la">JOY2:</a><span class="ce">; [$4017]</span></span>
-<span class="l"><a class="anc" name="4017" href="#4017">[4017]</a><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; [$4017] undefined1</span></span>
+</div><span class="l"><a class="anc" name="4017" href="#4017">[4017]</a><a href="#JOY2" class="la">JOY2:</a></span>
+<span class="l"><a class="anc" name="4017" href="#4017">[4017]</a><span class="b">00</span><span class="cd"><span class="i">.byte</span> <span class="o">$00</span></span><span class="ce">; undefined1</span></span>
 </pre>
  </body>
 </html>

@@ -7,9 +7,7 @@
     .segment "END_OF_ROM"
     .reloc
 
-    .byte $20                               ; Game title
-    .byte $20,$20,$20,$20,$20,$20,$20,$46   ; [$ffe1] string
-    .byte $41,$58,$41,$4e,$41,$44,$55       ; [$ffe9] string
+    .byte "        FAXANADU"                ; Game title
 
     .word $4227                             ; PRG Checksum
     .word $0000                             ; CHR CHecksum
@@ -22,8 +20,5 @@
     .byte $18                               ; Licensee Code: Hudson Soft
     .byte $94                               ; Header validation byte
     pointer OnInterrupt                     ; OnInterrupt
-                                            ; [$PRG15_MIRROR::fffa]
     pointer Game_Init                       ; Game_Init
-                                            ; [$PRG15_MIRROR::fffc]
     pointer OnHardwareInterrupt             ; OnInterrupt::OnHardwareInterrupt
-                                            ; [$PRG15_MIRROR::fffe]

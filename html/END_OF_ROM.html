@@ -29,9 +29,10 @@ a:visited {
 pre {
   display: grid;
   grid-template-columns: minmax(6ch, min-content)
+                         minmax(10ch, min-content)
                          minmax(70ch, max-content)
                          1fr;
-  gap: 0 3em;
+  gap: 0 3ch;
   margin: 0;
   padding: 0;
 }
@@ -52,6 +53,13 @@ pre {
   color: #9bdeff;
 }
 
+.b {
+  color: #95956B;
+  grid-column: 2;
+  grid-row: 1;
+  text-wrap: wrap;
+}
+
 .equs {
   display: grid;
   grid-template-columns: minmax(50ch, max-content) min-content auto;
@@ -68,7 +76,7 @@ pre {
 .c,
 .cp,
 .equs {
-  grid-column: 2;
+  grid-column: 3;
 }
 
 .cp {
@@ -84,11 +92,13 @@ pre {
 }
 
 .cd {
-  grid-column: 2 / 3;
+  grid-column: 3 / -1;
+  grid-row: 1;
 }
 
 .ce {
   grid-column: -1;
+  grid-row: 1;
   text-wrap: wrap;
   text-indent: 2ch hanging;
 }
@@ -100,7 +110,7 @@ pre {
 .la,
 .lla {
   font-weight: bold;
-  grid-column: 2 / 3;
+  grid-column: 3 / -1;
 }
 
 .la,
@@ -123,7 +133,7 @@ pre {
 
 .idx {
   display: grid;
-  grid-column: 2 / 3;
+  grid-column: 3 / -1;
   grid-template-columns: minmax(50ch, max-content) auto;
   gap: 0 1em;
 }
@@ -155,24 +165,22 @@ pre {
 <span class="l"><span class="cd"><span class="i">.segment "END_OF_ROM"</span></span></span>
 <span class="l"><span class="cd"><span class="i">.reloc</span></span></span>
 <span class="l"></span>
-<span class="l"><a class="anc" name="ffe0" href="#ffe0">[ffe0]</a><span class="cd"><span class="i">.byte</span> <span class="o">$20</span></span><span class="ce">; Game title</span></span>
-<span class="l"><a class="anc" name="ffe1" href="#ffe1">[ffe1]</a><span class="cd"><span class="i">.byte</span> <span class="o">$20,$20,$20,$20,$20,$20,$20,$46</span></span><span class="ce">; [$ffe1] string</span></span>
-<span class="l"><a class="anc" name="ffe9" href="#ffe9">[ffe9]</a><span class="cd"><span class="i">.byte</span> <span class="o">$41,$58,$41,$4e,$41,$44,$55</span></span><span class="ce">; [$ffe9] string</span></span>
+<span class="l"><a class="anc" name="ffe0" href="#ffe0">[ffe0]</a><span class="b">20 20 20 20 20 20 20 20 46 41 58 41 4e 41 44 55</span><span class="cd"><span class="i">.byte</span> <span class="o">"        FAXANADU"</span></span><span class="ce">; Game title</span></span>
 <span class="l"></span>
-<span class="l"><span class="cd"><span class="i">.word</span> <span class="o">$4227</span></span><span class="ce">; PRG Checksum</span></span>
-<span class="l"><a class="anc" name="fff2" href="#fff2">[fff2]</a><span class="cd"><span class="i">.word</span> <span class="o">$0000</span></span><span class="ce">; CHR CHecksum</span></span>
-<span class="l"><a class="anc" name="fff4" href="#fff4">[fff4]</a><span class="cd"><span class="i">.byte</span> <span class="o">$48</span></span><span class="ce">; CHR size: 0 = 8KiB
+<span class="l"><a class="anc" name="fff0" href="#fff0">[fff0]</a><span class="b">27 42</span><span class="cd"><span class="i">.word</span> <span class="o">$4227</span></span><span class="ce">; PRG Checksum</span></span>
+<span class="l"><a class="anc" name="fff2" href="#fff2">[fff2]</a><span class="b">00 00</span><span class="cd"><span class="i">.word</span> <span class="o">$0000</span></span><span class="ce">; CHR CHecksum</span></span>
+<span class="l"><a class="anc" name="fff4" href="#fff4">[fff4]</a><span class="b">48</span><span class="cd"><span class="i">.byte</span> <span class="o">$48</span></span><span class="ce">; CHR size: 0 = 8KiB
 CHR type: 0 = CHR ROM
 PRG size: 5 = 512KiB</span></span>
-<span class="l"><a class="anc" name="fff5" href="#fff5">[fff5]</a><span class="cd"><span class="i">.byte</span> <span class="o">$04</span></span><span class="ce">; Mapper:    4 = MMC
+<span class="l"><a class="anc" name="fff5" href="#fff5">[fff5]</a><span class="b">04</span><span class="cd"><span class="i">.byte</span> <span class="o">$04</span></span><span class="ce">; Mapper:    4 = MMC
 Nametable: 0 = Horizontal arrangement</span></span>
-<span class="l"><a class="anc" name="fff6" href="#fff6">[fff6]</a><span class="cd"><span class="i">.byte</span> <span class="o">$01</span></span><span class="ce">; Title encoding: 1 = ASCII</span></span>
-<span class="l"><a class="anc" name="fff7" href="#fff7">[fff7]</a><span class="cd"><span class="i">.byte</span> <span class="o">$07</span></span><span class="ce">; Title length: 8 bytes</span></span>
-<span class="l"><a class="anc" name="fff8" href="#fff8">[fff8]</a><span class="cd"><span class="i">.byte</span> <span class="o">$18</span></span><span class="ce">; Licensee Code: Hudson Soft</span></span>
-<span class="l"><a class="anc" name="fff9" href="#fff9">[fff9]</a><span class="cd"><span class="i">.byte</span> <span class="o">$94</span></span><span class="ce">; Header validation byte</span></span>
-<span class="l"><a class="anc" name="fffa" href="#fffa">[fffa]</a><span class="cd"><span class="i">pointer</span> <span class="o"><a href="PRG15_MIRROR.html#OnInterrupt">OnInterrupt</a></span></span><span class="ce">; <a href="PRG15_MIRROR.html#OnInterrupt">OnInterrupt</a> [$PRG15_MIRROR::fffa]</span></span>
-<span class="l"><a class="anc" name="fffc" href="#fffc">[fffc]</a><span class="cd"><span class="i">pointer</span> <span class="o"><a href="PRG15_MIRROR.html#Game_Init">Game_Init</a></span></span><span class="ce">; <a href="PRG15_MIRROR.html#Game_Init">Game_Init</a> [$PRG15_MIRROR::fffc]</span></span>
-<span class="l"><a class="anc" name="fffe" href="#fffe">[fffe]</a><span class="cd"><span class="i">pointer</span> <span class="o"><a href="PRG15_MIRROR.html#OnHardwareInterrupt">OnHardwareInterrupt</a></span></span><span class="ce">; <a href="PRG15_MIRROR.html#OnInterrupt::OnHardwareInterrupt">OnInterrupt::OnHardwareInterrupt</a> [$PRG15_MIRROR::fffe]</span></span>
+<span class="l"><a class="anc" name="fff6" href="#fff6">[fff6]</a><span class="b">01</span><span class="cd"><span class="i">.byte</span> <span class="o">$01</span></span><span class="ce">; Title encoding: 1 = ASCII</span></span>
+<span class="l"><a class="anc" name="fff7" href="#fff7">[fff7]</a><span class="b">07</span><span class="cd"><span class="i">.byte</span> <span class="o">$07</span></span><span class="ce">; Title length: 8 bytes</span></span>
+<span class="l"><a class="anc" name="fff8" href="#fff8">[fff8]</a><span class="b">18</span><span class="cd"><span class="i">.byte</span> <span class="o">$18</span></span><span class="ce">; Licensee Code: Hudson Soft</span></span>
+<span class="l"><a class="anc" name="fff9" href="#fff9">[fff9]</a><span class="b">94</span><span class="cd"><span class="i">.byte</span> <span class="o">$94</span></span><span class="ce">; Header validation byte</span></span>
+<span class="l"><a class="anc" name="fffa" href="#fffa">[fffa]</a><span class="b">99 c9</span><span class="cd"><span class="i">pointer</span> <span class="o"><a href="PRG15_MIRROR.html#OnInterrupt">OnInterrupt</a></span></span><span class="ce">; <a href="PRG15_MIRROR.html#OnInterrupt">OnInterrupt</a></span></span>
+<span class="l"><a class="anc" name="fffc" href="#fffc">[fffc]</a><span class="b">13 c9</span><span class="cd"><span class="i">pointer</span> <span class="o"><a href="PRG15_MIRROR.html#Game_Init">Game_Init</a></span></span><span class="ce">; <a href="PRG15_MIRROR.html#Game_Init">Game_Init</a></span></span>
+<span class="l"><a class="anc" name="fffe" href="#fffe">[fffe]</a><span class="b">d5 c9</span><span class="cd"><span class="i">pointer</span> <span class="o"><a href="PRG15_MIRROR.html#OnHardwareInterrupt">OnHardwareInterrupt</a></span></span><span class="ce">; <a href="PRG15_MIRROR.html#OnInterrupt::OnHardwareInterrupt">OnInterrupt::OnHardwareInterrupt</a></span></span>
 </pre>
  </body>
 </html>

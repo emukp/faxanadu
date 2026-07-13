@@ -115,8 +115,8 @@
 ;     Sprites_LoadCommon
 ;     Sprites_LoadImageForCurrentSprite
 ;
-Temp_00:                                    ; [$0000]
-    .byte $00                               ; [$0000] byte
+Temp_00:
+    .byte $00                               ; byte
 
 
 ;
@@ -132,8 +132,8 @@ Temp_00:                                    ; [$0000]
 ;     Sprite_Draw_FlippedHoriz
 ;     Sprite_Draw_Standard
 ;
-Temp_01:                                    ; [$0001]
-    .byte $00                               ; [$0001] byte
+Temp_01:
+    .byte $00                               ; byte
 
 
 ;
@@ -169,8 +169,8 @@ Temp_01:                                    ; [$0001]
 ;     Sprite_SetPlayerAppearanceAddr
 ;     Sprites_LoadCommon
 ;
-Temp_Addr_L:                                ; [$0002]
-    .byte $00                               ; [$0002] byte
+Temp_Addr_L:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
@@ -195,8 +195,8 @@ Temp_Addr_L:                                ; [$0002]
 ;     Sprite_SetPlayerAppearanceAddr
 ;     Sprites_LoadCommon
 ;
-Temp_Addr_U:                                ; [$0003]
-    .byte $00                               ; [$0003] byte
+Temp_Addr_U:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
@@ -208,8 +208,8 @@ Temp_Addr_U:                                ; [$0003]
 ;     Player_LoadWeaponTile
 ;     Sprite_Draw_FlippedHoriz
 ;
-Temp_04:                                    ; [$0004]
-    .byte $00                               ; [$0004] byte
+Temp_04:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
@@ -221,8 +221,8 @@ Temp_04:                                    ; [$0004]
 ;     Player_LoadWeaponTile
 ;     Sprite_Draw_FlippedHoriz
 ;
-Temp_05:                                    ; [$0005]
-    .byte $00                               ; [$0005] byte
+Temp_05:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
@@ -233,8 +233,8 @@ Temp_05:                                    ; [$0005]
 ;     Screen_LoadBlocksHoriz
 ;     Screen_RunWriteScrollDataHandler
 ;
-Temp_06:                                    ; [$0006]
-    .byte $00                               ; [$0006] byte
+Temp_06:
+    .byte $00                               ; byte
 
 
 ;
@@ -250,8 +250,8 @@ Temp_06:                                    ; [$0006]
 ; XREFS:
 ;     PPUBuffer_DrawCommand_RemoveVerticalLines
 ;
-Temp_07:                                    ; [$0007]
-    .byte $00                               ; [$0007] byte
+Temp_07:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
@@ -266,8 +266,8 @@ Temp_07:                                    ; [$0007]
 ;     Screen_SetFadeOutPalette
 ;     Screen_SetPaletteData
 ;
-Temp_08:                                    ; [$0008]
-    .byte $00                               ; [$0008] byte
+Temp_08:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
@@ -280,8 +280,8 @@ Temp_08:                                    ; [$0008]
 ;     Screen_LoadUIPalette
 ;     Screen_SetFadeOutPalette
 ;
-Temp_09:                                    ; [$0009]
-    .byte $00                               ; [$0009] byte
+Temp_09:
+    .byte $00                               ; byte
 
 
 ;============================================================================
@@ -310,8 +310,8 @@ Temp_09:                                    ; [$0009]
 ;     Screen_WriteBlockTilesColumnToPPU
 ;     Screen_WriteBlockTilesRowToPPU
 ;
-PPU_ControlFlags:                           ; [$000a]
-    .byte $00                               ; [$000a] PPUCtrlFlags
+PPU_ControlFlags:
+    .byte $00                               ; PPUCtrlFlags
 
 
 ;============================================================================
@@ -338,8 +338,8 @@ PPU_ControlFlags:                           ; [$000a]
 ;     PPU_HandleOnInterrupt
 ;     Screen_ClearSprites
 ;
-PPU_Mask:                                   ; [$000b]
-    .byte $00                               ; [$000b] PPUMaskFlags
+PPU_Mask:
+    .byte $00                               ; PPUMaskFlags
 
 
 ;============================================================================
@@ -372,8 +372,8 @@ PPU_Mask:                                   ; [$000b]
 ;     Screen_UpdateForScroll
 ;     Sprite_Draw
 ;
-PPU_ScrollX:                                ; [$000c]
-    .byte $00                               ; [$000c] byte
+PPU_ScrollX:
+    .byte $00                               ; byte
 
 
 ;============================================================================
@@ -411,8 +411,8 @@ PPU_ScrollX:                                ; [$000c]
 ;     Screen_HandleScrollLeft
 ;     Screen_HandleScrollRight
 ;
-PPU_ScrollScreen:                           ; [$000d]
-    .byte $00                               ; [$000d] byte
+PPU_ScrollScreen:
+    .byte $00                               ; byte
 
 
 ;============================================================================
@@ -445,14 +445,14 @@ PPU_ScrollScreen:                           ; [$000d]
 ;     Player_HandleDeath
 ;     Screen_SetupSprites
 ;
-Screen_ReadyState:                          ; [$000e]
-    .byte $00                               ; [$000e] ScreenReadyState
+Screen_ReadyState:
+    .byte $00                               ; ScreenReadyState
 
 
 ;============================================================================
 ; MOD NOTES: 1 unused byte of RAM.
 ;============================================================================
-    .byte $00                               ; [$000f] undefined
+    .byte $00                               ; undefined
 
 
 ;============================================================================
@@ -483,8 +483,8 @@ Screen_ReadyState:                          ; [$000e]
 ;     OnInterrupt
 ;     WaitForNextFrame
 ;
-Game_InterruptsHandledLatch:                ; [$0010]
-    .byte $00                               ; [$0010] bool
+Game_InterruptsHandledLatch:
+    .byte $00                               ; bool
 
 
 ;============================================================================
@@ -505,8 +505,8 @@ Game_InterruptsHandledLatch:                ; [$0010]
 ;     MMC1_RestorePrevROMBank
 ;     MMC1_SaveROMBankAndUpdateTo
 ;
-SavedPRGBank:                               ; [$0011]
-    .byte $00                               ; [$0011] ROMBank
+SavedPRGBank:
+    .byte $00                               ; ROMBank
 
 
 ;============================================================================
@@ -528,8 +528,8 @@ SavedPRGBank:                               ; [$0011]
 ;     MMC1_EnsurePRG
 ;     MMC1_UpdateROMBank
 ;
-MMC1_ShiftSync:                             ; [$0012]
-    .byte $00                               ; [$0012] byte
+MMC1_ShiftSync:
+    .byte $00                               ; byte
 
 
 ;============================================================================
@@ -558,8 +558,8 @@ MMC1_ShiftSync:                             ; [$0012]
 ;     Screen_ResetForGamePlay
 ;     Screen_ResetForNonGame
 ;
-Game_InterruptHandlersEnabled:              ; [$0013]
-    .byte $00                               ; [$0013] bool
+Game_InterruptHandlersEnabled:
+    .byte $00                               ; bool
 
 
 ;============================================================================
@@ -583,14 +583,14 @@ Game_InterruptHandlersEnabled:              ; [$0013]
 ;     OnInterrupt
 ;     PPU_WaitUntilFlushed
 ;
-PauseInterruptCounter:                      ; [$0014]
-    .byte $00                               ; [$0014] byte
+PauseInterruptCounter:
+    .byte $00                               ; byte
 
 
 ;============================================================================
 ; MOD NOTES: 1 unused byte of RAM.
 ;============================================================================
-    .byte $00                               ; [$0015] byte
+    .byte $00                               ; byte
 
 
 ;============================================================================
@@ -642,8 +642,8 @@ PauseInterruptCounter:                      ; [$0014]
 ;     Player_HandleVertLadderOrJump
 ;     Player_UpdateAcceleration
 ;
-Joy1_ButtonMask:                            ; [$0016]
-    .byte $00                               ; [$0016] ButtonBitmask
+Joy1_ButtonMask:
+    .byte $00                               ; ButtonBitmask
 
 
 ;
@@ -663,8 +663,8 @@ Joy1_ButtonMask:                            ; [$0016]
 ;     Debug_ChooseArea
 ;     Input_HandleOnInterrupt
 ;
-Joy2_ButtonMask:                            ; [$0017]
-    .byte $00                               ; [$0017] ButtonBitmask
+Joy2_ButtonMask:
+    .byte $00                               ; ButtonBitmask
 
 
 ;
@@ -687,8 +687,8 @@ Joy2_ButtonMask:                            ; [$0017]
 ;     Game_UpdatePlayerOnScroll
 ;     Input_HandleOnInterrupt
 ;
-Joy1_PrevButtonMask:                        ; [$0018]
-    .byte $00                               ; [$0018] ButtonBitmask
+Joy1_PrevButtonMask:
+    .byte $00                               ; ButtonBitmask
 
 
 ;
@@ -736,8 +736,8 @@ Joy1_PrevButtonMask:                        ; [$0018]
 ;     Player_CheckHandleEnterDoor
 ;     Player_UpdateClimbOrJump
 ;
-Joy1_ChangedButtonMask:                     ; [$0019]
-    .byte $00                               ; [$0019] ButtonBitmask
+Joy1_ChangedButtonMask:
+    .byte $00                               ; ButtonBitmask
 
 
 ;============================================================================
@@ -805,8 +805,8 @@ Joy1_ChangedButtonMask:                     ; [$0019]
 ;     Player_DrawDeathAnimation
 ;     WaitForInterrupt
 ;
-InterruptCounter:                           ; [$001a]
-    .byte $00                               ; [$001a] byte
+InterruptCounter:
+    .byte $00                               ; byte
 
 
 ;
@@ -818,8 +818,8 @@ InterruptCounter:                           ; [$001a]
 ;     Game_WaitForOAMReset
 ;     OnInterrupt
 ;
-Game_NeedOAMReset:                          ; [$001b]
-    .byte $00                               ; [$001b] bool
+Game_NeedOAMReset:
+    .byte $00                               ; bool
 
 ;
 ; XREFS:
@@ -827,8 +827,8 @@ Game_NeedOAMReset:                          ; [$001b]
 ;     Sprite_Draw_Standard
 ;     Sprites_Reset
 ;
-Sprites_StartSlotRange:                     ; [$001c]
-    .byte $00                               ; [$001c] byte
+Sprites_StartSlotRange:
+    .byte $00                               ; byte
 
 
 ;============================================================================
@@ -847,8 +847,8 @@ Sprites_StartSlotRange:                     ; [$001c]
 ;     Fog_OnTick
 ;     Fog_UpdateTiles
 ;
-Fog_TileIndex:                              ; [$001d]
-    .byte $00                               ; [$001d] byte
+Fog_TileIndex:
+    .byte $00                               ; byte
 
 
 ;
@@ -860,8 +860,8 @@ Fog_TileIndex:                              ; [$001d]
 ;     Fog_OnTick
 ;     Fog_UpdateTiles
 ;
-Fog_StateIndex:                             ; [$001e]
-    .byte $00                               ; [$001e] byte
+Fog_StateIndex:
+    .byte $00                               ; byte
 
 
 ;============================================================================
@@ -902,8 +902,8 @@ Fog_StateIndex:                             ; [$001e]
 ;     PPUBuffer_WaitUntilClear
 ;     PPU_WaitUntilFlushed
 ;
-PPUBuffer_ReadOffset:                       ; [$001f]
-    .byte $00                               ; [$001f] byte
+PPUBuffer_ReadOffset:
+    .byte $00                               ; byte
 
 
 ;
@@ -949,8 +949,8 @@ PPUBuffer_ReadOffset:                       ; [$001f]
 ;     UI_ClearSelectedItemPic
 ;     UI_DrawDigitsZeroPadded
 ;
-PPUBuffer_WriteOffset:                      ; [$0020]
-    .byte $00                               ; [$0020] byte
+PPUBuffer_WriteOffset:
+    .byte $00                               ; byte
 
 
 ;
@@ -964,8 +964,8 @@ PPUBuffer_WriteOffset:                      ; [$0020]
 ; XREFS:
 ;     PPUBuffer_Draw
 ;
-PPUBuffer_Temp_PendingEntryCount:           ; [$0021]
-    .byte $00                               ; [$0021] byte
+PPUBuffer_Temp_PendingEntryCount:
+    .byte $00                               ; byte
 
 
 ;
@@ -979,8 +979,8 @@ PPUBuffer_Temp_PendingEntryCount:           ; [$0021]
 ; XREFS:
 ;     PPUBuffer_Draw
 ;
-PPUBuffer_Temp_TotalByteLength:             ; [$0022]
-    .byte $00                               ; [$0022] byte
+PPUBuffer_Temp_TotalByteLength:
+    .byte $00                               ; byte
 
 
 ;============================================================================
@@ -1000,8 +1000,8 @@ PPUBuffer_Temp_TotalByteLength:             ; [$0022]
 ; XREFS:
 ;     PPU_InitAttributeAndNameTables
 ;
-Temp_PPU_NameTableValue:                    ; [$0023]
-    .byte $00                               ; [$0023] byte
+Temp_PPU_NameTableValue:
+    .byte $00                               ; byte
 
 
 ;============================================================================
@@ -1064,8 +1064,8 @@ Temp_PPU_NameTableValue:                    ; [$0023]
 ;     Player_UseMattock
 ;     Screen_LoadAllScreenInfo
 ;
-Area_CurrentArea:                           ; [$0024]
-    .byte $00                               ; [$0024] Area
+Area_CurrentArea:
+    .byte $00                               ; Area
 
 
 ;============================================================================
@@ -1092,8 +1092,8 @@ Area_CurrentArea:                           ; [$0024]
 ;     Sprites_IncNextSpriteSlot
 ;     Sprites_Reset
 ;
-Sprites_SpriteSlot:                         ; [$0025]
-    .byte $00                               ; [$0025] byte
+Sprites_SpriteSlot:
+    .byte $00                               ; byte
 
 
 ;============================================================================
@@ -1132,8 +1132,8 @@ Sprites_SpriteSlot:                         ; [$0025]
 ;     Sprite_Draw_FlippedHoriz
 ;     Sprite_Draw_Standard
 ;
-MovingSpriteVisibility:                     ; [$0026]
-    .byte $00                               ; [$0026] MovingSpriteVisibility
+MovingSpriteVisibility:
+    .byte $00                               ; MovingSpriteVisibility
 
 
 ;
@@ -1157,8 +1157,8 @@ MovingSpriteVisibility:                     ; [$0026]
 ;     Sprite_Draw
 ;     UI_DrawPromptInputSymbol
 ;
-Arg_DrawSprite_PosX:                        ; [$0027]
-    .byte $00                               ; [$0027] byte
+Arg_DrawSprite_PosX:
+    .byte $00                               ; byte
 
 
 ;
@@ -1184,8 +1184,8 @@ Arg_DrawSprite_PosX:                        ; [$0027]
 ;     Sprite_Draw
 ;     UI_DrawPromptInputSymbol
 ;
-Arg_DrawSprite_PosY:                        ; [$0028]
-    .byte $00                               ; [$0028] byte
+Arg_DrawSprite_PosY:
+    .byte $00                               ; byte
 
 
 ;============================================================================
@@ -1261,8 +1261,8 @@ Arg_DrawSprite_PosY:                        ; [$0028]
 ;     Sprite_Draw_Standard
 ;     UI_DrawPromptInputSymbol
 ;
-CurrentSprite_FlipMask:                     ; [$0029]
-    .byte $00                               ; [$0029] byte
+CurrentSprite_FlipMask:
+    .byte $00                               ; byte
 
 
 ;
@@ -1276,8 +1276,8 @@ CurrentSprite_FlipMask:                     ; [$0029]
 ;     CastMagic_RunUpdateSpellHandler
 ;     Player_DrawBody
 ;
-Unused_Sprite_ScrollPosY:                   ; [$002a]
-    .byte $00                               ; [$002a] byte
+Unused_Sprite_ScrollPosY:
+    .byte $00                               ; byte
 
 
 ;
@@ -1291,14 +1291,14 @@ Unused_Sprite_ScrollPosY:                   ; [$002a]
 ;     CastMagic_RunUpdateSpellHandler
 ;     Player_DrawBody
 ;
-Unused_Sprite_ScrollPosX:                   ; [$002b]
-    .byte $00                               ; [$002b] byte
+Unused_Sprite_ScrollPosX:
+    .byte $00                               ; byte
 
 
 ;============================================================================
 ; MOD NOTES: 7 unused bytes of RAM.
 ;============================================================================
-    .byte $00,$00,$00,$00,$00,$00,$00       ; [$002c] undefined
+    .byte $00,$00,$00,$00,$00,$00,$00       ; undefined
 
 ;
 ; XREFS:
@@ -1317,8 +1317,8 @@ Unused_Sprite_ScrollPosX:                   ; [$002b]
 ;     Sprite_Draw_Standard
 ;     Sprites_Reset
 ;
-Sprites_PPUOffset:                          ; [$0033]
-    .byte $00                               ; [$0033] byte
+Sprites_PPUOffset:
+    .byte $00                               ; byte
 
 
 ;============================================================================
@@ -1335,29 +1335,29 @@ Sprites_PPUOffset:                          ; [$0033]
 ; XREFS:
 ;     Sprites_Reset
 ;
-Sprites_Unused_0034:                        ; [$0034]
-    .byte $00                               ; [$0034] byte
+Sprites_Unused_0034:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
 ;     Sprites_Reset
 ;
-Sprites_Unused_0035:                        ; [$0035]
-    .byte $00,$00                           ; [$0035] byte
+Sprites_Unused_0035:
+    .byte $00,$00                           ; byte
 
 ;
 ; XREFS:
 ;     Sprites_Reset
 ;
-Sprites_Unused_0037:                        ; [$0037]
-    .byte $00                               ; [$0037] byte
+Sprites_Unused_0037:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
 ;     Sprites_Reset
 ;
-Sprites_Unused_0038:                        ; [$0038]
-    .byte $00                               ; [$0038] byte
+Sprites_Unused_0038:
+    .byte $00                               ; byte
 
 
 ;============================================================================
@@ -1380,8 +1380,8 @@ Sprites_Unused_0038:                        ; [$0038]
 ;     Sprites_IncNextSpriteSlot
 ;     Sprites_Reset
 ;
-Sprites_SlotsFull:                          ; [$0039]
-    .byte $00                               ; [$0039] bool
+Sprites_SlotsFull:
+    .byte $00                               ; bool
 
 
 ;
@@ -1394,8 +1394,8 @@ Sprites_SlotsFull:                          ; [$0039]
 ;     Sprite_Draw_FlippedHoriz
 ;     Sprite_Draw_Standard
 ;
-Sprite_TileInfo_ReadAddr_L:                 ; [$003a]
-    .byte $00                               ; [$003a] byte
+Sprite_TileInfo_ReadAddr_L:
+    .byte $00                               ; byte
 
 
 ;
@@ -1406,8 +1406,8 @@ Sprite_TileInfo_ReadAddr_L:                 ; [$003a]
 ; XREFS:
 ;     Sprite_Draw
 ;
-Sprite_TileInfo_ReadAddr_U:                 ; [$003b]
-    .byte $00                               ; [$003b] byte
+Sprite_TileInfo_ReadAddr_U:
+    .byte $00                               ; byte
 
 
 ;
@@ -1419,8 +1419,8 @@ Sprite_TileInfo_ReadAddr_U:                 ; [$003b]
 ;     Sprite_Draw_FlippedHoriz
 ;     Sprite_Draw_Standard
 ;
-Temp_Sprites_NormXPos:                      ; [$003c]
-    .byte $00                               ; [$003c] byte
+Temp_Sprites_NormXPos:
+    .byte $00                               ; byte
 
 
 ;
@@ -1432,8 +1432,8 @@ Temp_Sprites_NormXPos:                      ; [$003c]
 ;     Sprite_Draw_FlippedHoriz
 ;     Sprite_Draw_Standard
 ;
-Temp_Sprites_NormYPos:                      ; [$003d]
-    .byte $00                               ; [$003d] byte
+Temp_Sprites_NormYPos:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
@@ -1441,8 +1441,8 @@ Temp_Sprites_NormYPos:                      ; [$003d]
 ;     Sprite_Draw_FlippedHoriz
 ;     Sprite_Draw_Standard
 ;
-Sprite_TileInfo_OffsetX:                    ; [$003e]
-    .byte $00                               ; [$003e] byte
+Sprite_TileInfo_OffsetX:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
@@ -1450,8 +1450,8 @@ Sprite_TileInfo_OffsetX:                    ; [$003e]
 ;     Sprite_Draw_FlippedHoriz
 ;     Sprite_Draw_Standard
 ;
-Sprite_TileInfo_OffsetY:                    ; [$003f]
-    .byte $00                               ; [$003f] byte
+Sprite_TileInfo_OffsetY:
+    .byte $00                               ; byte
 
 
 ;
@@ -1464,8 +1464,8 @@ Sprite_TileInfo_OffsetY:                    ; [$003f]
 ;     Sprite_Draw_FlippedHoriz
 ;     Sprite_Draw_Standard
 ;
-Temp_Sprites_ColsRemaining:                 ; [$0040]
-    .byte $00                               ; [$0040] byte
+Temp_Sprites_ColsRemaining:
+    .byte $00                               ; byte
 
 
 ;
@@ -1478,8 +1478,8 @@ Temp_Sprites_ColsRemaining:                 ; [$0040]
 ;     Sprite_Draw_FlippedHoriz
 ;     Sprite_Draw_Standard
 ;
-Temp_Sprites_RowsRemaining:                 ; [$0041]
-    .byte $00                               ; [$0041] byte
+Temp_Sprites_RowsRemaining:
+    .byte $00                               ; byte
 
 
 ;
@@ -1491,8 +1491,8 @@ Temp_Sprites_RowsRemaining:                 ; [$0041]
 ;     Sprite_Draw_FlippedHoriz
 ;     Sprite_Draw_Standard
 ;
-Temp_Sprites_TileXOffset:                   ; [$0042]
-    .byte $00                               ; [$0042] byte
+Temp_Sprites_TileXOffset:
+    .byte $00                               ; byte
 
 
 ;
@@ -1504,8 +1504,8 @@ Temp_Sprites_TileXOffset:                   ; [$0042]
 ;     Sprite_Draw_FlippedHoriz
 ;     Sprite_Draw_Standard
 ;
-Temp_Sprites_TileYOffset:                   ; [$0043]
-    .byte $00                               ; [$0043] byte
+Temp_Sprites_TileYOffset:
+    .byte $00                               ; byte
 
 
 ;
@@ -1526,8 +1526,8 @@ Temp_Sprites_TileYOffset:                   ; [$0043]
 ;     Screen_LoadBlocksDown
 ;     Screen_LoadDataUp
 ;
-Screen_ScrollVertLoadCounter:               ; [$0044]
-    .byte $00                               ; [$0044] byte
+Screen_ScrollVertLoadCounter:
+    .byte $00                               ; byte
 
 
 ;
@@ -1549,43 +1549,43 @@ Screen_ScrollVertLoadCounter:               ; [$0044]
 ;     Screen_LoadDataLeft
 ;     Screen_LoadDataRight
 ;
-Screen_ScrollHorizLoadCounter:              ; [$0045]
-    .byte $00                               ; [$0045] byte
+Screen_ScrollHorizLoadCounter:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
 ;     Screen_LoadBlocksHoriz
 ;
-Screen_ScrollHorizLoadOffset:               ; [$0046]
-    .byte $00                               ; [$0046] byte
+Screen_ScrollHorizLoadOffset:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
 ;     Area_ScrollScreenRight
 ;     Screen_LoadBlocksHoriz
 ;
-Screen_Maybe_ScrollHorizDirection:          ; [$0047]
-    .byte $00                               ; [$0047] byte
+Screen_Maybe_ScrollHorizDirection:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
 ;     Screen_LoadBlockDataVert
 ;
-Temp_Blocks_0048:                           ; [$0048]
-    .byte $00                               ; [$0048] byte
+Temp_Blocks_0048:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
 ;     Screen_LoadBlockDataVert
 ;
-Unused_Blocks_0049:                         ; [$0049]
-    .byte $00                               ; [$0049] byte
+Unused_Blocks_0049:
+    .byte $00                               ; byte
 
 
 ;
 ; UNUSED: The next 2 bytes are unused by Faxanadu.
 ;
-    .byte $00,$00                           ; [$004a] byte
+    .byte $00,$00                           ; byte
 
 
 ;============================================================================
@@ -1604,16 +1604,16 @@ Unused_Blocks_0049:                         ; [$0049]
 ;     Screen_LoadBlocksHoriz
 ;     Screen_WriteBlockTilesColumnToPPU
 ;
-Screen_ScrollHorizBlocks_PPUTileMapAddr_L:  ; [$004c]
-    .byte $00                               ; [$004c] byte
+Screen_ScrollHorizBlocks_PPUTileMapAddr_L:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
 ;     Screen_LoadBlocksHoriz
 ;     Screen_WriteBlockTilesColumnToPPU
 ;
-Screen_ScrollHorizBlocks_PPUTileMapAddr_U:  ; [$004d]
-    .byte $00                               ; [$004d] byte
+Screen_ScrollHorizBlocks_PPUTileMapAddr_U:
+    .byte $00                               ; byte
 
 
 ;
@@ -1624,16 +1624,16 @@ Screen_ScrollHorizBlocks_PPUTileMapAddr_U:  ; [$004d]
 ;     Screen_LoadBlockDataVert
 ;     Screen_WriteBlockTilesRowToPPU
 ;
-Screen_ScrollVertBlocks_PPUTileMapAddr_L:   ; [$004e]
-    .byte $00                               ; [$004e] byte
+Screen_ScrollVertBlocks_PPUTileMapAddr_L:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
 ;     Screen_LoadBlockDataVert
 ;     Screen_WriteBlockTilesRowToPPU
 ;
-Screen_ScrollVertBlocks_PPUTileMapAddr_U:   ; [$004f]
-    .byte $00                               ; [$004f] byte
+Screen_ScrollVertBlocks_PPUTileMapAddr_U:
+    .byte $00                               ; byte
 
 
 ;
@@ -1644,16 +1644,16 @@ Screen_ScrollVertBlocks_PPUTileMapAddr_U:   ; [$004f]
 ;     Screen_LoadBlocksHoriz
 ;     Screen_WriteBlockAttrsColumnToPPU
 ;
-Screen_ScrollHorizBlocks_PPUAttrAddr_L:     ; [$0050]
-    .byte $00                               ; [$0050] byte
+Screen_ScrollHorizBlocks_PPUAttrAddr_L:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
 ;     Screen_LoadBlocksHoriz
 ;     Screen_WriteBlockAttrsColumnToPPU
 ;
-Screen_ScrollHorizBlocks_PPUAttrAddr_U:     ; [$0051]
-    .byte $00                               ; [$0051] byte
+Screen_ScrollHorizBlocks_PPUAttrAddr_U:
+    .byte $00                               ; byte
 
 
 ;
@@ -1664,16 +1664,16 @@ Screen_ScrollHorizBlocks_PPUAttrAddr_U:     ; [$0051]
 ;     Screen_LoadBlockDataVert
 ;     Screen_WriteBlockAttrsRowToPPU
 ;
-Screen_ScrollVertBlocks_PPUAttrAddr_L:      ; [$0052]
-    .byte $00                               ; [$0052] byte
+Screen_ScrollVertBlocks_PPUAttrAddr_L:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
 ;     Screen_LoadBlockDataVert
 ;     Screen_WriteBlockAttrsRowToPPU
 ;
-Screen_ScrollVertBlocks_PPUAttrAddr_U:      ; [$0053]
-    .byte $00                               ; [$0053] byte
+Screen_ScrollVertBlocks_PPUAttrAddr_U:
+    .byte $00                               ; byte
 
 
 ;============================================================================
@@ -1708,14 +1708,14 @@ Screen_ScrollVertBlocks_PPUAttrAddr_U:      ; [$0053]
 ;     Screen_StopScrollAndLoadBlockProperties
 ;     Screen_UpdateForScroll
 ;
-Screen_ScrollDirection:                     ; [$0054]
-    .byte $00                               ; [$0054] Direction
+Screen_ScrollDirection:
+    .byte $00                               ; Direction
 
 
 ;============================================================================
 ; MOD NOTES: 2 unused bytes of RAM.
 ;============================================================================
-    .byte $00,$00                           ; [$0055] undefined
+    .byte $00,$00                           ; undefined
 
 
 ;
@@ -1730,8 +1730,8 @@ Screen_ScrollDirection:                     ; [$0054]
 ;     Screen_HandleScrollUp
 ;     Screen_UpdateForScroll
 ;
-PPU_ScrollY:                                ; [$0057]
-    .byte $00                               ; [$0057] byte
+PPU_ScrollY:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
@@ -1742,8 +1742,8 @@ PPU_ScrollY:                                ; [$0057]
 ;     Screen_LoadBlockDataVert
 ;     Screen_SetupNew
 ;
-PPU_ScrollScreenVert:                       ; [$0058]
-    .byte $00                               ; [$0058] byte
+PPU_ScrollScreenVert:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
@@ -1756,8 +1756,8 @@ PPU_ScrollScreenVert:                       ; [$0058]
 ;     Screen_LoadBlocksHoriz
 ;     Screen_SetupNew
 ;
-PPU_ScrollScreenHoriz:                      ; [$0059]
-    .byte $00                               ; [$0059] byte
+PPU_ScrollScreenHoriz:
+    .byte $00                               ; byte
 
 
 ;============================================================================
@@ -1785,8 +1785,8 @@ PPU_ScrollScreenHoriz:                      ; [$0059]
 ;     Screen_ResetSpritesForNonGame
 ;     Sprites_Reset
 ;
-Sprites_Sprite0Mode:                        ; [$005a]
-    .byte $00                               ; [$005a] Sprite0Mode
+Sprites_Sprite0Mode:
+    .byte $00                               ; Sprite0Mode
 
 
 ;============================================================================
@@ -1808,8 +1808,8 @@ Sprites_Sprite0Mode:                        ; [$005a]
 ;     PPU_WaitUntilFlushed
 ;     Screen_ResetSpritesForGamePlay
 ;
-PPU_ForceLowerPatternTables:                ; [$005b]
-    .byte $00                               ; [$005b] bool
+PPU_ForceLowerPatternTables:
+    .byte $00                               ; bool
 
 
 ;============================================================================
@@ -1826,8 +1826,8 @@ PPU_ForceLowerPatternTables:                ; [$005b]
 ; XREFS:
 ;     Area_LoadBlocks
 ;
-Temp_LoadedBlockValue:                      ; [$005c]
-    .byte $00                               ; [$005c] byte
+Temp_LoadedBlockValue:
+    .byte $00                               ; byte
 
 
 ;
@@ -1837,8 +1837,8 @@ Temp_LoadedBlockValue:                      ; [$005c]
 ; XREFS:
 ;     Area_LoadBlocks
 ;
-Temp_LoadedBlocksCount:                     ; [$005d]
-    .byte $00                               ; [$005d] byte
+Temp_LoadedBlocksCount:
+    .byte $00                               ; byte
 
 
 ;
@@ -1849,8 +1849,8 @@ Temp_LoadedBlocksCount:                     ; [$005d]
 ;     Area_LoadBlocks
 ;     Area_LoadNextCompressedScreenBit
 ;
-LoadCompressedScreenData_ByteOffset:        ; [$005e]
-    .byte $00                               ; [$005e] byte
+LoadCompressedScreenData_ByteOffset:
+    .byte $00                               ; byte
 
 
 ;
@@ -1861,8 +1861,8 @@ LoadCompressedScreenData_ByteOffset:        ; [$005e]
 ;     Area_LoadBlocks
 ;     Area_LoadNextCompressedScreenBit
 ;
-LoadCompressedScreenData_BitOffset:         ; [$005f]
-    .byte $00                               ; [$005f] byte
+LoadCompressedScreenData_BitOffset:
+    .byte $00                               ; byte
 
 
 ;
@@ -1872,8 +1872,8 @@ LoadCompressedScreenData_BitOffset:         ; [$005f]
 ; XREFS:
 ;     Area_LoadNextCompressedScreenBit
 ;
-LoadCompressedScreenData_CurByte:           ; [$0060]
-    .byte $00                               ; [$0060] byte
+LoadCompressedScreenData_CurByte:
+    .byte $00                               ; byte
 
 
 ;============================================================================
@@ -1897,8 +1897,8 @@ LoadCompressedScreenData_CurByte:           ; [$0060]
 ;     Player_LoadWeaponSpriteTileAddrs
 ;     Player_LoadWeaponTile
 ;
-Player_SpriteTileReadAddr_L:                ; [$0061]
-    .byte $00                               ; [$0061] byte
+Player_SpriteTileReadAddr_L:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
@@ -1906,8 +1906,8 @@ Player_SpriteTileReadAddr_L:                ; [$0061]
 ;     Player_LoadShieldSpriteTileAddrs
 ;     Player_LoadWeaponSpriteTileAddrs
 ;
-Player_SpriteTileReadAddr_U:                ; [$0062]
-    .byte $00                               ; [$0062] byte
+Player_SpriteTileReadAddr_U:
+    .byte $00                               ; byte
 
 
 ;============================================================================
@@ -1968,8 +1968,8 @@ Player_SpriteTileReadAddr_U:                ; [$0062]
 ;     Screen_LoadBlocksHoriz
 ;     Screen_SetupNew
 ;
-Area_CurrentScreen:                         ; [$0063]
-    .byte $00                               ; [$0063] byte
+Area_CurrentScreen:
+    .byte $00                               ; byte
 
 
 ;
@@ -1988,8 +1988,8 @@ Area_CurrentScreen:                         ; [$0063]
 ;     Player_EnterDoorToOutside
 ;     Screen_SetupNew
 ;
-Area_LoadingScreenIndex:                    ; [$0064]
-    .byte $00                               ; [$0064] byte
+Area_LoadingScreenIndex:
+    .byte $00                               ; byte
 
 
 ;
@@ -2010,8 +2010,8 @@ Area_LoadingScreenIndex:                    ; [$0064]
 ;     Player_EnterDoorToInside
 ;     Screen_SetupNew
 ;
-Screen_DestPaletteOrIndex:                  ; [$0065]
-    .byte $00                               ; [$0065] Palette
+Screen_DestPaletteOrIndex:
+    .byte $00                               ; Palette
 
 
 ;
@@ -2022,8 +2022,8 @@ Screen_DestPaletteOrIndex:                  ; [$0065]
 ;     Area_LoadScrollData
 ;     Player_TryMoveLeft
 ;
-Area_ScreenToTheLeft:                       ; [$0066]
-    .byte $00                               ; [$0066] byte
+Area_ScreenToTheLeft:
+    .byte $00                               ; byte
 
 
 ;
@@ -2034,8 +2034,8 @@ Area_ScreenToTheLeft:                       ; [$0066]
 ;     Area_LoadScrollData
 ;     Player_TryMoveRight
 ;
-Area_ScreenToTheRight:                      ; [$0067]
-    .byte $00                               ; [$0067] byte
+Area_ScreenToTheRight:
+    .byte $00                               ; byte
 
 
 ;
@@ -2047,8 +2047,8 @@ Area_ScreenToTheRight:                      ; [$0067]
 ;     Player_CheckHandleClimbUp
 ;     Player_UpdateClimbOrJump
 ;
-Area_ScreenAbove:                           ; [$0068]
-    .byte $00                               ; [$0068] byte
+Area_ScreenAbove:
+    .byte $00                               ; byte
 
 
 ;
@@ -2060,8 +2060,8 @@ Area_ScreenAbove:                           ; [$0068]
 ;     Player_HandleVertLadderOrJump
 ;     Player_MoveDownScreen
 ;
-Area_ScreenBelow:                           ; [$0069]
-    .byte $00                               ; [$0069] byte
+Area_ScreenBelow:
+    .byte $00                               ; byte
 
 
 ;
@@ -2071,8 +2071,8 @@ Area_ScreenBelow:                           ; [$0069]
 ; XREFS:
 ;     Area_SetStateFromDoorDestination
 ;
-Temp_BlockPos:                              ; [$006a]
-    .byte $00                               ; [$006a] byte
+Temp_BlockPos:
+    .byte $00                               ; byte
 
 
 ;
@@ -2082,8 +2082,8 @@ Temp_BlockPos:                              ; [$006a]
 ; XREFS:
 ;     Player_CheckHandleEnterDoor
 ;
-Temp_BlockPos2:                             ; [$006b]
-    .byte $00                               ; [$006b] byte
+Temp_BlockPos2:
+    .byte $00                               ; byte
 
 
 ;
@@ -2104,8 +2104,8 @@ Temp_BlockPos2:                             ; [$006b]
 ;     Player_EnterDoorToInside
 ;     Screen_SetupNew
 ;
-Screen_StartPosYX:                          ; [$006c]
-    .byte $00                               ; [$006c] byte
+Screen_StartPosYX:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
@@ -2113,8 +2113,8 @@ Screen_StartPosYX:                          ; [$006c]
 ;     Screen_LoadBlockDataVert
 ;     Screen_LoadBlocksHoriz
 ;
-MaybeUnused_006d:                           ; [$006d]
-    .byte $00                               ; [$006d] byte
+MaybeUnused_006d:
+    .byte $00                               ; byte
 
 
 ;
@@ -2138,40 +2138,40 @@ MaybeUnused_006d:                           ; [$006d]
 ;     Screen_LoadDataRight
 ;     Screen_LoadDataUp
 ;
-Screen_ScrollLoadMode:                      ; [$006e]
-    .byte $00                               ; [$006e] ScreenScrollLoadMode
+Screen_ScrollLoadMode:
+    .byte $00                               ; ScreenScrollLoadMode
 
 ;
 ; XREFS:
 ;     Screen_LoadBlockDataVert
 ;     Screen_LoadBlocksHoriz
 ;
-CurrentArea_BlockData1CurAddr:              ; [$006f]
-    .byte $00                               ; [$006f] byte
+CurrentArea_BlockData1CurAddr:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
 ;     Screen_LoadBlockDataVert
 ;     Screen_LoadBlocksHoriz
 ;
-CurrentArea_BlockData2CurAddr:              ; [$0070]
-    .byte $00                               ; [$0070] byte
+CurrentArea_BlockData2CurAddr:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
 ;     Screen_LoadBlockDataVert
 ;     Screen_LoadBlocksHoriz
 ;
-CurrentArea_BlockData3CurAddr:              ; [$0071]
-    .byte $00                               ; [$0071] byte
+CurrentArea_BlockData3CurAddr:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
 ;     Screen_LoadBlockDataVert
 ;     Screen_LoadBlocksHoriz
 ;
-CurrentArea_BlockData4CurAddr:              ; [$0072]
-    .byte $00                               ; [$0072] byte
+CurrentArea_BlockData4CurAddr:
+    .byte $00                               ; byte
 
 
 ;============================================================================
@@ -2194,7 +2194,7 @@ CurrentArea_BlockData4CurAddr:              ; [$0072]
 ;     Screen_LoadBlockDataVert
 ;     Screen_RunWriteScrollDataHandler
 ;
-Screen_ScrollHandlersPending:               ; [$0073]
+Screen_ScrollHandlersPending:
     .byte $00                               ; [0]:
                                             ; Screen_WriteBlockTilesRowToPPU
 
@@ -2203,7 +2203,7 @@ Screen_ScrollHandlersPending:               ; [$0073]
 ;     Area_ScrollScreenRight
 ;     Screen_LoadBlocksHoriz
 ;
-Screen_ScrollHorizBlocksLoaded:             ; [$0074]
+Screen_ScrollHorizBlocksLoaded:
     .byte $00                               ; [1]:
                                             ; Screen_WriteBlockTilesColumnToPPU
 
@@ -2212,7 +2212,7 @@ Screen_ScrollHorizBlocksLoaded:             ; [$0074]
 ;     Area_ScrollScreenRight
 ;     Screen_LoadBlockDataVert
 ;
-Screen_MaybeUnused_0075:                    ; [$0075]
+Screen_MaybeUnused_0075:
     .byte $00                               ; [2]:
                                             ; Screen_WriteBlockAttrsRowToPPU
 
@@ -2221,7 +2221,7 @@ Screen_MaybeUnused_0075:                    ; [$0075]
 ;     Area_ScrollScreenRight
 ;     Screen_LoadBlocksHoriz
 ;
-Screen_ScrollHorizAttrsLoaded:              ; [$0076]
+Screen_ScrollHorizAttrsLoaded:
     .byte $00                               ; [3]:
                                             ; Screen_WriteBlockAttrsColumnToPPU
 
@@ -2230,39 +2230,39 @@ Screen_ScrollHorizAttrsLoaded:              ; [$0076]
 ;     Area_ScrollScreenRight
 ;     Screen_RunWriteScrollDataHandler
 ;
-Screen_NextScrollDataHandlerIndex:          ; [$0077]
-    .byte $00                               ; [$0077] byte
+Screen_NextScrollDataHandlerIndex:
+    .byte $00                               ; byte
 
-    .byte $00,$00                           ; [$0079] undefined
+    .byte $00,$00                           ; undefined
 
 ;
 ; XREFS:
 ;     Area_LoadBlocks
 ;     Game_LoadAreaTable
 ;
-Area_ScreenBlocksOffset:                    ; [$007a]
-    .byte $00                               ; [$007a] byte
+Area_ScreenBlocksOffset:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
 ;     Game_LoadAreaTable
 ;
-Area_ScreenBlocksOffset_U:                  ; [$007b]
-    .byte $00                               ; [$007b] byte
+Area_ScreenBlocksOffset_U:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
 ;     Game_LoadAreaTable
 ;
-CurrentArea_TableAddr:                      ; [$007c]
-    .byte $00                               ; [$007c] byte
+CurrentArea_TableAddr:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
 ;     Game_LoadAreaTable
 ;
-CurrentArea_TableAddr_U:                    ; [$007d]
-    .byte $00                               ; [$007d] byte
+CurrentArea_TableAddr_U:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
@@ -2272,8 +2272,8 @@ CurrentArea_TableAddr_U:                    ; [$007d]
 ;     Screen_LoadBlocksHoriz
 ;     TextBox_GetBackingAttributeData
 ;
-CurrentArea_BlockAttributesAddr:            ; [$007e]
-    .byte $00,$00                           ; [$007e] byte
+CurrentArea_BlockAttributesAddr:
+    .byte $00,$00                           ; byte
 
 ;
 ; XREFS:
@@ -2281,8 +2281,8 @@ CurrentArea_BlockAttributesAddr:            ; [$007e]
 ;     Screen_LoadBlockDataVert
 ;     Screen_LoadBlocksHoriz
 ;
-CurrentArea_BlockData1StartAddr:            ; [$0080]
-    .byte $00,$00                           ; [$0080] byte
+CurrentArea_BlockData1StartAddr:
+    .byte $00,$00                           ; byte
 
 ;
 ; XREFS:
@@ -2290,8 +2290,8 @@ CurrentArea_BlockData1StartAddr:            ; [$0080]
 ;     Screen_LoadBlockDataVert
 ;     Screen_LoadBlocksHoriz
 ;
-CurrentArea_BlockData2StartAddr:            ; [$0082]
-    .byte $00,$00                           ; [$0082] byte
+CurrentArea_BlockData2StartAddr:
+    .byte $00,$00                           ; byte
 
 ;
 ; XREFS:
@@ -2299,8 +2299,8 @@ CurrentArea_BlockData2StartAddr:            ; [$0082]
 ;     Screen_LoadBlockDataVert
 ;     Screen_LoadBlocksHoriz
 ;
-CurrentArea_BlockData3StartAddr:            ; [$0084]
-    .byte $00,$00                           ; [$0084] byte
+CurrentArea_BlockData3StartAddr:
+    .byte $00,$00                           ; byte
 
 ;
 ; XREFS:
@@ -2308,39 +2308,39 @@ CurrentArea_BlockData3StartAddr:            ; [$0084]
 ;     Screen_LoadBlockDataVert
 ;     Screen_LoadBlocksHoriz
 ;
-CurrentArea_BlockData4StartAddr:            ; [$0086]
-    .byte $00,$00                           ; [$0086] byte
+CurrentArea_BlockData4StartAddr:
+    .byte $00,$00                           ; byte
 
 ;
 ; XREFS:
 ;     Area_LoadBlockProperties
 ;     Game_LoadAreaTable
 ;
-CurrentArea_BlockPropertiesAddr:            ; [$0088]
-    .byte $00                               ; [$0088] byte
+CurrentArea_BlockPropertiesAddr:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
 ;     Game_LoadAreaTable
 ;
-CurrentArea_BlockPropertiesAddr_U:          ; [$0089]
-    .byte $00                               ; [$0089] byte
-
-;
-; XREFS:
-;     Area_LoadScrollData
-;     Game_LoadAreaTable
-;
-CurrentArea_ScrollingDataAddr:              ; [$008a]
-    .byte $00                               ; [$008a] byte
+CurrentArea_BlockPropertiesAddr_U:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
 ;     Area_LoadScrollData
 ;     Game_LoadAreaTable
 ;
-ScrollingData_U:                            ; [$008b]
-    .byte $00                               ; [$008b] byte
+CurrentArea_ScrollingDataAddr:
+    .byte $00                               ; byte
+
+;
+; XREFS:
+;     Area_LoadScrollData
+;     Game_LoadAreaTable
+;
+ScrollingData_U:
+    .byte $00                               ; byte
 
 
 ;
@@ -2355,38 +2355,38 @@ ScrollingData_U:                            ; [$008b]
 ;     Game_LoadCurrentArea
 ;     Game_LoadFirstLevel
 ;
-CurrentArea_ROMBank:                        ; [$008c]
-    .byte $00                               ; [$008c] ROMBank
+CurrentArea_ROMBank:
+    .byte $00                               ; ROMBank
 
 ;
 ; XREFS:
 ;     Area_SetStateFromDoorDestination
 ;     Game_LoadAreaTable
 ;
-CurrentArea_DoorLocationsAddr:              ; [$008d]
-    .byte $00                               ; [$008d] byte
+CurrentArea_DoorLocationsAddr:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
 ;     Area_SetStateFromDoorDestination
 ;     Game_LoadAreaTable
 ;
-CurrentArea_DoorLocationsAddr_U:            ; [$008e]
-    .byte $00                               ; [$008e] byte
+CurrentArea_DoorLocationsAddr_U:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
 ;     Game_LoadAreaTable
 ;
-CurrentArea_DoorDestinationsAddr:           ; [$008f]
-    .byte $00                               ; [$008f] byte
+CurrentArea_DoorDestinationsAddr:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
 ;     Game_LoadAreaTable
 ;
-CurrentArea_DoorDestinationsAddr_U:         ; [$0090]
-    .byte $00                               ; [$0090] byte
+CurrentArea_DoorDestinationsAddr_U:
+    .byte $00                               ; byte
 
 
 ;============================================================================
@@ -2410,8 +2410,8 @@ CurrentArea_DoorDestinationsAddr_U:         ; [$0090]
 ;     Player_LoadWeaponTile
 ;     Player_LoadWeaponTilesToPPU
 ;
-Player_SpriteSegmentPPUAddr_L:              ; [$0091]
-    .byte $00                               ; [$0091] byte
+Player_SpriteSegmentPPUAddr_L:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
@@ -2420,15 +2420,15 @@ Player_SpriteSegmentPPUAddr_L:              ; [$0091]
 ;     Player_LoadWeaponTile
 ;     Player_LoadWeaponTilesToPPU
 ;
-Player_SpriteSegmentPPUAddr_U:              ; [$0092]
-    .byte $00                               ; [$0092] byte
+Player_SpriteSegmentPPUAddr_U:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
 ;     Area_LoadTiles
 ;
-Area_TilesReadAddress:                      ; [$0093]
-    .word $0000                             ; [$0093] ushort
+Area_TilesReadAddress:
+    .word $0000                             ; ushort
 
 ;
 ; XREFS:
@@ -2439,8 +2439,8 @@ Area_TilesReadAddress:                      ; [$0093]
 ;     Game_LoadCurrentArea
 ;     Game_LoadFirstLevel
 ;
-Area_TilesIndex:                            ; [$0095]
-    .byte $00                               ; [$0095] byte
+Area_TilesIndex:
+    .byte $00                               ; byte
 
 
 ;============================================================================
@@ -2456,16 +2456,16 @@ Area_TilesIndex:                            ; [$0095]
 ;     CurrentSprite_LoadTilesInfo
 ;     Sprites_LoadImageForCurrentSprite
 ;
-CurrentSprite_LoadTileAddr:                 ; [$0096]
-    .byte $00                               ; [$0096] byte
+CurrentSprite_LoadTileAddr:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
 ;     CurrentSprite_LoadTilesInfo
 ;     Sprites_LoadImageForCurrentSprite
 ;
-CurrentSprite_LoadTileAddr_U:               ; [$0097]
-    .byte $00                               ; [$0097] byte
+CurrentSprite_LoadTileAddr_U:
+    .byte $00                               ; byte
 
 
 ;============================================================================
@@ -2481,8 +2481,8 @@ CurrentSprite_LoadTileAddr_U:               ; [$0097]
 ;     CurrentSprite_ResetPPUTileOffset
 ;     Sprites_LoadImageForCurrentSprite
 ;
-CurrentSprite_TargetPPUTileAddr:            ; [$0098]
-    .byte $00                               ; [$0098] byte
+CurrentSprite_TargetPPUTileAddr:
+    .byte $00                               ; byte
 
 
 ;
@@ -2493,8 +2493,8 @@ CurrentSprite_TargetPPUTileAddr:            ; [$0098]
 ;     CurrentSprite_ResetPPUTileOffset
 ;     Sprites_LoadImageForCurrentSprite
 ;
-CurrentSprite_TargetPPUTileAddr_U:          ; [$0099]
-    .byte $00                               ; [$0099] byte
+CurrentSprite_TargetPPUTileAddr_U:
+    .byte $00                               ; byte
 
 
 ;============================================================================
@@ -2512,8 +2512,8 @@ CurrentSprite_TargetPPUTileAddr_U:          ; [$0099]
 ;     GameLoop_LoadSpriteImages
 ;     Sprites_LoadImageForCurrentSprite
 ;
-CurrentSprite_StartPPUTileOffset:           ; [$009a]
-    .byte $00                               ; [$009a] byte
+CurrentSprite_StartPPUTileOffset:
+    .byte $00                               ; byte
 
 
 ;============================================================================
@@ -2529,15 +2529,15 @@ CurrentSprite_StartPPUTileOffset:           ; [$009a]
 ;     CurrentSprite_LoadTilesInfo
 ;     Sprites_LoadImageForCurrentSprite
 ;
-CurrentSprite_LoadTileCount:                ; [$009b]
-    .byte $00                               ; [$009b] byte
+CurrentSprite_LoadTileCount:
+    .byte $00                               ; byte
 
 
 ;============================================================================
 ; MOD NOTES: 1 unused byte of RAM.
 ;============================================================================
-UNUSED_009C:                                ; [$009c]
-    .byte $00                               ; [$009c] undefined
+UNUSED_009C:
+    .byte $00                               ; undefined
 
 
 ;============================================================================
@@ -2556,8 +2556,8 @@ UNUSED_009C:                                ; [$009c]
 ;     Player_TryMoveLeft
 ;     Player_TryMoveRight
 ;
-Player_PosX_Frac:                           ; [$009d]
-    .byte $00                               ; [$009d] byte
+Player_PosX_Frac:
+    .byte $00                               ; byte
 
 
 ;
@@ -2609,8 +2609,8 @@ Player_PosX_Frac:                           ; [$009d]
 ;     Player_UseMattock
 ;     Screen_SetupNew
 ;
-Player_PosX_Block:                          ; [$009e]
-    .byte $00                               ; [$009e] byte
+Player_PosX_Block:
+    .byte $00                               ; byte
 
 
 ;
@@ -2635,8 +2635,8 @@ Player_PosX_Block:                          ; [$009e]
 ;     Player_TryMoveRight
 ;     Screen_SetupNew
 ;
-Screen_Maybe_ScrollXCounter:                ; [$009f]
-    .byte $00                               ; [$009f] byte
+Screen_Maybe_ScrollXCounter:
+    .byte $00                               ; byte
 
 
 ;============================================================================
@@ -2675,8 +2675,8 @@ Screen_Maybe_ScrollXCounter:                ; [$009f]
 ;     Player_CheckHandleClimbUp
 ;     Player_HandleVertLadderOrJump
 ;
-Player_ClimbFlySpeedModifier:               ; [$00a0]
-    .byte $00                               ; [$00a0] byte
+Player_ClimbFlySpeedModifier:
+    .byte $00                               ; byte
 
 
 ;
@@ -2720,8 +2720,8 @@ Player_ClimbFlySpeedModifier:               ; [$00a0]
 ;     Player_UseMattock
 ;     Screen_SetupNew
 ;
-Player_PosY:                                ; [$00a1]
-    .byte $00                               ; [$00a1] byte
+Player_PosY:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
@@ -2736,8 +2736,8 @@ Player_PosY:                                ; [$00a1]
 ;     Player_UpdateClimbOrJump
 ;     Screen_SetupNew
 ;
-Player_Something_ScrollPosY:                ; [$00a2]
-    .byte $00                               ; [$00a2] byte
+Player_Something_ScrollPosY:
+    .byte $00                               ; byte
 
 
 ;
@@ -2756,8 +2756,8 @@ Player_Something_ScrollPosY:                ; [$00a2]
 ;     Player_GetBodySpriteFrameOffset
 ;     Player_HandleDeath
 ;
-Player_MovementTick:                        ; [$00a3]
-    .byte $00                               ; [$00a3] byte
+Player_MovementTick:
+    .byte $00                               ; byte
 
 
 ;
@@ -2816,8 +2816,8 @@ Player_MovementTick:                        ; [$00a3]
 ;     Player_UpdateClimbOrJump
 ;     Player_UseMattock
 ;
-Player_Flags:                               ; [$00a4]
-    .byte $00                               ; [$00a4] PlayerFlags
+Player_Flags:
+    .byte $00                               ; PlayerFlags
 
 
 ;
@@ -2846,8 +2846,8 @@ Player_Flags:                               ; [$00a4]
 ;     Player_SetInitialState
 ;     Player_UpdateAcceleration
 ;
-Player_StatusFlag:                          ; [$00a5]
-    .byte $00                               ; [$00a5] PlayerStatusFlags
+Player_StatusFlag:
+    .byte $00                               ; PlayerStatusFlags
 
 
 ;============================================================================
@@ -2876,16 +2876,16 @@ Player_StatusFlag:                          ; [$00a5]
 ;     Player_HandleVertLadderOrJump
 ;     Player_UpdateClimbOrJump
 ;
-Player_JumpCurveIndex:                      ; [$00a6]
-    .byte $00                               ; [$00a6] byte
+Player_JumpCurveIndex:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
 ;     Player_DrawWeapon
 ;     Player_LoadArmorTilesToPPU
 ;
-Player_ArmorLookupIndex:                    ; [$00a7]
-    .byte $00                               ; [$00a7] byte
+Player_ArmorLookupIndex:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
@@ -2897,8 +2897,8 @@ Player_ArmorLookupIndex:                    ; [$00a7]
 ;     Player_LoadWeaponTilesToPPU
 ;     Player_SetInitialState
 ;
-Player_DrawTileReadOffset:                  ; [$00a8]
-    .byte $00                               ; [$00a8] byte
+Player_DrawTileReadOffset:
+    .byte $00                               ; byte
 
 
 ;
@@ -2915,8 +2915,8 @@ Player_DrawTileReadOffset:                  ; [$00a8]
 ;     Player_UpdateAcceleration
 ;     Player_UpdatePosFromKnockback
 ;
-Player_MoveAcceleration:                    ; [$00a9]
-    .byte $00                               ; [$00a9] byte
+Player_MoveAcceleration:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
@@ -2926,15 +2926,15 @@ Player_MoveAcceleration:                    ; [$00a9]
 ;     Player_UpdateAcceleration
 ;     Player_UpdatePosFromKnockback
 ;
-Player_MoveAcceleration_U:                  ; [$00aa]
-    .byte $00                               ; [$00aa] byte
+Player_MoveAcceleration_U:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
 ;     Player_SetInitialState
 ;
-Player_Unused_00ab:                         ; [$00ab]
-    .byte $00                               ; [$00ab] byte
+Player_Unused_00ab:
+    .byte $00                               ; byte
 
 
 ;
@@ -2944,8 +2944,8 @@ Player_Unused_00ab:                         ; [$00ab]
 ; XREFS:
 ;     Player_CheckHandleAttack
 ;
-Player_AttackPhaseTimer:                    ; [$00ac]
-    .byte $00                               ; [$00ac] byte
+Player_AttackPhaseTimer:
+    .byte $00                               ; byte
 
 
 ;
@@ -2961,8 +2961,8 @@ Player_AttackPhaseTimer:                    ; [$00ac]
 ;     Player_HandleIFrames
 ;     Player_SetInitialState
 ;
-Player_InvincibilityPhase:                  ; [$00ad]
-    .byte $00                               ; [$00ad] byte
+Player_InvincibilityPhase:
+    .byte $00                               ; byte
 
 
 ;
@@ -2976,14 +2976,14 @@ Player_InvincibilityPhase:                  ; [$00ad]
 ;     Player_CheckHandleAttack
 ;     Player_GetBodySpriteFrameOffset
 ;
-Player_AttackPhaseAnimFrame:                ; [$00ae]
-    .byte $00                               ; [$00ae] byte
+Player_AttackPhaseAnimFrame:
+    .byte $00                               ; byte
 
 
 ;============================================================================
 ; MOD NOTES: 2 unused bytes of RAM.
 ;============================================================================
-    .byte $00,$00                           ; [$00af] undefined
+    .byte $00,$00                           ; undefined
 
 
 ;============================================================================
@@ -2999,8 +2999,8 @@ Player_AttackPhaseAnimFrame:                ; [$00ae]
 ;     Player_GrabClimbLadderOrJump
 ;     Player_HandleVertLadderOrJump
 ;
-Player_ClimbLadderHangTime:                 ; [$00b1]
-    .byte $00                               ; [$00b1] byte
+Player_ClimbLadderHangTime:
+    .byte $00                               ; byte
 
 
 ;
@@ -3013,8 +3013,8 @@ Player_ClimbLadderHangTime:                 ; [$00b1]
 ;     Game_MovePlayerOnScrollLeft
 ;     Player_DrawBody
 ;
-Maybe_PlayerX_ForScroll:                    ; [$00b2]
-    .byte $00                               ; [$00b2] byte
+Maybe_PlayerX_ForScroll:
+    .byte $00                               ; byte
 
 
 ;
@@ -3026,8 +3026,8 @@ Maybe_PlayerX_ForScroll:                    ; [$00b2]
 ;     Game_MovePlayerOnScroll
 ;     Player_DrawBody
 ;
-Maybe_PlayerY_ForScroll:                    ; [$00b3]
-    .byte $00                               ; [$00b3] byte
+Maybe_PlayerY_ForScroll:
+    .byte $00                               ; byte
 
 
 ;
@@ -3045,8 +3045,8 @@ Maybe_PlayerY_ForScroll:                    ; [$00b3]
 ;     Player_TryMoveLeft
 ;     Player_TryMoveRight
 ;
-Screen_ScrollPlayerTransitionCounter:       ; [$00b4]
-    .byte $00                               ; [$00b4] byte
+Screen_ScrollPlayerTransitionCounter:
+    .byte $00                               ; byte
 
 
 ;============================================================================
@@ -3104,8 +3104,8 @@ Screen_ScrollPlayerTransitionCounter:       ; [$00b4]
 ;     Player_CheckSwitchScreen
 ;     Player_UseMattock
 ;
-Arg_PixelPosX:                              ; [$00b5]
-    .byte $00                               ; [$00b5] byte
+Arg_PixelPosX:
+    .byte $00                               ; byte
 
 
 ;
@@ -3134,8 +3134,8 @@ Arg_PixelPosX:                              ; [$00b5]
 ;     Player_CheckSwitchScreen
 ;     Player_UseMattock
 ;
-Arg_PixelPosY:                              ; [$00b6]
-    .byte $00                               ; [$00b6] byte
+Arg_PixelPosY:
+    .byte $00                               ; byte
 
 
 ;
@@ -3173,8 +3173,8 @@ Arg_PixelPosY:                              ; [$00b6]
 ;     Player_CheckOnBreakableBlock
 ;     Player_HandleVertLadderOrJump
 ;
-Blocks_Result:                              ; [$00b7]
-    .byte $00                               ; [$00b7] byte
+Blocks_Result:
+    .byte $00                               ; byte
 
 
 ;============================================================================
@@ -3200,16 +3200,16 @@ Blocks_Result:                              ; [$00b7]
 ;     Player_CalculateVisibility
 ;     CastMagic_CalculateVisibility
 ;
-Temp_MovingSpriteVisibility:                ; [$00b8]
-    .byte $00                               ; [$00b8] MovingSpriteVisibility
+Temp_MovingSpriteVisibility:
+    .byte $00                               ; MovingSpriteVisibility
 
 ;
 ; XREFS:
 ;     CurrentSprite_CanMoveInDirection
 ;     Sprites_MoveRight__86c6
 ;
-Temp_HitBoxValue:                           ; [$00b9]
-    .byte $00                               ; [$00b9] byte
+Temp_HitBoxValue:
+    .byte $00                               ; byte
 
 
 ;
@@ -3253,7 +3253,7 @@ Temp_HitBoxValue:                           ; [$00b9]
 ;     Sprite_SubtractPosX
 ;     Sprites_CheckPlacementInvalidAtY
 ;
-CurrentSprites_XPos_Full:                   ; [$00ba]
+CurrentSprites_XPos_Full:
     .byte $00                               ; [0]:
     .byte $00                               ; [1]:
     .byte $00                               ; [2]:
@@ -3266,7 +3266,7 @@ CurrentSprites_XPos_Full:                   ; [$00ba]
 ; XREFS:
 ;     Sprites_PopulateNextAvailableSprite
 ;
-CurrentSprites_XPos_Full_7_:                ; [$00c1]
+CurrentSprites_XPos_Full_7_:
     .byte $00                               ; [7]:
 
 
@@ -3311,7 +3311,7 @@ CurrentSprites_XPos_Full_7_:                ; [$00c1]
 ;     Sprite_RunDeathDropHandler
 ;     Sprites_CanMoveDownByHitbox
 ;
-CurrentSprites_YPos:                        ; [$00c2]
+CurrentSprites_YPos:
     .byte $00                               ; [0]:
     .byte $00                               ; [1]:
     .byte $00                               ; [2]:
@@ -3325,7 +3325,7 @@ CurrentSprites_YPos:                        ; [$00c2]
 ;     GameLoop_LoadSpriteImages
 ;     Sprites_PopulateNextAvailableSprite
 ;
-CurrentSprites_YPos_7_:                     ; [$00c9]
+CurrentSprites_YPos_7_:
     .byte $00                               ; [7]:
 
 
@@ -3364,8 +3364,8 @@ CurrentSprites_YPos_7_:                     ; [$00c9]
 ;     Screen_LoadAllScreenInfo
 ;     Screen_LoadSpriteInfo
 ;
-Sprites_ReadInfoAddr:                       ; [$00ca]
-    .byte $00                               ; [$00ca] byte
+Sprites_ReadInfoAddr:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
@@ -3378,8 +3378,8 @@ Sprites_ReadInfoAddr:                       ; [$00ca]
 ;     Screen_LoadAllScreenInfo
 ;     Screen_LoadSpriteInfo
 ;
-Sprites_ReadInfoAddr_U:                     ; [$00cb]
-    .byte $00                               ; [$00cb] byte
+Sprites_ReadInfoAddr_U:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
@@ -3387,46 +3387,46 @@ Sprites_ReadInfoAddr_U:                     ; [$00cb]
 ;     Screen_LoadSpecialEventID
 ;     Sprites_LoadSpriteValue
 ;
-Screen_ExtraInfoAddr:                       ; [$00cc]
-    .byte $00                               ; [$00cc] byte
+Screen_ExtraInfoAddr:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
 ;     Screen_LoadAllScreenInfo
 ;     Sprites_LoadSpriteValue
 ;
-Screen_ExtraInfoAddr_U:                     ; [$00cd]
-    .byte $00                               ; [$00cd] byte
+Screen_ExtraInfoAddr_U:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
 ;     Player_DrawWeapon
 ;     Sprites_IsSpriteOutOfWeaponRange
 ;
-PlayerPosXPlus10:                           ; [$00ce]
-    .byte $00                               ; [$00ce] byte
+PlayerPosXPlus10:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
 ;     Player_DrawWeapon
 ;
-Maybe_Something_WeaponPosX:                 ; [$00cf]
-    .byte $00                               ; [$00cf] byte
+Maybe_Something_WeaponPosX:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
 ;     Player_DrawWeapon
 ;     Sprites_IsSpriteOutOfWeaponRange
 ;
-Maybe_Something_WeaponPosY:                 ; [$00d0]
-    .byte $00                               ; [$00d0] byte
+Maybe_Something_WeaponPosY:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
 ;     Player_DrawWeapon
 ;
-DrawWeapon_Unused_00D1:                     ; [$00d1]
-    .byte $00                               ; [$00d1] byte
+DrawWeapon_Unused_00D1:
+    .byte $00                               ; byte
 
 
 ;============================================================================
@@ -3442,16 +3442,16 @@ DrawWeapon_Unused_00D1:                     ; [$00d1]
 ;     Player_DrawWeapon
 ;     Sprites_IsSpriteOutOfWeaponRange
 ;
-Maybe_WeaponRange_X:                        ; [$00d2]
-    .byte $00                               ; [$00d2] byte
+Maybe_WeaponRange_X:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
 ;     Player_DrawWeapon
 ;     Sprites_IsSpriteOutOfWeaponRange
 ;
-Maybe_WeaponRange_Y:                        ; [$00d3]
-    .byte $00                               ; [$00d3] byte
+Maybe_WeaponRange_Y:
+    .byte $00                               ; byte
 
 
 ;============================================================================
@@ -3479,8 +3479,8 @@ Maybe_WeaponRange_Y:                        ; [$00d3]
 ;     Player_CheckPushingBlock
 ;     ScreenEvents_HandlePathToMasconEvent
 ;
-PathToMascon_Opening:                       ; [$00d4]
-    .byte $00                               ; [$00d4] bool
+PathToMascon_Opening:
+    .byte $00                               ; bool
 
 
 ;
@@ -3494,8 +3494,8 @@ PathToMascon_Opening:                       ; [$00d4]
 ;     Player_CheckPushingBlock
 ;     ScreenEvents_HandlePathToMasconEvent
 ;
-PathToMascon_FountainCoverPos:              ; [$00d5]
-    .byte $00                               ; [$00d5] byte
+PathToMascon_FountainCoverPos:
+    .byte $00                               ; byte
 
     .byte $00                               ; Unused
 
@@ -3511,8 +3511,8 @@ PathToMascon_FountainCoverPos:              ; [$00d5]
 ; XREFS:
 ;     Player_CheckPushingBlock
 ;
-BlockPushCounter:                           ; [$00d7]
-    .byte $00                               ; [$00d7] byte
+BlockPushCounter:
+    .byte $00                               ; byte
 
 
 ;============================================================================
@@ -3532,8 +3532,8 @@ BlockPushCounter:                           ; [$00d7]
 ;     Game_DropLadderToMascon
 ;     Game_OpenPathToMascon
 ;
-PathToMascon_LadderPos:                     ; [$00d8]
-    .byte $00                               ; [$00d8] byte
+PathToMascon_LadderPos:
+    .byte $00                               ; byte
 
 
 ;
@@ -3545,8 +3545,8 @@ PathToMascon_LadderPos:                     ; [$00d8]
 ;     Game_DropLadderToMascon
 ;     Game_OpenPathToMascon
 ;
-PathToMascon_LadderBlocksRemaining:         ; [$00d9]
-    .byte $00                               ; [$00d9] byte
+PathToMascon_LadderBlocksRemaining:
+    .byte $00                               ; byte
 
 
 ;============================================================================
@@ -3564,8 +3564,8 @@ PathToMascon_LadderBlocksRemaining:         ; [$00d9]
 ; XREFS:
 ;     GetRandom
 ;
-Random_Offset:                              ; [$00da]
-    .byte $00                               ; [$00da] byte
+Random_Offset:
+    .byte $00                               ; byte
 
 
 ;============================================================================
@@ -3595,8 +3595,8 @@ Random_Offset:                              ; [$00da]
 ;     PPU_WriteTilesFromCHRRAM
 ;     UI_DrawHUDSprites
 ;
-IScriptOrCHRAddr:                           ; [$00db]
-    .byte $00                               ; [$00db] byte
+IScriptOrCHRAddr:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
@@ -3608,8 +3608,8 @@ IScriptOrCHRAddr:                           ; [$00db]
 ;     PPU_WriteTilesFromCHRRAM
 ;     UI_DrawHUDSprites
 ;
-IScriptOrCHRAddr_U:                         ; [$00dc]
-    .byte $00                               ; [$00dc] byte
+IScriptOrCHRAddr_U:
+    .byte $00                               ; byte
 
 
 ;
@@ -3621,8 +3621,8 @@ IScriptOrCHRAddr_U:                         ; [$00dc]
 ;     IScripts_JumpToNextAddr
 ;     IScripts_LoadByte
 ;
-IScriptOffset:                              ; [$00dd]
-    .byte $00                               ; [$00dd] byte
+IScriptOffset:
+    .byte $00                               ; byte
 
 
 ;
@@ -3633,8 +3633,8 @@ IScriptOffset:                              ; [$00dd]
 ; XREFS:
 ;     MMC1_LoadBankAndJump
 ;
-BankedCallSetup_SavedA:                     ; [$00de]
-    .byte $00                               ; [$00de] byte
+BankedCallSetup_SavedA:
+    .byte $00                               ; byte
 
 
 ;
@@ -3645,8 +3645,8 @@ BankedCallSetup_SavedA:                     ; [$00de]
 ; XREFS:
 ;     MMC1_LoadBankAndJump
 ;
-BankedCallSetup_SavedX:                     ; [$00df]
-    .byte $00                               ; [$00df] byte
+BankedCallSetup_SavedX:
+    .byte $00                               ; byte
 
 
 ;
@@ -3657,14 +3657,14 @@ BankedCallSetup_SavedX:                     ; [$00df]
 ; XREFS:
 ;     MMC1_LoadBankAndJump
 ;
-BankedCallSetup_SavedY:                     ; [$00e0]
-    .byte $00                               ; [$00e0] byte
+BankedCallSetup_SavedY:
+    .byte $00                               ; byte
 
 
 ;============================================================================
 ; MOD NOTES: 7 unused bytes of RAM.
 ;============================================================================
-    .byte $00,$00,$00,$00,$00,$00,$00       ; [$00e1] undefined
+    .byte $00,$00,$00,$00,$00,$00,$00       ; undefined
 
 
 ;============================================================================
@@ -3735,8 +3735,8 @@ BankedCallSetup_SavedY:                     ; [$00e0]
 ;     UI_DrawTimeValue
 ;     UI_SetHUDBarValue
 ;
-PPU_TargetAddr:                             ; [$00e8]
-    .byte $00                               ; [$00e8] byte
+PPU_TargetAddr:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
@@ -3769,8 +3769,8 @@ PPU_TargetAddr:                             ; [$00e8]
 ;     UI_DrawTimeValue
 ;     UI_SetHUDBarValue
 ;
-PPU_TargetAddr_U:                           ; [$00e9]
-    .byte $00                               ; [$00e9] byte
+PPU_TargetAddr_U:
+    .byte $00                               ; byte
 
 
 ;
@@ -3799,8 +3799,8 @@ PPU_TargetAddr_U:                           ; [$00e9]
 ;     TextBox_ShowMessage_Fill4Lines
 ;     Textbox_Maybe_GetAreaBehindTextbox
 ;
-TextBox_ContentsX:                          ; [$00ea]
-    .byte $00                               ; [$00ea] byte
+TextBox_ContentsX:
+    .byte $00                               ; byte
 
 
 ;
@@ -3828,8 +3828,8 @@ TextBox_ContentsX:                          ; [$00ea]
 ;     TextBox_ShowMessage_Fill4Lines
 ;     Textbox_Maybe_GetAreaBehindTextbox
 ;
-TextBox_ContentsY:                          ; [$00eb]
-    .byte $00                               ; [$00eb] byte
+TextBox_ContentsY:
+    .byte $00                               ; byte
 
 
 ;============================================================================
@@ -3971,8 +3971,8 @@ TextBox_ContentsY:                          ; [$00eb]
 ;     UI_Maybe_GetItemSpritePPUTileAddr
 ;     UI_SetHUDBarValue
 ;
-Temp_Int24:                                 ; [$00ec]
-    .byte $00                               ; [$00ec] byte
+Temp_Int24:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
@@ -4023,8 +4023,8 @@ Temp_Int24:                                 ; [$00ec]
 ;     UI_GetValueForDigit
 ;     UI_Maybe_GetItemSpritePPUTileAddr
 ;
-Temp_Int24_M:                               ; [$00ed]
-    .byte $00                               ; [$00ed] byte
+Temp_Int24_M:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
@@ -4048,8 +4048,8 @@ Temp_Int24_M:                               ; [$00ed]
 ;     UI_GetValueForDigit
 ;     UI_SetHUDBarValue
 ;
-Temp_Int24_U:                               ; [$00ee]
-    .byte $00                               ; [$00ee] byte
+Temp_Int24_U:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
@@ -4061,14 +4061,14 @@ Temp_Int24_U:                               ; [$00ee]
 ;     TextBox_LoadItemSourceTiles
 ;     UI_SetHUDBarValue
 ;
-Temp_0xEF:                                  ; [$00ef]
-    .byte $00                               ; [$00ef] byte
+Temp_0xEF:
+    .byte $00                               ; byte
 
 
 ;============================================================================
 ; MOD NOTES: 2 unused bytes of RAM.
 ;============================================================================
-    .byte $00,$00                           ; [$00f0] undefined
+    .byte $00,$00                           ; undefined
 
 
 ;============================================================================
@@ -4098,7 +4098,7 @@ Temp_0xEF:                                  ; [$00ef]
 ;     MScript_Op_Return
 ;     MScript_Op_SaveAddr_Store
 ;
-Music_CurrentScriptAddrs:                   ; [$00f2]
+Music_CurrentScriptAddrs:
     .word $0000                             ; [0]:
     .word $0000                             ; [1]:
     .word $0000                             ; [2]:
@@ -4107,7 +4107,7 @@ Music_CurrentScriptAddrs:                   ; [$00f2]
 ; XREFS:
 ;     Music_Load
 ;
-Music_CurrentScriptAddrs_3_:                ; [$00f8]
+Music_CurrentScriptAddrs_3_:
     .word $0000                             ; [3]:
 
 
@@ -4167,8 +4167,8 @@ Music_CurrentScriptAddrs_3_:                ; [$00f8]
 ;     Music_Load
 ;     Music_PlayNext
 ;
-Music_Current:                              ; [$00fa]
-    .byte $00                               ; [$00fa] Music
+Music_Current:
+    .byte $00                               ; Music
 
 
 ;============================================================================
@@ -4189,14 +4189,14 @@ Music_Current:                              ; [$00fa]
 ;     Audio_InitPlayingState
 ;     SoundEffects_HandleOnInterrupt
 ;
-SoundEffect_Current:                        ; [$00fb]
-    .byte $00                               ; [$00fb] byte
+SoundEffect_Current:
+    .byte $00                               ; byte
 
 
 ;============================================================================
 ; MOD NOTES: 4 unused bytes of RAM.
 ;============================================================================
-    .byte $00,$00,$00                       ; [$00fc] undefined
+    .byte $00,$00,$00                       ; undefined
 
-irq:                                        ; [$00ff]
-    .byte $00                               ; [$00ff] undefined
+irq:
+    .byte $00                               ; undefined

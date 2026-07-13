@@ -17,8 +17,8 @@
 ;     Screen_WriteBlockTilesColumnToPPU
 ;     Screen_WriteBlockTilesRowToPPU
 ;
-PPUCTRL:                                    ; [$2000]
-    .byte $00                               ; [$2000] PPUCtrlFlags
+PPUCTRL:
+    .byte $00                               ; PPUCtrlFlags
 
 ;
 ; XREFS:
@@ -26,8 +26,8 @@ PPUCTRL:                                    ; [$2000]
 ;     OnInterrupt
 ;     PPU_HandleOnInterrupt
 ;
-PPUMASK:                                    ; [$2001]
-    .byte $00                               ; [$2001] PPUMaskFlags
+PPUMASK:
+    .byte $00                               ; PPUMaskFlags
 
 ;
 ; XREFS:
@@ -35,25 +35,25 @@ PPUMASK:                                    ; [$2001]
 ;     Game_Init
 ;     PPU_HandleOnInterrupt
 ;
-PPUSTATUS:                                  ; [$2002]
-    .byte $00                               ; [$2002] PPUStatusFlags
+PPUSTATUS:
+    .byte $00                               ; PPUStatusFlags
 
 ;
 ; XREFS:
 ;     OnInterrupt
 ;
-OAMADDR:                                    ; [$2003]
-    .byte $00                               ; [$2003] byte
+OAMADDR:
+    .byte $00                               ; byte
 
-OAMDATA:                                    ; [$2004]
-    .byte $00                               ; [$2004] byte
+OAMDATA:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
 ;     PPU_HandleOnInterrupt
 ;
-PPUSCROLL:                                  ; [$2005]
-    .byte $00                               ; [$2005] byte
+PPUSCROLL:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
@@ -77,8 +77,8 @@ PPUSCROLL:                                  ; [$2005]
 ;     UI_DrawSelectedItem
 ;     UI_SetHUDPPUAttributes
 ;
-PPUADDR:                                    ; [$2006]
-    .byte $00                               ; [$2006] byte
+PPUADDR:
+    .byte $00                               ; byte
 
 ;
 ; XREFS:
@@ -103,5 +103,5 @@ PPUADDR:                                    ; [$2006]
 ;     UI_DrawSelectedItem
 ;     UI_SetHUDPPUAttributes
 ;
-PPUDATA:                                    ; [$2007]
-    .byte $00                               ; [$2007] byte
+PPUDATA:
+    .byte $00                               ; byte

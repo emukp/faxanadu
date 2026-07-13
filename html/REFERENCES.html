@@ -29,9 +29,10 @@ a:visited {
 pre {
   display: grid;
   grid-template-columns: minmax(6ch, min-content)
+                         minmax(10ch, min-content)
                          minmax(70ch, max-content)
                          1fr;
-  gap: 0 3em;
+  gap: 0 3ch;
   margin: 0;
   padding: 0;
 }
@@ -52,6 +53,13 @@ pre {
   color: #9bdeff;
 }
 
+.b {
+  color: #95956B;
+  grid-column: 2;
+  grid-row: 1;
+  text-wrap: wrap;
+}
+
 .equs {
   display: grid;
   grid-template-columns: minmax(50ch, max-content) min-content auto;
@@ -68,7 +76,7 @@ pre {
 .c,
 .cp,
 .equs {
-  grid-column: 2;
+  grid-column: 3;
 }
 
 .cp {
@@ -84,11 +92,13 @@ pre {
 }
 
 .cd {
-  grid-column: 2 / 3;
+  grid-column: 3 / -1;
+  grid-row: 1;
 }
 
 .ce {
   grid-column: -1;
+  grid-row: 1;
   text-wrap: wrap;
   text-indent: 2ch hanging;
 }
@@ -100,7 +110,7 @@ pre {
 .la,
 .lla {
   font-weight: bold;
-  grid-column: 2 / 3;
+  grid-column: 3 / -1;
 }
 
 .la,
@@ -123,7 +133,7 @@ pre {
 
 .idx {
   display: grid;
-  grid-column: 2 / 3;
+  grid-column: 3 / -1;
   grid-template-columns: minmax(50ch, max-content) auto;
   gap: 0 1em;
 }

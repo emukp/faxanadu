@@ -26,7 +26,7 @@
 ; XREFS:
 ;     Game_InitScreenAndMusic
 ;============================================================================
-thunk_SoundEffects_Init:                    ; [$8000]
+thunk_SoundEffects_Init:
     JMP SoundEffects_Init
 
 
@@ -48,7 +48,7 @@ thunk_SoundEffects_Init:                    ; [$8000]
 ; XREFS:
 ;     OnInterrupt
 ;============================================================================
-thunk_SoundEffects_HandleOnInterrupt:       ; [$8003]
+thunk_SoundEffects_HandleOnInterrupt:
     JMP SoundEffects_HandleOnInterrupt
 
 
@@ -70,7 +70,7 @@ thunk_SoundEffects_HandleOnInterrupt:       ; [$8003]
 ; XREFS:
 ;     Game_InitScreenAndMusic
 ;============================================================================
-thunk_Audio_InitPlayingState:               ; [$8006]
+thunk_Audio_InitPlayingState:
     JMP Audio_InitPlayingState
 
 
@@ -92,7 +92,7 @@ thunk_Audio_InitPlayingState:               ; [$8006]
 ; XREFS:
 ;     OnInterrupt
 ;============================================================================
-thunk_Music_HandleOnInterrupt:              ; [$8009]
+thunk_Music_HandleOnInterrupt:
     JMP Music_HandleOnInterrupt
     .byte $ff                               ; Unused padding byte.
 
@@ -129,7 +129,7 @@ thunk_Music_HandleOnInterrupt:              ; [$8009]
 ; XREFS:
 ;     thunk_Music_HandleOnInterrupt
 ;============================================================================
-Music_HandleOnInterrupt:                    ; [$800d]
+Music_HandleOnInterrupt:
     LDA a:Game_PausedState                  ; Load the paused state.
     BNE Audio_HandlePaused                  ; If paused, then jump.
 
@@ -182,7 +182,7 @@ Music_HandleOnInterrupt:                    ; [$800d]
 ; XREFS:
 ;     thunk_Audio_InitPlayingState
 ;============================================================================
-Audio_InitPlayingState:                     ; [$801b]
+Audio_InitPlayingState:
     LDA #$00
     STA Music_Current                       ; Clear the current music.
     STA SoundEffect_Current                 ; Clear the next sound effect.
@@ -226,7 +226,7 @@ Audio_InitPlayingState:                     ; [$801b]
 ; XREFS:
 ;     Music_HandleOnInterrupt
 ;============================================================================
-Audio_HandlePaused:                         ; [$802e]
+Audio_HandlePaused:
     ;
     ; First, check if we've already handled an audio pause state.
     ;
@@ -270,7 +270,7 @@ Audio_HandlePaused:                         ; [$802e]
 ;     Audio_HandlePaused
 ;     Music_HandleOnInterrupt
 ;============================================================================
-Audio_ResetIfNothingSet:                    ; [$8038]
+Audio_ResetIfNothingSet:
     LDA Music_Current                       ; Load the current music.
     BNE @_return                            ; If it's set, return. Nothing to
                                             ; do.
@@ -282,7 +282,7 @@ Audio_ResetIfNothingSet:                    ; [$8038]
     ;
     LDX #$03                                ; X = 3 (loop counter).
 
-  @_checkSoundEffectLoop:                   ; [$803e]
+  @_checkSoundEffectLoop:
     LDA a:SoundEffect_TicksRemaining,X      ; Load the sound effect at the
                                             ; current index.
     BNE @_return                            ; If it's set, then return.
@@ -296,7 +296,7 @@ Audio_ResetIfNothingSet:                    ; [$8038]
     ;
     JMP Audio_Reset                         ; Reset the audio.
 
-  @_return:                                 ; [$8049]
+  @_return:
     RTS
 
 
@@ -338,7 +338,7 @@ Audio_ResetIfNothingSet:                    ; [$8038]
 ;     Music_Load
 ;     SoundEffects_Init
 ;============================================================================
-Audio_Reset:                                ; [$804a]
+Audio_Reset:
     ;
     ; Enable the Constant Volume bit on Pulse 1/2 and Noise
     ; channels.
@@ -380,7 +380,7 @@ Audio_Reset:                                ; [$804a]
 ; XREFS:
 ;     Music_HandleOnInterrupt
 ;============================================================================
-Music_Load:                                 ; [$8079]
+Music_Load:
     ;
     ; Load the current music to play.
     ;
@@ -414,7 +414,7 @@ Music_Load:                                 ; [$8079]
     ;
     LDX #$07                                ; X = 7 (loop counter).
 
-  @_loadMusicLoop:                          ; [$8085]
+  @_loadMusicLoop:
     LDA a:MSCRIPTS_LOOKUP,Y                 ; Load the MScript channel
                                             ; address at Y.
     STA Music_CurrentScriptAddrs,X          ; Store it in the list of channel
@@ -548,7 +548,7 @@ Music_Load:                                 ; [$8079]
 ; XREFS:
 ;     Music_HandleOnInterrupt
 ;============================================================================
-Music_PlayNext:                             ; [$8106]
+Music_PlayNext:
     ;
     ; Set the initial state for tracking per-channel playback
     ; for this invocation.
@@ -566,13 +566,13 @@ Music_PlayNext:                             ; [$8106]
     ; For each channel, the current value will be played and
     ; only advanced when the repeat count for the value hits 0.
     ;
-  @_loop:                                   ; [$810e]
+  @_loop:
     LDX a:MScript_CurrentChannel            ; X = Current channel index
     DEC a:Music_ChannelTicksRemaining,X
     BNE @_play
     JSR MScripts_InvokeNext
 
-  @_play:                                   ; [$8119]
+  @_play:
     JSR Music_PlayForChannel                ; Play music on this channel.
     INC a:MScript_CurrentChannel            ; Move to the next channel.
     LDA a:MScript_CurrentChannel            ; Load that channel index.
@@ -595,7 +595,7 @@ Music_PlayNext:                             ; [$8106]
     LDA #$00
     STA Music_Current                       ; Unset the current music.
 
-  @_return:                                 ; [$8131]
+  @_return:
     RTS
 
 
@@ -612,7 +612,7 @@ Music_PlayNext:                             ; [$8106]
 ; XREFS:
 ;     Music_PlayNext
 ;============================================================================
-Music_PlayForChannel:                       ; [$8132]
+Music_PlayForChannel:
     LDX a:MScript_CurrentChannel            ; Load the current channel index.
     BEQ @_isSquareWave                      ; If it's Square Wave 1, jump.
     DEX
@@ -625,14 +625,14 @@ Music_PlayForChannel:                       ; [$8132]
     ;
     ; This is the Triangle Wave channel.
     ;
-  @_isTriangleWave:                         ; [$813e]
+  @_isTriangleWave:
     LDX a:MScript_CurrentChannel            ; Load the current channel index.
     LDA a:Music_Triangle_Remaining
     BEQ @_checkSoundEffectOnTri
     DEC a:Music_Triangle_Remaining
     LDA #$c0
 
-  @_checkSoundEffectOnTri:                  ; [$814b]
+  @_checkSoundEffectOnTri:
     STA a:Music_TempValue
 
 
@@ -653,7 +653,7 @@ Music_PlayForChannel:                       ; [$8132]
     STA a:TRI_LINEAR                        ; Set it on the channel.
     RTS                                     ; And return.
 
-  @_clearTriangleWave:                      ; [$815a]
+  @_clearTriangleWave:
     LDA #$00
     STA a:TRI_LINEAR                        ; Clear the Triangle Wave
                                             ; channel.
@@ -663,7 +663,7 @@ Music_PlayForChannel:                       ; [$8132]
     ;
     ; This is a Square Wave channel.
     ;
-  @_isSquareWave:                           ; [$8160]
+  @_isSquareWave:
     LDX a:MScript_CurrentChannel
     LDY a:Music_SQEnvelope_Mode,X
     BEQ Music_PlaySQEnvelopeModeLinearTrailoff
@@ -707,7 +707,7 @@ Music_PlayForChannel:                       ; [$8132]
 ; XREFS:
 ;     Music_PlayForChannel
 ;============================================================================
-Music_PlaySQEnvelopeModeLinearTrailoff:     ; [$816f]
+Music_PlaySQEnvelopeModeLinearTrailoff:
     LDX a:MScript_CurrentChannel            ; Load the current MScript
                                             ; channel.
 
@@ -734,7 +734,7 @@ Music_PlaySQEnvelopeModeLinearTrailoff:     ; [$816f]
     ;
     ; This effectively shifts any value into the lower nibble.
     ;
-  @LAB_PRG5__817d:                          ; [$817d]
+  @LAB_PRG5__817d:
     LSR A                                   ; Shift into the lower nibble.
     LSR A
     LSR A
@@ -755,7 +755,7 @@ Music_PlaySQEnvelopeModeLinearTrailoff:     ; [$816f]
     JSR Music_ApplySQPitchEffectToLO        ; Apply the mode's pitch effect
                                             ; to the SQ*_LO register.
 
-  @_return:                                 ; [$8191]
+  @_return:
     RTS
 ;============================================================================
 ; TODO: Document Music_PlaySQEnvelopeModeCurveButHeld
@@ -769,7 +769,7 @@ Music_PlaySQEnvelopeModeLinearTrailoff:     ; [$816f]
 ; XREFS:
 ;     Music_PlayForChannel
 ;============================================================================
-Music_PlaySQEnvelopeModeCurveButHeld:       ; [$8192]
+Music_PlaySQEnvelopeModeCurveButHeld:
     ;
     ; This is SQ Mode 1: Curve but held
     ;
@@ -808,7 +808,7 @@ Music_PlaySQEnvelopeModeCurveButHeld:       ; [$8192]
     ;
     ; Increment the phase.
     ;
-  @_applyMode:                              ; [$81a7]
+  @_applyMode:
     INC a:Music_SQEnvelope_Phase,X          ; Increment the phase by 1.
     LDA a:Music_SQEnvelope_Value,X          ; Load the envelope value.
     STA a:Music_TempValue                   ; Store it as the volume to set.
@@ -829,7 +829,7 @@ Music_PlaySQEnvelopeModeCurveButHeld:       ; [$8192]
     JSR Music_UpdateSQVolRegister           ; Update the volume.
     JSR Music_ApplySQPitchEffectToLO        ; Apply a pitch effect.
 
-  @_return:                                 ; [$81bb]
+  @_return:
     RTS
 ;============================================================================
 ; TODO: Document Music_PlaySQEnvelopeModePluck
@@ -843,7 +843,7 @@ Music_PlaySQEnvelopeModeCurveButHeld:       ; [$8192]
 ; XREFS:
 ;     Music_PlayForChannel
 ;============================================================================
-Music_PlaySQEnvelopeModePluck:              ; [$81bc]
+Music_PlaySQEnvelopeModePluck:
     ;
     ; This is SQ Mode 2: Table-based envelope (pluck effect)
     ;
@@ -868,7 +868,7 @@ Music_PlaySQEnvelopeModePluck:              ; [$81bc]
     ;
     INC a:Music_SQEnvelope_Phase,X          ; Increment the phase.
 
-  @_applyEffect:                            ; [$81cd]
+  @_applyEffect:
     STA a:Music_TempValue                   ; Store the table entry as the
                                             ; volume to apply.
 
@@ -888,14 +888,14 @@ Music_PlaySQEnvelopeModePluck:              ; [$81bc]
     JSR Music_UpdateSQVolRegister           ; Update the volume.
     JSR Music_ApplySQPitchEffectToLO        ; Apply the pitch effect.
 
-  @_return:                                 ; [$81db]
+  @_return:
     RTS
 
 ;
 ; XREFS:
 ;     Music_PlaySQEnvelopeModePluck
 ;
-SQ_MODE_2_PLUCK_VALUES:                     ; [$81dc]
+SQ_MODE_2_PLUCK_VALUES:
     .byte $07                               ; [0]:
     .byte $0a                               ; [1]:
     .byte $0d                               ; [2]:
@@ -957,7 +957,7 @@ SQ_MODE_2_PLUCK_VALUES:                     ; [$81dc]
 ;     Music_PlaySQEnvelopeModeLinearTrailoff
 ;     Music_PlaySQEnvelopeModePluck
 ;============================================================================
-Music_UpdateSQVolRegister:                  ; [$81f1]
+Music_UpdateSQVolRegister:
     ;
     ; Compute the address for the Square Wave volume register.
     ;
@@ -985,7 +985,7 @@ Music_UpdateSQVolRegister:                  ; [$81f1]
     ;
     LDA #$00                                ; Set the volume to 0.
 
-  @_setVolume:                              ; [$8203]
+  @_setVolume:
     LDX a:MScript_CurrentChannel            ; Load the current SQ channel as
                                             ; an index.
     ORA a:Music_SQ_ControlBits,X            ; Apply control bits to the value
@@ -1007,7 +1007,7 @@ Music_UpdateSQVolRegister:                  ; [$81f1]
 ;     Music_PlaySQEnvelopeModeLinearTrailoff
 ;     Music_PlaySQEnvelopeModePluck
 ;============================================================================
-Music_ApplySQPitchEffectToLO:               ; [$820d]
+Music_ApplySQPitchEffectToLO:
     LDX a:MScript_CurrentChannel            ; Load the current MScript
                                             ; channel.
 
@@ -1077,7 +1077,7 @@ Music_ApplySQPitchEffectToLO:               ; [$820d]
                                             ; above.
     STA a:SQ1_LO,Y                          ; And store it in the register.
 
-  @_return:                                 ; [$8239]
+  @_return:
     RTS
 
 ;============================================================================
@@ -1109,7 +1109,7 @@ Music_ApplySQPitchEffectToLO:               ; [$820d]
 ;     MScripts_SetNoteLengthFromValue
 ;     Music_PlayNext
 ;============================================================================
-MScripts_InvokeNext:                        ; [$823a]
+MScripts_InvokeNext:
     LDX a:MScript_CurrentChannel            ; X = Channel index being
                                             ; processed
     CPX #$03                                ; Is this the noise channel?
@@ -1129,7 +1129,7 @@ MScripts_InvokeNext:                        ; [$823a]
     ;
     JMP Music_PlayNoise                     ; Else, play the noise.
 
-  @_loadNextValue:                          ; [$8249]
+  @_loadNextValue:
     JSR MScripts_GetNextValue               ; Get the next value from the
                                             ; MScript.
     STA a:Music_TempValue                   ; Store it.
@@ -1144,7 +1144,7 @@ MScripts_InvokeNext:                        ; [$823a]
     ; Check if this is an MScript op (>= 0xEE) or a note length
     ; (>= 0x80, < 0xEE).
     ;
-  @_handleScriptValue:                      ; [$8255]
+  @_handleScriptValue:
     CMP #$ee                                ; Is this < 0xEE?
     BCC MScripts_SetNoteLengthFromNext      ; If so, set the note length from
                                             ; the next value.
@@ -1179,43 +1179,25 @@ MScripts_InvokeNext:                        ; [$823a]
 ; XREFS:
 ;     MScripts_InvokeNext
 ;
-MSCRIPT_OP_HANDLERS:                        ; [$826a]
+MSCRIPT_OP_HANDLERS:
     pointer MScript_Op_End-1                ; MScript_Op_End
-                                            ; [$PRG5::826a]
     pointer MScript_Op_RestoreAddr-1        ; MScript_Op_RestoreAddr
-                                            ; [$PRG5::826c]
     pointer MScript_Op_BeginLoop-1          ; MScript_Op_BeginLoop
-                                            ; [$PRG5::826e]
     pointer MScript_Op_EndLoop-1            ; MScript_Op_EndLoop
-                                            ; [$PRG5::8270]
     pointer MScript_Op_NextLoopIfNCompleted-1 ; MScript_Op_NextLoopIfNCompleted
-                                              ; [$PRG5::8272]
     pointer MScript_Op_NoOp-1               ; MScript_Op_NoOp
-                                            ; [$PRG5::8274]
     pointer MScript_Op_SaveAddr-1           ; MScript_Op_SaveAddr
-                                            ; [$PRG5::8276]
     pointer MScript_Op_JumpSubroutine-1     ; MScript_Op_JumpSubroutine
-                                            ; [$PRG5::8278]
     pointer MScript_Op_SetGlobalTranspose-1 ; MScript_Op_SetGlobalTranspose
-                                            ; [$PRG5::827a]
     pointer MScript_Op_SetChannelTranspose-1 ; MScript_Op_SetChannelTranspose
-                                             ; [$PRG5::827c]
     pointer MScript_Op_Return-1             ; MScript_Op_Return
-                                            ; [$PRG5::827e]
     pointer MScript_Op_RestartChannel-1     ; MScript_Op_RestartChannel
-                                            ; [$PRG5::8280]
     pointer MScript_Op_RepeatValue-1        ; MScript_Op_RepeatValue
-                                            ; [$PRG5::8282]
     pointer MScript_Op_SetControlBits-1     ; MScript_Op_SetControlBits
-                                            ; [$PRG5::8284]
     pointer MScript_Op_SetSQVol-1           ; MScript_Op_SetSQVol
-                                            ; [$PRG5::8286]
     pointer MScript_Op_SetSQEnvelopeMode-1  ; MScript_Op_SetSQEnvelopeMode
-                                            ; [$PRG5::8288]
     pointer MScript_Op_SetSQPitchEffectDepth-1 ; MScript_Op_SetSQPitchEffectDepth
-                                               ; [$PRG5::828a]
     pointer MScript_Op_SetSQ2Detune-1       ; MScript_Op_SetSQ2Detune
-                                            ; [$PRG5::828c]
 
 
 ;============================================================================
@@ -1234,7 +1216,7 @@ MSCRIPT_OP_HANDLERS:                        ; [$826a]
 ; XREFS:
 ;     MScripts_InvokeNext
 ;============================================================================
-MScripts_SetNoteLengthFromNext:             ; [$828e]
+MScripts_SetNoteLengthFromNext:
     LDA a:Music_TempValue                   ; Load the current script value.
     AND #$7f                                ; Discard bit 7.
     BPL MScripts_SetNoteLengthFromValue     ; Unconditionally jump (bit 7
@@ -1249,7 +1231,7 @@ MScripts_SetNoteLengthFromNext:             ; [$828e]
 ; OUTPUTS:
 ;     TODO
 ;============================================================================
-MScript_Op_RepeatValue:                     ; [$8295]
+MScript_Op_RepeatValue:
     JSR MScripts_GetNextValue               ; Get the next value in the
                                             ; script.
 
@@ -1269,7 +1251,7 @@ MScript_Op_RepeatValue:                     ; [$8295]
 ; XREFS:
 ;     MScripts_SetNoteLengthFromNext
 ;============================================================================
-MScripts_SetNoteLengthFromValue:            ; [$8298]
+MScripts_SetNoteLengthFromValue:
     LDX a:MScript_CurrentChannel            ; Load the current channel.
     STA a:MScript_NoteDurations,X           ; Set the duration for the
                                             ; channel.
@@ -1322,10 +1304,10 @@ MScripts_SetNoteLengthFromValue:            ; [$8298]
     ; will always terminate the loop (as it's 0, and 0 <= all
     ; values).
     ;
-  @_beginCheckOffsets:                      ; [$82cc]
+  @_beginCheckOffsets:
     LDY #$00                                ; Y = 0 (loop counter).
 
-  @_checkOffsetLoop:                        ; [$82ce]
+  @_checkOffsetLoop:
     CMP a:NOTE_LENGTH_CMP_LOWER_BOUNDS,Y    ; Is the value from the table <=
                                             ; our calculated value?
     BCS @_loadLength                        ; If so, break.
@@ -1333,13 +1315,13 @@ MScripts_SetNoteLengthFromValue:            ; [$8298]
     INY
     BNE @_checkOffsetLoop                   ; If != 0, loop.
 
-  @_loadLength:                             ; [$82d7]
+  @_loadLength:
     LDA a:NOTE_LENGTH_VALUES,Y              ; Load the value from the tabe.
 
-  @_storeLength:                            ; [$82da]
+  @_storeLength:
     STA a:Music_SQ_Note_Lengths,X
 
-  @_invokeNext:                             ; [$82dd]
+  @_invokeNext:
     JMP MScripts_InvokeNext
     JMP MScripts_InvokeNext                 ; Unreachable?
 
@@ -1366,7 +1348,7 @@ MScripts_SetNoteLengthFromValue:            ; [$8298]
 ; XREFS:
 ;     MScripts_InvokeNext
 ;============================================================================
-Music_PlayOrRest:                           ; [$82e3]
+Music_PlayOrRest:
     CMP #$00                                ; Is the value > 0?
     BNE Music_PlayWaveOrNoise               ; If so, play it on the channel.
 
@@ -1407,7 +1389,7 @@ Music_PlayOrRest:                           ; [$82e3]
 ; XREFS:
 ;     Music_PlayOrRest
 ;============================================================================
-Music_PlayWaveOrNoise:                      ; [$82ea]
+Music_PlayWaveOrNoise:
     LDX a:MScript_CurrentChannel            ; Load the current music channel.
     CPX #$03                                ; Is it the noise channel?
     BNE Music_SetupWave                     ; If not, play as a wave (square
@@ -1480,7 +1462,7 @@ Music_PlayWaveOrNoise:                      ; [$82ea]
 ; XREFS:
 ;     MScripts_InvokeNext
 ;============================================================================
-Music_PlayNoise:                            ; [$82ff]
+Music_PlayNoise:
     DEC a:Music_Noise_Remaining             ; Decrement the number of noise
                                             ; ticks remaining.
 
@@ -1510,7 +1492,7 @@ Music_PlayNoise:                            ; [$82ff]
     ; to play, just a duration). If so, we'll simply sync the
     ; note duration again and return.
     ;
-  @_noNoiseSoundEffects:                    ; [$830a]
+  @_noNoiseSoundEffects:
     LDA a:Music_Noise_Index                 ; Load the current noise table
                                             ; index.
     BNE @_hasNoiseIndex
@@ -1530,7 +1512,7 @@ Music_PlayNoise:                            ; [$82ff]
     ; Generate an index into the noise register value table, and
     ; begin writing to the registers.
     ;
-  @_hasNoiseIndex:                          ; [$8312]
+  @_hasNoiseIndex:
     ASL A                                   ; Convert the index to a 4-byte
                                             ; boundary.
     ASL A
@@ -1538,7 +1520,7 @@ Music_PlayNoise:                            ; [$82ff]
     LDY #$00                                ; Y = 0 (loop counter/write
                                             ; index).
 
-  @_noiseLoop:                              ; [$8317]
+  @_noiseLoop:
     LDA a:MUSIC_NOISE_REGISTER_VALUES,X     ; Load the register value to
                                             ; write from the table index.
     STA a:NOISE_VOL,Y                       ; Write it in the appropriate
@@ -1564,7 +1546,7 @@ Music_PlayNoise:                            ; [$82ff]
 ; XREFS:
 ;     Music_PlayWaveOrNoise
 ;============================================================================
-Music_SetupWave:                            ; [$8326]
+Music_SetupWave:
     LDX a:MScript_CurrentChannel            ; Load the current channel.
     LDA a:SoundEffect_TicksRemaining,X      ; Is there a sound effect playing
                                             ; on this channel?
@@ -1578,7 +1560,7 @@ Music_SetupWave:                            ; [$8326]
     JMP Music_ResetTicksRemaining           ; Set the ticks remaining to the
                                             ; duration of the note.
 
-  @_setNote:                                ; [$8331]
+  @_setNote:
     LDX a:MScript_CurrentChannel
     BEQ @_setSquareWave1
     DEX
@@ -1612,7 +1594,7 @@ Music_SetupWave:                            ; [$8326]
     ; This will play the queued period for the given
     ; length, with sweep disabled.
     ;
-  @_setSquareWave1:                         ; [$8355]
+  @_setSquareWave1:
     JSR Music_SetNote                       ; Set the note to play.
     LDA #$00
     STA a:SQ1_SWEEP                         ; Disable sweep.
@@ -1637,7 +1619,7 @@ Music_SetupWave:                            ; [$8326]
     ;
     ; This is the Square Wave 2 channel.
     ;
-  @_setSquareWave2Sweep:                    ; [$8376]
+  @_setSquareWave2Sweep:
     JSR Music_SetNote
     LDA #$00
     STA a:SQ2_SWEEP                         ; Disable sweep.
@@ -1651,7 +1633,7 @@ Music_SetupWave:                            ; [$8326]
     SBC a:Music_SQ2_TimerLowBias            ; Else, subtract from the period
                                             ; low.
 
-  @_setSQ2HiLo:                             ; [$838d]
+  @_setSQ2HiLo:
     STA a:SQ2_LO                            ; Write the result to the
                                             ; register.
     STA a:Music_Current_SQ_Low_1_           ; And store as the low bits for
@@ -1664,7 +1646,7 @@ Music_SetupWave:                            ; [$8326]
     STA a:Music_SQEnvelope_Phase_1_         ; Clear the envelope phase for
                                             ; this channel.
 
-  @_finish:                                 ; [$83a1]
+  @_finish:
     LDX a:MScript_CurrentChannel            ; Load the current channel.
     LDA #$ff
     STA a:Music_SQEnvelope_Value,X          ; Set the channel's envelope
@@ -1704,7 +1686,7 @@ Music_SetupWave:                            ; [$8326]
 ;     Music_SetupTriangleWave
 ;     Music_SetupWave
 ;============================================================================
-Music_ResetTicksRemaining:                  ; [$83ad]
+Music_ResetTicksRemaining:
     LDX a:MScript_CurrentChannel            ; Load the current MScript
                                             ; channel.
     LDA a:MScript_NoteDurations,X           ; Load the repeat counts for this
@@ -1724,7 +1706,7 @@ Music_ResetTicksRemaining:                  ; [$83ad]
 ; XREFS:
 ;     Music_SetupWave
 ;============================================================================
-Music_SetupTriangleWave:                    ; [$83b7]
+Music_SetupTriangleWave:
     JSR Music_ResetTicksRemaining           ; Set the ticks remaining to the
                                             ; note duration.
     STA a:Music_TempValue                   ; Store it temporarily for the
@@ -1775,7 +1757,7 @@ Music_SetupTriangleWave:                    ; [$83b7]
 ; XREFS:
 ;     Music_SetupWave
 ;============================================================================
-Music_SetNote:                              ; [$83cd]
+Music_SetNote:
     LDX a:MScript_CurrentChannel
     LDA a:Music_TempValue
     CLC
@@ -1797,7 +1779,7 @@ Music_SetNote:                              ; [$83cd]
     LDY #$01
     SEC
 
-  @_loop1:                                  ; [$83e5]
+  @_loop1:
     SBC #$0c
     INY
     BCS @_loop1
@@ -1820,14 +1802,14 @@ Music_SetNote:                              ; [$83cd]
     ; Convert to the note in the right octave based on
     ; the starting value.
     ;
-  @_octaveLoop:                             ; [$83fb]
+  @_octaveLoop:
     DEY
     BEQ @_return
     LSR a:Music_Note_Period_High
     ROR a:Music_Note_Period_Low
     JMP @_octaveLoop
 
-  @_return:                                 ; [$8407]
+  @_return:
     RTS
 
 
@@ -1837,7 +1819,7 @@ Music_SetNote:                              ; [$83cd]
 ; XREFS:
 ;     MSCRIPT_OP_HANDLERS [$PRG5::826a]
 ;============================================================================
-MScript_Op_End:                             ; [$8408]
+MScript_Op_End:
     LDX a:MScript_CurrentChannel            ; Load the current MScript
                                             ; channel.
 
@@ -1873,7 +1855,7 @@ MScript_Op_End:                             ; [$8408]
     DEC Music_CurrentScriptAddrs+1,X        ; Decrement the upper byte of the
                                             ; address.
 
-  @_setAddr:                                ; [$8419]
+  @_setAddr:
     DEC Music_CurrentScriptAddrs,X          ; Decrement the lower byte of the
                                             ; address.
 
@@ -1902,7 +1884,7 @@ MScript_Op_End:                             ; [$8408]
 ; ARGS:
 ;     1. Number of iterations (1 byte)
 ;============================================================================
-MScript_Op_BeginLoop:                       ; [$841f]
+MScript_Op_BeginLoop:
     ;
     ; Read the number of iterations to loop from the script.
     ;
@@ -1956,7 +1938,7 @@ MScript_Op_BeginLoop:                       ; [$841f]
 ; ARGS:
 ;     1. Number of iterations to check (1 byte)
 ;============================================================================
-MScript_Op_NextLoopIfNCompleted:            ; [$843d]
+MScript_Op_NextLoopIfNCompleted:
     JSR MScripts_GetNextValue               ; Load the current MScript
                                             ; channel.
     LDX a:MScript_CurrentChannel            ; Load the current MScript
@@ -1984,7 +1966,7 @@ MScript_Op_NextLoopIfNCompleted:            ; [$843d]
     STA Music_CurrentScriptAddrs+1,X        ; Set as the upper byte of the
                                             ; next address.
 
-  @_invokeNext:                             ; [$8455]
+  @_invokeNext:
     JMP MScripts_InvokeNext
 
 
@@ -1999,7 +1981,7 @@ MScript_Op_NextLoopIfNCompleted:            ; [$843d]
 ;
 ; If it's under the loop length, the loop will restart.
 ;============================================================================
-MScript_Op_EndLoop:                         ; [$8458]
+MScript_Op_EndLoop:
     LDX a:MScript_CurrentChannel            ; Load the current MScript
                                             ; channel.
     LDA a:MScript_LoopCounter,X             ; Load the current loop counter.
@@ -2050,7 +2032,7 @@ MScript_Op_EndLoop:                         ; [$8458]
     ; We're done. Proceed with the script, either looping or
     ; moving on from the loop.
     ;
-  @_invokeNext:                             ; [$847d]
+  @_invokeNext:
     JMP MScripts_InvokeNext                 ; Invoke the next operation in
                                             ; the script.
 
@@ -2061,7 +2043,7 @@ MScript_Op_EndLoop:                         ; [$8458]
 ; Does nothing. Simply acts as padding to help keep
 ; scripts across channels in sync.
 ;============================================================================
-MScript_Op_NoOp:                            ; [$8480]
+MScript_Op_NoOp:
     JMP MScripts_InvokeNext                 ; Invoke the next operation in
                                             ; the script.
 
@@ -2074,7 +2056,7 @@ MScript_Op_NoOp:                            ; [$8480]
 ; OUTPUTS:
 ;     TODO
 ;============================================================================
-MScript_Op_SetControlBits:                  ; [$8483]
+MScript_Op_SetControlBits:
     JSR MScripts_GetNextValue
     LDX a:MScript_CurrentChannel
     STA a:Music_SQ_ControlBits,X
@@ -2089,7 +2071,7 @@ MScript_Op_SetControlBits:                  ; [$8483]
 ; OUTPUTS:
 ;     TODO
 ;============================================================================
-MScript_Op_SaveAddr:                        ; [$848f]
+MScript_Op_SaveAddr:
     JSR MScript_Op_SaveAddr_Store
     JMP MScripts_InvokeNext
 
@@ -2105,7 +2087,7 @@ MScript_Op_SaveAddr:                        ; [$848f]
 ; XREFS:
 ;     MScript_Op_SaveAddr
 ;============================================================================
-MScript_Op_SaveAddr_Store:                  ; [$8495]
+MScript_Op_SaveAddr_Store:
     LDA a:MScript_CurrentChannel
     ASL A
     TAX
@@ -2124,7 +2106,7 @@ MScript_Op_SaveAddr_Store:                  ; [$8495]
 ; OUTPUTS:
 ;     TODO
 ;============================================================================
-MScript_Op_RestoreAddr:                     ; [$84a5]
+MScript_Op_RestoreAddr:
     LDA a:MScript_CurrentChannel
     ASL A
     TAX
@@ -2143,7 +2125,7 @@ MScript_Op_RestoreAddr:                     ; [$84a5]
 ; OUTPUTS:
 ;     TODO
 ;============================================================================
-MScript_Op_RestartChannel:                  ; [$84b7]
+MScript_Op_RestartChannel:
     LDA Music_Current
     ASL A
     ASL A
@@ -2153,7 +2135,7 @@ MScript_Op_RestartChannel:                  ; [$84b7]
     TAY
     LDX #$00
 
-  @_loop:                                   ; [$84c2]
+  @_loop:
     LDA a:MSCRIPTS_TITLESCREEN,Y
     STA Music_CurrentScriptAddrs,X
     INY
@@ -2171,7 +2153,7 @@ MScript_Op_RestartChannel:                  ; [$84b7]
 ; OUTPUTS:
 ;     TODO
 ;============================================================================
-MScript_Op_JumpSubroutine:                  ; [$84d0]
+MScript_Op_JumpSubroutine:
     JSR MScripts_GetNextValue
     PHA
     JSR MScripts_GetNextValue
@@ -2198,7 +2180,7 @@ MScript_Op_JumpSubroutine:                  ; [$84d0]
 ; OUTPUTS:
 ;     TODO
 ;============================================================================
-MScript_Op_Return:                          ; [$84f0]
+MScript_Op_Return:
     LDA a:MScript_CurrentChannel            ; Load the current channel.
     ASL A                                   ; Shift to a word boundary.
     TAX                                     ; X = Result.
@@ -2218,7 +2200,7 @@ MScript_Op_Return:                          ; [$84f0]
 ; OUTPUTS:
 ;     TODO
 ;============================================================================
-MScript_Op_SetChannelTranspose:             ; [$8502]
+MScript_Op_SetChannelTranspose:
     JSR MScripts_GetNextValue
     LDX a:MScript_CurrentChannel
     STA a:Music_Channel_Transpose,X
@@ -2233,7 +2215,7 @@ MScript_Op_SetChannelTranspose:             ; [$8502]
 ; OUTPUTS:
 ;     TODO
 ;============================================================================
-MScript_Op_SetGlobalTranspose:              ; [$850e]
+MScript_Op_SetGlobalTranspose:
     JSR MScripts_GetNextValue
     STA a:Music_Global_Transpose
     JMP MScripts_InvokeNext
@@ -2247,7 +2229,7 @@ MScript_Op_SetGlobalTranspose:              ; [$850e]
 ; OUTPUTS:
 ;     TODO
 ;============================================================================
-MScript_Op_SetSQVol:                        ; [$8517]
+MScript_Op_SetSQVol:
     JSR MScripts_GetNextValue
     LDX a:MScript_CurrentChannel
     STA a:Music_SQ_Fades,X
@@ -2272,7 +2254,7 @@ MScript_Op_SetSQVol:                        ; [$8517]
 ;
 ;    Pitches up and then down in a set pattern.
 ;============================================================================
-MScript_Op_SetSQEnvelopeMode:               ; [$8523]
+MScript_Op_SetSQEnvelopeMode:
     JSR MScripts_GetNextValue
     LDX a:MScript_CurrentChannel
     STA a:Music_SQEnvelope_Mode,X
@@ -2287,7 +2269,7 @@ MScript_Op_SetSQEnvelopeMode:               ; [$8523]
 ; OUTPUTS:
 ;     TODO
 ;============================================================================
-MScript_Op_SetSQPitchEffectDepth:           ; [$852f]
+MScript_Op_SetSQPitchEffectDepth:
     JSR MScripts_GetNextValue
     LDX a:MScript_CurrentChannel
     STA a:Music_SQPitchDelta_Mask,X
@@ -2314,7 +2296,7 @@ MScript_Op_SetSQPitchEffectDepth:           ; [$852f]
 ;
 ; A value of 0 disables this effect.
 ;============================================================================
-MScript_Op_SetSQ2Detune:                    ; [$853b]
+MScript_Op_SetSQ2Detune:
     JSR MScripts_GetNextValue
     STA a:Music_SQ2_TimerLowBias
     JMP MScripts_InvokeNext
@@ -2342,7 +2324,7 @@ MScript_Op_SetSQ2Detune:                    ; [$853b]
 ;     MScript_Op_SetSQVol
 ;     MScripts_InvokeNext
 ;============================================================================
-MScripts_GetNextValue:                      ; [$8544]
+MScripts_GetNextValue:
     LDA a:MScript_CurrentChannel
     ASL A
     TAX
@@ -2351,7 +2333,7 @@ MScripts_GetNextValue:                      ; [$8544]
     BNE @_return
     INC Music_CurrentScriptAddrs+1,X
 
-  @_return:                                 ; [$8551]
+  @_return:
     RTS
 
 
@@ -2369,7 +2351,7 @@ MScripts_GetNextValue:                      ; [$8544]
 ;     Music_SetNote
 ;     SoundEffect_SetNote
 ;
-AUDIO_NOTES:                                ; [$8552]
+AUDIO_NOTES:
     .word $0000                             ; [0]: Unused/padding
     .word $06ae                             ; [1]: C2
     .word $064e                             ; [2]: C2#2
@@ -2398,7 +2380,7 @@ AUDIO_NOTES:                                ; [$8552]
 ; XREFS:
 ;     Music_SetNote
 ;
-MUSIC_CHANNEL_NOTE_OFFSETS:                 ; [$856c]
+MUSIC_CHANNEL_NOTE_OFFSETS:
     .byte $f4                               ; [0]: Square Wave 1
     .byte $f4                               ; [1]: Square Wave 2
     .byte $0c                               ; [2]: Triangle
@@ -2415,28 +2397,28 @@ MUSIC_CHANNEL_NOTE_OFFSETS:                 ; [$856c]
 ; XREFS:
 ;     MScripts_SetNoteLengthFromValue
 ;
-NOTE_LENGTH_CMP_LOWER_BOUNDS:               ; [$856f]
+NOTE_LENGTH_CMP_LOWER_BOUNDS:
     .byte $7f                               ; If X >= 127:
 
 ;
 ; XREFS:
 ;     MScripts_SetNoteLengthFromValue
 ;
-NOTE_LENGTH_VALUES:                         ; [$8570]
+NOTE_LENGTH_VALUES:
     .byte $08                               ; Length = 8
 
 ;
 ; XREFS:
 ;     MScripts_SetNoteLengthFromValue
 ;
-BYTE_PRG5__8571:                            ; [$8571]
+BYTE_PRG5__8571:
     .byte $60                               ; If X >= 96:
 
 ;
 ; XREFS:
 ;     MScripts_SetNoteLengthFromValue
 ;
-BYTE_PRG5__8572:                            ; [$8572]
+BYTE_PRG5__8572:
     .byte $c0                               ; Length = 192
     .byte $50                               ; If X >= 80:
     .byte $40                               ; Length = 64
@@ -2472,7 +2454,7 @@ BYTE_PRG5__8572:                            ; [$8572]
 ; XREFS:
 ;     Music_PlayNoise
 ;
-MUSIC_NOISE_REGISTER_VALUES:                ; [$857f]
+MUSIC_NOISE_REGISTER_VALUES:
     .byte $14                               ; If X >= 20:
     .byte $20                               ; Length = 32
     .byte $00                               ; If X >= 0 (last possible
@@ -2483,7 +2465,7 @@ MUSIC_NOISE_REGISTER_VALUES:                ; [$857f]
 ;============================================================================
 ; This is the *actual* start of the noise register values.
 ;============================================================================
-REAL_MUSIC_NOISE_REGISTER_VALUES:           ; [$8583]
+REAL_MUSIC_NOISE_REGISTER_VALUES:
     .byte $00                               ; [0]: Volume of 0.
     .byte $00                               ; [1]: Unused.
     .byte $0f                               ; [2]: Noise mode 0, period 15.
@@ -2496,7 +2478,7 @@ REAL_MUSIC_NOISE_REGISTER_VALUES:           ; [$8583]
     .byte $00                               ; [1]: Unused.
     .byte $05                               ; [2]: Noise mode 0, period 5.
     .byte $00                               ; [3]: Length 0.
-    .byte $ff                               ; [$858f] byte
+    .byte $ff                               ; byte
 
 
 ;============================================================================
@@ -2510,7 +2492,7 @@ REAL_MUSIC_NOISE_REGISTER_VALUES:           ; [$8583]
 ; XREFS:
 ;     SoundEffects_HandleOnInterrupt
 ;
-SOUND_EFFECT_HANDLER_INDEXES:               ; [$8590]
+SOUND_EFFECT_HANDLER_INDEXES:
     .byte $00                               ; [0]: Set up sound effects
     .byte $2c                               ; [1]: Message
     .byte $60                               ; [2]: Hit Enemy
@@ -2562,95 +2544,65 @@ SOUND_EFFECT_HANDLER_INDEXES:               ; [$8590]
 ; XREFS:
 ;     SoundEffects_HandleOnInterrupt
 ;
-SOUND_EFFECT_HANDLERS:                      ; [$85ad]
+SOUND_EFFECT_HANDLERS:
     pointer SoundEffects_Init-1             ; SoundEffects_Init
-                                            ; [$PRG5::85ad]
     pointer SoundEffect_NoOp-1              ; SoundEffect_NoOp
-                                            ; [$PRG5::85af]
     pointer SoundEffect_CoinTouched_Setup-1 ; 0x04
     pointer SoundEffect_CoinTouched_OnTick-1 ; SoundEffect_CoinTouched_OnTick
-                                             ; [$PRG5::85b3]
     pointer SoundEffect_BreadTouched_Setup-1 ; 0x08
     pointer SoundEffect_BreadTouched_OnTick-1 ; SoundEffect_BreadTouched_OnTick
-                                              ; [$PRG5::85b7]
     pointer SoundEffect_Maybe_UseSpecialItem2_Setup-1 ; 0x0C
     pointer SoundEffect_Maybe_UseSpecialItem2_OnTick-1 ; SoundEffect_Maybe_UseSpecialItem2_OnTick
-                                                       ; [$PRG5::85bb]
     pointer SoundEffect_PlayerDied_Setup-1  ; 0x10
     pointer SoundEffect_PlayerDied_OnTick-1 ; SoundEffect_PlayerDied_OnTick
-                                            ; [$PRG5::85bf]
     pointer SoundEffect_LadderDropped_Setup-1 ; 0x14
     pointer SoundEffect_LadderDropped_OnTick-1 ; SoundEffect_LadderDropped_OnTick
-                                               ; [$PRG5::85c3]
     pointer SoundEffect_ShowPlayerMenu_Setup-1 ; 0x18
     pointer SoundEffect_ShowPlayerMenu_OnTick-1 ; SoundEffect_ShowPlayerMenu_OnTick
-                                                ; [$PRG5::85c7]
     pointer SoundEffect_Maybe_Step_Setup-1  ; 0x1C
     pointer SoundEffect_Maybe_Step_OnTick-1 ; SoundEffect_Maybe_Step_OnTick
-                                            ; [$PRG5::85cb]
     pointer SoundEffect_GoldAmountChanged_Setup-1 ; 0x20
     pointer SoundEffects_DecrementCounter-1 ; SoundEffects_DecrementCounter
-                                            ; [$PRG5::85cf]
     pointer SoundEffect_FillHPOrMP_Setup-1  ; 0x24
     pointer SoundEffect_FillHPOrMP_OnTick-1 ; SoundEffect_FillHPOrMP_OnTick
-                                            ; [$PRG5::85d3]
     pointer SoundEffect_PasswordCharInput_Setup-1 ; 0x28
     pointer SoundEffects_DecrementCounter-1 ; SoundEffects_DecrementCounter
-                                            ; [$PRG5::85d7]
     pointer SoundEffect_Message_Setup-1     ; 0x2C
     pointer SoundEffect_Message_OnTick-1    ; SoundEffect_Message_OnTick
-                                            ; [$PRG5::85db]
     pointer SoundEffect_CursorMoved_Setup-1 ; 0x30
     pointer SoundEffect_CursorMoved_OnTick-1 ; SoundEffect_CursorMoved_OnTick
-                                             ; [$PRG5::85df]
     pointer SoundEffect_CharacterInput_Setup-1 ; 0x34
     pointer SoundEffect_CharacterInput_OnTick-1 ; SoundEffect_CharacterInput_OnTick
-                                                ; [$PRG5::85e3]
     pointer SoundEffect_OpenDoor_Setup-1    ; 0x38
     pointer SoundEffect_OpenDoor_OnTick-1   ; SoundEffect_OpenDoor_OnTick
-                                            ; [$PRG5::85e7]
     pointer SoundEffect_PushBlock_Setup-1   ; 0x3C
     pointer SoundEffect_PushBlock_OnTick-1  ; SoundEffect_PushBlock_OnTick
-                                            ; [$PRG5::85eb]
     pointer SoundEffect_Maybe_Typing_Setup-1 ; 0x40
     pointer SoundEffect_Maybe_Typing_OnTick-1 ; SoundEffect_Maybe_Typing_OnTick
-                                              ; [$PRG5::85ef]
     pointer SoundEffect_Pakukame_Setup-1    ; 0x44
     pointer SoundEffect_Pakukame_OnTick-1   ; SoundEffect_Pakukame_OnTick
-                                            ; [$PRG5::85f3]
     pointer SoundEffect_0x48_Setup-1        ; 0x48
     pointer SoundEffect_0x48_OnTick-1       ; SoundEffect_0x48_OnTick
-                                            ; [$PRG5::85f7]
     pointer SoundEffect_ItemPickedUp_Setup-1 ; 0x4C
     pointer SoundEffect_ItemPickedUp_OnTick-1 ; SoundEffect_ItemPickedUp_OnTick
-                                              ; [$PRG5::85fb]
     pointer SoundEffect_CoinTouchedCommon_Setup-1 ; 0x50
     pointer SoundEffect_CoinTouchedCommon_OnTick-1 ; SoundEffect_CoinTouchedCommon_OnTick
-                                                   ; [$PRG5::85ff]
     pointer SoundEffect_CoinDropped_Setup-1 ; 0x54
     pointer SoundEffect_CoinDropped_OnTick-1 ; SoundEffect_CoinDropped_OnTick
-                                             ; [$PRG5::8603]
     pointer SoundEffect_ShieldHitByMagic_Setup-1 ; 0x58
     pointer SoundEffect_ShieldHitByMagic_OnTick-1 ; SoundEffect_ShieldHitByMagic_OnTick
-                                                  ; [$PRG5::8607]
     pointer SoundEffect_EnemyDied_Setup-1   ; 0x5C
     pointer SoundEffect_EnemyDied_OnTick-1  ; SoundEffect_EnemyDied_OnTick
-                                            ; [$PRG5::860b]
     pointer SoundEffect_HitEnemy_Setup-1    ; 0x60
     pointer SoundEffect_HitEnemy_OnTick-1   ; SoundEffect_HitEnemy_OnTick
-                                            ; [$PRG5::860f]
     pointer SoundEffect_HitPlayer_Setup-1   ; 0x64
     pointer SoundEffect_HitPlayer_OnTick-1  ; SoundEffect_HitPlayer_OnTick
-                                            ; [$PRG5::8613]
     pointer SoundEffect_MagicHitObstacle_Setup-1 ; 0x68
     pointer SoundEffect_MagicHitObstacle_OnTick-1 ; SoundEffect_MagicHitObstacle_OnTick
-                                                  ; [$PRG5::8617]
     pointer SoundEffect_Tilte_Setup-1       ; 0x6C
     pointer SoundEffect_Tilte_OnTick-1      ; SoundEffect_Tilte_OnTick
-                                            ; [$PRG5::861b]
     pointer SoundEffect_Magic_Setup-1       ; 0x70
     pointer SoundEffect_Magic_OnTick-1      ; SoundEffect_Magic_OnTick
-                                            ; [$PRG5::861f]
 
 ;============================================================================
 ; TODO: Document SoundEffects_DecrementCounter
@@ -2661,7 +2613,7 @@ SOUND_EFFECT_HANDLERS:                      ; [$85ad]
 ; OUTPUTS:
 ;     TODO
 ;============================================================================
-SoundEffects_DecrementCounter:              ; [$8621]
+SoundEffects_DecrementCounter:
     DEC a:SoundEffect_State_Counter
     BNE Sound_ResetCurrentSound_Return
 
@@ -2702,7 +2654,7 @@ SoundEffects_DecrementCounter:              ; [$8621]
 ;     SoundEffect_Tilte_OnTick
 ;     SoundEffects_HandleOnInterrupt
 ;============================================================================
-Sound_ResetCurrentSound:                    ; [$8626]
+Sound_ResetCurrentSound:
     LDA #$00
     STA a:SoundEffect_HandlerIndex
     STA a:SoundEffect_Unused_PriorityID
@@ -2711,7 +2663,7 @@ Sound_ResetCurrentSound:                    ; [$8626]
     ; XREFS:
     ;     SoundEffects_DecrementCounter
     ;
-Sound_ResetCurrentSound_Return:             ; [$862e]
+Sound_ResetCurrentSound_Return:
     RTS
 ;============================================================================
 ; TODO: Document SoundEffects_HandleOnInterrupt
@@ -2725,14 +2677,14 @@ Sound_ResetCurrentSound_Return:             ; [$862e]
 ; XREFS:
 ;     thunk_SoundEffects_HandleOnInterrupt
 ;============================================================================
-SoundEffects_HandleOnInterrupt:             ; [$862f]
+SoundEffects_HandleOnInterrupt:
     ;
     ; Loop through all channels, decrementing the sound effect
     ; tick count for each.
     ;
     LDX #$03                                ; X = 3 (channel loop counter).
 
-  @_checkActiveEffectsLoop:                 ; [$8631]
+  @_checkActiveEffectsLoop:
     LDA a:SoundEffect_TicksRemaining,X      ; Load the sound effect ticks
                                             ; remaining for this channel.
     BEQ @_prepareNextActiveEffectsLoopIter  ; If this channel is done,
@@ -2740,7 +2692,7 @@ SoundEffects_HandleOnInterrupt:             ; [$862f]
     DEC a:SoundEffect_TicksRemaining,X      ; Reduce the ticks remaining by
                                             ; 1.
 
-  @_prepareNextActiveEffectsLoopIter:       ; [$8639]
+  @_prepareNextActiveEffectsLoopIter:
     DEX                                     ; X-- (loop counter).
     BPL @_checkActiveEffectsLoop            ; If >= 0, loop.
 
@@ -2798,7 +2750,7 @@ SoundEffects_HandleOnInterrupt:             ; [$862f]
     ; Reset the sound effect handler and state for a new sound
     ; effect.
     ;
-  @_newHandler:                             ; [$8658]
+  @_newHandler:
     LDA a:SOUND_EFFECT_HANDLER_INDEXES,X    ; Load the sound effect handler
                                             ; index for this ID.
     STA a:SoundEffect_HandlerIndex          ; Store as the new index.
@@ -2827,7 +2779,7 @@ SoundEffects_HandleOnInterrupt:             ; [$862f]
     ; on-tick stage. Pairs of each are in the sound effect
     ; handlers table.
     ;
-  @_runOnTickHandler:                       ; [$866f]
+  @_runOnTickHandler:
     LDX a:SoundEffect_HandlerIndex          ; Load the index of the sound
                                             ; effect handler.
     INX                                     ; Advance to the next address for
@@ -2844,7 +2796,7 @@ SoundEffects_HandleOnInterrupt:             ; [$862f]
     ; that this is < 0x74, with the idea being that 0x73 would
     ; never be set (unless there was a major programming flaw).
     ;
-  @_checkAndRunHandler:                     ; [$8674]
+  @_checkAndRunHandler:
     CPX #$74                                ; Is this a valid sound effect
                                             ; within the handlers lookup
                                             ; table?
@@ -2869,7 +2821,7 @@ SoundEffects_HandleOnInterrupt:             ; [$862f]
 ; OUTPUTS:
 ;     TODO
 ;============================================================================
-SoundEffect_NoOp:                           ; [$8680]
+SoundEffect_NoOp:
     RTS
 
 
@@ -2903,7 +2855,7 @@ SoundEffect_NoOp:                           ; [$8680]
 ;     SOUND_EFFECT_HANDLERS [$PRG5::85ad]
 ;     thunk_SoundEffects_Init
 ;============================================================================
-SoundEffects_Init:                          ; [$8681]
+SoundEffects_Init:
     LDA #$00
     STA a:DMC_RAW                           ; Disable raw DMC.
 
@@ -2936,7 +2888,7 @@ SoundEffects_Init:                          ; [$8681]
 ; OUTPUTS:
 ;     TODO
 ;============================================================================
-SoundEffect_Message_Setup:                  ; [$869e]
+SoundEffect_Message_Setup:
     LDA #$06
     STA a:SoundEffect_TicksRemaining_3_     ; Set TRI ticks remaining to 6.
     LDA #$00
@@ -2955,7 +2907,7 @@ SoundEffect_Message_Setup:                  ; [$869e]
 ; OUTPUTS:
 ;     TODO
 ;============================================================================
-SoundEffect_Message_OnTick:                 ; [$86a8]
+SoundEffect_Message_OnTick:
     LDA #$1f
     STA a:NOISE_VOL                         ; Set Noise volume to 31.
 
@@ -3010,14 +2962,14 @@ SoundEffect_Message_OnTick:                 ; [$86a8]
     STA a:NOISE_VOL
     JMP Sound_ResetCurrentSound
 
-  @_return:                                 ; [$86d0]
+  @_return:
     RTS
 
 ;
 ; XREFS:
 ;     SoundEffect_Message_OnTick
 ;
-SOUNDEFFECT_MESSAGE_NOISE_LO:               ; [$86d1]
+SOUNDEFFECT_MESSAGE_NOISE_LO:
     .byte $10                               ; [0]:
     .byte $01                               ; [1]:
 
@@ -3030,7 +2982,7 @@ SOUNDEFFECT_MESSAGE_NOISE_LO:               ; [$86d1]
 ; OUTPUTS:
 ;     A
 ;============================================================================
-SoundEffect_HitEnemy_Setup:                 ; [$86d3]
+SoundEffect_HitEnemy_Setup:
     LDA #$14
     STA a:SoundEffect_TicksRemaining_1_
     STA a:SoundEffect_TicksRemaining_3_
@@ -3050,7 +3002,7 @@ SoundEffect_HitEnemy_Setup:                 ; [$86d3]
 ; OUTPUTS:
 ;     A
 ;============================================================================
-SoundEffect_HitEnemy_OnTick:                ; [$86e0]
+SoundEffect_HitEnemy_OnTick:
     LDX a:SoundEffect_State_Counter
     LDA a:SOUNDEFFECT_HIT_ENEMY_NOTES,X
     CMP #$ff
@@ -3060,7 +3012,7 @@ SoundEffect_HitEnemy_OnTick:                ; [$86e0]
     STA a:NOISE_VOL
     JMP Sound_ResetCurrentSound
 
-  @_play:                                   ; [$86f5]
+  @_play:
     JSR SoundEffect_SetNote
     LDA #$5f
     STA a:SQ2_VOL
@@ -3084,7 +3036,7 @@ SoundEffect_HitEnemy_OnTick:                ; [$86e0]
 ; XREFS:
 ;     SoundEffect_HitEnemy_OnTick
 ;
-SOUNDEFFECT_HIT_ENEMY_NOTES:                ; [$8724]
+SOUNDEFFECT_HIT_ENEMY_NOTES:
     .byte $62                               ; [0]:
     .byte $4e                               ; [1]:
     .byte $3c                               ; [2]:
@@ -3111,7 +3063,7 @@ SOUNDEFFECT_HIT_ENEMY_NOTES:                ; [$8724]
 ; OUTPUTS:
 ;     A
 ;============================================================================
-SoundEffect_EnemyDied_Setup:                ; [$8734]
+SoundEffect_EnemyDied_Setup:
     LDA #$16
     STA a:SoundEffect_TicksRemaining_3_
     LDA #$14
@@ -3132,14 +3084,14 @@ SoundEffect_EnemyDied_Setup:                ; [$8734]
 ; OUTPUTS:
 ;     A
 ;============================================================================
-SoundEffect_EnemyDied_OnTick:               ; [$8743]
+SoundEffect_EnemyDied_OnTick:
     DEC a:SoundEffect_State_Counter
     BNE @_play
     LDA #$10
     STA a:NOISE_VOL
     JMP Sound_ResetCurrentSound
 
-  @_play:                                   ; [$8750]
+  @_play:
     LDX a:SoundEffect_State_0128
     LDA #$1f
     STA a:NOISE_VOL
@@ -3154,7 +3106,7 @@ SoundEffect_EnemyDied_OnTick:               ; [$8743]
 ; XREFS:
 ;     SoundEffect_EnemyDied_OnTick
 ;
-SOUNDEFFECT_ENEMY_DIED_NOISE_LO:            ; [$8767]
+SOUNDEFFECT_ENEMY_DIED_NOISE_LO:
     .byte $0f                               ; [0]:
     .byte $0c                               ; [1]:
     .byte $0e                               ; [2]:
@@ -3175,7 +3127,7 @@ SOUNDEFFECT_ENEMY_DIED_NOISE_LO:            ; [$8767]
 ; OUTPUTS:
 ;     A
 ;============================================================================
-SoundEffect_HitPlayer_Setup:                ; [$8771]
+SoundEffect_HitPlayer_Setup:
     LDA #$0f
     STA a:SoundEffect_TicksRemaining_1_
     LDA #$00
@@ -3194,7 +3146,7 @@ SoundEffect_HitPlayer_Setup:                ; [$8771]
 ; OUTPUTS:
 ;     A
 ;============================================================================
-SoundEffect_HitPlayer_OnTick:               ; [$877b]
+SoundEffect_HitPlayer_OnTick:
     LDX a:SoundEffect_State_Counter
     LDA a:SOUNDEFFECT_HITPLAYER_NOTES,X
     CMP #$ff
@@ -3203,7 +3155,7 @@ SoundEffect_HitPlayer_OnTick:               ; [$877b]
     STA a:SQ2_VOL
     JMP Sound_ResetCurrentSound
 
-  @_play:                                   ; [$878d]
+  @_play:
     JSR SoundEffect_SetNote
     LDA #$df
     STA a:SQ2_VOL
@@ -3220,7 +3172,7 @@ SoundEffect_HitPlayer_OnTick:               ; [$877b]
 ; XREFS:
 ;     SoundEffect_HitPlayer_OnTick
 ;
-SOUNDEFFECT_HITPLAYER_NOTES:                ; [$87aa]
+SOUNDEFFECT_HITPLAYER_NOTES:
     .byte $29                               ; [0]:
     .byte $24                               ; [1]:
     .byte $28                               ; [2]:
@@ -3242,7 +3194,7 @@ SOUNDEFFECT_HITPLAYER_NOTES:                ; [$87aa]
 ; OUTPUTS:
 ;     A
 ;============================================================================
-SoundEffect_Magic_Setup:                    ; [$87b5]
+SoundEffect_Magic_Setup:
     LDA #$32
     STA a:SoundEffect_TicksRemaining_1_
     LDA #$00
@@ -3262,7 +3214,7 @@ SoundEffect_Magic_Setup:                    ; [$87b5]
 ; OUTPUTS:
 ;     A
 ;============================================================================
-SoundEffect_Magic_OnTick:                   ; [$87c2]
+SoundEffect_Magic_OnTick:
     LDX a:SoundEffect_State_0128
     LDA a:SOUNDEFFECT_MAGIC_SQ2_VOL,X
     BNE @_play
@@ -3270,7 +3222,7 @@ SoundEffect_Magic_OnTick:                   ; [$87c2]
     STA a:SQ2_VOL
     JMP Sound_ResetCurrentSound
 
-  @_play:                                   ; [$87d2]
+  @_play:
     ORA #$50
     STA a:SQ2_VOL
     LDA #$00
@@ -3290,22 +3242,22 @@ SoundEffect_Magic_OnTick:                   ; [$87c2]
     STA a:SoundEffect_State_Counter
     INC a:SoundEffect_State_0128
 
-  @_return:                                 ; [$87ff]
+  @_return:
     RTS
 
 ;
 ; XREFS:
 ;     SoundEffect_Magic_OnTick
 ;
-SOUNDEFFECT_MAGIC_SQ2_VOL:                  ; [$8800]
-    .byte $0f,$0b,$07,$04,$01,$00           ; [$8800] byte
+SOUNDEFFECT_MAGIC_SQ2_VOL:
+    .byte $0f,$0b,$07,$04,$01,$00           ; byte
 
 ;
 ; XREFS:
 ;     SoundEffect_Magic_OnTick
 ;
-SOUNDEFFECT_MAGIC_SQ2_LO:                   ; [$8806]
-    .byte $b0,$a0,$a8,$98                   ; [$8806] byte
+SOUNDEFFECT_MAGIC_SQ2_LO:
+    .byte $b0,$a0,$a8,$98                   ; byte
 
 ;============================================================================
 ; TODO: Document SoundEffect_OpenDoor_Setup
@@ -3316,7 +3268,7 @@ SOUNDEFFECT_MAGIC_SQ2_LO:                   ; [$8806]
 ; OUTPUTS:
 ;     A
 ;============================================================================
-SoundEffect_OpenDoor_Setup:                 ; [$880a]
+SoundEffect_OpenDoor_Setup:
     LDA #$3c
     STA a:SoundEffect_TicksRemaining_1_
     STA a:SoundEffect_TicksRemaining_3_
@@ -3339,7 +3291,7 @@ SoundEffect_OpenDoor_Setup:                 ; [$880a]
 ; OUTPUTS:
 ;     A
 ;============================================================================
-SoundEffect_OpenDoor_OnTick:                ; [$881f]
+SoundEffect_OpenDoor_OnTick:
     DEC a:SoundEffect_State_0129
     BNE @_play
     LDA #$10
@@ -3347,7 +3299,7 @@ SoundEffect_OpenDoor_OnTick:                ; [$881f]
     STA a:NOISE_VOL
     JMP Sound_ResetCurrentSound
 
-  @_play:                                   ; [$882f]
+  @_play:
     LDA a:SoundEffect_State_Counter
     LSR A
     LSR A
@@ -3377,8 +3329,8 @@ SoundEffect_OpenDoor_OnTick:                ; [$881f]
 ; XREFS:
 ;     SoundEffect_OpenDoor_OnTick
 ;
-SOUNDEFFECT_OPEN_DOOR_SQ2_NOISE_LO:         ; [$8865]
-    .byte $00,$03,$0a,$15,$25,$15,$0a,$03   ; [$8865] byte
+SOUNDEFFECT_OPEN_DOOR_SQ2_NOISE_LO:
+    .byte $00,$03,$0a,$15,$25,$15,$0a,$03   ; byte
 
 ;============================================================================
 ; TODO: Document SoundEffect_Maybe_Typing_Setup
@@ -3389,7 +3341,7 @@ SOUNDEFFECT_OPEN_DOOR_SQ2_NOISE_LO:         ; [$8865]
 ; OUTPUTS:
 ;     A
 ;============================================================================
-SoundEffect_Maybe_Typing_Setup:             ; [$886d]
+SoundEffect_Maybe_Typing_Setup:
     LDA #$28
     STA a:SoundEffect_TicksRemaining_1_
     LDA #$00
@@ -3408,7 +3360,7 @@ SoundEffect_Maybe_Typing_Setup:             ; [$886d]
 ; OUTPUTS:
 ;     A
 ;============================================================================
-SoundEffect_Maybe_Typing_OnTick:            ; [$8877]
+SoundEffect_Maybe_Typing_OnTick:
     LDA a:SoundEffect_TicksRemaining_1_
     AND #$01
     BNE @_return
@@ -3420,7 +3372,7 @@ SoundEffect_Maybe_Typing_OnTick:            ; [$8877]
     STA a:SQ2_VOL
     JMP Sound_ResetCurrentSound
 
-  @_play:                                   ; [$8890]
+  @_play:
     JSR SoundEffect_SetNote
     INC a:SoundEffect_State_Counter
     LDA a:SoundEffect_State_Counter
@@ -3435,17 +3387,17 @@ SoundEffect_Maybe_Typing_OnTick:            ; [$8877]
     LDA a:SoundEffect_Note_High
     STA a:SQ2_HI
 
-  @_return:                                 ; [$88b3]
+  @_return:
     RTS
 
 ;
 ; XREFS:
 ;     SoundEffect_Maybe_Typing_OnTick
 ;
-SOUNDEFFECT_MAYBE_TYPING_NOTES:             ; [$88b4]
-    .byte $2b,$2d,$2f,$24,$38,$2a,$37,$39   ; [$88b4] byte
-    .byte $3b,$24,$38,$42,$2b,$2d,$2f,$18   ; [$88bc] byte
-    .byte $ff                               ; [$88c4] byte
+SOUNDEFFECT_MAYBE_TYPING_NOTES:
+    .byte $2b,$2d,$2f,$24,$38,$2a,$37,$39   ; byte
+    .byte $3b,$24,$38,$42,$2b,$2d,$2f,$18   ; byte
+    .byte $ff                               ; byte
 
 ;============================================================================
 ; TODO: Document SoundEffect_ItemPickedUp_Setup
@@ -3456,7 +3408,7 @@ SOUNDEFFECT_MAYBE_TYPING_NOTES:             ; [$88b4]
 ; OUTPUTS:
 ;     A
 ;============================================================================
-SoundEffect_ItemPickedUp_Setup:             ; [$88c5]
+SoundEffect_ItemPickedUp_Setup:
     LDA #$3c
     STA a:SoundEffect_TicksRemaining_1_
     LDA #$00
@@ -3476,7 +3428,7 @@ SoundEffect_ItemPickedUp_Setup:             ; [$88c5]
 ; OUTPUTS:
 ;     A
 ;============================================================================
-SoundEffect_ItemPickedUp_OnTick:            ; [$88d2]
+SoundEffect_ItemPickedUp_OnTick:
     LDX a:SoundEffect_State_Counter
     LDA a:SOUNDEFFECT_ITEM_PICKED_UP_NOTES,X
     CMP #$ff
@@ -3486,7 +3438,7 @@ SoundEffect_ItemPickedUp_OnTick:            ; [$88d2]
     STA a:SoundEffect_State_Counter
     RTS
 
-  @_playNote:                               ; [$88e5]
+  @_playNote:
     JSR SoundEffect_SetNote
     LDX a:SoundEffect_State_0128
     LDA a:SOUNDEFFECT_ITEM_PICKED_UP_SQ2_VOLS,X
@@ -3495,7 +3447,7 @@ SoundEffect_ItemPickedUp_OnTick:            ; [$88d2]
     STA a:SQ2_VOL
     JMP Sound_ResetCurrentSound
 
-  @_playSQ2:                                ; [$88f8]
+  @_playSQ2:
     ORA #$90
     STA a:SQ2_VOL
     LDA #$00
@@ -3511,15 +3463,15 @@ SoundEffect_ItemPickedUp_OnTick:            ; [$88d2]
 ; XREFS:
 ;     SoundEffect_ItemPickedUp_OnTick
 ;
-SOUNDEFFECT_ITEM_PICKED_UP_SQ2_VOLS:        ; [$8912]
-    .byte $0f,$0c,$09,$05,$02,$00           ; [$8912] byte
+SOUNDEFFECT_ITEM_PICKED_UP_SQ2_VOLS:
+    .byte $0f,$0c,$09,$05,$02,$00           ; byte
 
 ;
 ; XREFS:
 ;     SoundEffect_ItemPickedUp_OnTick
 ;
-SOUNDEFFECT_ITEM_PICKED_UP_NOTES:           ; [$8918]
-    .byte $3f,$43,$4a,$55,$5b,$60,$ff       ; [$8918] byte
+SOUNDEFFECT_ITEM_PICKED_UP_NOTES:
+    .byte $3f,$43,$4a,$55,$5b,$60,$ff       ; byte
 
 ;============================================================================
 ; TODO: Document SoundEffect_CoinTouchedCommon_Setup
@@ -3533,7 +3485,7 @@ SOUNDEFFECT_ITEM_PICKED_UP_NOTES:           ; [$8918]
 ; XREFS:
 ;     SoundEffect_CoinTouched_Setup
 ;============================================================================
-SoundEffect_CoinTouchedCommon_Setup:        ; [$891f]
+SoundEffect_CoinTouchedCommon_Setup:
     LDA #$1e
     STA a:SoundEffect_TicksRemaining_1_
     LDA #$50
@@ -3557,7 +3509,7 @@ SoundEffect_CoinTouchedCommon_Setup:        ; [$891f]
 ; XREFS:
 ;     SoundEffect_CoinTouched_OnTick
 ;============================================================================
-SoundEffect_CoinTouchedCommon_OnTick:       ; [$892e]
+SoundEffect_CoinTouchedCommon_OnTick:
     LDX a:SoundEffect_State_0128
     LDA a:SOUNDEFFECT_COIN_TOUCHED_SQ2_VOL,X
     BNE @_play
@@ -3565,7 +3517,7 @@ SoundEffect_CoinTouchedCommon_OnTick:       ; [$892e]
     STA a:SQ2_VOL
     JMP Sound_ResetCurrentSound
 
-  @_play:                                   ; [$893e]
+  @_play:
     ORA #$d0
     STA a:SQ2_VOL
     LDA #$00
@@ -3586,15 +3538,15 @@ SoundEffect_CoinTouchedCommon_OnTick:       ; [$892e]
     LDA #$50
     STA a:SoundEffect_State_Counter
 
-  @_return:                                 ; [$896c]
+  @_return:
     RTS
 
 ;
 ; XREFS:
 ;     SoundEffect_CoinTouchedCommon_OnTick
 ;
-SOUNDEFFECT_COIN_TOUCHED_SQ2_VOL:           ; [$896d]
-    .byte $0f,$0c,$09,$06,$03,$00           ; [$896d] byte
+SOUNDEFFECT_COIN_TOUCHED_SQ2_VOL:
+    .byte $0f,$0c,$09,$06,$03,$00           ; byte
 
 ;============================================================================
 ; TODO: Document SoundEffect_MagicHitObstacle_Setup
@@ -3605,7 +3557,7 @@ SOUNDEFFECT_COIN_TOUCHED_SQ2_VOL:           ; [$896d]
 ; OUTPUTS:
 ;     A
 ;============================================================================
-SoundEffect_MagicHitObstacle_Setup:         ; [$8973]
+SoundEffect_MagicHitObstacle_Setup:
     LDA #$1e
     STA a:SoundEffect_TicksRemaining_3_
     LDA #$20
@@ -3626,14 +3578,14 @@ SoundEffect_MagicHitObstacle_Setup:         ; [$8973]
 ; OUTPUTS:
 ;     A
 ;============================================================================
-SoundEffect_MagicHitObstacle_OnTick:        ; [$8982]
+SoundEffect_MagicHitObstacle_OnTick:
     DEC a:SoundEffect_State_Counter
     BNE @_play
     LDA #$10
     STA a:NOISE_VOL
     JMP Sound_ResetCurrentSound
 
-  @_play:                                   ; [$898f]
+  @_play:
     LDA a:SoundEffect_State_Counter
     LSR A
     AND #$0f
@@ -3655,7 +3607,7 @@ SoundEffect_MagicHitObstacle_OnTick:        ; [$8982]
 ; OUTPUTS:
 ;     A
 ;============================================================================
-SoundEffect_CursorMoved_Setup:              ; [$89a8]
+SoundEffect_CursorMoved_Setup:
     LDA #$16
     STA a:SoundEffect_TicksRemaining_1_
     LDA #$0f
@@ -3674,14 +3626,14 @@ SoundEffect_CursorMoved_Setup:              ; [$89a8]
 ; OUTPUTS:
 ;     A
 ;============================================================================
-SoundEffect_CursorMoved_OnTick:             ; [$89b2]
+SoundEffect_CursorMoved_OnTick:
     LDA a:SoundEffect_State_Counter
     BNE @_play
     LDA #$10
     STA a:SQ2_VOL
     JMP Sound_ResetCurrentSound
 
-  @_play:                                   ; [$89bf]
+  @_play:
     LDA a:SoundEffect_State_Counter
     AND #$0f
     ORA #$50
@@ -3708,25 +3660,25 @@ SoundEffect_CursorMoved_OnTick:             ; [$89b2]
     DEC a:SoundEffect_State_Counter
     RTS
 
-SOUNDEFFECT_CURSOR_MOVED_SQ2_LO:            ; [$89f9]
-    .byte $51,$34,$b8                       ; [$89f9] byte
+SOUNDEFFECT_CURSOR_MOVED_SQ2_LO:
+    .byte $51,$34,$b8                       ; byte
 
 ;
 ; XREFS:
 ;     SoundEffect_CursorMoved_OnTick
 ;
-BYTE_PRG5__89fc:                            ; [$89fc]
-    .byte $93                               ; [$89fc] byte
+BYTE_PRG5__89fc:
+    .byte $93                               ; byte
 
-SOUNDEFFECT_CURSORMOVED_SQ2_LO_DELTA:       ; [$89fd]
-    .byte $00,$01,$03,$06,$0a,$06,$03       ; [$89fd] byte
+SOUNDEFFECT_CURSORMOVED_SQ2_LO_DELTA:
+    .byte $00,$01,$03,$06,$0a,$06,$03       ; byte
 
 ;
 ; XREFS:
 ;     SoundEffect_CursorMoved_OnTick
 ;
-BYTE_PRG5__8a04:                            ; [$8a04]
-    .byte $01                               ; [$8a04] byte
+BYTE_PRG5__8a04:
+    .byte $01                               ; byte
 
 ;============================================================================
 ; TODO: Document SoundEffect_ShieldHitByMagic_Setup
@@ -3737,7 +3689,7 @@ BYTE_PRG5__8a04:                            ; [$8a04]
 ; OUTPUTS:
 ;     A
 ;============================================================================
-SoundEffect_ShieldHitByMagic_Setup:         ; [$8a05]
+SoundEffect_ShieldHitByMagic_Setup:
     LDA #$14
     STA a:SoundEffect_TicksRemaining_1_
     LDA #$10
@@ -3756,14 +3708,14 @@ SoundEffect_ShieldHitByMagic_Setup:         ; [$8a05]
 ; OUTPUTS:
 ;     A
 ;============================================================================
-SoundEffect_ShieldHitByMagic_OnTick:        ; [$8a0f]
+SoundEffect_ShieldHitByMagic_OnTick:
     DEC a:SoundEffect_State_Counter
     BNE @_play
     LDA #$10
     STA a:SQ2_VOL
     JMP Sound_ResetCurrentSound
 
-  @_play:                                   ; [$8a1c]
+  @_play:
     LDA a:SoundEffect_State_Counter
     ORA #$90
     STA a:SQ2_VOL
@@ -3778,14 +3730,14 @@ SoundEffect_ShieldHitByMagic_OnTick:        ; [$8a0f]
     STA a:SQ2_HI
     RTS
 
-SOUNDEFFECT_SHIELD_HIT_BY_MAGIC_SQ2_LO:     ; [$8a3b]
+SOUNDEFFECT_SHIELD_HIT_BY_MAGIC_SQ2_LO:
     .byte $30                               ; [0]:
 
 ;
 ; XREFS:
 ;     SoundEffect_ShieldHitByMagic_OnTick
 ;
-SOUNDEFFECT_SHIELD_HIT_BY_MAGIC_SQ2_LO_1_:  ; [$8a3c]
+SOUNDEFFECT_SHIELD_HIT_BY_MAGIC_SQ2_LO_1_:
     .byte $1a                               ; [1]:
 
 ;============================================================================
@@ -3797,7 +3749,7 @@ SOUNDEFFECT_SHIELD_HIT_BY_MAGIC_SQ2_LO_1_:  ; [$8a3c]
 ; OUTPUTS:
 ;     A
 ;============================================================================
-SoundEffect_CharacterInput_Setup:           ; [$8a3d]
+SoundEffect_CharacterInput_Setup:
     LDA #$1e
     STA a:SoundEffect_TicksRemaining_1_
     LDA #$00
@@ -3816,7 +3768,7 @@ SoundEffect_CharacterInput_Setup:           ; [$8a3d]
 ; OUTPUTS:
 ;     A
 ;============================================================================
-SoundEffect_CharacterInput_OnTick:          ; [$8a47]
+SoundEffect_CharacterInput_OnTick:
     INC a:SoundEffect_State_Counter
     LDA a:SoundEffect_State_Counter
     LSR A
@@ -3829,7 +3781,7 @@ SoundEffect_CharacterInput_OnTick:          ; [$8a47]
     STA a:SQ2_VOL
     JMP Sound_ResetCurrentSound
 
-  @_play:                                   ; [$8a5f]
+  @_play:
     JSR SoundEffect_SetNote
     LDA #$bf
     STA a:SQ2_VOL
@@ -3845,7 +3797,7 @@ SoundEffect_CharacterInput_OnTick:          ; [$8a47]
 ; XREFS:
 ;     SoundEffect_CharacterInput_OnTick
 ;
-SOUNDEFFECT_CHAR_INPUT_NOTES:               ; [$8a79]
+SOUNDEFFECT_CHAR_INPUT_NOTES:
     .byte $37                               ; [0]:
     .byte $39                               ; [1]:
     .byte $32                               ; [2]:
@@ -3861,7 +3813,7 @@ SOUNDEFFECT_CHAR_INPUT_NOTES:               ; [$8a79]
 ; OUTPUTS:
 ;     A
 ;============================================================================
-SoundEffect_PasswordCharInput_Setup:        ; [$8a7e]
+SoundEffect_PasswordCharInput_Setup:
     LDA #$0a
     STA a:SoundEffect_TicksRemaining_1_
     LDA #$02
@@ -3885,7 +3837,7 @@ SoundEffect_PasswordCharInput_Setup:        ; [$8a7e]
 ; OUTPUTS:
 ;     A
 ;============================================================================
-SoundEffect_PushBlock_Setup:                ; [$8a9d]
+SoundEffect_PushBlock_Setup:
     LDA #$20
     STA a:SoundEffect_TicksRemaining_3_
     LDA #$1e
@@ -3904,14 +3856,14 @@ SoundEffect_PushBlock_Setup:                ; [$8a9d]
 ; OUTPUTS:
 ;     A
 ;============================================================================
-SoundEffect_PushBlock_OnTick:               ; [$8aa7]
+SoundEffect_PushBlock_OnTick:
     LDA a:SoundEffect_State_Counter
     BNE @_play
     LDA #$10
     STA a:NOISE_VOL
     JMP Sound_ResetCurrentSound
 
-  @_play:                                   ; [$8ab4]
+  @_play:
     LDA #$1f
     STA a:NOISE_VOL
     LDA a:SoundEffect_State_Counter
@@ -3928,8 +3880,8 @@ SoundEffect_PushBlock_OnTick:               ; [$8aa7]
 ; XREFS:
 ;     SoundEffect_PushBlock_OnTick
 ;
-SOUNDEFFECT_PUSH_BLOCK_NOISE_LO:            ; [$8ace]
-    .byte $0f,$0b                           ; [$8ace] byte
+SOUNDEFFECT_PUSH_BLOCK_NOISE_LO:
+    .byte $0f,$0b                           ; byte
 
 ;============================================================================
 ; TODO: Document SoundEffect_CoinDropped_Setup
@@ -3940,7 +3892,7 @@ SOUNDEFFECT_PUSH_BLOCK_NOISE_LO:            ; [$8ace]
 ; OUTPUTS:
 ;     TODO
 ;============================================================================
-SoundEffect_CoinDropped_Setup:              ; [$8ad0]
+SoundEffect_CoinDropped_Setup:
     LDA #$32
     STA a:SoundEffect_TicksRemaining_1_
     LDA #$08
@@ -3959,7 +3911,7 @@ SoundEffect_CoinDropped_Setup:              ; [$8ad0]
 ; OUTPUTS:
 ;     A
 ;============================================================================
-SoundEffect_CoinDropped_OnTick:             ; [$8ada]
+SoundEffect_CoinDropped_OnTick:
     LDA #$86
     STA a:SQ2_VOL
     LDA #$00
@@ -3972,7 +3924,7 @@ SoundEffect_CoinDropped_OnTick:             ; [$8ada]
     LDA #$20
     STA a:SQ2_HI
 
-  @_checkUpdateCounter:                     ; [$8af5]
+  @_checkUpdateCounter:
     DEC a:SoundEffect_State_Counter
     BNE @_return
     LDA #$20
@@ -3981,7 +3933,7 @@ SoundEffect_CoinDropped_OnTick:             ; [$8ada]
     STA a:SQ2_HI
     JMP Sound_ResetCurrentSound
 
-  @_return:                                 ; [$8b07]
+  @_return:
     RTS
 
 ;============================================================================
@@ -3993,7 +3945,7 @@ SoundEffect_CoinDropped_OnTick:             ; [$8ada]
 ; OUTPUTS:
 ;     TODO
 ;============================================================================
-SoundEffect_0x48_Setup:                     ; [$8b08]
+SoundEffect_0x48_Setup:
     LDA #$23
     STA a:SoundEffect_TicksRemaining_1_
     STA a:SoundEffect_TicksRemaining_3_
@@ -4017,7 +3969,7 @@ SoundEffect_0x48_Setup:                     ; [$8b08]
 ; OUTPUTS:
 ;     A
 ;============================================================================
-SoundEffect_0x48_OnTick:                    ; [$8b1f]
+SoundEffect_0x48_OnTick:
     DEC a:SoundEffect_State_0129
     BNE @_play
     LDA #$10
@@ -4025,7 +3977,7 @@ SoundEffect_0x48_OnTick:                    ; [$8b1f]
     STA a:NOISE_VOL
     JMP Sound_ResetCurrentSound
 
-  @_play:                                   ; [$8b2f]
+  @_play:
     LDA a:SoundEffect_TicksRemaining_1_
     AND #$01
     BNE @_return
@@ -4048,7 +4000,7 @@ SoundEffect_0x48_OnTick:                    ; [$8b1f]
     STA a:SQ2_HI
     STA a:NOISE_HI
 
-  @_return:                                 ; [$8b64]
+  @_return:
     RTS
 
 ;============================================================================
@@ -4060,7 +4012,7 @@ SoundEffect_0x48_OnTick:                    ; [$8b1f]
 ; OUTPUTS:
 ;     TODO
 ;============================================================================
-SoundEffect_Pakukame_Setup:                 ; [$8b65]
+SoundEffect_Pakukame_Setup:
     LDA #$46
     STA a:SoundEffect_TicksRemaining_1_
     LDA #$00
@@ -4079,14 +4031,14 @@ SoundEffect_Pakukame_Setup:                 ; [$8b65]
 ; OUTPUTS:
 ;     A
 ;============================================================================
-SoundEffect_Pakukame_OnTick:                ; [$8b6f]
+SoundEffect_Pakukame_OnTick:
     LDA a:SoundEffect_TicksRemaining_1_
     BNE @_play
     LDA #$10
     STA a:SQ2_VOL
     JMP Sound_ResetCurrentSound
 
-  @_play:                                   ; [$8b7c]
+  @_play:
     LDA a:SoundEffect_State_Counter
     AND #$3c
     LSR A
@@ -4114,8 +4066,8 @@ SoundEffect_Pakukame_OnTick:                ; [$8b6f]
 ; XREFS:
 ;     SoundEffect_Pakukame_OnTick
 ;
-SOUNDEFFECT_PAKUKAME_SQ2_LO:                ; [$8bab]
-    .byte $00,$08,$14,$20,$2d,$20,$14,$08   ; [$8bab] byte
+SOUNDEFFECT_PAKUKAME_SQ2_LO:
+    .byte $00,$08,$14,$20,$2d,$20,$14,$08   ; byte
 
 ;============================================================================
 ; TODO: Document SoundEffect_FillHPOrMP_Setup
@@ -4126,7 +4078,7 @@ SOUNDEFFECT_PAKUKAME_SQ2_LO:                ; [$8bab]
 ; OUTPUTS:
 ;     TODO
 ;============================================================================
-SoundEffect_FillHPOrMP_Setup:               ; [$8bb3]
+SoundEffect_FillHPOrMP_Setup:
     LDA #$23
     STA a:SoundEffect_TicksRemaining_1_
     LDA #$00
@@ -4148,14 +4100,14 @@ SoundEffect_FillHPOrMP_Setup:               ; [$8bb3]
 ; OUTPUTS:
 ;     A
 ;============================================================================
-SoundEffect_FillHPOrMP_OnTick:              ; [$8bc5]
+SoundEffect_FillHPOrMP_OnTick:
     DEC a:SoundEffect_State_0128
     BNE @_play
     LDA #$10
     STA a:SQ2_VOL
     JMP Sound_ResetCurrentSound
 
-  @_play:                                   ; [$8bd2]
+  @_play:
     LDA a:SoundEffect_State_Counter
     AND #$03
     TAY
@@ -4180,15 +4132,15 @@ SoundEffect_FillHPOrMP_OnTick:              ; [$8bc5]
 ; XREFS:
 ;     SoundEffect_FillHPOrMP_OnTick
 ;
-SOUNDEFFECT_FILL_HP_OR_MP_SQ2_VOL:          ; [$8c01]
-    .byte $1f,$5f,$9f,$df                   ; [$8c01] byte
+SOUNDEFFECT_FILL_HP_OR_MP_SQ2_VOL:
+    .byte $1f,$5f,$9f,$df                   ; byte
 
 ;
 ; XREFS:
 ;     SoundEffect_FillHPOrMP_OnTick
 ;
-SOUNDEFFECT_FILL_HP_OR_MP_SQ2_LO:           ; [$8c05]
-    .byte $60,$30                           ; [$8c05] byte
+SOUNDEFFECT_FILL_HP_OR_MP_SQ2_LO:
+    .byte $60,$30                           ; byte
 
 ;============================================================================
 ; TODO: Document SoundEffect_Tilte_Setup
@@ -4199,7 +4151,7 @@ SOUNDEFFECT_FILL_HP_OR_MP_SQ2_LO:           ; [$8c05]
 ; OUTPUTS:
 ;     TODO
 ;============================================================================
-SoundEffect_Tilte_Setup:                    ; [$8c07]
+SoundEffect_Tilte_Setup:
     LDA #$1e
     STA a:SoundEffect_TicksRemaining_1_
     STA a:SoundEffect_TicksRemaining_3_
@@ -4223,7 +4175,7 @@ SoundEffect_Tilte_Setup:                    ; [$8c07]
 ; OUTPUTS:
 ;     A
 ;============================================================================
-SoundEffect_Tilte_OnTick:                   ; [$8c1e]
+SoundEffect_Tilte_OnTick:
     DEC a:SoundEffect_State_Counter
     BNE @_return
     DEC a:SoundEffect_State_0128
@@ -4235,7 +4187,7 @@ SoundEffect_Tilte_OnTick:                   ; [$8c1e]
     STA a:NOISE_VOL
     JMP Sound_ResetCurrentSound
 
-  @_play:                                   ; [$8c39]
+  @_play:
     LDA #$48
     STA a:SQ2_VOL
     LDA #$00
@@ -4255,7 +4207,7 @@ SoundEffect_Tilte_OnTick:                   ; [$8c1e]
     STA a:SQ2_HI
     DEC a:SoundEffect_State_0129
 
-  @_return:                                 ; [$8c68]
+  @_return:
     RTS
 
 ;============================================================================
@@ -4267,7 +4219,7 @@ SoundEffect_Tilte_OnTick:                   ; [$8c1e]
 ; OUTPUTS:
 ;     TODO
 ;============================================================================
-SoundEffect_Maybe_Step_Setup:               ; [$8c69]
+SoundEffect_Maybe_Step_Setup:
     LDA #$05
     STA a:SoundEffect_TicksRemaining_3_
     LDA #$03
@@ -4286,7 +4238,7 @@ SoundEffect_Maybe_Step_Setup:               ; [$8c69]
 ; OUTPUTS:
 ;     A
 ;============================================================================
-SoundEffect_Maybe_Step_OnTick:              ; [$8c73]
+SoundEffect_Maybe_Step_OnTick:
     LDA #$01
     STA a:NOISE_VOL
     LDA a:SoundEffect_State_Counter
@@ -4297,7 +4249,7 @@ SoundEffect_Maybe_Step_OnTick:              ; [$8c73]
     LDA #$00
     STA a:NOISE_HI
 
-  @_updateCheckCounter:                     ; [$8c89]
+  @_updateCheckCounter:
     DEC a:SoundEffect_State_Counter
     BNE @_return
     LDA #$02
@@ -4306,7 +4258,7 @@ SoundEffect_Maybe_Step_OnTick:              ; [$8c73]
     STA a:NOISE_HI
     JMP Sound_ResetCurrentSound
 
-  @_return:                                 ; [$8c9b]
+  @_return:
     RTS
 
 ;============================================================================
@@ -4318,7 +4270,7 @@ SoundEffect_Maybe_Step_OnTick:              ; [$8c73]
 ; OUTPUTS:
 ;     TODO
 ;============================================================================
-SoundEffect_PlayerDied_Setup:               ; [$8c9c]
+SoundEffect_PlayerDied_Setup:
     LDA #$41
     STA a:SoundEffect_TicksRemaining
     STA a:SoundEffect_TicksRemaining_1_
@@ -4342,7 +4294,7 @@ SoundEffect_PlayerDied_Setup:               ; [$8c9c]
 ; OUTPUTS:
 ;     A
 ;============================================================================
-SoundEffect_PlayerDied_OnTick:              ; [$8cb4]
+SoundEffect_PlayerDied_OnTick:
     LDA #$00
     STA a:TRI_LINEAR
     STA a:TRI_LO
@@ -4355,7 +4307,7 @@ SoundEffect_PlayerDied_OnTick:              ; [$8cb4]
     STA a:NOISE_VOL
     JMP Sound_ResetCurrentSound
 
-  @_play:                                   ; [$8cd2]
+  @_play:
     LDA a:SoundEffect_State_Counter
     EOR #$ff
     LSR A
@@ -4397,8 +4349,8 @@ SoundEffect_PlayerDied_OnTick:              ; [$8cb4]
 ; XREFS:
 ;     SoundEffect_PlayerDied_OnTick
 ;
-SOUNDEFFECT_PLAYER_DIED_NOTES:              ; [$8d28]
-    .byte $4f,$32,$4c,$3c                   ; [$8d28] byte
+SOUNDEFFECT_PLAYER_DIED_NOTES:
+    .byte $4f,$32,$4c,$3c                   ; byte
 
 ;============================================================================
 ; TODO: Document SoundEffect_LadderDropped_Setup
@@ -4409,7 +4361,7 @@ SOUNDEFFECT_PLAYER_DIED_NOTES:              ; [$8d28]
 ; OUTPUTS:
 ;     TODO
 ;============================================================================
-SoundEffect_LadderDropped_Setup:            ; [$8d2c]
+SoundEffect_LadderDropped_Setup:
     LDA #$0a
     STA a:SoundEffect_TicksRemaining_3_
     LDA #$03
@@ -4428,7 +4380,7 @@ SoundEffect_LadderDropped_Setup:            ; [$8d2c]
 ; OUTPUTS:
 ;     A
 ;============================================================================
-SoundEffect_LadderDropped_OnTick:           ; [$8d36]
+SoundEffect_LadderDropped_OnTick:
     LDA #$07
     STA a:NOISE_VOL
     LDA a:SoundEffect_State_Counter
@@ -4439,7 +4391,7 @@ SoundEffect_LadderDropped_OnTick:           ; [$8d36]
     LDA #$18
     STA a:NOISE_HI
 
-  @_updateCheckCounter:                     ; [$8d4c]
+  @_updateCheckCounter:
     DEC a:SoundEffect_State_Counter
     BNE @_return
     LDA #$05
@@ -4448,7 +4400,7 @@ SoundEffect_LadderDropped_OnTick:           ; [$8d36]
     STA a:NOISE_HI
     JMP Sound_ResetCurrentSound
 
-  @_return:                                 ; [$8d5e]
+  @_return:
     RTS
 
 ;============================================================================
@@ -4460,7 +4412,7 @@ SoundEffect_LadderDropped_OnTick:           ; [$8d36]
 ; OUTPUTS:
 ;     TODO
 ;============================================================================
-SoundEffect_ShowPlayerMenu_Setup:           ; [$8d5f]
+SoundEffect_ShowPlayerMenu_Setup:
     LDA #$23
     STA a:SoundEffect_TicksRemaining_1_
     LDA #$00
@@ -4482,7 +4434,7 @@ SoundEffect_ShowPlayerMenu_Setup:           ; [$8d5f]
 ; OUTPUTS:
 ;     A
 ;============================================================================
-SoundEffect_ShowPlayerMenu_OnTick:          ; [$8d71]
+SoundEffect_ShowPlayerMenu_OnTick:
     DEC a:SoundEffect_State_0129
     LDA a:SoundEffect_State_0129
     LSR A
@@ -4491,7 +4443,7 @@ SoundEffect_ShowPlayerMenu_OnTick:          ; [$8d71]
     STA a:SQ2_VOL
     JMP Sound_ResetCurrentSound
 
-  @_play:                                   ; [$8d82]
+  @_play:
     ORA #$d0
     STA a:SQ2_VOL
     LDA #$00
@@ -4517,8 +4469,8 @@ SoundEffect_ShowPlayerMenu_OnTick:          ; [$8d71]
 ; XREFS:
 ;     SoundEffect_ShowPlayerMenu_OnTick
 ;
-SOUNDEFFECT_SHOW_PLAYER_MENU_NOTES:         ; [$8db5]
-    .byte $5b,$4f,$43,$37                   ; [$8db5] byte
+SOUNDEFFECT_SHOW_PLAYER_MENU_NOTES:
+    .byte $5b,$4f,$43,$37                   ; byte
 
 ;============================================================================
 ; TODO: Document SoundEffect_GoldAmountChanged_Setup
@@ -4529,7 +4481,7 @@ SOUNDEFFECT_SHOW_PLAYER_MENU_NOTES:         ; [$8db5]
 ; OUTPUTS:
 ;     TODO
 ;============================================================================
-SoundEffect_GoldAmountChanged_Setup:        ; [$8db9]
+SoundEffect_GoldAmountChanged_Setup:
     LDA #$0a
     STA a:SoundEffect_TicksRemaining_1_
     LDA #$02
@@ -4553,7 +4505,7 @@ SoundEffect_GoldAmountChanged_Setup:        ; [$8db9]
 ; OUTPUTS:
 ;     TODO
 ;============================================================================
-SoundEffect_Maybe_UseSpecialItem2_Setup:    ; [$8dd8]
+SoundEffect_Maybe_UseSpecialItem2_Setup:
     LDA #$44
     STA a:SoundEffect_TicksRemaining_1_
     STA a:SoundEffect_TicksRemaining_3_
@@ -4575,7 +4527,7 @@ SoundEffect_Maybe_UseSpecialItem2_Setup:    ; [$8dd8]
 ; OUTPUTS:
 ;     A
 ;============================================================================
-SoundEffect_Maybe_UseSpecialItem2_OnTick:   ; [$8deb]
+SoundEffect_Maybe_UseSpecialItem2_OnTick:
     LDA a:SoundEffect_State_0129
     LSR A
     TAX
@@ -4586,7 +4538,7 @@ SoundEffect_Maybe_UseSpecialItem2_OnTick:   ; [$8deb]
     STA a:NOISE_VOL
     JMP Sound_ResetCurrentSound
 
-  @_hasNoise:                               ; [$8e00]
+  @_hasNoise:
     ORA #$90
     STA a:NOISE_VOL
     STA a:SQ2_VOL
@@ -4622,10 +4574,10 @@ SoundEffect_Maybe_UseSpecialItem2_OnTick:   ; [$8deb]
     BNE @_return
     INC a:SoundEffect_State_0129
 
-  @_return:                                 ; [$8e55]
+  @_return:
     RTS
 
-  @_hasNotes:                               ; [$8e56]
+  @_hasNotes:
     LDA #$00
     STA a:SoundEffect_State_Counter
     INC a:SoundEffect_State_0129
@@ -4635,23 +4587,23 @@ SoundEffect_Maybe_UseSpecialItem2_OnTick:   ; [$8deb]
 ; XREFS:
 ;     SoundEffect_Maybe_UseSpecialItem2_OnTick
 ;
-SOUNDEFFECT_SPECIALITEM2_NOISE_VOL:         ; [$8e5f]
-    .byte $0f,$0d,$09,$05,$00               ; [$8e5f] byte
+SOUNDEFFECT_SPECIALITEM2_NOISE_VOL:
+    .byte $0f,$0d,$09,$05,$00               ; byte
 
 ;
 ; XREFS:
 ;     SoundEffect_Maybe_UseSpecialItem2_OnTick
 ;
-SOUNDEFFECT_SPECIALITEM2_NOISE_LO:          ; [$8e64]
-    .byte $0c,$07                           ; [$8e64] byte
+SOUNDEFFECT_SPECIALITEM2_NOISE_LO:
+    .byte $0c,$07                           ; byte
 
 ;
 ; XREFS:
 ;     SoundEffect_Maybe_UseSpecialItem2_OnTick
 ;
-SOUNDEFFECT_SPECIALITEM2_NOTES:             ; [$8e66]
-    .byte $24,$27,$2b,$30,$48,$4b,$4f,$54   ; [$8e66] byte
-    .byte $33,$44,$52,$57,$57,$5c,$62,$ff   ; [$8e6e] byte
+SOUNDEFFECT_SPECIALITEM2_NOTES:
+    .byte $24,$27,$2b,$30,$48,$4b,$4f,$54   ; byte
+    .byte $33,$44,$52,$57,$57,$5c,$62,$ff   ; byte
 
 ;============================================================================
 ; TODO: Document SoundEffect_BreadTouched_Setup
@@ -4662,7 +4614,7 @@ SOUNDEFFECT_SPECIALITEM2_NOTES:             ; [$8e66]
 ; OUTPUTS:
 ;     TODO
 ;============================================================================
-SoundEffect_BreadTouched_Setup:             ; [$8e76]
+SoundEffect_BreadTouched_Setup:
     LDA #$18
     STA a:SoundEffect_TicksRemaining_1_
     LDA #$ff
@@ -4684,7 +4636,7 @@ SoundEffect_BreadTouched_Setup:             ; [$8e76]
 ; OUTPUTS:
 ;     A
 ;============================================================================
-SoundEffect_BreadTouched_OnTick:            ; [$8e88]
+SoundEffect_BreadTouched_OnTick:
     LDA a:SoundEffect_State_0128
     LSR A
     LSR A
@@ -4696,7 +4648,7 @@ SoundEffect_BreadTouched_OnTick:            ; [$8e88]
     STA a:SQ2_VOL
     JMP Sound_ResetCurrentSound
 
-  @_play:                                   ; [$8e9e]
+  @_play:
     LDA #$df
     STA a:SQ2_VOL
     LDA #$00
@@ -4719,8 +4671,8 @@ SoundEffect_BreadTouched_OnTick:            ; [$8e88]
 ; XREFS:
 ;     SoundEffect_BreadTouched_OnTick
 ;
-SOUNDEFFECT_BREADTOUCHED_SQ2_HI:            ; [$8ec5]
-    .byte $1f,$36,$63,$76,$c8,$00           ; [$8ec5] byte
+SOUNDEFFECT_BREADTOUCHED_SQ2_HI:
+    .byte $1f,$36,$63,$76,$c8,$00           ; byte
 
 ;============================================================================
 ; TODO: Document SoundEffect_CoinTouched_Setup
@@ -4731,7 +4683,7 @@ SOUNDEFFECT_BREADTOUCHED_SQ2_HI:            ; [$8ec5]
 ; OUTPUTS:
 ;     TODO
 ;============================================================================
-SoundEffect_CoinTouched_Setup:              ; [$8ecb]
+SoundEffect_CoinTouched_Setup:
     JMP SoundEffect_CoinTouchedCommon_Setup
 
 ;============================================================================
@@ -4743,7 +4695,7 @@ SoundEffect_CoinTouched_Setup:              ; [$8ecb]
 ; OUTPUTS:
 ;     A
 ;============================================================================
-SoundEffect_CoinTouched_OnTick:             ; [$8ece]
+SoundEffect_CoinTouched_OnTick:
     JMP SoundEffect_CoinTouchedCommon_OnTick
 
 ;============================================================================
@@ -4765,7 +4717,7 @@ SoundEffect_CoinTouched_OnTick:             ; [$8ece]
 ;     SoundEffect_PlayerDied_OnTick
 ;     SoundEffect_ShowPlayerMenu_OnTick
 ;============================================================================
-SoundEffect_SetNote:                        ; [$8ed1]
+SoundEffect_SetNote:
     SEC
     SBC #$18
 
@@ -4780,7 +4732,7 @@ SoundEffect_SetNote:                        ; [$8ed1]
     LDY #$01
     SEC
 
-  @_loop:                                   ; [$8ed7]
+  @_loop:
     SBC #$0c
     INY
     BCS @_loop
@@ -4798,14 +4750,14 @@ SoundEffect_SetNote:                        ; [$8ed1]
     ; Convert to the note in the right octave based on
     ; the starting value.
     ;
-  @_octaveLoop:                             ; [$8eed]
+  @_octaveLoop:
     DEY
     BEQ @_return
     LSR a:SoundEffect_Note_High
     ROR a:SoundEffect_Note_Low
     JMP @_octaveLoop
 
-  @_return:                                 ; [$8ef9]
+  @_return:
     RTS
 
 
@@ -4823,109 +4775,109 @@ SoundEffect_SetNote:                        ; [$8ed1]
 ; XREFS:
 ;     Music_Load
 ;
-MSCRIPTS_LOOKUP:                            ; [$8efa]
-    .byte $ff                               ; [$8efa] byte
+MSCRIPTS_LOOKUP:
+    .byte $ff                               ; byte
 
 ;
 ; XREFS:
 ;     MScript_Op_RestartChannel
 ;
-MSCRIPTS_TITLESCREEN:                       ; [$8efb]
+MSCRIPTS_TITLESCREEN:
     pointer MSCRIPT_TITLESCREEN_SQ1         ; [0]:
     pointer MSCRIPT_TITLESCREEN_SQ2         ; [1]:
     pointer MSCRIPT_TITLESCREEN_TRI         ; [2]:
     pointer MSCRIPT_TITLESCREEN_NOISE       ; [3]:
 
-MSCRIPTS_DAYBREAK:                          ; [$8f03]
+MSCRIPTS_DAYBREAK:
     pointer MSCRIPT_DAYBREAK_SQ1            ; [0]:
     pointer MSCRIPT_DAYBREAK_SQ2            ; [1]:
     pointer MSCRIPT_DAYBREAK_TRI            ; [2]:
     pointer MSCRIPT_DAYBREAK_NOISE          ; [3]:
 
-MSCRIPTS_APOLUNE:                           ; [$8f0b]
+MSCRIPTS_APOLUNE:
     pointer MSCRIPT_APOLUNE_SQ1             ; [0]:
     pointer MSCRIPT_APOLUNE_SQ2             ; [1]:
     pointer MSCRIPT_APOLUNE_TRI             ; [2]:
     pointer MSCRIPT_APOLUNE_NOISE           ; [3]:
 
-MSCRIPTS_CONFLATE:                          ; [$8f13]
+MSCRIPTS_CONFLATE:
     pointer MSCRIPT_CONFLATE_SQ1            ; [0]:
     pointer MSCRIPT_CONFLATE_SQ2            ; [1]:
     pointer MSCRIPT_CONFLATE_TRI            ; [2]:
     pointer MSCRIPT_CONFLATE_NOISE          ; [3]:
 
-MSCRIPTS_FOREPAW:                           ; [$8f1b]
+MSCRIPTS_FOREPAW:
     pointer MSCRIPT_FOREPAW_SQ1             ; [0]:
     pointer MSCRIPT_FOREPAW_SQ2             ; [1]:
     pointer MSCRIPT_FOREPAW_TRI             ; [2]:
     pointer MSCRIPT_FOREPAW_NOISE           ; [3]:
 
-MSCRIPTS_TOWER:                             ; [$8f23]
+MSCRIPTS_TOWER:
     pointer MSCRIPT_TOWER_SQ1               ; [0]:
     pointer MSCRIPT_TOWER_SQ2               ; [1]:
     pointer MSCRIPT_TOWER_TRI               ; [2]:
     pointer MSCRIPT_TOWER_NOISE             ; [3]:
 
-MSCRIPTS_EOLIS:                             ; [$8f2b]
+MSCRIPTS_EOLIS:
     pointer MSCRIPT_EOLIS_SQ1               ; [0]:
     pointer MSCRIPT_EOLIS_SQ2               ; [1]:
     pointer MSCRIPT_EOLIS_TRI               ; [2]:
     pointer MSCRIPT_EOLIS_NOISE             ; [3]:
 
-MSCRIPTS_MANTRA:                            ; [$8f33]
+MSCRIPTS_MANTRA:
     pointer MSCRIPT_MANTRA_SQ1              ; [0]:
     pointer MSCRIPT_MANTRA_SQ2              ; [1]:
     pointer MSCRIPT_MANTRA_TRI              ; [2]:
     pointer MSCRIPT_MANTRA_NOISE            ; [3]:
 
-MSCRIPTS_MASCON_VICTIM:                     ; [$8f3b]
+MSCRIPTS_MASCON_VICTIM:
     pointer MSCRIPT_MASCON_VICTIM_SQ1       ; [0]:
     pointer MSCRIPT_MASCON_VICTIM_SQ2       ; [1]:
     pointer MSCRIPT_MASCON_VICTIM_TRI       ; [2]:
     pointer MSCRIPT_MASCON_VICTIM_NOISE     ; [3]:
 
-MSCRIPTS_BOSS:                              ; [$8f43]
+MSCRIPTS_BOSS:
     pointer MSCRIPT_BOSS_SQ1                ; [0]:
     pointer MSCRIPT_BOSS_SQ2                ; [1]:
     pointer MSCRIPT_BOSS_TRI                ; [2]:
     pointer MSCRIPT_BOSS_NOISE              ; [3]:
 
-MSCRIPTS_HOURGLASS:                         ; [$8f4b]
+MSCRIPTS_HOURGLASS:
     pointer MSCRIPT_HOURGLASS_SQ1           ; [0]:
     pointer MSCRIPT_HOURGLASS_SQ2           ; [1]:
     pointer MSCRIPT_HOURGLASS_TRI           ; [2]:
     pointer MSCRIPT_HOURGLASS_NOISE         ; [3]:
 
-MSCRIPTS_ENDING:                            ; [$8f53]
+MSCRIPTS_ENDING:
     pointer MSCRIPT_ENDING_SQ1              ; [0]:
     pointer MSCRIPT_ENDING_SQ2              ; [1]:
     pointer MSCRIPT_ENDING_TRI              ; [2]:
     pointer MSCRIPT_ENDING_NOISE            ; [3]:
 
-MSCRIPTS_KINGS_ROOM:                        ; [$8f5b]
+MSCRIPTS_KINGS_ROOM:
     pointer MSCRIPT_KINGS_ROOM_SQ1          ; [0]:
     pointer MSCRIPT_KINGS_ROOM_SQ2          ; [1]:
     pointer MSCRIPT_KINGS_ROOM_TRI          ; [2]:
     pointer MSCRIPT_KINGS_ROOM_NOISE        ; [3]:
 
-MSCRIPTS_TEMPLE:                            ; [$8f63]
+MSCRIPTS_TEMPLE:
     pointer MSCRIPT_TEMPLE_SQ1              ; [0]:
     pointer MSCRIPT_TEMPLE_SQ2              ; [1]:
     pointer MSCRIPT_TEMPLE_TRI              ; [2]:
     pointer MSCRIPT_TEMPLE_NOISE            ; [3]:
 
-MSCRIPTS_SHOP:                              ; [$8f6b]
+MSCRIPTS_SHOP:
     pointer MSCRIPT_SHOP_SQ1                ; [0]:
     pointer MSCRIPT_SHOP_SQ2                ; [1]:
     pointer MSCRIPT_SHOP_TRI                ; [2]:
     pointer MSCRIPT_SHOP_NOISE              ; [3]:
 
-MSCRIPTS_EVIL_FORTRESS:                     ; [$8f73]
+MSCRIPTS_EVIL_FORTRESS:
     pointer MSCRIPT_EVIL_FORTRESS_SQ1       ; [0]:
     pointer MSCRIPT_EVIL_FORTRESS_SQ2       ; [1]:
     pointer MSCRIPT_EVIL_FORTRESS_TRI       ; [2]:
     pointer MSCRIPT_EVIL_FORTRESS_NOISE     ; [3]:
-    .byte $ff                               ; [$8f7b] byte
+    .byte $ff                               ; byte
 
 
 ;============================================================================
@@ -4939,7 +4891,7 @@ MSCRIPTS_EVIL_FORTRESS:                     ; [$8f73]
 ; XREFS:
 ;     MSCRIPTS_TITLESCREEN [$PRG5::8efb]
 ;
-MSCRIPT_TITLESCREEN_SQ1:                    ; [$8f7c]
+MSCRIPT_TITLESCREEN_SQ1:
     .byte MSCRIPT_OP_SET_GLOBAL_TRANSPOSE   ; Op: Set global transpose
     .byte $ff                               ; '- Down 1 semitone
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
@@ -5111,7 +5063,7 @@ MSCRIPT_TITLESCREEN_SQ1:                    ; [$8f7c]
 ; XREFS:
 ;     MSCRIPTS_TITLESCREEN [$PRG5::8efd]
 ;
-MSCRIPT_TITLESCREEN_SQ2:                    ; [$9020]
+MSCRIPT_TITLESCREEN_SQ2:
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
     .byte $03                               ; '- Reduce volume by 3
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
@@ -5440,7 +5392,7 @@ MSCRIPT_TITLESCREEN_SQ2:                    ; [$9020]
 ; XREFS:
 ;     MSCRIPTS_TITLESCREEN [$PRG5::8eff]
 ;
-MSCRIPT_TITLESCREEN_TRI:                    ; [$9161]
+MSCRIPT_TITLESCREEN_TRI:
     .byte $b0                               ; Note length: 48
     .byte $00                               ; Rest
     .byte $86                               ; Note length: 6
@@ -5747,7 +5699,7 @@ MSCRIPT_TITLESCREEN_TRI:                    ; [$9161]
 ; XREFS:
 ;     MSCRIPTS_TITLESCREEN [$PRG5::8f01]
 ;
-MSCRIPT_TITLESCREEN_NOISE:                  ; [$928e]
+MSCRIPT_TITLESCREEN_NOISE:
     .byte $8c                               ; Note length: 12
     .byte $21                               ; A9
     .byte $00                               ; Rest
@@ -6046,7 +5998,7 @@ MSCRIPT_TITLESCREEN_NOISE:                  ; [$928e]
     .byte $ec                               ; Note length: 108
     .byte $31                               ; A9
     .byte MSCRIPT_OP_END                    ; Op: End
-    .byte $ff                               ; [$93b8] byte
+    .byte $ff                               ; byte
 
 
 ;============================================================================
@@ -6060,7 +6012,7 @@ MSCRIPT_TITLESCREEN_NOISE:                  ; [$928e]
 ; XREFS:
 ;     MSCRIPTS_DAYBREAK [$PRG5::8f03]
 ;
-MSCRIPT_DAYBREAK_SQ1:                       ; [$93b9]
+MSCRIPT_DAYBREAK_SQ1:
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
     .byte $01                               ; '- Reduce volume by 1
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
@@ -6227,7 +6179,7 @@ MSCRIPT_DAYBREAK_SQ1:                       ; [$93b9]
 ; XREFS:
 ;     MSCRIPTS_DAYBREAK [$PRG5::8f05]
 ;
-MSCRIPT_DAYBREAK_SQ2:                       ; [$9458]
+MSCRIPT_DAYBREAK_SQ2:
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
     .byte $05                               ; '- Reduce volume by 5
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
@@ -6468,7 +6420,7 @@ MSCRIPT_DAYBREAK_SQ2:                       ; [$9458]
 ; XREFS:
 ;     MSCRIPTS_DAYBREAK [$PRG5::8f07]
 ;
-MSCRIPT_DAYBREAK_TRI:                       ; [$9540]
+MSCRIPT_DAYBREAK_TRI:
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
     .byte $02                               ; '- 2 iterations
     .byte $8c                               ; Note length: 12
@@ -6762,9 +6714,9 @@ MSCRIPT_DAYBREAK_TRI:                       ; [$9540]
 ; XREFS:
 ;     MSCRIPTS_DAYBREAK [$PRG5::8f09]
 ;
-MSCRIPT_DAYBREAK_NOISE:                     ; [$9660]
+MSCRIPT_DAYBREAK_NOISE:
     .byte MSCRIPT_OP_END                    ; Op: End
-    .byte $ff                               ; [$9661] byte
+    .byte $ff                               ; byte
 
 
 ;============================================================================
@@ -6778,7 +6730,7 @@ MSCRIPT_DAYBREAK_NOISE:                     ; [$9660]
 ; XREFS:
 ;     MSCRIPTS_APOLUNE [$PRG5::8f0b]
 ;
-MSCRIPT_APOLUNE_SQ1:                        ; [$9662]
+MSCRIPT_APOLUNE_SQ1:
     .byte $e0                               ; Note length: 96
     .byte $00                               ; Rest
     .byte $00                               ; Rest
@@ -6876,7 +6828,7 @@ MSCRIPT_APOLUNE_SQ1:                        ; [$9662]
     .byte MSCRIPT_OP_RESTART_CHANNEL        ; Op: Restart channel
     .byte MSCRIPT_OP_END                    ; Op: End
 
-  @_subroutine:                             ; [$96c3]
+  @_subroutine:
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
     .byte $02                               ; '- Reduce volume by 2
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
@@ -6972,7 +6924,7 @@ MSCRIPT_APOLUNE_SQ1:                        ; [$9662]
 ; XREFS:
 ;     MSCRIPTS_APOLUNE [$PRG5::8f0d]
 ;
-MSCRIPT_APOLUNE_SQ2:                        ; [$971c]
+MSCRIPT_APOLUNE_SQ2:
     .byte $e0                               ; Note length: 96
     .byte $00                               ; Rest
     .byte $00                               ; Rest
@@ -7111,7 +7063,7 @@ MSCRIPT_APOLUNE_SQ2:                        ; [$971c]
     .byte MSCRIPT_OP_RESTART_CHANNEL        ; Op: Restart channel
     .byte MSCRIPT_OP_END                    ; Op: End
 
-  @_subroutine:                             ; [$97a6]
+  @_subroutine:
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
     .byte $04                               ; '- Reduce volume by 4
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
@@ -7330,7 +7282,7 @@ MSCRIPT_APOLUNE_SQ2:                        ; [$971c]
 ; XREFS:
 ;     MSCRIPTS_APOLUNE [$PRG5::8f0f]
 ;
-MSCRIPT_APOLUNE_TRI:                        ; [$987a]
+MSCRIPT_APOLUNE_TRI:
     .byte $8c                               ; Note length: 12
     .byte $15                               ; A3
     .byte $86                               ; Note length: 6
@@ -7503,7 +7455,7 @@ MSCRIPT_APOLUNE_TRI:                        ; [$987a]
     .byte MSCRIPT_OP_RESTART_CHANNEL        ; Op: Restart channel
     .byte MSCRIPT_OP_END                    ; Op: End
 
-  @_subroutine:                             ; [$9927]
+  @_subroutine:
     .byte $8c                               ; Note length: 12
     .byte $15                               ; C7
     .byte $86                               ; Note length: 6
@@ -7798,7 +7750,7 @@ MSCRIPT_APOLUNE_TRI:                        ; [$987a]
 ; XREFS:
 ;     MSCRIPTS_APOLUNE [$PRG5::8f11]
 ;
-MSCRIPT_APOLUNE_NOISE:                      ; [$9a48]
+MSCRIPT_APOLUNE_NOISE:
     .byte $8c                               ; Note length: 12
     .byte $00                               ; Rest
     .byte $31                               ; A9
@@ -7838,7 +7790,7 @@ MSCRIPT_APOLUNE_NOISE:                      ; [$9a48]
     .byte MSCRIPT_OP_RESTART_CHANNEL        ; Op: Restart channel
     .byte MSCRIPT_OP_END                    ; Op: End
 
-  @_subroutine:                             ; [$9a70]
+  @_subroutine:
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
     .byte $08                               ; '- 8 iterations
     .byte $8c                               ; Note length: 12
@@ -7886,7 +7838,7 @@ MSCRIPT_APOLUNE_NOISE:                      ; [$9a48]
 ; XREFS:
 ;     MSCRIPTS_CONFLATE [$PRG5::8f13]
 ;
-MSCRIPT_CONFLATE_SQ1:                       ; [$9a92]
+MSCRIPT_CONFLATE_SQ1:
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
     .byte $02                               ; '- Reduce volume by 2
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
@@ -8024,7 +7976,7 @@ MSCRIPT_CONFLATE_SQ1:                       ; [$9a92]
 ; XREFS:
 ;     MSCRIPTS_CONFLATE [$PRG5::8f15]
 ;
-MSCRIPT_CONFLATE_SQ2:                       ; [$9b15]
+MSCRIPT_CONFLATE_SQ2:
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
     .byte $02                               ; '- Reduce volume by 2
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
@@ -8199,7 +8151,7 @@ MSCRIPT_CONFLATE_SQ2:                       ; [$9b15]
 ; XREFS:
 ;     MSCRIPTS_CONFLATE [$PRG5::8f17]
 ;
-MSCRIPT_CONFLATE_TRI:                       ; [$9bbd]
+MSCRIPT_CONFLATE_TRI:
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
     .byte $02                               ; '- 2 iterations
     .byte $b0                               ; Note length: 48
@@ -8367,7 +8319,7 @@ MSCRIPT_CONFLATE_TRI:                       ; [$9bbd]
 ; XREFS:
 ;     MSCRIPTS_CONFLATE [$PRG5::8f19]
 ;
-MSCRIPT_CONFLATE_NOISE:                     ; [$9c5f]
+MSCRIPT_CONFLATE_NOISE:
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
     .byte $02                               ; '- 2 iterations
     .byte $86                               ; Note length: 6
@@ -8598,7 +8550,7 @@ MSCRIPT_CONFLATE_NOISE:                     ; [$9c5f]
 ; XREFS:
 ;     MSCRIPTS_FOREPAW [$PRG5::8f1b]
 ;
-MSCRIPT_FOREPAW_SQ1:                        ; [$9d38]
+MSCRIPT_FOREPAW_SQ1:
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
     .byte $03                               ; '- Reduce volume by 3
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
@@ -8724,7 +8676,7 @@ MSCRIPT_FOREPAW_SQ1:                        ; [$9d38]
 ; XREFS:
 ;     MSCRIPTS_FOREPAW [$PRG5::8f1d]
 ;
-MSCRIPT_FOREPAW_SQ2:                        ; [$9daf]
+MSCRIPT_FOREPAW_SQ2:
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
     .byte $05                               ; '- Reduce volume by 5
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
@@ -8928,7 +8880,7 @@ MSCRIPT_FOREPAW_SQ2:                        ; [$9daf]
 ; XREFS:
 ;     MSCRIPTS_FOREPAW [$PRG5::8f1f]
 ;
-MSCRIPT_FOREPAW_TRI:                        ; [$9e73]
+MSCRIPT_FOREPAW_TRI:
     .byte MSCRIPT_OP_SET_NOTE_DURATION      ; Op: Set note duration
     .byte $80                               ; '- 128 ticks
     .byte $00                               ; Rest
@@ -9043,8 +8995,8 @@ MSCRIPT_FOREPAW_TRI:                        ; [$9e73]
 ; XREFS:
 ;     MSCRIPTS_FOREPAW [$PRG5::8f21]
 ;
-MSCRIPT_FOREPAW_NOISE:                      ; [$9ee0]
-    .byte $ff,$ff                           ; [$9ee0] byte
+MSCRIPT_FOREPAW_NOISE:
+    .byte $ff,$ff                           ; byte
 
 
 ;============================================================================
@@ -9058,7 +9010,7 @@ MSCRIPT_FOREPAW_NOISE:                      ; [$9ee0]
 ; XREFS:
 ;     MSCRIPTS_TOWER [$PRG5::8f23]
 ;
-MSCRIPT_TOWER_SQ1:                          ; [$9ee2]
+MSCRIPT_TOWER_SQ1:
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
     .byte $02                               ; '- Reduce volume by 2
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
@@ -9198,7 +9150,7 @@ MSCRIPT_TOWER_SQ1:                          ; [$9ee2]
 ; XREFS:
 ;     MSCRIPTS_TOWER [$PRG5::8f25]
 ;
-MSCRIPT_TOWER_SQ2:                          ; [$9f67]
+MSCRIPT_TOWER_SQ2:
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
     .byte $02                               ; '- Reduce volume by 2
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
@@ -9352,7 +9304,7 @@ MSCRIPT_TOWER_SQ2:                          ; [$9f67]
 ; XREFS:
 ;     MSCRIPTS_TOWER [$PRG5::8f27]
 ;
-MSCRIPT_TOWER_TRI:                          ; [$9ffa]
+MSCRIPT_TOWER_TRI:
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
     .byte $02                               ; '- 2 iterations
     .byte $88                               ; Note length: 8
@@ -9541,7 +9493,7 @@ MSCRIPT_TOWER_TRI:                          ; [$9ffa]
 ; XREFS:
 ;     MSCRIPTS_TOWER [$PRG5::8f29]
 ;
-MSCRIPT_TOWER_NOISE:                        ; [$a0b1]
+MSCRIPT_TOWER_NOISE:
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
     .byte $04                               ; '- 4 iterations
     .byte $88                               ; Note length: 8
@@ -9733,7 +9685,7 @@ MSCRIPT_TOWER_NOISE:                        ; [$a0b1]
 ; XREFS:
 ;     MSCRIPTS_EOLIS [$PRG5::8f2b]
 ;
-MSCRIPT_EOLIS_SQ1:                          ; [$a163]
+MSCRIPT_EOLIS_SQ1:
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
     .byte $02                               ; '- Reduce volume by 2
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
@@ -9924,7 +9876,7 @@ MSCRIPT_EOLIS_SQ1:                          ; [$a163]
 ; XREFS:
 ;     MSCRIPTS_EOLIS [$PRG5::8f2d]
 ;
-MSCRIPT_EOLIS_SQ2:                          ; [$a21b]
+MSCRIPT_EOLIS_SQ2:
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
     .byte $02                               ; '- Reduce volume by 2
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
@@ -10113,7 +10065,7 @@ MSCRIPT_EOLIS_SQ2:                          ; [$a21b]
 ; XREFS:
 ;     MSCRIPTS_EOLIS [$PRG5::8f2f]
 ;
-MSCRIPT_EOLIS_TRI:                          ; [$a2d1]
+MSCRIPT_EOLIS_TRI:
     .byte $8c                               ; Note length: 12
     .byte $15                               ; A3
     .byte $00                               ; Rest
@@ -10350,7 +10302,7 @@ MSCRIPT_EOLIS_TRI:                          ; [$a2d1]
 ; XREFS:
 ;     MSCRIPTS_EOLIS [$PRG5::8f31]
 ;
-MSCRIPT_EOLIS_NOISE:                        ; [$a3b8]
+MSCRIPT_EOLIS_NOISE:
     .byte $8c                               ; Note length: 12
     .byte $3c                               ; A9
     .byte $3c                               ; A9
@@ -10597,7 +10549,7 @@ MSCRIPT_EOLIS_NOISE:                        ; [$a3b8]
 ; XREFS:
 ;     MSCRIPTS_MANTRA [$PRG5::8f33]
 ;
-MSCRIPT_MANTRA_SQ1:                         ; [$a4a1]
+MSCRIPT_MANTRA_SQ1:
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
     .byte $04                               ; '- Reduce volume by 4
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
@@ -10747,7 +10699,7 @@ MSCRIPT_MANTRA_SQ1:                         ; [$a4a1]
 ; XREFS:
 ;     MSCRIPTS_MANTRA [$PRG5::8f35]
 ;
-MSCRIPT_MANTRA_SQ2:                         ; [$a530]
+MSCRIPT_MANTRA_SQ2:
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
     .byte $06                               ; '- Reduce volume by 6
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
@@ -10893,7 +10845,7 @@ MSCRIPT_MANTRA_SQ2:                         ; [$a530]
 ; XREFS:
 ;     MSCRIPTS_MANTRA [$PRG5::8f37]
 ;
-MSCRIPT_MANTRA_TRI:                         ; [$a5bb]
+MSCRIPT_MANTRA_TRI:
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
     .byte $02                               ; '- 2 iterations
     .byte $90                               ; Note length: 16
@@ -11060,9 +11012,9 @@ MSCRIPT_MANTRA_TRI:                         ; [$a5bb]
 ; XREFS:
 ;     MSCRIPTS_MANTRA [$PRG5::8f39]
 ;
-MSCRIPT_MANTRA_NOISE:                       ; [$a65c]
-    .byte MSCRIPT_OP_END                    ; [$a65c] MScriptOp
-    .byte MSCRIPT_OP_END                    ; [$a65d] MScriptOp
+MSCRIPT_MANTRA_NOISE:
+    .byte MSCRIPT_OP_END                    ; MScriptOp
+    .byte MSCRIPT_OP_END                    ; MScriptOp
 
 
 ;============================================================================
@@ -11076,7 +11028,7 @@ MSCRIPT_MANTRA_NOISE:                       ; [$a65c]
 ; XREFS:
 ;     MSCRIPTS_MASCON_VICTIM [$PRG5::8f3b]
 ;
-MSCRIPT_MASCON_VICTIM_SQ1:                  ; [$a65e]
+MSCRIPT_MASCON_VICTIM_SQ1:
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
     .byte $02                               ; '- Reduce volume by 2
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
@@ -11165,7 +11117,7 @@ MSCRIPT_MASCON_VICTIM_SQ1:                  ; [$a65e]
 ; XREFS:
 ;     MSCRIPTS_MASCON_VICTIM [$PRG5::8f3d]
 ;
-MSCRIPT_MASCON_VICTIM_SQ2:                  ; [$a6b0]
+MSCRIPT_MASCON_VICTIM_SQ2:
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
     .byte $02                               ; '- Reduce volume by 2
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
@@ -11252,7 +11204,7 @@ MSCRIPT_MASCON_VICTIM_SQ2:                  ; [$a6b0]
 ; XREFS:
 ;     MSCRIPTS_MASCON_VICTIM [$PRG5::8f3f]
 ;
-MSCRIPT_MASCON_VICTIM_TRI:                  ; [$a700]
+MSCRIPT_MASCON_VICTIM_TRI:
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
     .byte $02                               ; '- 2 iterations
     .byte $8a                               ; Note length: 10
@@ -11396,7 +11348,7 @@ MSCRIPT_MASCON_VICTIM_TRI:                  ; [$a700]
 ; XREFS:
 ;     MSCRIPTS_MASCON_VICTIM [$PRG5::8f41]
 ;
-MSCRIPT_MASCON_VICTIM_NOISE:                ; [$a78a]
+MSCRIPT_MASCON_VICTIM_NOISE:
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
     .byte $08                               ; '- 8 iterations
     .byte $8a                               ; Note length: 10
@@ -11457,7 +11409,7 @@ MSCRIPT_MASCON_VICTIM_NOISE:                ; [$a78a]
 ; XREFS:
 ;     MSCRIPTS_BOSS [$PRG5::8f43]
 ;
-MSCRIPT_BOSS_SQ1:                           ; [$a7b9]
+MSCRIPT_BOSS_SQ1:
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
     .byte $02                               ; '- Reduce volume by 2
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
@@ -11557,7 +11509,7 @@ MSCRIPT_BOSS_SQ1:                           ; [$a7b9]
 ; XREFS:
 ;     MSCRIPTS_BOSS [$PRG5::8f45]
 ;
-MSCRIPT_BOSS_SQ2:                           ; [$a816]
+MSCRIPT_BOSS_SQ2:
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
     .byte $04                               ; '- Reduce volume by 4
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
@@ -11659,7 +11611,7 @@ MSCRIPT_BOSS_SQ2:                           ; [$a816]
 ; XREFS:
 ;     MSCRIPTS_BOSS [$PRG5::8f47]
 ;
-MSCRIPT_BOSS_TRI:                           ; [$a874]
+MSCRIPT_BOSS_TRI:
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
     .byte $02                               ; '- 2 iterations
     .byte MSCRIPT_OP_SET_CHANNEL_TRANSPOSE  ; Op: Set channel transpose
@@ -11797,8 +11749,8 @@ MSCRIPT_BOSS_TRI:                           ; [$a874]
 ; XREFS:
 ;     MSCRIPTS_BOSS [$PRG5::8f49]
 ;
-MSCRIPT_BOSS_NOISE:                         ; [$a8f8]
-    .byte $ff,$ff                           ; [$a8f8] byte
+MSCRIPT_BOSS_NOISE:
+    .byte $ff,$ff                           ; byte
 
 
 ;============================================================================
@@ -11812,7 +11764,7 @@ MSCRIPT_BOSS_NOISE:                         ; [$a8f8]
 ; XREFS:
 ;     MSCRIPTS_HOURGLASS [$PRG5::8f4b]
 ;
-MSCRIPT_HOURGLASS_SQ1:                      ; [$a8fa]
+MSCRIPT_HOURGLASS_SQ1:
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
     .byte $02                               ; '- Reduce volume by 2
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
@@ -11887,7 +11839,7 @@ MSCRIPT_HOURGLASS_SQ1:                      ; [$a8fa]
 ; XREFS:
 ;     MSCRIPTS_HOURGLASS [$PRG5::8f4d]
 ;
-MSCRIPT_HOURGLASS_SQ2:                      ; [$a93e]
+MSCRIPT_HOURGLASS_SQ2:
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
     .byte $02                               ; '- Reduce volume by 2
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
@@ -11963,7 +11915,7 @@ MSCRIPT_HOURGLASS_SQ2:                      ; [$a93e]
 ; XREFS:
 ;     MSCRIPTS_HOURGLASS [$PRG5::8f4f]
 ;
-MSCRIPT_HOURGLASS_TRI:                      ; [$a982]
+MSCRIPT_HOURGLASS_TRI:
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
     .byte $02                               ; '- 2 iterations
     .byte $84                               ; Note length: 4
@@ -12123,7 +12075,7 @@ MSCRIPT_HOURGLASS_TRI:                      ; [$a982]
 ; XREFS:
 ;     MSCRIPTS_HOURGLASS [$PRG5::8f51]
 ;
-MSCRIPT_HOURGLASS_NOISE:                    ; [$aa1c]
+MSCRIPT_HOURGLASS_NOISE:
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
     .byte $03                               ; '- 3 iterations
     .byte $84                               ; Note length: 4
@@ -12244,7 +12196,7 @@ MSCRIPT_HOURGLASS_NOISE:                    ; [$aa1c]
 ; XREFS:
 ;     MSCRIPTS_ENDING [$PRG5::8f53]
 ;
-MSCRIPT_ENDING_SQ1:                         ; [$aa87]
+MSCRIPT_ENDING_SQ1:
     .byte MSCRIPT_OP_SET_GLOBAL_TRANSPOSE   ; Op: Set global transpose
     .byte $ff                               ; '- Down 1 semitone
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
@@ -12444,7 +12396,7 @@ MSCRIPT_ENDING_SQ1:                         ; [$aa87]
 ; XREFS:
 ;     MSCRIPTS_ENDING [$PRG5::8f55]
 ;
-MSCRIPT_ENDING_SQ2:                         ; [$ab47]
+MSCRIPT_ENDING_SQ2:
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
     .byte $04                               ; '- Reduce volume by 4
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
@@ -12791,7 +12743,7 @@ MSCRIPT_ENDING_SQ2:                         ; [$ab47]
 ; XREFS:
 ;     MSCRIPTS_ENDING [$PRG5::8f57]
 ;
-MSCRIPT_ENDING_TRI:                         ; [$ac99]
+MSCRIPT_ENDING_TRI:
     .byte MSCRIPT_OP_SET_CHANNEL_TRANSPOSE  ; Op: Set channel transpose
     .byte $e8                               ; '- Down 2 octaves
     .byte $b0                               ; Note length: 48
@@ -13121,7 +13073,7 @@ MSCRIPT_ENDING_TRI:                         ; [$ac99]
 ; XREFS:
 ;     MSCRIPTS_ENDING [$PRG5::8f59]
 ;
-MSCRIPT_ENDING_NOISE:                       ; [$addd]
+MSCRIPT_ENDING_NOISE:
     .byte $8c                               ; Note length: 12
     .byte $21                               ; A9
     .byte $86                               ; Note length: 6
@@ -13458,7 +13410,7 @@ MSCRIPT_ENDING_NOISE:                       ; [$addd]
 ; XREFS:
 ;     MSCRIPTS_KINGS_ROOM [$PRG5::8f5b]
 ;
-MSCRIPT_KINGS_ROOM_SQ1:                     ; [$af20]
+MSCRIPT_KINGS_ROOM_SQ1:
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
     .byte $00                               ; '- Reduce volume by 0
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
@@ -13506,7 +13458,7 @@ MSCRIPT_KINGS_ROOM_SQ1:                     ; [$af20]
 ; XREFS:
 ;     MSCRIPTS_KINGS_ROOM [$PRG5::8f5d]
 ;
-MSCRIPT_KINGS_ROOM_SQ2:                     ; [$af49]
+MSCRIPT_KINGS_ROOM_SQ2:
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
     .byte $02                               ; '- Reduce volume by 2
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
@@ -13554,7 +13506,7 @@ MSCRIPT_KINGS_ROOM_SQ2:                     ; [$af49]
 ; XREFS:
 ;     MSCRIPTS_KINGS_ROOM [$PRG5::8f5f]
 ;
-MSCRIPT_KINGS_ROOM_TRI:                     ; [$af72]
+MSCRIPT_KINGS_ROOM_TRI:
     .byte MSCRIPT_OP_SET_CHANNEL_TRANSPOSE  ; Op: Set channel transpose
     .byte $f4                               ; '- Down 1 octave
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
@@ -13616,8 +13568,8 @@ MSCRIPT_KINGS_ROOM_TRI:                     ; [$af72]
 ; XREFS:
 ;     MSCRIPTS_KINGS_ROOM [$PRG5::8f61]
 ;
-MSCRIPT_KINGS_ROOM_NOISE:                   ; [$afaa]
-    .byte $ff,$ff                           ; [$afaa] byte
+MSCRIPT_KINGS_ROOM_NOISE:
+    .byte $ff,$ff                           ; byte
 
 
 ;============================================================================
@@ -13631,7 +13583,7 @@ MSCRIPT_KINGS_ROOM_NOISE:                   ; [$afaa]
 ; XREFS:
 ;     MSCRIPTS_TEMPLE [$PRG5::8f63]
 ;
-MSCRIPT_TEMPLE_SQ1:                         ; [$afac]
+MSCRIPT_TEMPLE_SQ1:
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
     .byte $02                               ; '- Reduce volume by 2
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
@@ -13729,7 +13681,7 @@ MSCRIPT_TEMPLE_SQ1:                         ; [$afac]
 ; XREFS:
 ;     MSCRIPTS_TEMPLE [$PRG5::8f65]
 ;
-MSCRIPT_TEMPLE_SQ2:                         ; [$b007]
+MSCRIPT_TEMPLE_SQ2:
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
     .byte $02                               ; '- Reduce volume by 2
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
@@ -13795,7 +13747,7 @@ MSCRIPT_TEMPLE_SQ2:                         ; [$b007]
 ; XREFS:
 ;     MSCRIPTS_TEMPLE [$PRG5::8f67]
 ;
-MSCRIPT_TEMPLE_TRI:                         ; [$b042]
+MSCRIPT_TEMPLE_TRI:
     .byte MSCRIPT_OP_SET_CHANNEL_TRANSPOSE  ; Op: Set channel transpose
     .byte $e8                               ; '- Down 2 octaves
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
@@ -13850,8 +13802,8 @@ MSCRIPT_TEMPLE_TRI:                         ; [$b042]
 ; XREFS:
 ;     MSCRIPTS_TEMPLE [$PRG5::8f69]
 ;
-MSCRIPT_TEMPLE_NOISE:                       ; [$b073]
-    .byte $ff,$ff                           ; [$b073] byte
+MSCRIPT_TEMPLE_NOISE:
+    .byte $ff,$ff                           ; byte
 
 
 ;============================================================================
@@ -13865,7 +13817,7 @@ MSCRIPT_TEMPLE_NOISE:                       ; [$b073]
 ; XREFS:
 ;     MSCRIPTS_SHOP [$PRG5::8f6b]
 ;
-MSCRIPT_SHOP_SQ1:                           ; [$b075]
+MSCRIPT_SHOP_SQ1:
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
     .byte $02                               ; '- Reduce volume by 2
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
@@ -13939,7 +13891,7 @@ MSCRIPT_SHOP_SQ1:                           ; [$b075]
 ; XREFS:
 ;     MSCRIPTS_SHOP [$PRG5::8f6d]
 ;
-MSCRIPT_SHOP_SQ2:                           ; [$b0b8]
+MSCRIPT_SHOP_SQ2:
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
     .byte $02                               ; '- Reduce volume by 2
     .byte MSCRIPT_OP_SET_SQ_CONTROL_BITS    ; Op: Set SQ control bits
@@ -14013,7 +13965,7 @@ MSCRIPT_SHOP_SQ2:                           ; [$b0b8]
 ; XREFS:
 ;     MSCRIPTS_SHOP [$PRG5::8f6f]
 ;
-MSCRIPT_SHOP_TRI:                           ; [$b0fb]
+MSCRIPT_SHOP_TRI:
     .byte MSCRIPT_OP_SET_CHANNEL_TRANSPOSE  ; Op: Set channel transpose
     .byte $f4                               ; '- Down 1 octave
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
@@ -14090,8 +14042,8 @@ MSCRIPT_SHOP_TRI:                           ; [$b0fb]
 ; XREFS:
 ;     MSCRIPTS_SHOP [$PRG5::8f71]
 ;
-MSCRIPT_SHOP_NOISE:                         ; [$b142]
-    .byte $ff,$ff                           ; [$b142] undefined
+MSCRIPT_SHOP_NOISE:
+    .byte $ff,$ff                           ; undefined
 
 
 ;============================================================================
@@ -14105,7 +14057,7 @@ MSCRIPT_SHOP_NOISE:                         ; [$b142]
 ; XREFS:
 ;     MSCRIPTS_EVIL_FORTRESS [$PRG5::8f73]
 ;
-MSCRIPT_EVIL_FORTRESS_SQ1:                  ; [$b144]
+MSCRIPT_EVIL_FORTRESS_SQ1:
     .byte MSCRIPT_OP_SET_GLOBAL_TRANSPOSE   ; Op: Set global transpose
     .byte $f4                               ; '- Down 1 octave
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
@@ -14248,7 +14200,7 @@ MSCRIPT_EVIL_FORTRESS_SQ1:                  ; [$b144]
 ; XREFS:
 ;     MSCRIPTS_EVIL_FORTRESS [$PRG5::8f75]
 ;
-MSCRIPT_EVIL_FORTRESS_SQ2:                  ; [$b1cc]
+MSCRIPT_EVIL_FORTRESS_SQ2:
     .byte MSCRIPT_OP_SET_SQ_FADE            ; Op: Set SQ fade
     .byte $04                               ; '- Reduce volume by 4
     .byte MSCRIPT_OP_SET_SQ_ENVELOPE_MODE   ; Op: Set envelope mode
@@ -14426,7 +14378,7 @@ MSCRIPT_EVIL_FORTRESS_SQ2:                  ; [$b1cc]
 ; XREFS:
 ;     MSCRIPTS_EVIL_FORTRESS [$PRG5::8f77]
 ;
-MSCRIPT_EVIL_FORTRESS_TRI:                  ; [$b277]
+MSCRIPT_EVIL_FORTRESS_TRI:
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
     .byte $02                               ; '- 2 iterations
     .byte $88                               ; Note length: 8
@@ -14602,7 +14554,7 @@ MSCRIPT_EVIL_FORTRESS_TRI:                  ; [$b277]
 ; XREFS:
 ;     MSCRIPTS_EVIL_FORTRESS [$PRG5::8f79]
 ;
-MSCRIPT_EVIL_FORTRESS_NOISE:                ; [$b321]
+MSCRIPT_EVIL_FORTRESS_NOISE:
     .byte MSCRIPT_OP_BEGIN_LOOP             ; Op: Begin loop
     .byte $04                               ; '- 4 iterations
     .byte $88                               ; Note length: 8
@@ -14820,393 +14772,393 @@ MSCRIPT_EVIL_FORTRESS_NOISE:                ; [$b321]
 ;
 ; In any case, this data seems unused by the shipped game.
 ;============================================================================
-    .word $ffa7,$ff75,$6157,$ff00           ; [$b3d2] ushort
-    .word $ffe9,$fff8,$fead,$ff00           ; [$b3da] ushort
-    .word $ff23,$fffd,$ed29,$ff00           ; [$b3e2] ushort
-    .word $ff7c,$ff3a,$4cba,$ff00           ; [$b3ea] ushort
-    .word $ff37,$ff7b,$324c,$ff00           ; [$b3f2] ushort
-    .word $ff48,$ffbe,$d63a,$ff00           ; [$b3fa] ushort
-    .word $ff82,$ff53,$fb4e,$ff00           ; [$b402] ushort
-    .word $ff84,$fff8,$ebd8,$ff00           ; [$b40a] ushort
-    .word $ff74,$ffef,$dbbd,$ff00           ; [$b412] ushort
-    .word $ff39,$ffff,$97ee,$ff00           ; [$b41a] ushort
-    .word $ff0a,$ffc6,$ffc5,$ff00           ; [$b422] ushort
-    .word $ff02,$ff7d,$f174,$ff00           ; [$b42a] ushort
-    .word $ff3e,$ff93,$7bb1,$ff00           ; [$b432] ushort
-    .word $ffc6,$ff5d,$73ff,$ff00           ; [$b43a] ushort
-    .word $ff84,$ff11,$bfe4,$ff00           ; [$b442] ushort
-    .word $ff3c,$ffb3,$7d3f,$ff00           ; [$b44a] ushort
-    .word $ff8a,$ff5e,$7fc3,$ff00           ; [$b452] ushort
-    .word $ffcc,$ffde,$f83f,$ff00           ; [$b45a] ushort
-    .word $ff45,$ffd3,$77ee,$ff00           ; [$b462] ushort
-    .word $ff80,$ff85,$7e79,$ff00           ; [$b46a] ushort
-    .word $ff95,$ff62,$2f73,$ff00           ; [$b472] ushort
-    .word $fff3,$ffff,$ff0c,$ff00           ; [$b47a] ushort
-    .word $ff95,$ff82,$7fab,$ff00           ; [$b482] ushort
-    .word $ffc0,$ff5a,$9701,$ff00           ; [$b48a] ushort
-    .word $ff12,$ff5d,$f3aa,$ff00           ; [$b492] ushort
-    .word $fff0,$ff18,$f9f3,$ff00           ; [$b49a] ushort
-    .word $ff00,$ff3e,$cb6a,$ff00           ; [$b4a2] ushort
-    .word $ff57,$ffbb,$fe78,$ff00           ; [$b4aa] ushort
-    .word $ffa7,$ff23,$80d2,$ff00           ; [$b4b2] ushort
-    .word $ffa5,$ff6e,$b62f,$ff00           ; [$b4ba] ushort
-    .word $ff50,$ff66,$7520,$ff00           ; [$b4c2] ushort
-    .word $ff55,$fff7,$ed5b,$ff00           ; [$b4ca] ushort
-    .word $ff60,$ffe8,$9e78,$ff00           ; [$b4d2] ushort
-    .word $ffd9,$ff13,$ffbd,$ff00           ; [$b4da] ushort
-    .word $ffec,$ff0b,$fd26,$ff00           ; [$b4e2] ushort
-    .word $ffe2,$ff58,$7736,$ff00           ; [$b4ea] ushort
-    .word $ff40,$ffb6,$ff02,$ff00           ; [$b4f2] ushort
-    .word $fff9,$ffdf,$58b0,$ff00           ; [$b4fa] ushort
-    .word $ffb4,$ff9e,$fbaa,$ff00           ; [$b502] ushort
-    .word $ff84,$ff9a,$ff9f,$ff00           ; [$b50a] ushort
-    .word $ff34,$ffd3,$9f32,$ff00           ; [$b512] ushort
-    .word $ff4a,$ff57,$6d6f,$ff00           ; [$b51a] ushort
-    .word $ff2a,$ff64,$ddfe,$ff00           ; [$b522] ushort
-    .word $ff94,$ffd1,$efbb,$ff00           ; [$b52a] ushort
-    .word $ff2c,$ff5f,$bfcb,$ff00           ; [$b532] ushort
-    .word $ffe7,$ff7c,$7df3,$ff00           ; [$b53a] ushort
-    .word $ff90,$ff51,$ec33,$ff00           ; [$b542] ushort
-    .word $ff59,$ffa4,$7f72,$ff00           ; [$b54a] ushort
-    .word $ff1a,$ff0f,$afc5,$ff00           ; [$b552] ushort
-    .word $ff2f,$ffe9,$3015,$ff00           ; [$b55a] ushort
-    .word $ff03,$ff06,$bf13,$ff00           ; [$b562] ushort
-    .word $ff0b,$fffb,$fee2,$ff00           ; [$b56a] ushort
-    .word $ffd5,$ffc7,$9f69,$ff00           ; [$b572] ushort
-    .word $ff32,$ff76,$06fc,$ff00           ; [$b57a] ushort
-    .word $ff14,$ff3c,$0f6f,$ff00           ; [$b582] ushort
-    .word $ffad,$ffea,$afdb,$ff00           ; [$b58a] ushort
-    .word $ff27,$ffee,$4cf9,$ff00           ; [$b592] ushort
-    .word $ff23,$ff5d,$fe57,$ff00           ; [$b59a] ushort
-    .word $ff04,$ffb1,$f7e2,$ff00           ; [$b5a2] ushort
-    .word $ffa4,$ff53,$fffa,$ff00           ; [$b5aa] ushort
-    .word $ff2c,$ff5f,$8cfd,$ff00           ; [$b5b2] ushort
-    .word $ff7d,$ff77,$52e8,$ff00           ; [$b5ba] ushort
-    .word $ff00,$ff83,$bf35,$ff00           ; [$b5c2] ushort
-    .word $ff58,$ffd7,$d7ef,$ff00           ; [$b5ca] ushort
-    .word $ff60,$fff8,$ded1,$ff00           ; [$b5d2] ushort
-    .word $ff94,$fff3,$cfea,$ff00           ; [$b5da] ushort
-    .word $ff08,$ff48,$fb7b,$ff00           ; [$b5e2] ushort
-    .word $ff33,$ffd6,$837f,$ff00           ; [$b5ea] ushort
-    .word $ff71,$ff4e,$ff45,$ff00           ; [$b5f2] ushort
-    .word $fffc,$ef97,$3ef6,$ff00           ; [$b5fa] ushort
-    .word $ff40,$ff05,$ff4b,$ff00           ; [$b602] ushort
-    .word $ff04,$ff72,$ff69,$ff00           ; [$b60a] ushort
-    .word $ff12,$ffc8,$efe9,$ff00           ; [$b612] ushort
-    .word $ffd8,$ffdf,$03af,$ff00           ; [$b61a] ushort
-    .word $ff27,$ff2c,$ff11,$ff00           ; [$b622] ushort
-    .word $ff94,$ff22,$fff2,$ff00           ; [$b62a] ushort
-    .word $ffe4,$ffbd,$92f7,$ff00           ; [$b632] ushort
-    .word $ff26,$ffff,$65a7,$ff00           ; [$b63a] ushort
-    .word $ff61,$ffa8,$beb0,$ff00           ; [$b642] ushort
-    .word $ff0d,$ffa2,$a351,$ff00           ; [$b64a] ushort
-    .word $fff0,$ffc4,$ae04,$ff00           ; [$b652] ushort
-    .word $ff3b,$ff7f,$cf3b,$ff00           ; [$b65a] ushort
-    .word $ff01,$ff56,$ff61,$ff00           ; [$b662] ushort
-    .word $ff8d,$fffb,$f781,$ff00           ; [$b66a] ushort
-    .word $ff12,$ffcb,$df73,$ff00           ; [$b672] ushort
-    .word $ff71,$ffd9,$bfb7,$ff00           ; [$b67a] ushort
-    .word $ff00,$ff59,$9779,$ff00           ; [$b682] ushort
-    .word $ff42,$ff7d,$eab9,$ff00           ; [$b68a] ushort
-    .word $ff70,$ffdb,$30fd,$ff00           ; [$b692] ushort
-    .word $ff08,$ff67,$8e9f,$ff00           ; [$b69a] ushort
-    .word $ff01,$ff1f,$7f27,$ff00           ; [$b6a2] ushort
-    .word $ffc0,$ff27,$6f50,$ff00           ; [$b6aa] ushort
-    .word $ff63,$ffbe,$cf40,$ff00           ; [$b6b2] ushort
-    .word $ffc5,$ffda,$9f1f,$ff00           ; [$b6ba] ushort
-    .word $ff28,$ffe5,$b7a3,$ff00           ; [$b6c2] ushort
-    .word $ffc2,$ff19,$9f8b,$ff00           ; [$b6ca] ushort
-    .word $ff44,$fff7,$efd5,$ff00           ; [$b6d2] ushort
-    .word $ff2d,$ffad,$7fd5,$ff00           ; [$b6da] ushort
-    .word $ff22,$ff3e,$5f75,$ff00           ; [$b6e2] ushort
-    .word $ff01,$ffed,$df14,$ff00           ; [$b6ea] ushort
-    .word $ff38,$ff7d,$d3fa,$ff00           ; [$b6f2] ushort
-    .word $ff7c,$ffbd,$cede,$ff00           ; [$b6fa] ushort
-    .word $ff3e,$ffe7,$e6e1,$ff00           ; [$b702] ushort
-    .word $ff38,$ff3a,$f559,$ff00           ; [$b70a] ushort
-    .word $ff05,$ef17,$5e75,$ff00           ; [$b712] ushort
-    .word $ff6b,$fffd,$34de,$ff00           ; [$b71a] ushort
-    .word $ff32,$ff5b,$f300,$ff00           ; [$b722] ushort
-    .word $ff20,$ffda,$ff5e,$ff00           ; [$b72a] ushort
-    .word $ff04,$ffe0,$f3c1,$ff00           ; [$b732] ushort
-    .word $ff49,$ffb7,$ee9e,$ff00           ; [$b73a] ushort
-    .word $ff72,$ff34,$d576,$ff00           ; [$b742] ushort
-    .word $ff01,$ff69,$fe0d,$ff00           ; [$b74a] ushort
-    .word $ffbb,$ff20,$7ee4,$ff00           ; [$b752] ushort
-    .word $ff43,$ffb7,$187b,$ff00           ; [$b75a] ushort
-    .word $ff61,$ff03,$ffe0,$ff00           ; [$b762] ushort
-    .word $ff89,$fff5,$8f66,$ff00           ; [$b76a] ushort
-    .word $fffe,$ffc7,$bffd,$ff00           ; [$b772] ushort
-    .word $ff28,$ffeb,$ebaf,$ff00           ; [$b77a] ushort
-    .word $ff04,$ff0a,$bfc1,$ff00           ; [$b782] ushort
-    .word $ff50,$df21,$dbf4,$ff00           ; [$b78a] ushort
-    .word $ffdc,$ff9e,$bdff,$ff00           ; [$b792] ushort
-    .word $ff8b,$ffbe,$b5cd,$ff00           ; [$b79a] ushort
-    .word $ff00,$ff39,$ff1c,$ff00           ; [$b7a2] ushort
-    .word $ff08,$ff11,$bfb7,$ff00           ; [$b7aa] ushort
-    .word $fff2,$ff77,$f7f4,$ff00           ; [$b7b2] ushort
-    .word $ff64,$ff53,$b3ff,$ff00           ; [$b7ba] ushort
-    .word $ff81,$ff55,$97cd,$ff00           ; [$b7c2] ushort
-    .word $ff1e,$ff39,$fb68,$ff00           ; [$b7ca] ushort
-    .word $ffa0,$fffd,$eeca,$ff00           ; [$b7d2] ushort
-    .word $dfae,$fbf4,$6b7f,$ff00           ; [$b7da] ushort
-    .word $ff44,$ff93,$7cf5,$ff00           ; [$b7e2] ushort
-    .word $ff46,$ff04,$7ffd,$ff00           ; [$b7ea] ushort
-    .word $ffe0,$df34,$fe7b,$ff00           ; [$b7f2] ushort
-    .word $ff5a,$ffeb,$c119,$ff00           ; [$b7fa] ushort
-    .word $ff31,$ffa4,$3d26,$ff00           ; [$b802] ushort
-    .word $ffe0,$ffb0,$ffe3,$ff00           ; [$b80a] ushort
-    .word $fffa,$ff71,$fef9,$ff00           ; [$b812] ushort
-    .word $ff3b,$fffe,$decf,$ff00           ; [$b81a] ushort
-    .word $ff16,$ffe5,$1dbc,$ff00           ; [$b822] ushort
-    .word $ff05,$ff9e,$fbbb,$ff00           ; [$b82a] ushort
-    .word $ffb0,$ffbb,$e79e,$ff00           ; [$b832] ushort
-    .word $ff50,$ffbc,$a6cd,$ff00           ; [$b83a] ushort
-    .word $ff3a,$ff02,$dee2,$ff00           ; [$b842] ushort
-    .word $ff42,$ff3a,$33c5,$ff00           ; [$b84a] ushort
-    .word $ffd2,$ff67,$7d5b,$ff00           ; [$b852] ushort
-    .word $ff6e,$ffd9,$59fd,$ff00           ; [$b85a] ushort
-    .word $ff80,$ff0c,$df02,$ff00           ; [$b862] ushort
-    .word $ffa4,$ff9a,$ff93,$ff00           ; [$b86a] ushort
-    .word $ff06,$ffa7,$df7e,$f700           ; [$b872] ushort
-    .word $ff3d,$ff71,$4fee,$ff00           ; [$b87a] ushort
-    .word $ff04,$ff10,$bbc8,$ff00           ; [$b882] ushort
-    .word $ff12,$ff2f,$74f5,$ff00           ; [$b88a] ushort
-    .word $ff30,$fff3,$555e,$ff00           ; [$b892] ushort
-    .word $ffc2,$ffde,$b4b6,$ff00           ; [$b89a] ushort
-    .word $ff81,$ff6a,$fdf7,$ff00           ; [$b8a2] ushort
-    .word $ff93,$ff24,$b647,$ff00           ; [$b8aa] ushort
-    .word $ff45,$ff6b,$3717,$ff00           ; [$b8b2] ushort
-    .word $ff88,$ff76,$2f7f,$ff00           ; [$b8ba] ushort
-    .word $ff00,$ffbe,$fd9a,$ff00           ; [$b8c2] ushort
-    .word $ffb2,$ffdb,$afdc,$f700           ; [$b8ca] ushort
-    .word $ffaa,$ff7e,$dfed,$ff00           ; [$b8d2] ushort
-    .word $ff68,$ffed,$7cbb,$ff00           ; [$b8da] ushort
-    .word $ff20,$ff12,$8b39,$ff00           ; [$b8e2] ushort
-    .word $ff70,$ffe0,$9d1c,$ff00           ; [$b8ea] ushort
-    .word $ff67,$fd83,$93f4,$ff00           ; [$b8f2] ushort
-    .word $ff19,$ff79,$7fbf,$ff00           ; [$b8fa] ushort
-    .word $ffa1,$ff3a,$f78a,$ff00           ; [$b902] ushort
-    .word $ff84,$ff5e,$6bb5,$ff00           ; [$b90a] ushort
-    .word $ffb0,$ff65,$f9d6,$ff00           ; [$b912] ushort
-    .word $ff72,$ff7b,$8d74,$ff00           ; [$b91a] ushort
-    .word $ff08,$ff0d,$bd5d,$ff00           ; [$b922] ushort
-    .word $ff00,$ff82,$3f7a,$ff00           ; [$b92a] ushort
-    .word $ffe2,$ffb2,$7ea4,$ff00           ; [$b932] ushort
-    .word $ffe7,$fe95,$afb5,$ff00           ; [$b93a] ushort
-    .word $ff80,$ff10,$f831,$ff00           ; [$b942] ushort
-    .word $ff40,$ff6a,$ff7e,$ff00           ; [$b94a] ushort
-    .word $ff45,$ff5d,$6721,$ff00           ; [$b952] ushort
-    .word $ffc0,$ffaf,$e385,$ff00           ; [$b95a] ushort
-    .word $ff00,$ff12,$cf97,$ff00           ; [$b962] ushort
-    .word $ffb0,$ff63,$ceb8,$ff00           ; [$b96a] ushort
-    .word $fffa,$ff3b,$e5a3,$ff00           ; [$b972] ushort
-    .word $ff60,$ff5b,$7689,$ff00           ; [$b97a] ushort
-    .word $ff80,$ff52,$7e52,$ff00           ; [$b982] ushort
-    .word $ffa0,$ff1f,$d766,$ff00           ; [$b98a] ushort
-    .word $ff76,$ff9d,$14f9,$ff00           ; [$b992] ushort
-    .word $ffff,$ff2f,$52f7,$ff00           ; [$b99a] ushort
-    .word $ff9c,$ff04,$ff76,$ff00           ; [$b9a2] ushort
-    .word $ff94,$ff72,$4e7f,$ff00           ; [$b9aa] ushort
-    .word $ffa7,$ffc7,$6d66,$ff00           ; [$b9b2] ushort
-    .word $ff9d,$ff7f,$267c,$ff00           ; [$b9ba] ushort
-    .word $ff26,$ffc7,$ff72,$ff00           ; [$b9c2] ushort
-    .word $ff31,$ffb7,$e97e,$ff00           ; [$b9ca] ushort
-    .word $ffbc,$ffde,$e4e7,$ff00           ; [$b9d2] ushort
-    .word $ff7b,$fef2,$ebf3,$ff00           ; [$b9da] ushort
-    .word $ffe8,$ff32,$f79d,$ff00           ; [$b9e2] ushort
-    .word $ff80,$ff36,$ff9c,$ff00           ; [$b9ea] ushort
-    .word $ff88,$ffeb,$a7eb,$ff00           ; [$b9f2] ushort
-    .word $ff8f,$ff77,$79df,$ff00           ; [$b9fa] ushort
-    .word $fffa,$ffa6,$ffcd,$ff00           ; [$ba02] ushort
-    .word $ffa0,$ffb4,$eb52,$ff00           ; [$ba0a] ushort
-    .word $ffdc,$ffbe,$6dc5,$ff00           ; [$ba12] ushort
-    .word $ff63,$fffd,$42a2,$ff00           ; [$ba1a] ushort
-    .word $ffa4,$ffc1,$fd88,$ff00           ; [$ba22] ushort
-    .word $ff30,$ff6a,$7d92,$ff00           ; [$ba2a] ushort
-    .word $ff70,$ffbb,$ff76,$ff00           ; [$ba32] ushort
-    .word $ffb4,$fff5,$dcfe,$ff00           ; [$ba3a] ushort
-    .word $ff80,$ff37,$e7a4,$ff00           ; [$ba42] ushort
-    .word $ff40,$ff43,$f77d,$ff00           ; [$ba4a] ushort
-    .word $ff12,$fff1,$df57,$ff00           ; [$ba52] ushort
-    .word $ffd7,$ffc5,$e73b,$ff00           ; [$ba5a] ushort
-    .word $ff6c,$ffde,$5a98,$ff00           ; [$ba62] ushort
-    .word $ff82,$ff8e,$5e23,$ff00           ; [$ba6a] ushort
-    .word $ff06,$ffbd,$6fa7,$ff00           ; [$ba72] ushort
-    .word $ffbc,$ffeb,$0b55,$ff00           ; [$ba7a] ushort
-    .word $ffa1,$ffcd,$d715,$ff00           ; [$ba82] ushort
-    .word $ffa2,$ffca,$8f2b,$ff00           ; [$ba8a] ushort
-    .word $ff6f,$fffe,$68db,$ff00           ; [$ba92] ushort
-    .word $ffb8,$ffd7,$55df,$ff00           ; [$ba9a] ushort
-    .word $ffb4,$ff06,$bfcd,$ff00           ; [$baa2] ushort
-    .word $ffd0,$ff78,$ede6,$ff00           ; [$baaa] ushort
-    .word $ffe4,$ffdd,$ceba,$ff00           ; [$bab2] ushort
-    .word $ff4d,$ffdf,$95c5,$ff00           ; [$baba] ushort
-    .word $ff2a,$ffed,$fe36,$ff00           ; [$bac2] ushort
-    .word $ff00,$ffc3,$df7f,$ff00           ; [$baca] ushort
-    .word $ff40,$fbf5,$ecb1,$ff00           ; [$bad2] ushort
-    .word $ffd8,$ffdf,$bf7d,$df00           ; [$bada] ushort
-    .word $ff04,$ffb5,$afe7,$ff00           ; [$bae2] ushort
-    .word $ff00,$ff51,$d3ff,$ff00           ; [$baea] ushort
-    .word $ff95,$ff74,$8fe4,$ff00           ; [$baf2] ushort
-    .word $ffc1,$ff7f,$547f,$ff00           ; [$bafa] ushort
-    .word $ff40,$ff0f,$3fd9,$ff00           ; [$bb02] ushort
-    .word $ff44,$ff4d,$cfbf,$ff00           ; [$bb0a] ushort
-    .word $ff32,$fff9,$f7ab,$ff00           ; [$bb12] ushort
-    .word $fff1,$afdf,$027f,$ff00           ; [$bb1a] ushort
-    .word $ff54,$ff23,$9f59,$ff00           ; [$bb22] ushort
-    .word $ff07,$ffb1,$efa4,$ff00           ; [$bb2a] ushort
-    .word $ff30,$ff66,$de6e,$ff00           ; [$bb32] ushort
-    .word $ffe2,$ff6f,$bdfb,$ff00           ; [$bb3a] ushort
-    .word $ff85,$ff27,$fb13,$ff00           ; [$bb42] ushort
-    .word $ff08,$ff52,$bdde,$ff00           ; [$bb4a] ushort
-    .word $ffbe,$ffbb,$b7ee,$ff00           ; [$bb52] ushort
-    .word $ff23,$fff7,$ae7f,$ff00           ; [$bb5a] ushort
-    .word $ff00,$ff8b,$ef31,$ff00           ; [$bb62] ushort
-    .word $ffc1,$ff80,$7f9b,$ff00           ; [$bb6a] ushort
-    .word $ff76,$ffb0,$b33f,$ff00           ; [$bb72] ushort
-    .word $ff55,$ffbf,$aa79,$ff00           ; [$bb7a] ushort
-    .word $ff11,$ffc4,$8f38,$ff00           ; [$bb82] ushort
-    .word $ff53,$ffe0,$e10a,$ff00           ; [$bb8a] ushort
-    .word $ff03,$ff7e,$f75e,$ff00           ; [$bb92] ushort
-    .word $ff62,$fff3,$355e,$ff00           ; [$bb9a] ushort
-    .word $ff54,$ff41,$df2e,$ff00           ; [$bba2] ushort
-    .word $ff03,$ff6c,$5fb5,$ff00           ; [$bbaa] ushort
-    .word $ffc4,$ffe2,$df5e,$ff00           ; [$bbb2] ushort
-    .word $fff6,$ff5f,$0fa5,$ff00           ; [$bbba] ushort
-    .word $ffc1,$ff21,$434f,$ff00           ; [$bbc2] ushort
-    .word $ff48,$ff15,$dfe0,$ff00           ; [$bbca] ushort
-    .word $ff64,$ff34,$7db1,$ff00           ; [$bbd2] ushort
-    .word $fff8,$ffff,$2dbc,$ff00           ; [$bbda] ushort
-    .word $ff09,$ffe6,$f64d,$ff00           ; [$bbe2] ushort
-    .word $ff60,$ff81,$af15,$ff00           ; [$bbea] ushort
-    .word $ff30,$ffa3,$3aba,$ff20           ; [$bbf2] ushort
-    .word $ff53,$ff15,$aeed,$ff00           ; [$bbfa] ushort
-    .word $ff21,$ff95,$feb3,$ff00           ; [$bc02] ushort
-    .word $ffcc,$ffc5,$2f63,$ff00           ; [$bc0a] ushort
-    .word $ff68,$ff3a,$ee7e,$ff00           ; [$bc12] ushort
-    .word $ffb4,$ff5b,$316e,$ff00           ; [$bc1a] ushort
-    .word $ff10,$ffcf,$e798,$ff00           ; [$bc22] ushort
-    .word $ff60,$ffa7,$3f21,$ff00           ; [$bc2a] ushort
-    .word $ff10,$ffef,$ebcd,$ff00           ; [$bc32] ushort
-    .word $ff2e,$ffff,$5ec0,$ff00           ; [$bc3a] ushort
-    .word $ff00,$ffbe,$ff31,$ff00           ; [$bc42] ushort
-    .word $ff02,$ffde,$ff8a,$ff00           ; [$bc4a] ushort
-    .word $ff42,$ffbe,$9cb8,$ff00           ; [$bc52] ushort
-    .word $ff95,$ffed,$2efc,$ff00           ; [$bc5a] ushort
-    .word $ff04,$fff5,$cf15,$ff00           ; [$bc62] ushort
-    .word $ff4e,$ffee,$dc28,$ff00           ; [$bc6a] ushort
-    .word $ff0a,$fff1,$765d,$ff00           ; [$bc72] ushort
-    .word $ffb1,$ff97,$7a6b,$ff00           ; [$bc7a] ushort
-    .word $ff85,$ff39,$cf15,$ff00           ; [$bc82] ushort
-    .word $ffc6,$ffcb,$77fb,$ff00           ; [$bc8a] ushort
-    .word $ff1f,$ffd7,$e1ac,$ff00           ; [$bc92] ushort
-    .word $ff1a,$efc8,$e855,$ff00           ; [$bc9a] ushort
-    .word $ff8a,$ffea,$bdf4,$ff00           ; [$bca2] ushort
-    .word $ff80,$ff2f,$efd7,$ff00           ; [$bcaa] ushort
-    .word $ff72,$ff45,$fdf3,$ff00           ; [$bcb2] ushort
-    .word $ffef,$ffef,$238d,$ff00           ; [$bcba] ushort
-    .word $ff20,$ff91,$ed9c,$ff00           ; [$bcc2] ushort
-    .word $ff45,$ffaa,$ee93,$ff00           ; [$bcca] ushort
-    .word $ff06,$ff4f,$9fa3,$ff00           ; [$bcd2] ushort
-    .word $ffdd,$ffff,$0dfb,$ff00           ; [$bcda] ushort
-    .word $ff28,$ff05,$6d2b,$ff00           ; [$bce2] ushort
-    .word $ffd2,$ff51,$fdbc,$ff00           ; [$bcea] ushort
-    .word $ff45,$ff86,$faa0,$ff00           ; [$bcf2] ushort
-    .word $ffb2,$ffaf,$1471,$ff00           ; [$bcfa] ushort
-    .word $ff20,$ff53,$ff57,$ff00           ; [$bd02] ushort
-    .word $fff5,$ffbf,$fd35,$ff01           ; [$bd0a] ushort
-    .word $ff93,$ffe6,$e8bd,$ff00           ; [$bd12] ushort
-    .word $ff5f,$ffb9,$ffb8,$ff00           ; [$bd1a] ushort
-    .word $ff70,$ff73,$dfc6,$ff00           ; [$bd22] ushort
-    .word $ff03,$ff71,$af89,$ff00           ; [$bd2a] ushort
-    .word $ff01,$ffab,$e76d,$ff00           ; [$bd32] ushort
-    .word $ffd7,$ff62,$4736,$ff00           ; [$bd3a] ushort
-    .word $ff40,$ff34,$ef41,$ff00           ; [$bd42] ushort
-    .word $ffb9,$ff39,$6e3e,$ff00           ; [$bd4a] ushort
-    .word $ffaf,$ff17,$ff3e,$ff00           ; [$bd52] ushort
-    .word $ff69,$ff5d,$2367,$ff00           ; [$bd5a] ushort
-    .word $ffa2,$ff1a,$dbf4,$ff00           ; [$bd62] ushort
-    .word $ff87,$ffb3,$ae68,$ff00           ; [$bd6a] ushort
-    .word $ff63,$ff6b,$fd65,$ff00           ; [$bd72] ushort
-    .word $ff09,$fffd,$4cef,$ff00           ; [$bd7a] ushort
-    .word $ff01,$ff65,$ea18,$ff00           ; [$bd82] ushort
-    .word $ff30,$ffa3,$7fb6,$ff00           ; [$bd8a] ushort
-    .word $ff9f,$feea,$be7f,$ff00           ; [$bd92] ushort
-    .word $ffde,$ff25,$1edf,$ff00           ; [$bd9a] ushort
-    .word $ff11,$ff50,$7e6b,$ff00           ; [$bda2] ushort
-    .word $ff86,$fff4,$afb5,$ff00           ; [$bdaa] ushort
-    .word $ffd0,$ffe3,$df3d,$ff00           ; [$bdb2] ushort
-    .word $ffcd,$ffff,$5975,$ff00           ; [$bdba] ushort
-    .word $ff19,$ff33,$bb74,$ff00           ; [$bdc2] ushort
-    .word $ff30,$ffee,$fb7e,$ff00           ; [$bdca] ushort
-    .word $ff1a,$fff9,$dfed,$ff00           ; [$bdd2] ushort
-    .word $ff1d,$ffdd,$39cf,$ff00           ; [$bdda] ushort
-    .word $ff00,$ffde,$97c4,$ff00           ; [$bde2] ushort
-    .word $ffb4,$ffd3,$ff99,$ff00           ; [$bdea] ushort
-    .word $ffa2,$7ee6,$f7b7,$ff00           ; [$bdf2] ushort
-    .word $ff5c,$ffb7,$345f,$ff00           ; [$bdfa] ushort
-    .word $ff0a,$ffc4,$ffc2,$ff00           ; [$be02] ushort
-    .word $ff40,$ff75,$be56,$7f00           ; [$be0a] ushort
-    .word $ff2c,$ff99,$7f9b,$ff00           ; [$be12] ushort
-    .word $ffcd,$feff,$29dd,$ff00           ; [$be1a] ushort
-    .word $ff02,$ff15,$df33,$ff00           ; [$be22] ushort
-    .word $ff04,$ff75,$a65e,$ff00           ; [$be2a] ushort
-    .word $ff2d,$ff23,$979f,$ff00           ; [$be32] ushort
-    .word $ff5f,$fff7,$0392,$ff00           ; [$be3a] ushort
-    .word $ff68,$ff46,$fe48,$ff00           ; [$be42] ushort
-    .word $ff08,$ff9a,$ffed,$ff00           ; [$be4a] ushort
-    .word $ff24,$ff7f,$f763,$ff00           ; [$be52] ushort
-    .word $ff28,$ff7d,$dd5a,$ff00           ; [$be5a] ushort
-    .word $ff15,$ff02,$fd0a,$ff00           ; [$be62] ushort
-    .word $ff06,$ff7c,$38d2,$ff00           ; [$be6a] ushort
-    .word $ff33,$ff7b,$c26f,$ff00           ; [$be72] ushort
-    .word $ffa9,$ffa8,$dddb,$ff00           ; [$be7a] ushort
-    .word $ffc0,$ffbb,$6bfc,$ff00           ; [$be82] ushort
-    .word $ff70,$ffb1,$bf49,$ff00           ; [$be8a] ushort
-    .word $ff56,$ffbc,$a6e5,$ff00           ; [$be92] ushort
-    .word $ff0c,$ff73,$e7ed,$ff00           ; [$be9a] ushort
-    .word $ffaa,$ff27,$5b41,$ff00           ; [$bea2] ushort
-    .word $ff09,$fb7c,$efee,$ff00           ; [$beaa] ushort
-    .word $ff68,$fff8,$6c53,$ff00           ; [$beb2] ushort
-    .word $ff39,$ffff,$b87b,$ff00           ; [$beba] ushort
-    .word $ff80,$ff66,$7c65,$ff00           ; [$bec2] ushort
-    .word $ffdd,$ffff,$839b,$ff00           ; [$beca] ushort
-    .word $ef61,$dfc7,$f570,$ff00           ; [$bed2] ushort
-    .word $ffed,$fffa,$4cb3,$ff00           ; [$beda] ushort
-    .word $ff08,$ff6b,$9710,$ff00           ; [$bee2] ushort
-    .word $ffa0,$ff62,$eecd,$ff00           ; [$beea] ushort
-    .word $ff50,$fffd,$ef75,$ff00           ; [$bef2] ushort
-    .word $ff20,$ff1f,$7bd9,$ff00           ; [$befa] ushort
-    .word $ffae,$ff9d,$ffe3,$ef00           ; [$bf02] ushort
-    .word $ff82,$ff95,$ff9e,$ff00           ; [$bf0a] ushort
-    .word $ffc3,$ffe7,$6fed,$ff00           ; [$bf12] ushort
-    .word $ffc0,$ff37,$feff,$ff00           ; [$bf1a] ushort
-    .word $ff11,$ff64,$dfc3,$ff00           ; [$bf22] ushort
-    .word $ff76,$ff2e,$cb9b,$ff00           ; [$bf2a] ushort
-    .word $ff1a,$ffed,$b945,$ff00           ; [$bf32] ushort
-    .word $ffcf,$ffeb,$c715,$ff00           ; [$bf3a] ushort
-    .word $ff5e,$ff21,$ef23,$ff00           ; [$bf42] ushort
-    .word $ff31,$fff0,$75b7,$ff00           ; [$bf4a] ushort
-    .word $ff12,$ff3e,$dede,$ff00           ; [$bf52] ushort
-    .word $ff45,$fff8,$9feb,$ff00           ; [$bf5a] ushort
-    .word $ffb9,$ff17,$fe3f,$ff00           ; [$bf62] ushort
-    .word $ff24,$fffc,$bde9,$ff00           ; [$bf6a] ushort
-    .word $fffc,$fff1,$bb54,$ff00           ; [$bf72] ushort
-    .word $ffc4,$ffaa,$7b53,$ff00           ; [$bf7a] ushort
-    .word $ffd0,$ff12,$efb6,$ff00           ; [$bf82] ushort
-    .word $ffa1,$ff48,$b6ca,$ff00           ; [$bf8a] ushort
-    .word $ff79,$ff51,$3f72,$ff00           ; [$bf92] ushort
-    .word $ff7a,$ff73,$99f2,$ff00           ; [$bf9a] ushort
-    .word $ff41,$ffd4,$ff19,$ff00           ; [$bfa2] ushort
-    .word $ffc0,$ff5c,$c798,$ff00           ; [$bfaa] ushort
-    .word $ff6a,$ff7a,$be9c,$ff00           ; [$bfb2] ushort
-    .word $ff7d,$fffd,$8ea6,$ff00           ; [$bfba] ushort
-    .word $ff29,$ffdb,$9183,$ff00           ; [$bfc2] ushort
-    .word $ff81,$ffb5,$79aa,$ff00           ; [$bfca] ushort
-    .word $ff0c,$fffe,$e3bf,$ff00           ; [$bfd2] ushort
-    .word $ffa6,$ffda,$fafa,$ff00           ; [$bfda] ushort
-    .word $ff46,$ff65,$7de2,$ff00           ; [$bfe2] ushort
-    .word $fffa,$fff5,$d698,$ff00           ; [$bfea] ushort
-    .word $ff22,$fff5,$b3f6,$ff00           ; [$bff2] ushort
-    .word $ffa2,$fff7,$bffe                 ; [$bffa] ushort
+    .word $ffa7,$ff75,$6157,$ff00           ; ushort
+    .word $ffe9,$fff8,$fead,$ff00           ; ushort
+    .word $ff23,$fffd,$ed29,$ff00           ; ushort
+    .word $ff7c,$ff3a,$4cba,$ff00           ; ushort
+    .word $ff37,$ff7b,$324c,$ff00           ; ushort
+    .word $ff48,$ffbe,$d63a,$ff00           ; ushort
+    .word $ff82,$ff53,$fb4e,$ff00           ; ushort
+    .word $ff84,$fff8,$ebd8,$ff00           ; ushort
+    .word $ff74,$ffef,$dbbd,$ff00           ; ushort
+    .word $ff39,$ffff,$97ee,$ff00           ; ushort
+    .word $ff0a,$ffc6,$ffc5,$ff00           ; ushort
+    .word $ff02,$ff7d,$f174,$ff00           ; ushort
+    .word $ff3e,$ff93,$7bb1,$ff00           ; ushort
+    .word $ffc6,$ff5d,$73ff,$ff00           ; ushort
+    .word $ff84,$ff11,$bfe4,$ff00           ; ushort
+    .word $ff3c,$ffb3,$7d3f,$ff00           ; ushort
+    .word $ff8a,$ff5e,$7fc3,$ff00           ; ushort
+    .word $ffcc,$ffde,$f83f,$ff00           ; ushort
+    .word $ff45,$ffd3,$77ee,$ff00           ; ushort
+    .word $ff80,$ff85,$7e79,$ff00           ; ushort
+    .word $ff95,$ff62,$2f73,$ff00           ; ushort
+    .word $fff3,$ffff,$ff0c,$ff00           ; ushort
+    .word $ff95,$ff82,$7fab,$ff00           ; ushort
+    .word $ffc0,$ff5a,$9701,$ff00           ; ushort
+    .word $ff12,$ff5d,$f3aa,$ff00           ; ushort
+    .word $fff0,$ff18,$f9f3,$ff00           ; ushort
+    .word $ff00,$ff3e,$cb6a,$ff00           ; ushort
+    .word $ff57,$ffbb,$fe78,$ff00           ; ushort
+    .word $ffa7,$ff23,$80d2,$ff00           ; ushort
+    .word $ffa5,$ff6e,$b62f,$ff00           ; ushort
+    .word $ff50,$ff66,$7520,$ff00           ; ushort
+    .word $ff55,$fff7,$ed5b,$ff00           ; ushort
+    .word $ff60,$ffe8,$9e78,$ff00           ; ushort
+    .word $ffd9,$ff13,$ffbd,$ff00           ; ushort
+    .word $ffec,$ff0b,$fd26,$ff00           ; ushort
+    .word $ffe2,$ff58,$7736,$ff00           ; ushort
+    .word $ff40,$ffb6,$ff02,$ff00           ; ushort
+    .word $fff9,$ffdf,$58b0,$ff00           ; ushort
+    .word $ffb4,$ff9e,$fbaa,$ff00           ; ushort
+    .word $ff84,$ff9a,$ff9f,$ff00           ; ushort
+    .word $ff34,$ffd3,$9f32,$ff00           ; ushort
+    .word $ff4a,$ff57,$6d6f,$ff00           ; ushort
+    .word $ff2a,$ff64,$ddfe,$ff00           ; ushort
+    .word $ff94,$ffd1,$efbb,$ff00           ; ushort
+    .word $ff2c,$ff5f,$bfcb,$ff00           ; ushort
+    .word $ffe7,$ff7c,$7df3,$ff00           ; ushort
+    .word $ff90,$ff51,$ec33,$ff00           ; ushort
+    .word $ff59,$ffa4,$7f72,$ff00           ; ushort
+    .word $ff1a,$ff0f,$afc5,$ff00           ; ushort
+    .word $ff2f,$ffe9,$3015,$ff00           ; ushort
+    .word $ff03,$ff06,$bf13,$ff00           ; ushort
+    .word $ff0b,$fffb,$fee2,$ff00           ; ushort
+    .word $ffd5,$ffc7,$9f69,$ff00           ; ushort
+    .word $ff32,$ff76,$06fc,$ff00           ; ushort
+    .word $ff14,$ff3c,$0f6f,$ff00           ; ushort
+    .word $ffad,$ffea,$afdb,$ff00           ; ushort
+    .word $ff27,$ffee,$4cf9,$ff00           ; ushort
+    .word $ff23,$ff5d,$fe57,$ff00           ; ushort
+    .word $ff04,$ffb1,$f7e2,$ff00           ; ushort
+    .word $ffa4,$ff53,$fffa,$ff00           ; ushort
+    .word $ff2c,$ff5f,$8cfd,$ff00           ; ushort
+    .word $ff7d,$ff77,$52e8,$ff00           ; ushort
+    .word $ff00,$ff83,$bf35,$ff00           ; ushort
+    .word $ff58,$ffd7,$d7ef,$ff00           ; ushort
+    .word $ff60,$fff8,$ded1,$ff00           ; ushort
+    .word $ff94,$fff3,$cfea,$ff00           ; ushort
+    .word $ff08,$ff48,$fb7b,$ff00           ; ushort
+    .word $ff33,$ffd6,$837f,$ff00           ; ushort
+    .word $ff71,$ff4e,$ff45,$ff00           ; ushort
+    .word $fffc,$ef97,$3ef6,$ff00           ; ushort
+    .word $ff40,$ff05,$ff4b,$ff00           ; ushort
+    .word $ff04,$ff72,$ff69,$ff00           ; ushort
+    .word $ff12,$ffc8,$efe9,$ff00           ; ushort
+    .word $ffd8,$ffdf,$03af,$ff00           ; ushort
+    .word $ff27,$ff2c,$ff11,$ff00           ; ushort
+    .word $ff94,$ff22,$fff2,$ff00           ; ushort
+    .word $ffe4,$ffbd,$92f7,$ff00           ; ushort
+    .word $ff26,$ffff,$65a7,$ff00           ; ushort
+    .word $ff61,$ffa8,$beb0,$ff00           ; ushort
+    .word $ff0d,$ffa2,$a351,$ff00           ; ushort
+    .word $fff0,$ffc4,$ae04,$ff00           ; ushort
+    .word $ff3b,$ff7f,$cf3b,$ff00           ; ushort
+    .word $ff01,$ff56,$ff61,$ff00           ; ushort
+    .word $ff8d,$fffb,$f781,$ff00           ; ushort
+    .word $ff12,$ffcb,$df73,$ff00           ; ushort
+    .word $ff71,$ffd9,$bfb7,$ff00           ; ushort
+    .word $ff00,$ff59,$9779,$ff00           ; ushort
+    .word $ff42,$ff7d,$eab9,$ff00           ; ushort
+    .word $ff70,$ffdb,$30fd,$ff00           ; ushort
+    .word $ff08,$ff67,$8e9f,$ff00           ; ushort
+    .word $ff01,$ff1f,$7f27,$ff00           ; ushort
+    .word $ffc0,$ff27,$6f50,$ff00           ; ushort
+    .word $ff63,$ffbe,$cf40,$ff00           ; ushort
+    .word $ffc5,$ffda,$9f1f,$ff00           ; ushort
+    .word $ff28,$ffe5,$b7a3,$ff00           ; ushort
+    .word $ffc2,$ff19,$9f8b,$ff00           ; ushort
+    .word $ff44,$fff7,$efd5,$ff00           ; ushort
+    .word $ff2d,$ffad,$7fd5,$ff00           ; ushort
+    .word $ff22,$ff3e,$5f75,$ff00           ; ushort
+    .word $ff01,$ffed,$df14,$ff00           ; ushort
+    .word $ff38,$ff7d,$d3fa,$ff00           ; ushort
+    .word $ff7c,$ffbd,$cede,$ff00           ; ushort
+    .word $ff3e,$ffe7,$e6e1,$ff00           ; ushort
+    .word $ff38,$ff3a,$f559,$ff00           ; ushort
+    .word $ff05,$ef17,$5e75,$ff00           ; ushort
+    .word $ff6b,$fffd,$34de,$ff00           ; ushort
+    .word $ff32,$ff5b,$f300,$ff00           ; ushort
+    .word $ff20,$ffda,$ff5e,$ff00           ; ushort
+    .word $ff04,$ffe0,$f3c1,$ff00           ; ushort
+    .word $ff49,$ffb7,$ee9e,$ff00           ; ushort
+    .word $ff72,$ff34,$d576,$ff00           ; ushort
+    .word $ff01,$ff69,$fe0d,$ff00           ; ushort
+    .word $ffbb,$ff20,$7ee4,$ff00           ; ushort
+    .word $ff43,$ffb7,$187b,$ff00           ; ushort
+    .word $ff61,$ff03,$ffe0,$ff00           ; ushort
+    .word $ff89,$fff5,$8f66,$ff00           ; ushort
+    .word $fffe,$ffc7,$bffd,$ff00           ; ushort
+    .word $ff28,$ffeb,$ebaf,$ff00           ; ushort
+    .word $ff04,$ff0a,$bfc1,$ff00           ; ushort
+    .word $ff50,$df21,$dbf4,$ff00           ; ushort
+    .word $ffdc,$ff9e,$bdff,$ff00           ; ushort
+    .word $ff8b,$ffbe,$b5cd,$ff00           ; ushort
+    .word $ff00,$ff39,$ff1c,$ff00           ; ushort
+    .word $ff08,$ff11,$bfb7,$ff00           ; ushort
+    .word $fff2,$ff77,$f7f4,$ff00           ; ushort
+    .word $ff64,$ff53,$b3ff,$ff00           ; ushort
+    .word $ff81,$ff55,$97cd,$ff00           ; ushort
+    .word $ff1e,$ff39,$fb68,$ff00           ; ushort
+    .word $ffa0,$fffd,$eeca,$ff00           ; ushort
+    .word $dfae,$fbf4,$6b7f,$ff00           ; ushort
+    .word $ff44,$ff93,$7cf5,$ff00           ; ushort
+    .word $ff46,$ff04,$7ffd,$ff00           ; ushort
+    .word $ffe0,$df34,$fe7b,$ff00           ; ushort
+    .word $ff5a,$ffeb,$c119,$ff00           ; ushort
+    .word $ff31,$ffa4,$3d26,$ff00           ; ushort
+    .word $ffe0,$ffb0,$ffe3,$ff00           ; ushort
+    .word $fffa,$ff71,$fef9,$ff00           ; ushort
+    .word $ff3b,$fffe,$decf,$ff00           ; ushort
+    .word $ff16,$ffe5,$1dbc,$ff00           ; ushort
+    .word $ff05,$ff9e,$fbbb,$ff00           ; ushort
+    .word $ffb0,$ffbb,$e79e,$ff00           ; ushort
+    .word $ff50,$ffbc,$a6cd,$ff00           ; ushort
+    .word $ff3a,$ff02,$dee2,$ff00           ; ushort
+    .word $ff42,$ff3a,$33c5,$ff00           ; ushort
+    .word $ffd2,$ff67,$7d5b,$ff00           ; ushort
+    .word $ff6e,$ffd9,$59fd,$ff00           ; ushort
+    .word $ff80,$ff0c,$df02,$ff00           ; ushort
+    .word $ffa4,$ff9a,$ff93,$ff00           ; ushort
+    .word $ff06,$ffa7,$df7e,$f700           ; ushort
+    .word $ff3d,$ff71,$4fee,$ff00           ; ushort
+    .word $ff04,$ff10,$bbc8,$ff00           ; ushort
+    .word $ff12,$ff2f,$74f5,$ff00           ; ushort
+    .word $ff30,$fff3,$555e,$ff00           ; ushort
+    .word $ffc2,$ffde,$b4b6,$ff00           ; ushort
+    .word $ff81,$ff6a,$fdf7,$ff00           ; ushort
+    .word $ff93,$ff24,$b647,$ff00           ; ushort
+    .word $ff45,$ff6b,$3717,$ff00           ; ushort
+    .word $ff88,$ff76,$2f7f,$ff00           ; ushort
+    .word $ff00,$ffbe,$fd9a,$ff00           ; ushort
+    .word $ffb2,$ffdb,$afdc,$f700           ; ushort
+    .word $ffaa,$ff7e,$dfed,$ff00           ; ushort
+    .word $ff68,$ffed,$7cbb,$ff00           ; ushort
+    .word $ff20,$ff12,$8b39,$ff00           ; ushort
+    .word $ff70,$ffe0,$9d1c,$ff00           ; ushort
+    .word $ff67,$fd83,$93f4,$ff00           ; ushort
+    .word $ff19,$ff79,$7fbf,$ff00           ; ushort
+    .word $ffa1,$ff3a,$f78a,$ff00           ; ushort
+    .word $ff84,$ff5e,$6bb5,$ff00           ; ushort
+    .word $ffb0,$ff65,$f9d6,$ff00           ; ushort
+    .word $ff72,$ff7b,$8d74,$ff00           ; ushort
+    .word $ff08,$ff0d,$bd5d,$ff00           ; ushort
+    .word $ff00,$ff82,$3f7a,$ff00           ; ushort
+    .word $ffe2,$ffb2,$7ea4,$ff00           ; ushort
+    .word $ffe7,$fe95,$afb5,$ff00           ; ushort
+    .word $ff80,$ff10,$f831,$ff00           ; ushort
+    .word $ff40,$ff6a,$ff7e,$ff00           ; ushort
+    .word $ff45,$ff5d,$6721,$ff00           ; ushort
+    .word $ffc0,$ffaf,$e385,$ff00           ; ushort
+    .word $ff00,$ff12,$cf97,$ff00           ; ushort
+    .word $ffb0,$ff63,$ceb8,$ff00           ; ushort
+    .word $fffa,$ff3b,$e5a3,$ff00           ; ushort
+    .word $ff60,$ff5b,$7689,$ff00           ; ushort
+    .word $ff80,$ff52,$7e52,$ff00           ; ushort
+    .word $ffa0,$ff1f,$d766,$ff00           ; ushort
+    .word $ff76,$ff9d,$14f9,$ff00           ; ushort
+    .word $ffff,$ff2f,$52f7,$ff00           ; ushort
+    .word $ff9c,$ff04,$ff76,$ff00           ; ushort
+    .word $ff94,$ff72,$4e7f,$ff00           ; ushort
+    .word $ffa7,$ffc7,$6d66,$ff00           ; ushort
+    .word $ff9d,$ff7f,$267c,$ff00           ; ushort
+    .word $ff26,$ffc7,$ff72,$ff00           ; ushort
+    .word $ff31,$ffb7,$e97e,$ff00           ; ushort
+    .word $ffbc,$ffde,$e4e7,$ff00           ; ushort
+    .word $ff7b,$fef2,$ebf3,$ff00           ; ushort
+    .word $ffe8,$ff32,$f79d,$ff00           ; ushort
+    .word $ff80,$ff36,$ff9c,$ff00           ; ushort
+    .word $ff88,$ffeb,$a7eb,$ff00           ; ushort
+    .word $ff8f,$ff77,$79df,$ff00           ; ushort
+    .word $fffa,$ffa6,$ffcd,$ff00           ; ushort
+    .word $ffa0,$ffb4,$eb52,$ff00           ; ushort
+    .word $ffdc,$ffbe,$6dc5,$ff00           ; ushort
+    .word $ff63,$fffd,$42a2,$ff00           ; ushort
+    .word $ffa4,$ffc1,$fd88,$ff00           ; ushort
+    .word $ff30,$ff6a,$7d92,$ff00           ; ushort
+    .word $ff70,$ffbb,$ff76,$ff00           ; ushort
+    .word $ffb4,$fff5,$dcfe,$ff00           ; ushort
+    .word $ff80,$ff37,$e7a4,$ff00           ; ushort
+    .word $ff40,$ff43,$f77d,$ff00           ; ushort
+    .word $ff12,$fff1,$df57,$ff00           ; ushort
+    .word $ffd7,$ffc5,$e73b,$ff00           ; ushort
+    .word $ff6c,$ffde,$5a98,$ff00           ; ushort
+    .word $ff82,$ff8e,$5e23,$ff00           ; ushort
+    .word $ff06,$ffbd,$6fa7,$ff00           ; ushort
+    .word $ffbc,$ffeb,$0b55,$ff00           ; ushort
+    .word $ffa1,$ffcd,$d715,$ff00           ; ushort
+    .word $ffa2,$ffca,$8f2b,$ff00           ; ushort
+    .word $ff6f,$fffe,$68db,$ff00           ; ushort
+    .word $ffb8,$ffd7,$55df,$ff00           ; ushort
+    .word $ffb4,$ff06,$bfcd,$ff00           ; ushort
+    .word $ffd0,$ff78,$ede6,$ff00           ; ushort
+    .word $ffe4,$ffdd,$ceba,$ff00           ; ushort
+    .word $ff4d,$ffdf,$95c5,$ff00           ; ushort
+    .word $ff2a,$ffed,$fe36,$ff00           ; ushort
+    .word $ff00,$ffc3,$df7f,$ff00           ; ushort
+    .word $ff40,$fbf5,$ecb1,$ff00           ; ushort
+    .word $ffd8,$ffdf,$bf7d,$df00           ; ushort
+    .word $ff04,$ffb5,$afe7,$ff00           ; ushort
+    .word $ff00,$ff51,$d3ff,$ff00           ; ushort
+    .word $ff95,$ff74,$8fe4,$ff00           ; ushort
+    .word $ffc1,$ff7f,$547f,$ff00           ; ushort
+    .word $ff40,$ff0f,$3fd9,$ff00           ; ushort
+    .word $ff44,$ff4d,$cfbf,$ff00           ; ushort
+    .word $ff32,$fff9,$f7ab,$ff00           ; ushort
+    .word $fff1,$afdf,$027f,$ff00           ; ushort
+    .word $ff54,$ff23,$9f59,$ff00           ; ushort
+    .word $ff07,$ffb1,$efa4,$ff00           ; ushort
+    .word $ff30,$ff66,$de6e,$ff00           ; ushort
+    .word $ffe2,$ff6f,$bdfb,$ff00           ; ushort
+    .word $ff85,$ff27,$fb13,$ff00           ; ushort
+    .word $ff08,$ff52,$bdde,$ff00           ; ushort
+    .word $ffbe,$ffbb,$b7ee,$ff00           ; ushort
+    .word $ff23,$fff7,$ae7f,$ff00           ; ushort
+    .word $ff00,$ff8b,$ef31,$ff00           ; ushort
+    .word $ffc1,$ff80,$7f9b,$ff00           ; ushort
+    .word $ff76,$ffb0,$b33f,$ff00           ; ushort
+    .word $ff55,$ffbf,$aa79,$ff00           ; ushort
+    .word $ff11,$ffc4,$8f38,$ff00           ; ushort
+    .word $ff53,$ffe0,$e10a,$ff00           ; ushort
+    .word $ff03,$ff7e,$f75e,$ff00           ; ushort
+    .word $ff62,$fff3,$355e,$ff00           ; ushort
+    .word $ff54,$ff41,$df2e,$ff00           ; ushort
+    .word $ff03,$ff6c,$5fb5,$ff00           ; ushort
+    .word $ffc4,$ffe2,$df5e,$ff00           ; ushort
+    .word $fff6,$ff5f,$0fa5,$ff00           ; ushort
+    .word $ffc1,$ff21,$434f,$ff00           ; ushort
+    .word $ff48,$ff15,$dfe0,$ff00           ; ushort
+    .word $ff64,$ff34,$7db1,$ff00           ; ushort
+    .word $fff8,$ffff,$2dbc,$ff00           ; ushort
+    .word $ff09,$ffe6,$f64d,$ff00           ; ushort
+    .word $ff60,$ff81,$af15,$ff00           ; ushort
+    .word $ff30,$ffa3,$3aba,$ff20           ; ushort
+    .word $ff53,$ff15,$aeed,$ff00           ; ushort
+    .word $ff21,$ff95,$feb3,$ff00           ; ushort
+    .word $ffcc,$ffc5,$2f63,$ff00           ; ushort
+    .word $ff68,$ff3a,$ee7e,$ff00           ; ushort
+    .word $ffb4,$ff5b,$316e,$ff00           ; ushort
+    .word $ff10,$ffcf,$e798,$ff00           ; ushort
+    .word $ff60,$ffa7,$3f21,$ff00           ; ushort
+    .word $ff10,$ffef,$ebcd,$ff00           ; ushort
+    .word $ff2e,$ffff,$5ec0,$ff00           ; ushort
+    .word $ff00,$ffbe,$ff31,$ff00           ; ushort
+    .word $ff02,$ffde,$ff8a,$ff00           ; ushort
+    .word $ff42,$ffbe,$9cb8,$ff00           ; ushort
+    .word $ff95,$ffed,$2efc,$ff00           ; ushort
+    .word $ff04,$fff5,$cf15,$ff00           ; ushort
+    .word $ff4e,$ffee,$dc28,$ff00           ; ushort
+    .word $ff0a,$fff1,$765d,$ff00           ; ushort
+    .word $ffb1,$ff97,$7a6b,$ff00           ; ushort
+    .word $ff85,$ff39,$cf15,$ff00           ; ushort
+    .word $ffc6,$ffcb,$77fb,$ff00           ; ushort
+    .word $ff1f,$ffd7,$e1ac,$ff00           ; ushort
+    .word $ff1a,$efc8,$e855,$ff00           ; ushort
+    .word $ff8a,$ffea,$bdf4,$ff00           ; ushort
+    .word $ff80,$ff2f,$efd7,$ff00           ; ushort
+    .word $ff72,$ff45,$fdf3,$ff00           ; ushort
+    .word $ffef,$ffef,$238d,$ff00           ; ushort
+    .word $ff20,$ff91,$ed9c,$ff00           ; ushort
+    .word $ff45,$ffaa,$ee93,$ff00           ; ushort
+    .word $ff06,$ff4f,$9fa3,$ff00           ; ushort
+    .word $ffdd,$ffff,$0dfb,$ff00           ; ushort
+    .word $ff28,$ff05,$6d2b,$ff00           ; ushort
+    .word $ffd2,$ff51,$fdbc,$ff00           ; ushort
+    .word $ff45,$ff86,$faa0,$ff00           ; ushort
+    .word $ffb2,$ffaf,$1471,$ff00           ; ushort
+    .word $ff20,$ff53,$ff57,$ff00           ; ushort
+    .word $fff5,$ffbf,$fd35,$ff01           ; ushort
+    .word $ff93,$ffe6,$e8bd,$ff00           ; ushort
+    .word $ff5f,$ffb9,$ffb8,$ff00           ; ushort
+    .word $ff70,$ff73,$dfc6,$ff00           ; ushort
+    .word $ff03,$ff71,$af89,$ff00           ; ushort
+    .word $ff01,$ffab,$e76d,$ff00           ; ushort
+    .word $ffd7,$ff62,$4736,$ff00           ; ushort
+    .word $ff40,$ff34,$ef41,$ff00           ; ushort
+    .word $ffb9,$ff39,$6e3e,$ff00           ; ushort
+    .word $ffaf,$ff17,$ff3e,$ff00           ; ushort
+    .word $ff69,$ff5d,$2367,$ff00           ; ushort
+    .word $ffa2,$ff1a,$dbf4,$ff00           ; ushort
+    .word $ff87,$ffb3,$ae68,$ff00           ; ushort
+    .word $ff63,$ff6b,$fd65,$ff00           ; ushort
+    .word $ff09,$fffd,$4cef,$ff00           ; ushort
+    .word $ff01,$ff65,$ea18,$ff00           ; ushort
+    .word $ff30,$ffa3,$7fb6,$ff00           ; ushort
+    .word $ff9f,$feea,$be7f,$ff00           ; ushort
+    .word $ffde,$ff25,$1edf,$ff00           ; ushort
+    .word $ff11,$ff50,$7e6b,$ff00           ; ushort
+    .word $ff86,$fff4,$afb5,$ff00           ; ushort
+    .word $ffd0,$ffe3,$df3d,$ff00           ; ushort
+    .word $ffcd,$ffff,$5975,$ff00           ; ushort
+    .word $ff19,$ff33,$bb74,$ff00           ; ushort
+    .word $ff30,$ffee,$fb7e,$ff00           ; ushort
+    .word $ff1a,$fff9,$dfed,$ff00           ; ushort
+    .word $ff1d,$ffdd,$39cf,$ff00           ; ushort
+    .word $ff00,$ffde,$97c4,$ff00           ; ushort
+    .word $ffb4,$ffd3,$ff99,$ff00           ; ushort
+    .word $ffa2,$7ee6,$f7b7,$ff00           ; ushort
+    .word $ff5c,$ffb7,$345f,$ff00           ; ushort
+    .word $ff0a,$ffc4,$ffc2,$ff00           ; ushort
+    .word $ff40,$ff75,$be56,$7f00           ; ushort
+    .word $ff2c,$ff99,$7f9b,$ff00           ; ushort
+    .word $ffcd,$feff,$29dd,$ff00           ; ushort
+    .word $ff02,$ff15,$df33,$ff00           ; ushort
+    .word $ff04,$ff75,$a65e,$ff00           ; ushort
+    .word $ff2d,$ff23,$979f,$ff00           ; ushort
+    .word $ff5f,$fff7,$0392,$ff00           ; ushort
+    .word $ff68,$ff46,$fe48,$ff00           ; ushort
+    .word $ff08,$ff9a,$ffed,$ff00           ; ushort
+    .word $ff24,$ff7f,$f763,$ff00           ; ushort
+    .word $ff28,$ff7d,$dd5a,$ff00           ; ushort
+    .word $ff15,$ff02,$fd0a,$ff00           ; ushort
+    .word $ff06,$ff7c,$38d2,$ff00           ; ushort
+    .word $ff33,$ff7b,$c26f,$ff00           ; ushort
+    .word $ffa9,$ffa8,$dddb,$ff00           ; ushort
+    .word $ffc0,$ffbb,$6bfc,$ff00           ; ushort
+    .word $ff70,$ffb1,$bf49,$ff00           ; ushort
+    .word $ff56,$ffbc,$a6e5,$ff00           ; ushort
+    .word $ff0c,$ff73,$e7ed,$ff00           ; ushort
+    .word $ffaa,$ff27,$5b41,$ff00           ; ushort
+    .word $ff09,$fb7c,$efee,$ff00           ; ushort
+    .word $ff68,$fff8,$6c53,$ff00           ; ushort
+    .word $ff39,$ffff,$b87b,$ff00           ; ushort
+    .word $ff80,$ff66,$7c65,$ff00           ; ushort
+    .word $ffdd,$ffff,$839b,$ff00           ; ushort
+    .word $ef61,$dfc7,$f570,$ff00           ; ushort
+    .word $ffed,$fffa,$4cb3,$ff00           ; ushort
+    .word $ff08,$ff6b,$9710,$ff00           ; ushort
+    .word $ffa0,$ff62,$eecd,$ff00           ; ushort
+    .word $ff50,$fffd,$ef75,$ff00           ; ushort
+    .word $ff20,$ff1f,$7bd9,$ff00           ; ushort
+    .word $ffae,$ff9d,$ffe3,$ef00           ; ushort
+    .word $ff82,$ff95,$ff9e,$ff00           ; ushort
+    .word $ffc3,$ffe7,$6fed,$ff00           ; ushort
+    .word $ffc0,$ff37,$feff,$ff00           ; ushort
+    .word $ff11,$ff64,$dfc3,$ff00           ; ushort
+    .word $ff76,$ff2e,$cb9b,$ff00           ; ushort
+    .word $ff1a,$ffed,$b945,$ff00           ; ushort
+    .word $ffcf,$ffeb,$c715,$ff00           ; ushort
+    .word $ff5e,$ff21,$ef23,$ff00           ; ushort
+    .word $ff31,$fff0,$75b7,$ff00           ; ushort
+    .word $ff12,$ff3e,$dede,$ff00           ; ushort
+    .word $ff45,$fff8,$9feb,$ff00           ; ushort
+    .word $ffb9,$ff17,$fe3f,$ff00           ; ushort
+    .word $ff24,$fffc,$bde9,$ff00           ; ushort
+    .word $fffc,$fff1,$bb54,$ff00           ; ushort
+    .word $ffc4,$ffaa,$7b53,$ff00           ; ushort
+    .word $ffd0,$ff12,$efb6,$ff00           ; ushort
+    .word $ffa1,$ff48,$b6ca,$ff00           ; ushort
+    .word $ff79,$ff51,$3f72,$ff00           ; ushort
+    .word $ff7a,$ff73,$99f2,$ff00           ; ushort
+    .word $ff41,$ffd4,$ff19,$ff00           ; ushort
+    .word $ffc0,$ff5c,$c798,$ff00           ; ushort
+    .word $ff6a,$ff7a,$be9c,$ff00           ; ushort
+    .word $ff7d,$fffd,$8ea6,$ff00           ; ushort
+    .word $ff29,$ffdb,$9183,$ff00           ; ushort
+    .word $ff81,$ffb5,$79aa,$ff00           ; ushort
+    .word $ff0c,$fffe,$e3bf,$ff00           ; ushort
+    .word $ffa6,$ffda,$fafa,$ff00           ; ushort
+    .word $ff46,$ff65,$7de2,$ff00           ; ushort
+    .word $fffa,$fff5,$d698,$ff00           ; ushort
+    .word $ff22,$fff5,$b3f6,$ff00           ; ushort
+    .word $ffa2,$fff7,$bffe                 ; ushort
