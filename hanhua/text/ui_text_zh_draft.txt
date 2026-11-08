@@ -1,0 +1,147 @@
+; R7: 对话框以外的文本 —— 中文初稿（**待人工审核**）
+;
+; 格式：`LABEL<TAB>index<TAB>文本`，和 hanhua/text/ui_text_en.txt 一一对应。
+; 英文底稿是从原版 ROM 抽取的生成物，这份是手写初稿。
+;
+; 这一轮**只落稿，不进 ROM**（用户决定：渲染路线下一轮再做）。原因见
+; docs/hanhua-12x12.md §11.3-11.4：这些表走的是半角 UI_DrawString 路径，
+; 全角渲染器还没接上去；而且全角字要占 2×2 tile，同屏最多 2-3 行，
+; 菜单布局必须先解决。
+;
+; 长度预算（全角字个数，不是字节）：
+;   * 道具名      ≤6（商店里的名字字段约 13 列）—— 但同屏 CHR 槽紧张，
+;                  初稿统一压到 **≤4**，绝大多数是 2-3 字
+;   * 菜单标签    ≤4
+;   * 称号        ≤4（状态菜单的值字段 8 列，[title] 还要嵌在句子里）
+;   * 使用处      `TextBox_DrawItemName` / `PlayerMenu_DrawStringLines` /
+;                 `UI_DrawString` / `TextBox_ShowMessage_ShowPlayerTitle`
+;
+; 专名对照（尽量贴近日版/英文原意，供审核时统一）：
+;   Hand Dagger→短剑  Long Sword→长剑  Giant Blade→巨刃  Dragon Slayer→屠龙剑
+;   Leather Armor→皮甲  Studded Mail→钉甲  Full Plate→板甲  Battle Suit→战甲
+;   Small/Large/Magic Shield→小盾/大盾/魔盾  Battle Helmet→战盔
+;   Deluge→洪水  Thunder→雷电  Fire→火焰  Death→死亡  Tilte→提尔提
+;   Ring of Elf→精灵戒  Ruby Ring→红玉戒  Ring of Dworf→矮人戒  Demons Ring→恶魔戒
+;   Mattock→鹤嘴锄  Rod→法杖  Hour Glass→沙漏  Wing Boots→飞靴
+;   Red/Black Potion→红药水/黑药水  Elixir→万灵药  Pendant→吊坠
+;   Black Onix→黑玛瑙  Fire Crystal→火水晶
+;   Novice→新手 Aspirant→见习 Battler→战士 Fighter→斗士 Adept→达人
+;   Chevalier→骑士 Veteran→老兵 Warrior→勇士 Swordman→剑士 Hero→英雄
+;   Soldier→士兵 Myrmidon→佣兵 Champion→冠军 Superhero→超人
+;   Paladin→圣骑士 Lord→领主
+;
+; 钥匙 Ａ/Ｋ/Ｑ/Ｊ 用**全角拉丁**（U+FF21 等，fusion-pixel 有字形），
+; 因为译文里不允许混半角 ASCII（script_codec.py 强制；混排会把字画到别的行）。
+
+; --- 武器 -------------------------------------------------------------------
+ITEM_NAMES_WEAPONS	0	短剑
+ITEM_NAMES_WEAPONS	1	长剑
+ITEM_NAMES_WEAPONS	2	巨刃
+ITEM_NAMES_WEAPONS	3	屠龙剑
+
+; --- 防具 -------------------------------------------------------------------
+ITEM_NAMES_ARMOR	0	皮甲
+ITEM_NAMES_ARMOR	1	钉甲
+ITEM_NAMES_ARMOR	2	板甲
+ITEM_NAMES_ARMOR	3	战甲
+
+; --- 盾 / 头盔 --------------------------------------------------------------
+ITEM_NAMES_SHIELDS	0	小盾
+ITEM_NAMES_SHIELDS	1	大盾
+ITEM_NAMES_SHIELDS	2	魔盾
+ITEM_NAMES_SHIELDS	3	战盔
+
+; --- 魔法 -------------------------------------------------------------------
+ITEM_NAMES_MAGIC	0	洪水
+ITEM_NAMES_MAGIC	1	雷电
+ITEM_NAMES_MAGIC	2	火焰
+ITEM_NAMES_MAGIC	3	死亡
+ITEM_NAMES_MAGIC	4	提尔提
+
+; --- 道具 / 钥匙 ------------------------------------------------------------
+ITEM_NAMES_KEYS	0	精灵戒
+ITEM_NAMES_KEYS	1	红玉戒
+ITEM_NAMES_KEYS	2	矮人戒
+ITEM_NAMES_KEYS	3	恶魔戒
+ITEM_NAMES_KEYS	4	钥匙Ａ
+ITEM_NAMES_KEYS	5	钥匙Ｋ
+ITEM_NAMES_KEYS	6	钥匙Ｑ
+ITEM_NAMES_KEYS	7	钥匙Ｊ
+ITEM_NAMES_KEYS	8	钥匙ＪＯ
+ITEM_NAMES_KEYS	9	鹤嘴锄
+ITEM_NAMES_KEYS	10	法杖
+ITEM_NAMES_KEYS	11	水晶
+ITEM_NAMES_KEYS	12	油灯
+ITEM_NAMES_KEYS	13	沙漏
+ITEM_NAMES_KEYS	14	古书
+ITEM_NAMES_KEYS	15	飞靴
+ITEM_NAMES_KEYS	16	红药水
+ITEM_NAMES_KEYS	17	黑药水
+ITEM_NAMES_KEYS	18	万灵药
+ITEM_NAMES_KEYS	19	吊坠
+ITEM_NAMES_KEYS	20	黑玛瑙
+ITEM_NAMES_KEYS	21	火水晶
+
+; --- 玩家菜单顶层（6 项，每项 2 字） ----------------------------------------
+PLAYER_TOP_MENU_ITEM_STRINGS	0	武器
+PLAYER_TOP_MENU_ITEM_STRINGS	1	防具
+PLAYER_TOP_MENU_ITEM_STRINGS	2	盾牌
+PLAYER_TOP_MENU_ITEM_STRINGS	3	魔法
+PLAYER_TOP_MENU_ITEM_STRINGS	4	道具
+PLAYER_TOP_MENU_ITEM_STRINGS	5	状态
+
+; --- 状态菜单标签（值画在同一行的第 15 列） ---------------------------------
+PLAYER_STATUS_MENU_STRINGS	0	等级：
+PLAYER_STATUS_MENU_STRINGS	1	升级：
+PLAYER_STATUS_MENU_STRINGS	2	武器：
+PLAYER_STATUS_MENU_STRINGS	3	防具：
+PLAYER_STATUS_MENU_STRINGS	4	盾牌：
+PLAYER_STATUS_MENU_STRINGS	5	魔法：
+PLAYER_STATUS_MENU_STRINGS	6	道具：
+
+; --- 状态菜单里的称号（值字段 8 列 = 4 全角字） -----------------------------
+PLAYER_STATUS_MENU_TITLES	0	新手
+PLAYER_STATUS_MENU_TITLES	1	见习
+PLAYER_STATUS_MENU_TITLES	2	战士
+PLAYER_STATUS_MENU_TITLES	3	斗士
+PLAYER_STATUS_MENU_TITLES	4	达人
+PLAYER_STATUS_MENU_TITLES	5	骑士
+PLAYER_STATUS_MENU_TITLES	6	老兵
+PLAYER_STATUS_MENU_TITLES	7	勇士
+PLAYER_STATUS_MENU_TITLES	8	剑士
+PLAYER_STATUS_MENU_TITLES	9	英雄
+PLAYER_STATUS_MENU_TITLES	10	士兵
+PLAYER_STATUS_MENU_TITLES	11	佣兵
+PLAYER_STATUS_MENU_TITLES	12	冠军
+PLAYER_STATUS_MENU_TITLES	13	超人
+PLAYER_STATUS_MENU_TITLES	14	圣骑士
+PLAYER_STATUS_MENU_TITLES	15	领主
+
+; --- 空的装备槽 -------------------------------------------------------------
+NO_INVENTORY_ITEM_STRINGS	0	无武器
+NO_INVENTORY_ITEM_STRINGS	1	无防具
+NO_INVENTORY_ITEM_STRINGS	2	无盾牌
+NO_INVENTORY_ITEM_STRINGS	3	无魔法
+NO_INVENTORY_ITEM_STRINGS	4	无道具
+
+; --- 消息里的 [title]（bank 15，16 字符定长，读者遇到空格就停） -------------
+; 注意：这里的记录**没有长度字节**，原文是「8 字符 + 8 个空格」。回填时
+; 汉字后面必须补 ASCII 空格 $20 当终结符（$20 < $80，不会被当成汉字首字节）。
+; 这条路径（TextBox_ShowMessage_ShowPlayerTitle）现在只会把字节喂给半角写入器；
+; 要让它认汉字，得让 $FB 分支跳过「从消息流读第二个字节」——属于下一轮的渲染改动。
+PLAYER_TITLE_STRINGS	0	新手
+PLAYER_TITLE_STRINGS	1	见习
+PLAYER_TITLE_STRINGS	2	战士
+PLAYER_TITLE_STRINGS	3	斗士
+PLAYER_TITLE_STRINGS	4	达人
+PLAYER_TITLE_STRINGS	5	骑士
+PLAYER_TITLE_STRINGS	6	老兵
+PLAYER_TITLE_STRINGS	7	勇士
+PLAYER_TITLE_STRINGS	8	剑士
+PLAYER_TITLE_STRINGS	9	英雄
+PLAYER_TITLE_STRINGS	10	士兵
+PLAYER_TITLE_STRINGS	11	佣兵
+PLAYER_TITLE_STRINGS	12	冠军
+PLAYER_TITLE_STRINGS	13	超人
+PLAYER_TITLE_STRINGS	14	圣骑士
+PLAYER_TITLE_STRINGS	15	领主

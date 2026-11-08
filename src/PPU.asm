@@ -31,7 +31,6 @@ PPUMASK:
 
 ;
 ; XREFS:
-;     DEADCODE_FUN_PRG15_MIRROR__cb0c
 ;     Game_Init
 ;     PPU_HandleOnInterrupt
 ;

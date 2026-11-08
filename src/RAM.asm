@@ -9,6 +9,15 @@
 
 
 ;============================================================================
+; zh_version scratch for the full-width text path.
+;
+; Placed FIRST in this file on purpose.  RAM is only $0000-$07FF on the NES, and
+; this file's declared area runs to exactly $07FF, so anything appended lands at
+; $0800+ - which is NOT RAM, and writes to it vanish.  Declaring them first makes
+; the linker allocate them inside $0100-$01FF, the stack page; the game's stack
+; starts at $01FF and grows down, and only reaches $0100 after ~250 bytes of
+; nesting, which this code never approaches.
+;============================================================================
 ; The currently-loaded ROM bank used for logic.
 ;
 ; XREFS:
@@ -4134,7 +4143,7 @@ SelectedWeapon:
 ;     PlayerDeath_ResetSelectedItemState
 ;     Player_ApplyDamage
 ;     SpriteBehavior_BattleSuitDroppedByZoradohna
-;     FUN_PRG15_MIRROR__ec58
+;     FUN_PRG15__ec58
 ;     Player_DrawBody
 ;     Player_HandleDeath
 ;     Player_LoadArmorTilesToPPU
@@ -4149,7 +4158,7 @@ SelectedWeapon:
 ;     PlayerDeath_ResetSelectedItemState
 ;     Player_ApplyDamage
 ;     SpriteBehavior_BattleSuitDroppedByZoradohna
-;     FUN_PRG15_MIRROR__ec58
+;     FUN_PRG15__ec58
 ;     Player_DrawBody
 ;     Player_HandleDeath
 ;     Player_LoadArmorTilesToPPU
@@ -4176,7 +4185,7 @@ SelectedArmor:
 ;     Player_DrawShield
 ;     Player_HandleHitByMagic
 ;     SpriteBehavior_BattleHelmetDroppedByZoradohna
-;     FUN_PRG15_MIRROR__ec58
+;     FUN_PRG15__ec58
 ;     Player_DrawBody
 ;     Player_HandleDeath
 ;     Player_LoadArmorTilesToPPU
@@ -4194,7 +4203,7 @@ SelectedArmor:
 ;     Player_DrawShield
 ;     Player_HandleHitByMagic
 ;     SpriteBehavior_BattleHelmetDroppedByZoradohna
-;     FUN_PRG15_MIRROR__ec58
+;     FUN_PRG15__ec58
 ;     Player_DrawBody
 ;     Player_HandleDeath
 ;     Player_LoadArmorTilesToPPU
@@ -4558,7 +4567,7 @@ Screen_PaletteIndex:
 ;     Player_CheckHandleEnterDoor
 ;     Player_EnterDoorToInside
 ;     ScreenEvents_HandleBoss
-;     _afterFarJump [$PRG15_MIRROR::c603]
+;     _afterFarJump [$PRG15::c603]
 ;
 Areas_DefaultMusic:
     .byte $00                               ; Music
@@ -5278,7 +5287,7 @@ Player_HP_L:
 ; XREFS:
 ;     Debug_ChooseArea
 ;     EndGame_MoveToKingsRoom
-;     FUN_PRG15_MIRROR__daf6
+;     FUN_PRG15__daf6
 ;     Game_DropLadderToMascon
 ;     Game_InitStateForStartScreen
 ;     Game_SetupAndLoadOutsideArea
@@ -5827,7 +5836,6 @@ UI_MPAndHPBarWidth:
 ;     Area_SetBlocks_SetAttributes
 ;     Area_SetBlocks_WriteBlockDataColumn1
 ;     Area_SetBlocks_WriteBlockDataColumn2
-;     DEADCODE_FUN_PRG15_MIRROR__c033
 ;     Fog_UpdateTiles
 ;     Game_Init
 ;     PPUBuffer_Draw
@@ -5845,7 +5853,6 @@ UI_MPAndHPBarWidth:
 ;     Area_SetBlocks_SetAttributes
 ;     Area_SetBlocks_WriteBlockDataColumn1
 ;     Area_SetBlocks_WriteBlockDataColumn2
-;     DEADCODE_FUN_PRG15_MIRROR__c033
 ;     Fog_UpdateTiles
 ;     Game_Init
 ;     PPUBuffer_Draw
@@ -6791,3 +6798,26 @@ BYTE_0785:
     .byte $00,$00,$00,$00,$00,$00,$00,$00   ; byte
     .byte $00,$00,$00,$00,$00,$00,$00,$00   ; byte
     .byte $00,$00,$00                       ; byte
+
+;============================================================================
+; zh_version scratch for the full-width text path.
+;
+; EXPLICIT ADDRESSES on purpose.  ld65.cfg declares the RAM region as
+; start=$0100 size=$0800, i.e. $0100-$08FF - 256 bytes more than the NES has
+; ($0000-$07FF) - so anything the linker allocates for these four bytes lands in
+; the wrong place: appended to this file it is past $07FF (writes vanish), and
+; declared first it is at $0100 (the stack page the game grows into).  Both were
+; tried; both broke the game (blank dialogue, then corrupt background).
+; $078A-$07FF is verified free against the linker's own output, so pin them.
+;
+; Proper fix (separate change): correct ld65.cfg to size=$0700 and reclaim 4
+; bytes of genuinely dead RAM, then these can be normal declarations again.
+;============================================================================
+ZHV_CallerBank                              = $07A0 ; bank to restore afterwards
+
+ZHV_GlyphChar                               = $07A1 ; character code (low byte)
+
+ZHV_GlyphIndex                              = $07A2 ; glyph index into the table
+
+; DIAGNOSTIC (temporary): progress marker, read from a RAM Watch.
+ZHV_Trace                                   = $07A3 ; 1 entered .. 5 tiles drawn

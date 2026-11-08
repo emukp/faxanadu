@@ -46,8 +46,7 @@
 ;     Area_SetBlocks_SetAttributes
 ;     CastMagic_FinishHandler_HitWallEffect
 ;     CastMagic_FinishHandler_TilteAfterFirstHit
-;     DEADCODE_FUN_PRG15_MIRROR__c033
-;     FUN_PRG15_MIRROR__ec58
+;     FUN_PRG15__ec58
 ;     Maybe_IsSpriteEntityNotOnScreen
 ;     Player_DrawBody
 ;     Player_DrawSprite
@@ -97,8 +96,7 @@
 ;     Area_SetBlocks_SetAttributes
 ;     CastMagic_FinishHandler_HitWallEffect
 ;     CastMagic_FinishHandler_TilteAfterFirstHit
-;     DEADCODE_FUN_PRG15_MIRROR__c033
-;     FUN_PRG15_MIRROR__ec58
+;     FUN_PRG15__ec58
 ;     Maybe_IsSpriteEntityNotOnScreen
 ;     Player_DrawBody
 ;     Player_DrawSprite
@@ -150,12 +148,11 @@ Temp_01:
 ;     Area_SetBlocks_SetAttributes
 ;     Area_SetStateFromDoorDestination
 ;     CurrentSprite_LoadTilesInfo
-;     DEADCODE_FUN_PRG15_MIRROR__c033
 ;     Game_LoadAreaTable
 ;     IScripts_DrawPortraitTileToPPU
 ;     IScripts_LoadPortraitTilesAddress
-;     LAB_PRG15_MIRROR__e852 [$PRG15_MIRROR::e852]
-;     LAB_PRG15_MIRROR__ea13 [$PRG15_MIRROR::ea13]
+;     LAB_PRG15__e852 [$PRG15::e852]
+;     LAB_PRG15__ea13 [$PRG15::ea13]
 ;     Player_CheckSwitchScreen
 ;     Player_CheckSwitchScreen_SwitchAreaHoriz
 ;     Player_LoadArmorTile
@@ -203,7 +200,7 @@ Temp_Addr_U:
 ;     Player_ApplyDamage
 ;     Player_CalcValueAndFFForNeg
 ;     Player_DrawWeapon
-;     FUN_PRG15_MIRROR__ec58
+;     FUN_PRG15__ec58
 ;     IScripts_DrawPortraitTileToPPU
 ;     Player_LoadWeaponTile
 ;     Sprite_Draw_FlippedHoriz
@@ -216,7 +213,7 @@ Temp_04:
 ;     Player_ApplyDamage
 ;     Player_CalcValueAndFFForNeg
 ;     Player_DrawWeapon
-;     FUN_PRG15_MIRROR__ec58
+;     FUN_PRG15__ec58
 ;     IScripts_DrawPortraitTileToPPU
 ;     Player_LoadWeaponTile
 ;     Sprite_Draw_FlippedHoriz
@@ -467,7 +464,7 @@ Screen_ReadyState:
 ; * Input handling.
 ; * Advancing InterruptCounter
 ;
-; If already 1, PRG15_MIRROR:c999 won't run handlers again.
+; If already 1, PRG15:c999 won't run handlers again.
 ;
 ; Callers can set to 0 to request running interrupt handlers.
 ;
@@ -541,7 +538,6 @@ MMC1_ShiftSync:
 ; If 0, this will all be paused.
 ;
 ; XREFS:
-;     DEADCODE_FUN_PRG15_MIRROR__cb1f
 ;     Game_InitScreenAndMusic
 ;     OnInterrupt
 ;     PPU_WaitUntilFlushed
@@ -551,7 +547,6 @@ MMC1_ShiftSync:
 
 ;
 ; XREFS:
-;     DEADCODE_FUN_PRG15_MIRROR__cb1f
 ;     Game_InitScreenAndMusic
 ;     OnInterrupt
 ;     PPU_WaitUntilFlushed
@@ -927,7 +922,6 @@ PPUBuffer_ReadOffset:
 ;     Area_SetBlocks_SetAttributes
 ;     Area_SetBlocks_WriteBlockDataColumn1
 ;     Area_SetBlocks_WriteBlockDataColumn2
-;     DEADCODE_FUN_PRG15_MIRROR__c033
 ;     Fog_UpdateTiles
 ;     Game_InitStateForSpawn
 ;     IScripts_DrawPortraitTileToPPU
@@ -1020,7 +1014,7 @@ Temp_PPU_NameTableValue:
 ;     PlayerMenu_HandleInventoryMenuInput
 ;     SpriteBehavior_EnemyUnused18__9991
 ;     Area_SetStateFromDoorDestination
-;     FUN_PRG15_MIRROR__daf6
+;     FUN_PRG15__daf6
 ;     Fog_OnTick
 ;     GameLoop_CheckShowPlayerMenu
 ;     Game_EnterAreaHandler
@@ -1045,7 +1039,7 @@ Temp_PPU_NameTableValue:
 ;     PlayerMenu_HandleInventoryMenuInput
 ;     SpriteBehavior_EnemyUnused18__9991
 ;     Area_SetStateFromDoorDestination
-;     FUN_PRG15_MIRROR__daf6
+;     FUN_PRG15__daf6
 ;     Fog_OnTick
 ;     GameLoop_CheckShowPlayerMenu
 ;     Game_EnterAreaHandler
@@ -1152,7 +1146,7 @@ MovingSpriteVisibility:
 ;     SpriteUpdateHandler_Enemy_Unused_SnakeRoundPart
 ;     CastMagic_FinishHandler_TilteAfterFirstHit
 ;     CastMagic_RunUpdateSpellHandler
-;     FUN_PRG15_MIRROR__ec58
+;     FUN_PRG15__ec58
 ;     Player_DrawBody
 ;     Sprite_Draw
 ;     UI_DrawPromptInputSymbol
@@ -1179,7 +1173,7 @@ Arg_DrawSprite_PosX:
 ;     CastMagic_FinishHandler_HitWallEffect
 ;     CastMagic_FinishHandler_TilteAfterFirstHit
 ;     CastMagic_RunUpdateSpellHandler
-;     FUN_PRG15_MIRROR__ec58
+;     FUN_PRG15__ec58
 ;     Player_DrawBody
 ;     Sprite_Draw
 ;     UI_DrawPromptInputSymbol
@@ -1770,7 +1764,6 @@ PPU_ScrollScreenHoriz:
 ; 0x01 = Add a default sprite 0 at X=0, Y=72 (not used)
 ;
 ; XREFS:
-;     DEADCODE_Sprites_ResetForDefaultsMode1
 ;     PPU_HandleOnInterrupt
 ;     Screen_ResetSpritesForGamePlay
 ;     Screen_ResetSpritesForNonGame
@@ -1779,7 +1772,6 @@ PPU_ScrollScreenHoriz:
 
 ;
 ; XREFS:
-;     DEADCODE_Sprites_ResetForDefaultsMode1
 ;     PPU_HandleOnInterrupt
 ;     Screen_ResetSpritesForGamePlay
 ;     Screen_ResetSpritesForNonGame
@@ -1793,7 +1785,6 @@ Sprites_Sprite0Mode:
 ; Whether to force lower pattern tables when updating the PPU.
 ;
 ; XREFS:
-;     DEADCODE_Sprites_ResetForDefaultsMode1
 ;     Game_InitScreenAndMusic
 ;     PPU_HandleOnInterrupt
 ;     PPU_WaitUntilFlushed
@@ -1802,7 +1793,6 @@ Sprites_Sprite0Mode:
 
 ;
 ; XREFS:
-;     DEADCODE_Sprites_ResetForDefaultsMode1
 ;     Game_InitScreenAndMusic
 ;     PPU_HandleOnInterrupt
 ;     PPU_WaitUntilFlushed
@@ -2589,7 +2579,7 @@ Player_PosX_Frac:
 ;     Area_LoadScrollData
 ;     Area_SetStateFromDoorDestination
 ;     EndGame_MovePlayerTowardKing
-;     FUN_PRG15_MIRROR__ec58
+;     FUN_PRG15__ec58
 ;     Game_EnterBuilding
 ;     Game_MovePlayerOnScroll
 ;     Game_MovePlayerOnScrollLeft
@@ -2702,7 +2692,7 @@ Player_ClimbFlySpeedModifier:
 ;     Area_CheckClimbAdjacentImpassable
 ;     Area_LoadScrollData
 ;     Area_SetStateFromDoorDestination
-;     FUN_PRG15_MIRROR__ec58
+;     FUN_PRG15__ec58
 ;     Game_EnterBuilding
 ;     Game_SpawnInTemple
 ;     Player_CheckHandleClimbDown
@@ -2787,7 +2777,7 @@ Player_MovementTick:
 ;     SpriteBehavior_Nash
 ;     SpriteBehavior_SirGawaineWolfman
 ;     EndGame_MoveToKingsRoom
-;     FUN_PRG15_MIRROR__ec58
+;     FUN_PRG15__ec58
 ;     GameLoop_CheckUseCurrentItem
 ;     Game_BeginExitBuilding
 ;     Game_SpawnInTemple
@@ -2972,7 +2962,7 @@ Player_InvincibilityPhase:
 ; XREFS:
 ;     Maybe_Player_CalcAnimFrame
 ;     Player_HitSpriteWithWeapon
-;     FUN_PRG15_MIRROR__ec58
+;     FUN_PRG15__ec58
 ;     Player_CheckHandleAttack
 ;     Player_GetBodySpriteFrameOffset
 ;
@@ -3680,7 +3670,6 @@ BankedCallSetup_SavedY:
 ;     Area_SetBlocks
 ;     Area_SetBlocks_SetAttributes
 ;     Area_SetPPUAddrForBlockIndex
-;     DEADCODE_FUN_PRG15_MIRROR__c033
 ;     IScripts_DrawPortraitTileToPPU
 ;     IScripts_LoadPortraitTiles
 ;     PPUBuffer_QueueCommandOrLength
@@ -3715,7 +3704,6 @@ BankedCallSetup_SavedY:
 ;     Area_SetBlocks
 ;     Area_SetBlocks_SetAttributes
 ;     Area_SetPPUAddrForBlockIndex
-;     DEADCODE_FUN_PRG15_MIRROR__c033
 ;     IScripts_DrawPortraitTileToPPU
 ;     IScripts_LoadPortraitTiles
 ;     PPUBuffer_QueueCommandOrLength
@@ -3749,7 +3737,6 @@ PPU_TargetAddr:
 ;     Area_SetBlocks
 ;     Area_SetBlocks_SetAttributes
 ;     Area_SetPPUAddrForBlockIndex
-;     DEADCODE_FUN_PRG15_MIRROR__c033
 ;     IScripts_DrawPortraitTileToPPU
 ;     IScripts_LoadPortraitTiles
 ;     PPUBuffer_QueueCommandOrLength

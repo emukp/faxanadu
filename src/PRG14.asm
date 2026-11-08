@@ -17276,7 +17276,7 @@ WEAPONS_SPRITE_U:
 ;
 ; XREFS:
 ;     Player_DrawWeapon
-;     FUN_PRG15_MIRROR__ec58
+;     FUN_PRG15__ec58
 ;============================================================================
 Player_CalcValueAndFFForNeg:
     STA Temp_04
@@ -17592,7 +17592,7 @@ SHIELD_SPRITE_OFFSETS_X:
 ; XREFS:
 ;     Player_DrawShield
 ;     Player_DrawWeapon
-;     FUN_PRG15_MIRROR__ec58
+;     FUN_PRG15__ec58
 ;     Player_DrawBody
 ;============================================================================
 Player_CalculateVisibility:
@@ -17969,12 +17969,20 @@ Player_CastMagic:
 ;============================================================================
 CastMagic_RunSpellHandler:
     ;
-    ; Push PRG15_MIRROR:C2E9 to the stack as the result
-    ; after our magic function.
+    ; Push the address of CastMagic_RunUpdateSpellHandler-1 to the
+    ; stack as the result after our magic function.  The RTS that
+    ; follows adds 1, so execution resumes at the start of
+    ; CastMagic_RunUpdateSpellHandler.
     ;
-    LDA #$c2
+    ; NOTE: This used to be hard-coded as #$c2/#$e8 (PRG15:C2E8).
+    ; That only works while PRG15's layout is unchanged; the
+    ; zh_version text-box code moves PRG15 by several bytes, and the
+    ; stale address landed in the middle of an instruction, which
+    ; corrupted the stack and crashed the game when casting magic.
+    ;
+    LDA #>(CastMagic_RunUpdateSpellHandler-1)
     PHA
-    LDA #$e8
+    LDA #<(CastMagic_RunUpdateSpellHandler-1)
     PHA
 
 

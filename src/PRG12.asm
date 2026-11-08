@@ -5082,8 +5082,20 @@ Menu_UpdateAndDraw:
     LDA a:Menu_CursorPos                    ; A = cursor position.
     JSR Math_MultiplyBy16                   ; A = A * 16 (2 tile height)
     ADC Temp_Int24                          ; A = A + our Y value.
-    SBC #$20                                ; A = A - 32 (padding and nudging
-                                            ; up a tile).
+    ;
+    ; This is the cart's own value (-32, i.e. the arrow's top row lands on cell
+    ; row 0).  It is right for BOTH kinds of menu text now:
+    ;
+    ;   * the 8x8 HUD-font strings (UI_DrawString) are written on ONE nametable
+    ;     row, so their ink starts at cell row 0;
+    ;   * the 12x12 Hanzi are unpacked five rows higher than their raw packing
+    ;     (see ZHV_DrawFullWidthTiles in src/PRG9_code.asm), which puts their ink
+    ;     at cell rows 0-10 instead of 5-15.
+    ;
+    ; So do not "compensate" here for Chinese menus - fix the glyph's row
+    ; placement in bank 9 instead, or the English menus go 5 pixels out.
+    ;
+    SBC #$20                                ; A = A - 32 (see above).
     TAY                                     ; Y = result.
 
 

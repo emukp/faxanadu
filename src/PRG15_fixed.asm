@@ -1,12 +1,18 @@
 ;============================================================================
 ; Faxanadu (U).nes
 ;
-; PRG15_MIRROR ($c000 - $ffdf)
+; PRG15 ($c000 - $ffdf) - the fixed bank.
+;
+; HISTORY: this file used to be assembled twice into the same object, once into
+; PRG15 and once with -D PRG15_COPY into PRG15B, to keep a second copy of the
+; fixed bank at the end of a 32-bank (512 KiB) image.  That image was abandoned:
+; the MMC1 only addresses banks 0-15 in 16 KiB PRG mode, so banks 16+ can never
+; be mapped and the copy was dead weight.  The image is back to 256 KiB, where
+; bank 15 IS the last bank, so one copy is all that is needed.
 ;============================================================================
 
-    .segment "PRG15_MIRROR"
+    .segment "PRG15"
     .reloc
-
 
 ;============================================================================
 ; Write attribute data for the HUD to the PPU.
@@ -123,30 +129,18 @@ HUD_ATTRIBUTE_DATA_BY_INDEX:
 ;============================================================================
 ; DEADCODE
 ;============================================================================
-DEADCODE_FUN_PRG15_MIRROR__c033:
-    LDY #$00
-    LDA (Temp_Addr_L),Y
-    STA PPU_TargetAddr
-    INY
-    LDA (Temp_Addr_L),Y
-    STA PPU_TargetAddr_U
-    INY
-    LDA (Temp_Addr_L),Y
-    PHA
-    JSR PPUBuffer_QueueCommandOrLength
-    PLA
-    STA Temp_00
-    LDY #$03
-
-  @LAB_PRG15_MIRROR__c04a:
-    LDA (Temp_Addr_L),Y
-    STA a:PPUBuffer,X
-    INX
-    INY
-    DEC Temp_00
-    BNE @LAB_PRG15_MIRROR__c04a
-    STX PPUBuffer_WriteOffset
-    RTS
+;============================================================================
+; REMOVED (zh_version): DEADCODE_FUN_PRG15__c033
+;
+; A dead "queue a PPU buffer command from an address" routine with no callers
+; (the disassembly names it DEADCODE_).  Its 44 bytes are the headroom the
+; full-width hook needs: PRG15 is exactly full, and bytes added before
+; TextBox_ShowMessage_EndOfMessage push the control-code BEQ at
+; TextBox_ShowMessage_LoadMessage past its +-128 branch range.
+;
+; The stale "; DEADCODE_FUN_PRG15__c033" XREFS lines in RAM.asm and
+; ZEROPAGE.asm were removed with it.
+;============================================================================
 
 
 ;============================================================================
@@ -482,14 +476,14 @@ Player_Something_ChangeHP:
     ROL a:Arg_PlayerHealthDelta_L
     ROL a:Arg_PlayerHealthDelta_U
 
-  @LAB_PRG15_MIRROR__c0fe:
+  @LAB_PRG15__c0fe:
     ROL a:Temp1_SomethingChangedHP
     ROL a:Temp2_SomethingChangedHP
     LDA a:Temp1_SomethingChangedHP
     CMP a:SpriteBehaviorUnknown20_SomethingXOrY
     LDA a:Temp2_SomethingChangedHP
     SBC a:BYTE_04bf
-    BCC @LAB_PRG15_MIRROR__c124
+    BCC @LAB_PRG15__c124
     LDA a:Temp1_SomethingChangedHP
     SBC a:SpriteBehaviorUnknown20_SomethingXOrY
     STA a:Temp1_SomethingChangedHP
@@ -497,11 +491,11 @@ Player_Something_ChangeHP:
     SBC a:BYTE_04bf
     STA a:Temp2_SomethingChangedHP
 
-  @LAB_PRG15_MIRROR__c124:
+  @LAB_PRG15__c124:
     ROL a:Arg_PlayerHealthDelta_L
     ROL a:Arg_PlayerHealthDelta_U
     DEX
-    BNE @LAB_PRG15_MIRROR__c0fe
+    BNE @LAB_PRG15__c0fe
     PLA
     TAX
     RTS
@@ -2486,19 +2480,19 @@ GameLoop_CheckUseCurrentItem:
     ;
     ; XREFS:
     ;     GameLoop_CheckUseCurrentItem
-    ;     USE_ITEM_JUMP_TABLE [$PRG15_MIRROR::c49d]
-    ;     USE_ITEM_JUMP_TABLE [$PRG15_MIRROR::c49f]
-    ;     USE_ITEM_JUMP_TABLE [$PRG15_MIRROR::c4a1]
-    ;     USE_ITEM_JUMP_TABLE [$PRG15_MIRROR::c4a3]
-    ;     USE_ITEM_JUMP_TABLE [$PRG15_MIRROR::c4a5]
-    ;     USE_ITEM_JUMP_TABLE [$PRG15_MIRROR::c4a7]
-    ;     USE_ITEM_JUMP_TABLE [$PRG15_MIRROR::c4a9]
-    ;     USE_ITEM_JUMP_TABLE [$PRG15_MIRROR::c4ab]
-    ;     USE_ITEM_JUMP_TABLE [$PRG15_MIRROR::c4ad]
-    ;     USE_ITEM_JUMP_TABLE [$PRG15_MIRROR::c4b1]
-    ;     USE_ITEM_JUMP_TABLE [$PRG15_MIRROR::c4b3]
-    ;     USE_ITEM_JUMP_TABLE [$PRG15_MIRROR::c4b5]
-    ;     USE_ITEM_JUMP_TABLE [$PRG15_MIRROR::c4b9]
+    ;     USE_ITEM_JUMP_TABLE [$PRG15::c49d]
+    ;     USE_ITEM_JUMP_TABLE [$PRG15::c49f]
+    ;     USE_ITEM_JUMP_TABLE [$PRG15::c4a1]
+    ;     USE_ITEM_JUMP_TABLE [$PRG15::c4a3]
+    ;     USE_ITEM_JUMP_TABLE [$PRG15::c4a5]
+    ;     USE_ITEM_JUMP_TABLE [$PRG15::c4a7]
+    ;     USE_ITEM_JUMP_TABLE [$PRG15::c4a9]
+    ;     USE_ITEM_JUMP_TABLE [$PRG15::c4ab]
+    ;     USE_ITEM_JUMP_TABLE [$PRG15::c4ad]
+    ;     USE_ITEM_JUMP_TABLE [$PRG15::c4b1]
+    ;     USE_ITEM_JUMP_TABLE [$PRG15::c4b3]
+    ;     USE_ITEM_JUMP_TABLE [$PRG15::c4b5]
+    ;     USE_ITEM_JUMP_TABLE [$PRG15::c4b9]
     ;
 GameLoop_UseItem_Return:
     RTS
@@ -2773,7 +2767,7 @@ Player_FillHPAndMP:
 ;     WaitForNextFrame
 ;
 ; XREFS:
-;     USE_ITEM_JUMP_TABLE [$PRG15_MIRROR::c4bd]
+;     USE_ITEM_JUMP_TABLE [$PRG15::c4bd]
 ;============================================================================
 Player_UseRedPotion:
     ;
@@ -2887,7 +2881,7 @@ Player_UseRedPotion:
 ;     UI_DrawTimeValue
 ;
 ; XREFS:
-;     USE_ITEM_JUMP_TABLE [$PRG15_MIRROR::c4bb]
+;     USE_ITEM_JUMP_TABLE [$PRG15::c4bb]
 ;============================================================================
 Player_UseWingBoots:
     ;
@@ -3082,7 +3076,7 @@ Game_DecWingBootsDuration:
 ;     UI_DrawPlayerHP
 ;
 ; XREFS:
-;     USE_ITEM_JUMP_TABLE [$PRG15_MIRROR::c4b7]
+;     USE_ITEM_JUMP_TABLE [$PRG15::c4b7]
 ;============================================================================
 Player_UseHourGlass:
     ;
@@ -3277,7 +3271,7 @@ Player_Add100XP:
 ;     Area_SetBlocks
 ;
 ; XREFS:
-;     USE_ITEM_JUMP_TABLE [$PRG15_MIRROR::c4af]
+;     USE_ITEM_JUMP_TABLE [$PRG15::c4af]
 ;============================================================================
 Player_UseMattock:
     ;
@@ -3295,7 +3289,7 @@ Player_UseMattock:
                                             ; (default)
     LDA Player_Flags                        ; Load the player's flags.
     AND #$40                                ; Is the player facing right?
-    BEQ @LAB_PRG15_MIRROR__c61f             ; If not, jump.
+    BEQ @LAB_PRG15__c61f             ; If not, jump.
 
 
     ;
@@ -3304,7 +3298,7 @@ Player_UseMattock:
     ;
     INY                                     ; Lookup table index = 1
 
-  @LAB_PRG15_MIRROR__c61f:
+  @LAB_PRG15__c61f:
     LDA Player_PosX_Block                   ; Get the player's X position.
     CLC
     ADC a:USE_MATTOCK_BLOCK_DISTANCES,Y     ; Add the block distance for the
@@ -4991,6 +4985,11 @@ UI_ClearSelectedItemPic:
 ; XREFS:
 ;     IScriptAction_FinishGame
 ;============================================================================
+;
+; The three entry points below (Game_Init, OnInterrupt, OnHardwareInterrupt)
+; are also the targets of the $FFFA-$FFFF vector table in END_OF_ROM.asm.
+;
+.export Game_Init
 Game_Init:
     SEI
     CLD
@@ -5214,6 +5213,7 @@ OnInterrupt__noProcessInterrupts:
 ;     PPU_HandleOnInterrupt
 ;     SoundEffects_HandleOnInterrupt
 ;============================================================================
+.export OnInterrupt
 OnInterrupt:
     ;
     ; Push all registers to the stack.
@@ -5308,6 +5308,7 @@ OnInterrupt__popAndReturn:
     TAX                                     ; Set X = A
     PLA                                     ; Pull A from the satck
 
+.export OnHardwareInterrupt
 OnHardwareInterrupt:
     RTI                                     ; Return from interrupt
 
@@ -6003,19 +6004,16 @@ PPU_WaitUntilFlushed:
 
 
 ;============================================================================
-; DEADCODE
+; REMOVED (zh_version): DEADCODE_FUN_PRG15__cb0c
 ;
-; XREFS:
-;     DEADCODE_FUN_PRG15_MIRROR__cb0c
+; A self-contained dead routine that polled PPUSTATUS waiting for VBlank and
+; returned.  It had no callers anywhere in the source (the only other mention is
+; an XREFS comment), and the original disassembly itself names it DEADCODE_.
+;
+; Its 9 bytes are reclaimed to make room for the full-width character hook in
+; the text path: PRG15 is otherwise exactly full ($3FE0 of $3FE0), so zh_version
+; cannot add a single byte without removing one.  See docs/hanhua-12x12.md.
 ;============================================================================
-DEADCODE_FUN_PRG15_MIRROR__cb0c:
-    LDA a:PPUSTATUS
-    BMI DEADCODE_FUN_PRG15_MIRROR__cb0c
-
-  @LAB_PRG15_MIRROR__cb11:
-    LDA a:PPUSTATUS
-    BPL @LAB_PRG15_MIRROR__cb11
-    RTS
 
 
 ;============================================================================
@@ -6057,11 +6055,14 @@ Screen_ResetForGamePlay:
 ;============================================================================
 ; DEADCODE
 ;============================================================================
-DEADCODE_FUN_PRG15_MIRROR__cb1f:
-    JSR DEADCODE_Sprites_ResetForDefaultsMode1
-    LDA #$01
-    STA Game_InterruptHandlersEnabled
-    RTS
+;============================================================================
+; REMOVED (zh_version): DEADCODE_FUN_PRG15__cb1f
+;
+; Another self-contained dead routine (reset sprites for defaults mode 1, enable
+; interrupt handlers, return).  No callers, and the disassembly names it
+; DEADCODE_.  Reclaimed for the full-width hook's branch headroom - see the note
+; where DEADCODE_FUN_PRG15__cb0c was removed.
+;============================================================================
 
 
 ;============================================================================
@@ -6149,17 +6150,14 @@ PPU_InitVBlank:
 ; DEADCODE
 ;
 ; XREFS:
-;     DEADCODE_FUN_PRG15_MIRROR__cb1f
 ;============================================================================
-DEADCODE_Sprites_ResetForDefaultsMode1:
-    LDA #$01
-    STA Sprites_Sprite0Mode
-    STA PPU_ForceLowerPatternTables
-    BNE Sprites_Reset
-
-    ;
-    ; v-- Fall through --v
-    ;
+;============================================================================
+; REMOVED (zh_version): DEADCODE_Sprites_ResetForDefaultsMode1
+;
+; A dead routine that set sprite 0 mode and then branched into Sprites_Reset.
+; Its only reference was the (also removed) DEADCODE_FUN_PRG15__cb1f; nothing
+; jumps or falls through into it now.  Reclaimed to fit the full-width hook.
+;============================================================================
 
 
 ;============================================================================
@@ -6294,7 +6292,6 @@ Screen_ResetSpritesForNonGame:
 ;         Cleared to 0.
 ;
 ; XREFS:
-;     DEADCODE_Sprites_ResetForDefaultsMode1
 ;     Screen_ResetSpritesForGamePlay
 ;============================================================================
 Sprites_Reset:
@@ -6997,7 +6994,7 @@ MMC1_RestorePrevROMBank:
 ;
 ; XREFS:
 ;     PPUBUFFER_DRAW_COMMANDS
-;     [$PRG15_MIRROR::cfc8]
+;     [$PRG15::cfc8]
 ;============================================================================
 PPUBuffer_DrawCommand_RemoveVerticalLines:
     ;
@@ -7149,7 +7146,7 @@ PPUBUFFER_DRAWCOMMAND_REMOVE_VERT_LINES_MASKS:
 ;
 ; XREFS:
 ;     PPUBUFFER_DRAW_COMMANDS
-;     [$PRG15_MIRROR::cfc4]
+;     [$PRG15::cfc4]
 ;============================================================================
 PPUBuffer_DrawCommand_RotateTilesRight1Pixel:
     ;
@@ -8360,13 +8357,13 @@ PPUBuffer_Draw:
 ;
 ; XREFS:
 ;     PPUBUFFER_DRAW_COMMANDS
-;     [$PRG15_MIRROR::cfbe]
+;     [$PRG15::cfbe]
 ;     PPUBUFFER_DRAW_COMMANDS
-;     [$PRG15_MIRROR::cfc0]
+;     [$PRG15::cfc0]
 ;     PPUBUFFER_DRAW_COMMANDS
-;     [$PRG15_MIRROR::cfc2]
+;     [$PRG15::cfc2]
 ;     PPUBUFFER_DRAW_COMMANDS
-;     [$PRG15_MIRROR::cfc6]
+;     [$PRG15::cfc6]
 ;============================================================================
 PPUBuffer_DrawCommand_Noop:
     RTS
@@ -8502,7 +8499,6 @@ PPUBuffer_HasCapacity:
 ;     Area_SetBlocks_SetAttributes
 ;     Area_SetBlocks_WriteBlockDataColumn1
 ;     Area_SetBlocks_WriteBlockDataColumn2
-;     DEADCODE_FUN_PRG15_MIRROR__c033
 ;     IScripts_DrawPortraitTileToPPU
 ;     PPUBuffer_WriteValueMany
 ;     Player_LoadWeaponTile
@@ -8651,7 +8647,7 @@ UNUSED_WriteCurrentBackgroundPalette:
 ;
 ; XREFS:
 ;     PPUBUFFER_DRAW_COMMANDS
-;     [$PRG15_MIRROR::cfbc]
+;     [$PRG15::cfbc]
 ;============================================================================
 PPUBuffer_DrawCommand_WritePalette:
     ;
@@ -9395,11 +9391,11 @@ Area_LoadScrollData:
     JSR Area_LoadBlocks                     ; Load blocks from screen below.
     LDX #$f0
 
-  @LAB_PRG15_MIRROR__d1b0:
+  @LAB_PRG15__d1b0:
     LDA a:$0510,X
     STA a:$0326,X
     INX
-    BNE @LAB_PRG15_MIRROR__d1b0
+    BNE @LAB_PRG15__d1b0
 
 
     ;
@@ -9886,18 +9882,18 @@ Screen_StopScrollAndLoadBlockProperties:
 ;============================================================================
 Screen_HandleScrollUp:
     LDA PPU_ScrollY
-    BNE @LAB_PRG15_MIRROR__d2ac
+    BNE @LAB_PRG15__d2ac
     LDA #$d0
 
-  @LAB_PRG15_MIRROR__d2ac:
+  @LAB_PRG15__d2ac:
     SEC
     SBC #$01
     STA PPU_ScrollY
-    BNE @LAB_PRG15_MIRROR__d2b8
+    BNE @LAB_PRG15__d2b8
     DEC PPU_ScrollScreenVert
     JSR Screen_StopScrollAndLoadBlockProperties
 
-  @LAB_PRG15_MIRROR__d2b8:
+  @LAB_PRG15__d2b8:
     LDA PPU_ScrollY
     STA Screen_ScrollVertLoadCounter
     LDA a:CurrentROMBank
@@ -10003,13 +9999,13 @@ Screen_HandleScrollDown:
     ADC #$01
     STA PPU_ScrollY
     CMP #$d0
-    BCC @LAB_PRG15_MIRROR__d308
+    BCC @LAB_PRG15__d308
     LDA #$00
     STA PPU_ScrollY
     INC PPU_ScrollScreenVert
     JSR Screen_StopScrollAndLoadBlockProperties
 
-  @LAB_PRG15_MIRROR__d308:
+  @LAB_PRG15__d308:
     LDA PPU_ScrollY
     STA Screen_ScrollVertLoadCounter
     LDA a:CurrentROMBank
@@ -10047,10 +10043,10 @@ Screen_HandleScrollRight:
     STA PPU_ScrollScreenHoriz
     STA PPU_ScrollScreen
     PLP
-    BCC @LAB_PRG15_MIRROR__d334
+    BCC @LAB_PRG15__d334
     JSR Screen_StopScrollAndLoadBlockProperties
 
-  @LAB_PRG15_MIRROR__d334:
+  @LAB_PRG15__d334:
     LDA PPU_ScrollX
     STA Screen_ScrollHorizLoadCounter
     LDA a:CurrentROMBank
@@ -10286,7 +10282,7 @@ Screen_LoadBlocksDown:
 Screen_LoadBlockDataVert:
     LDA Screen_ScrollVertLoadCounter
     CLC
-    ADC a:BYTE_ARRAY_PRG15_MIRROR__d4cb,X
+    ADC a:BYTE_ARRAY_PRG15__d4cb,X
     STA Temp_00
     LDA PPU_ScrollScreenVert
     ADC #$00
@@ -10304,14 +10300,14 @@ Screen_LoadBlockDataVert:
     ADC #$00
     STA Temp_09
     LDA Screen_ScrollLoadMode
-    BEQ @LAB_PRG15_MIRROR__d3e6
-    JMP @LAB_PRG15_MIRROR__d445
+    BEQ @LAB_PRG15__d3e6
+    JMP @LAB_PRG15__d445
 
-  @LAB_PRG15_MIRROR__d3e6:
+  @LAB_PRG15__d3e6:
     LDY #$00
     LDX #$00
 
-  @LAB_PRG15_MIRROR__d3ea:
+  @LAB_PRG15__d3ea:
     STY Temp_06
     LDA (Temp_08),Y
     TAY
@@ -10337,7 +10333,7 @@ Screen_LoadBlockDataVert:
     LDY Temp_06
     INY
     CPY #$10
-    BCC @LAB_PRG15_MIRROR__d3ea
+    BCC @LAB_PRG15__d3ea
     LDA #$00
     STA Screen_ScrollVertBlocks_PPUTileMapAddr_U
     LDA Screen_ScrollVertLoadCounter
@@ -10363,7 +10359,7 @@ Screen_LoadBlockDataVert:
     STA Screen_ScrollHandlersPending
     RTS
 
-  @LAB_PRG15_MIRROR__d445:
+  @LAB_PRG15__d445:
     LDA Screen_ScrollVertLoadCounter
     AND #$16
     LSR A
@@ -10373,12 +10369,12 @@ Screen_LoadBlockDataVert:
     LDY #$f8
     LDA #$00
 
-  @LAB_PRG15_MIRROR__d452:
+  @LAB_PRG15__d452:
     STA a:Screen_ScrollVert_ZeroData,Y
     INY
-    BNE @LAB_PRG15_MIRROR__d452
+    BNE @LAB_PRG15__d452
 
-  @LAB_PRG15_MIRROR__d458:
+  @LAB_PRG15__d458:
     STY Temp_06
     LDA (Temp_08),Y
     TAY
@@ -10400,14 +10396,14 @@ Screen_LoadBlockDataVert:
     LDY Temp_06
     INY
     CPY #$10
-    BCC @LAB_PRG15_MIRROR__d458
+    BCC @LAB_PRG15__d458
     LDX #$f0
     LDA Screen_ScrollVertLoadCounter
     AND #$10
-    BEQ @LAB_PRG15_MIRROR__d48a
+    BEQ @LAB_PRG15__d48a
     LDX #$0f
 
-  @LAB_PRG15_MIRROR__d48a:
+  @LAB_PRG15__d48a:
     STX Temp_06
     LDA Screen_ScrollVertLoadCounter
     AND #$e0
@@ -10433,7 +10429,7 @@ Screen_LoadBlockDataVert:
     STA Temp_09
     LDX #$00
 
-  @LAB_PRG15_MIRROR__d4b4:
+  @LAB_PRG15__d4b4:
     LDA (Temp_08),Y
     AND Temp_06
     ORA a:Screen_ScrollVertPPUAttrData,X
@@ -10442,7 +10438,7 @@ Screen_LoadBlockDataVert:
     INY
     INX
     CPX #$08
-    BCC @LAB_PRG15_MIRROR__d4b4
+    BCC @LAB_PRG15__d4b4
     LDA #$01
     STA Screen_MaybeUnused_0075
     RTS
@@ -10451,7 +10447,7 @@ Screen_LoadBlockDataVert:
 ; XREFS:
 ;     Screen_LoadBlockDataVert
 ;
-BYTE_ARRAY_PRG15_MIRROR__d4cb:
+BYTE_ARRAY_PRG15__d4cb:
     .byte $00                               ; [0]:
     .byte $00                               ; [1]:
     .byte $00,$08                           ; byte
@@ -11236,9 +11232,9 @@ SCREEN_WRITESCROLL_HANDLERS_U:
 ;
 ; XREFS:
 ;     SCREEN_WRITESCROLL_HANDLERS_L
-;     [$PRG15_MIRROR::d64c]
+;     [$PRG15::d64c]
 ;     SCREEN_WRITESCROLL_HANDLERS_U
-;     [$PRG15_MIRROR::d650]
+;     [$PRG15::d650]
 ;============================================================================
 Screen_WriteBlockTilesRowToPPU:
     ;
@@ -11304,9 +11300,9 @@ Screen_WriteBlockTilesRowToPPU:
 ;
 ; XREFS:
 ;     SCREEN_WRITESCROLL_HANDLERS_L
-;     [$PRG15_MIRROR::d64d]
+;     [$PRG15::d64d]
 ;     SCREEN_WRITESCROLL_HANDLERS_U
-;     [$PRG15_MIRROR::d651]
+;     [$PRG15::d651]
 ;============================================================================
 Screen_WriteBlockTilesColumnToPPU:
     ;
@@ -11379,9 +11375,9 @@ Screen_WriteBlockTilesColumnToPPU:
 ;
 ; XREFS:
 ;     SCREEN_WRITESCROLL_HANDLERS_L
-;     [$PRG15_MIRROR::d64e]
+;     [$PRG15::d64e]
 ;     SCREEN_WRITESCROLL_HANDLERS_U
-;     [$PRG15_MIRROR::d652]
+;     [$PRG15::d652]
 ;============================================================================
 Screen_WriteBlockAttrsRowToPPU:
     ;
@@ -11436,9 +11432,9 @@ Screen_WriteBlockAttrsRowToPPU:
 ;
 ; XREFS:
 ;     SCREEN_WRITESCROLL_HANDLERS_L
-;     [$PRG15_MIRROR::d64f]
+;     [$PRG15::d64f]
 ;     SCREEN_WRITESCROLL_HANDLERS_U
-;     [$PRG15_MIRROR::d653]
+;     [$PRG15::d653]
 ;============================================================================
 Screen_WriteBlockAttrsColumnToPPU:
     ;
@@ -13046,7 +13042,7 @@ UNUSED_Screen_ClearFadeOutStage:
 ;     Player_EnterDoorToInside
 ;     Player_EnterDoorToOutside
 ;     _afterSetExpGoldFarJump
-;     [$PRG15_MIRROR::d9a0]
+;     [$PRG15::d9a0]
 ;============================================================================
 Screen_FadeToBlack:
     LDA #$00                                ; X = 0 (loop counter)
@@ -13409,14 +13405,14 @@ Game_SetupAndLoadOutsideArea:
 ; This isn't even a complete function. It runs right into the
 ; data table below.
 ;============================================================================
-FUN_PRG15_MIRROR__daf6:
+FUN_PRG15__daf6:
     LDX a:Area_Region
     LDA a:DOOR_OUTSIDE_REGION_INDEXES,X
     STA Area_CurrentArea
 
 ;
 ; XREFS:
-;     FUN_PRG15_MIRROR__daf6
+;     FUN_PRG15__daf6
 ;     Game_SetupAndLoadOutsideArea
 ;
 DOOR_OUTSIDE_REGION_INDEXES:
@@ -13635,12 +13631,12 @@ Game_MainLoop:
     BMI Game_MainLoop
     JSR PPUBuffer_WaitUntilClear
     LDA a:Maybe_Game_Ready
-    BEQ @LAB_PRG15_MIRROR__db91
+    BEQ @LAB_PRG15__db91
     LDA Screen_ScrollDirection
     CMP #$02
-    BCC @LAB_PRG15_MIRROR__dbaf
+    BCC @LAB_PRG15__dbaf
 
-  @LAB_PRG15_MIRROR__db91:
+  @LAB_PRG15__db91:
     JSR Screen_ResetSpritesForGamePlay
     JSR WaitForNextFrame
     JSR Screen_ClearSprites
@@ -13652,7 +13648,7 @@ Game_MainLoop:
     JSR Screen_ResetForGamePlay
     JMP Game_MainLoop
 
-  @LAB_PRG15_MIRROR__dbaf:
+  @LAB_PRG15__dbaf:
     JSR WaitForNextFrame
     JSR Screen_ResetSpritesForGamePlay
     JSR Player_DrawShield
@@ -16577,7 +16573,7 @@ Player_CheckHandleJump:
 
   @_playerCanFly:
     LDA Player_Flags
-    BMI @LAB_PRG15_MIRROR__e1be
+    BMI @LAB_PRG15__e1be
     LDA Joy1_ButtonMask
     AND #$03
     BEQ @_playerNotMoving
@@ -16591,21 +16587,21 @@ Player_CheckHandleJump:
   @_playerNotMoving:
     LDA Joy1_ButtonMask
     AND #$0c
-    BEQ @LAB_PRG15_MIRROR__e1be
+    BEQ @LAB_PRG15__e1be
     LDA Player_PosX_Block
     AND #$0f
-    BEQ @LAB_PRG15_MIRROR__e1be
+    BEQ @LAB_PRG15__e1be
     LDA Player_Flags
     AND #$08
-    BNE @LAB_PRG15_MIRROR__e1c5
+    BNE @LAB_PRG15__e1c5
 
-  @LAB_PRG15_MIRROR__e1be:
+  @LAB_PRG15__e1be:
     LDA Player_Flags
     AND #$df
     STA Player_Flags
     RTS
 
-  @LAB_PRG15_MIRROR__e1c5:
+  @LAB_PRG15__e1c5:
     INC Player_MovementTick
     LDA Player_PosX_Block
     AND #$0f
@@ -17410,7 +17406,7 @@ Player_CheckHandleClimbDown:
     BNE RETURN_E393
     INC Player_MovementTick
     LDA Player_StatusFlag
-    BPL @LAB_PRG15_MIRROR__e36c
+    BPL @LAB_PRG15__e36c
     LDA Player_ClimbFlySpeedModifier
     CLC
     ADC #$80
@@ -17420,7 +17416,7 @@ Player_CheckHandleClimbDown:
     STA Player_PosY
     JMP Player_MoveDownScreen
 
-  @LAB_PRG15_MIRROR__e36c:
+  @LAB_PRG15__e36c:
     LDA Player_ClimbFlySpeedModifier
     CLC
     ADC #$c0
@@ -18264,14 +18260,14 @@ Player_CheckHandleEnterDoor:
 
   @_paletteCheckLoop:
     LDA Screen_DestPaletteOrIndex
-    CMP a:Palette_ARRAY_PRG15_MIRROR__e569,X
+    CMP a:Palette_ARRAY_PRG15__e569,X
     BEQ @_setupArea
     DEX
     BPL @_paletteCheckLoop
     BMI @_enterScreen
 
   @_setupArea:
-    LDA a:Music_ARRAY_PRG15_MIRROR__e570,X
+    LDA a:Music_ARRAY_PRG15__e570,X
     CMP a:Areas_DefaultMusic
     BEQ @_enterScreen
     STA Music_Current
@@ -18299,7 +18295,7 @@ Player_CheckHandleEnterDoor:
 ; XREFS:
 ;     Player_CheckHandleEnterDoor
 ;
-Palette_ARRAY_PRG15_MIRROR__e569:
+Palette_ARRAY_PRG15__e569:
     .byte PALETTE_OUTSIDE                   ; [0]:
     .byte PALETTE_TOWER                     ; [1]:
     .byte PALETTE_MIST                      ; [2]:
@@ -18312,7 +18308,7 @@ Palette_ARRAY_PRG15_MIRROR__e569:
 ; XREFS:
 ;     Player_CheckHandleEnterDoor
 ;
-Music_ARRAY_PRG15_MIRROR__e570:
+Music_ARRAY_PRG15__e570:
     .byte MUSIC_APOLUNE                     ; [0]:
     .byte MUSIC_MAYBE_TOWER                 ; [1]:
     .byte MUSIC_FOREPAW                     ; [2]:
@@ -18356,10 +18352,10 @@ Player_EnterDoorToInside:
     ; Where does this door take the player?
     ;
     CMP #$04
-    BNE @LAB_PRG15_MIRROR__e5a6
+    BNE @LAB_PRG15__e5a6
     JMP Game_BeginExitBuilding
 
-  @LAB_PRG15_MIRROR__e5a6:
+  @LAB_PRG15__e5a6:
     LDA Player_Flags
     AND #$bf
     STA Player_Flags
@@ -18605,14 +18601,14 @@ Area_CanMoveUp:
     STA Blocks_Result
     LDA Player_PosY
     AND #$0f
-    BEQ @LAB_PRG15_MIRROR__e658
+    BEQ @LAB_PRG15__e658
     INX
     LDY a:FirstColumnInRightScreen,X
     JSR Area_IsBlockImpassable
     ORA Blocks_Result
     STA Blocks_Result
 
-  @LAB_PRG15_MIRROR__e658:
+  @LAB_PRG15__e658:
     LDA Blocks_Result
     RTS
 
@@ -18713,14 +18709,14 @@ Area_CanPlayerMoveLeft:
     STA Blocks_Result
     LDA Player_PosY
     AND #$0f
-    BEQ @LAB_PRG15_MIRROR__e6c5
+    BEQ @LAB_PRG15__e6c5
     INX
     LDY a:LastColumnLeftScreen,X
     JSR Area_IsBlockImpassable
     ORA Blocks_Result
     STA Blocks_Result
 
-  @LAB_PRG15_MIRROR__e6c5:
+  @LAB_PRG15__e6c5:
     LDA Blocks_Result
     RTS
 
@@ -19082,7 +19078,7 @@ Area_SetStateFromDoorDestination:
     LDA Area_CurrentArea                    ; Load the current region.
     CMP #$04                                ; Is this the area around
                                             ; Victim(?) ?
-    BNE @LAB_PRG15_MIRROR__e7fe             ; If not, jump and continue on.
+    BNE @LAB_PRG15__e7fe             ; If not, jump and continue on.
 
 
     ;
@@ -19090,7 +19086,7 @@ Area_SetStateFromDoorDestination:
     ;
     JMP SUB_RETURN_E5DA                     ; Else, we're done.
 
-  @LAB_PRG15_MIRROR__e7fe:
+  @LAB_PRG15__e7fe:
     LDA #$01
     STA Blocks_Result                       ; Mark the resulting block as
                                             ; solid by default.
@@ -19131,7 +19127,7 @@ Area_SetStateFromDoorDestination:
     BEQ @_returnAirBlock                    ; If so, consider this air and
                                             ; return.
     CMP Area_CurrentScreen                  ; Is it the current screen index?
-    BNE @LAB_PRG15_MIRROR__e852             ; If not, jump.
+    BNE @LAB_PRG15__e852             ; If not, jump.
 
 
     ;
@@ -19146,7 +19142,7 @@ Area_SetStateFromDoorDestination:
                                             ; referenced address.
     CMP Temp_BlockPos                       ; Is it the block position we
                                             ; stored?
-    BNE @LAB_PRG15_MIRROR__e852             ; If not, jump.
+    BNE @LAB_PRG15__e852             ; If not, jump.
 
 
     ;
@@ -19185,7 +19181,7 @@ Area_SetStateFromDoorDestination:
     ;
     LDY Area_CurrentArea                    ; Y = current area
     CPY #$03                                ; Is the current area 3?
-    BNE @LAB_PRG15_MIRROR__e83d             ; If not, jump.
+    BNE @LAB_PRG15__e83d             ; If not, jump.
 
 
     ;
@@ -19194,7 +19190,7 @@ Area_SetStateFromDoorDestination:
     SEC
     SBC #$20                                ; Reduce it by 32.
 
-  @LAB_PRG15_MIRROR__e83d:
+  @LAB_PRG15__e83d:
     ASL A                                   ; Multiply the block position by
                                             ; 4.
     ASL A
@@ -19226,7 +19222,7 @@ Area_SetStateFromDoorDestination:
     ; Skip the 4 bytes of information of the area at the other end
     ; of the door destination. We'll set up to process the next one.
     ;
-  @LAB_PRG15_MIRROR__e852:
+  @LAB_PRG15__e852:
     LDA Temp_Addr_L                         ; Load the lower byte of the door
                                             ; destination address we stored.
     CLC
@@ -19915,14 +19911,14 @@ Player_CheckOnBreakableBlock:
 Player_CheckPushingBlock:
     LDA Joy1_ButtonMask
     AND #$03
-    BEQ @LAB_PRG15_MIRROR__e9b9
+    BEQ @LAB_PRG15__e9b9
     LDA a:SpecialItems
     AND #$40
-    BEQ @LAB_PRG15_MIRROR__e9b9
+    BEQ @LAB_PRG15__e9b9
     LDA a:Quests
     AND #$07
     CMP #$07
-    BNE @LAB_PRG15_MIRROR__e9b9
+    BNE @LAB_PRG15__e9b9
     LDA Player_Flags
     AND #$40
     ROL A
@@ -19934,7 +19930,7 @@ Player_CheckPushingBlock:
     STA Arg_PixelPosY
     LDA Player_PosX_Block
     CLC
-    ADC a:BYTE_ARRAY_PRG15_MIRROR__e9be,X
+    ADC a:BYTE_ARRAY_PRG15__e9be,X
     STA Arg_PixelPosX
 
 
@@ -19950,7 +19946,7 @@ Player_CheckPushingBlock:
     ; Check if the block is pushable. If so, we'll handle it.
     ;
     CMP #$06
-    BNE @LAB_PRG15_MIRROR__e9b9
+    BNE @LAB_PRG15__e9b9
 
 
     ;
@@ -19962,11 +19958,11 @@ Player_CheckPushingBlock:
     INC BlockPushCounter
     LDA BlockPushCounter
     CMP #$3f
-    BNE @LAB_PRG15_MIRROR__e9a3
+    BNE @LAB_PRG15__e9a3
     LDA #$0f
     JSR Sound_PlayEffect
 
-  @LAB_PRG15_MIRROR__e9a3:
+  @LAB_PRG15__e9a3:
     LDA BlockPushCounter
     CMP #$60
     BCC @_return
@@ -19982,7 +19978,7 @@ Player_CheckPushingBlock:
   @_return:
     RTS
 
-  @LAB_PRG15_MIRROR__e9b9:
+  @LAB_PRG15__e9b9:
     LDA #$00
     STA BlockPushCounter
     RTS
@@ -19991,7 +19987,7 @@ Player_CheckPushingBlock:
 ; XREFS:
 ;     Player_CheckPushingBlock
 ;
-BYTE_ARRAY_PRG15_MIRROR__e9be:
+BYTE_ARRAY_PRG15__e9be:
     .byte $ff                               ; [0]:
     .byte $10                               ; [1]:
 ;============================================================================
@@ -20017,11 +20013,11 @@ Player_CheckSwitchScreen:
     JSR Area_ConvertPixelsToBlockPos
     JSR ScreenBuffer_LoadBlockProperty
     CMP #$09
-    BEQ @LAB_PRG15_MIRROR__e9de
+    BEQ @LAB_PRG15__e9de
     CMP #$0a
-    BEQ @LAB_PRG15_MIRROR__e9de
+    BEQ @LAB_PRG15__e9de
     CMP #$0d
-    BEQ @LAB_PRG15_MIRROR__e9de
+    BEQ @LAB_PRG15__e9de
     CMP #$0c
     BNE @_return
 
@@ -20029,7 +20025,7 @@ Player_CheckSwitchScreen:
     ;
     ; Check the next block.
     ;
-  @LAB_PRG15_MIRROR__e9de:
+  @LAB_PRG15__e9de:
     LDA Player_PosX_Block
     CLC
     ADC #$0f
@@ -20037,11 +20033,11 @@ Player_CheckSwitchScreen:
     JSR Area_ConvertPixelsToBlockPos
     JSR ScreenBuffer_LoadBlockProperty
     CMP #$09
-    BEQ @LAB_PRG15_MIRROR__e9fb
+    BEQ @LAB_PRG15__e9fb
     CMP #$0a
-    BEQ @LAB_PRG15_MIRROR__e9fb
+    BEQ @LAB_PRG15__e9fb
     CMP #$0d
-    BEQ @LAB_PRG15_MIRROR__e9fb
+    BEQ @LAB_PRG15__e9fb
     CMP #$0c
     BNE @_return
 
@@ -20050,7 +20046,7 @@ Player_CheckSwitchScreen:
     ; Check if this is a horizontal transition block. If so,
     ; switch the area.
     ;
-  @LAB_PRG15_MIRROR__e9fb:
+  @LAB_PRG15__e9fb:
     CMP #$0c
     BEQ Player_CheckSwitchScreen_SwitchAreaHoriz
     CMP #$0d
@@ -20070,12 +20066,12 @@ Player_CheckSwitchScreen:
     STA Temp_Addr_U
     LDY #$00
 
-  @LAB_PRG15_MIRROR__ea13:
+  @LAB_PRG15__ea13:
     LDA (Temp_Addr_L),Y
     CMP #$ff
     BEQ @_return
     CMP Area_CurrentScreen
-    BNE @LAB_PRG15_MIRROR__ea2f
+    BNE @LAB_PRG15__ea2f
     INY
     LDA (Temp_Addr_L),Y
     STA Area_LoadingScreenIndex
@@ -20087,12 +20083,12 @@ Player_CheckSwitchScreen:
     STA Screen_DestPaletteOrIndex
     JMP Game_SetupEnterScreen
 
-  @LAB_PRG15_MIRROR__ea2f:
+  @LAB_PRG15__ea2f:
     INY
     INY
     INY
     INY
-    JMP @LAB_PRG15_MIRROR__ea13
+    JMP @LAB_PRG15__ea13
 
   @_return:
     RTS
@@ -20124,7 +20120,7 @@ AREA_SCREEN_COMPARATOR_APOLUNE:
 ;
 ; XREFS:
 ;     AREA_SCREEN_COMPARATORS
-;     [$PRG15_MIRROR::ea37]
+;     [$PRG15::ea37]
 ;
 AREA_SCREEN_COMPARATOR_END:
     .byte $ff                               ; byte
@@ -20198,12 +20194,12 @@ Player_CheckSwitchScreen_SwitchAreaHoriz:
     STA Temp_Addr_U
     LDY #$00
 
-  @LAB_PRG15_MIRROR__ea73:
+  @LAB_PRG15__ea73:
     LDA (Temp_Addr_L),Y
     CMP #$ff
     BEQ @_return
     CMP Area_CurrentScreen
-    BNE @LAB_PRG15_MIRROR__ea94
+    BNE @LAB_PRG15__ea94
     INY
     LDA (Temp_Addr_L),Y
     STA Area_CurrentArea
@@ -20218,12 +20214,12 @@ Player_CheckSwitchScreen_SwitchAreaHoriz:
     STA Screen_DestPaletteOrIndex
     JMP Game_SetupNewArea
 
-  @LAB_PRG15_MIRROR__ea94:
+  @LAB_PRG15__ea94:
     TYA
     CLC
     ADC #$05
     TAY
-    BCC @LAB_PRG15_MIRROR__ea73
+    BCC @LAB_PRG15__ea73
 
   @_return:
     RTS
@@ -20245,7 +20241,7 @@ AREA_TOWN_TRANSITIONS_DATA:
 ;
 ; XREFS:
 ;     AREA_TOWN_TRANSITIONS_DATA
-;     [$PRG15_MIRROR::ea9e]
+;     [$PRG15::ea9e]
 ;
 TOWN_TRANSITIONS_TRUNK:
     .byte $00                               ; byte
@@ -20283,7 +20279,7 @@ TOWN_TRANSITIONS_TRUNK:
 ;
 ; XREFS:
 ;     AREA_TOWN_TRANSITIONS_DATA
-;     [$PRG15_MIRROR::eaa2]
+;     [$PRG15::eaa2]
 ;
 TOWN_TRANSITIONS_TOWNS:
     .byte $00                               ; Exiting left from Apolune
@@ -20363,7 +20359,7 @@ TOWN_TRANSITIONS_TOWNS:
 ;
 ; XREFS:
 ;     AREA_TOWN_TRANSITIONS_DATA
-;     [$PRG15_MIRROR::eaa0]
+;     [$PRG15::eaa0]
 ;
 TOWN_TRANSITIONS_MIST:
     .byte $09                               ; Entering Mascon from Mist
@@ -20395,7 +20391,7 @@ TOWN_TRANSITIONS_MIST:
 ;
 ; XREFS:
 ;     AREA_TOWN_TRANSITIONS_DATA
-;     [$PRG15_MIRROR::eaa6]
+;     [$PRG15::eaa6]
 ;
 TOWN_TRANSITIONS_BRANCH:
     .byte $0d                               ; Entering right to Conflate from
@@ -20421,7 +20417,7 @@ TOWN_TRANSITIONS_BRANCH:
 ;
 ; XREFS:
 ;     AREA_TOWN_TRANSITIONS_DATA
-;     [$PRG15_MIRROR::eaa8]
+;     [$PRG15::eaa8]
 ;
 TOWN_TRANSITIONS_DARTMOOR:
     .byte $03                               ; Entering right to Dartmoor from
@@ -20435,11 +20431,11 @@ TOWN_TRANSITIONS_DARTMOOR:
 ;
 ; XREFS:
 ;     AREA_TOWN_TRANSITIONS_DATA
-;     [$PRG15_MIRROR::ea9c]
+;     [$PRG15::ea9c]
 ;     AREA_TOWN_TRANSITIONS_DATA
-;     [$PRG15_MIRROR::eaa4]
+;     [$PRG15::eaa4]
 ;     AREA_TOWN_TRANSITIONS_DATA
-;     [$PRG15_MIRROR::eaaa]
+;     [$PRG15::eaaa]
 ;
 TOWN_TRANSITIONS_EMPTY:
     .byte $ff                               ; byte
@@ -20488,7 +20484,7 @@ Game_RunDoorRequirementHandler:
 ;
 ; XREFS:
 ;     DOOR_REQUIREMENT_LOOKUP_FUNC_ADDRS
-;     [$PRG15_MIRROR::eb3f]
+;     [$PRG15::eb3f]
 ;     Game_RunDoorRequirementHandler
 ;============================================================================
 RETURN_EB3E:
@@ -20538,7 +20534,7 @@ DOOR_REQUIREMENT_LOOKUP_FUNC_ADDRS:
 ;
 ; XREFS:
 ;     DOOR_REQUIREMENT_LOOKUP_FUNC_ADDRS
-;     [$PRG15_MIRROR::eb41]
+;     [$PRG15::eb41]
 ;============================================================================
 Game_OpenDoorWithAKey:
     LDA a:SelectedItem                      ; Load the selected item.
@@ -20581,7 +20577,7 @@ Game_OpenDoorWithAKey:
 ;
 ; XREFS:
 ;     DOOR_REQUIREMENT_LOOKUP_FUNC_ADDRS
-;     [$PRG15_MIRROR::eb43]
+;     [$PRG15::eb43]
 ;============================================================================
 Game_OpenDoorWithKKey:
     LDA a:SelectedItem                      ; Load the selected item.
@@ -20624,7 +20620,7 @@ Game_OpenDoorWithKKey:
 ;
 ; XREFS:
 ;     DOOR_REQUIREMENT_LOOKUP_FUNC_ADDRS
-;     [$PRG15_MIRROR::eb45]
+;     [$PRG15::eb45]
 ;============================================================================
 Game_OpenDoorWithQKey:
     LDA a:SelectedItem                      ; Load the selected item.
@@ -20667,7 +20663,7 @@ Game_OpenDoorWithQKey:
 ;
 ; XREFS:
 ;     DOOR_REQUIREMENT_LOOKUP_FUNC_ADDRS
-;     [$PRG15_MIRROR::eb47]
+;     [$PRG15::eb47]
 ;============================================================================
 Game_OpenDoorWithJKey:
     LDA a:SelectedItem                      ; Load the selected item.
@@ -20710,7 +20706,7 @@ Game_OpenDoorWithJKey:
 ;
 ; XREFS:
 ;     DOOR_REQUIREMENT_LOOKUP_FUNC_ADDRS
-;     [$PRG15_MIRROR::eb49]
+;     [$PRG15::eb49]
 ;============================================================================
 Game_OpenDoorWithJoKey:
     LDA a:SelectedItem                      ; Load the selected item.
@@ -20752,7 +20748,7 @@ Game_OpenDoorWithJoKey:
 ;
 ; XREFS:
 ;     DOOR_REQUIREMENT_LOOKUP_FUNC_ADDRS
-;     [$PRG15_MIRROR::eb4b]
+;     [$PRG15::eb4b]
 ;============================================================================
 Game_OpenDoorWithRingOfElf:
     LDA a:SpecialItems                      ; Load the special items.
@@ -20794,7 +20790,7 @@ Game_OpenDoorWithRingOfElf:
 ;
 ; XREFS:
 ;     DOOR_REQUIREMENT_LOOKUP_FUNC_ADDRS
-;     [$PRG15_MIRROR::eb4d]
+;     [$PRG15::eb4d]
 ;============================================================================
 Game_OpenDoorWithRingOfDworf:
     LDA a:SpecialItems                      ; Load the special items.
@@ -20836,7 +20832,7 @@ Game_OpenDoorWithRingOfDworf:
 ;
 ; XREFS:
 ;     DOOR_REQUIREMENT_LOOKUP_FUNC_ADDRS
-;     [$PRG15_MIRROR::eb4f]
+;     [$PRG15::eb4f]
 ;============================================================================
 Game_OpenDoorWithDemonsRing:
     LDA a:SpecialItems                      ; Load the special items.
@@ -20927,7 +20923,7 @@ Game_UnlockDoor:
 ;============================================================================
 Player_DrawBody:
     LDA a:IScript_PortraitID
-    BMI @LAB_PRG15_MIRROR__ebf4
+    BMI @LAB_PRG15__ebf4
     RTS
 
 
@@ -20940,12 +20936,12 @@ Player_DrawBody:
     ; It appears that at some point they simplified this, which
     ; makes all of this dead code.
     ;
-  @LAB_PRG15_MIRROR__ebf4:
+  @LAB_PRG15__ebf4:
     LDA Screen_ReadyState
     CMP #$01
-    BEQ @LAB_PRG15_MIRROR__ec11
+    BEQ @LAB_PRG15__ec11
     CMP #$05
-    BEQ @LAB_PRG15_MIRROR__ec11
+    BEQ @LAB_PRG15__ec11
 
 
     ;
@@ -20960,14 +20956,14 @@ Player_DrawBody:
     STA Arg_DrawSprite_PosY
     LDA Player_Something_ScrollPosY
     STA Unused_Sprite_ScrollPosY
-    JMP @LAB_PRG15_MIRROR__ec21
+    JMP @LAB_PRG15__ec21
 
 
     ;
     ; This whole section seems unreachable. Screen_ReadyState
     ; should never reach these values. This may be dead code.
     ;
-  @LAB_PRG15_MIRROR__ec11:
+  @LAB_PRG15__ec11:
     LDA Maybe_PlayerX_ForScroll
     STA Arg_DrawSprite_PosX
     LDA PPU_ScrollScreenHoriz
@@ -20977,7 +20973,7 @@ Player_DrawBody:
     LDA PPU_ScrollScreenVert
     STA Unused_Sprite_ScrollPosY
 
-  @LAB_PRG15_MIRROR__ec21:
+  @LAB_PRG15__ec21:
     JSR Player_CalculateVisibility
     JSR Player_SetFacingLeft
     JSR Player_GetBodySpriteFrameOffset
@@ -20996,7 +20992,7 @@ Player_DrawBody:
     CLC
     ADC a:PLAYER_BODY_TILEINFO_START_OFFSETS,X
     JSR Sprite_SetPlayerAppearanceAddr
-    JMP FUN_PRG15_MIRROR__ec58
+    JMP FUN_PRG15__ec58
 
 ;
 ; XREFS:
@@ -21031,7 +21027,7 @@ Player_SetFacingLeft:
     RTS
 
 ;============================================================================
-; TODO: Document FUN_PRG15_MIRROR__ec58
+; TODO: Document FUN_PRG15__ec58
 ;
 ; INPUTS:
 ;     None.
@@ -21042,7 +21038,7 @@ Player_SetFacingLeft:
 ; XREFS:
 ;     Player_DrawBody
 ;============================================================================
-FUN_PRG15_MIRROR__ec58:
+FUN_PRG15__ec58:
     LDA Player_Flags
     BPL @_return
     LDA Player_AttackPhaseAnimFrame
@@ -21051,11 +21047,11 @@ FUN_PRG15_MIRROR__ec58:
     LDY #$00
     LDA Player_Flags
     AND #$40
-    BEQ @LAB_PRG15_MIRROR__ec6b
+    BEQ @LAB_PRG15__ec6b
     INY
 
-  @LAB_PRG15_MIRROR__ec6b:
-    LDA a:BYTE_ARRAY_PRG15_MIRROR__eca2,Y
+  @LAB_PRG15__ec6b:
+    LDA a:BYTE_ARRAY_PRG15__eca2,Y
     JSR Player_CalcValueAndFFForNeg
     LDA Player_PosX_Block
     CLC
@@ -21074,14 +21070,14 @@ FUN_PRG15_MIRROR__ec58:
     LDY #$00
     LDA a:SelectedShield
     CMP #$03
-    BCS @LAB_PRG15_MIRROR__ec97
+    BCS @LAB_PRG15__ec97
     INY
 
-  @LAB_PRG15_MIRROR__ec97:
+  @LAB_PRG15__ec97:
     TYA
     ORA Temp_00
     TAY
-    LDA a:BYTE_ARRAY_PRG15_MIRROR__eca4,Y
+    LDA a:BYTE_ARRAY_PRG15__eca4,Y
     JMP Sprite_SetPlayerAppearanceAddr
 
   @_return:
@@ -21089,23 +21085,23 @@ FUN_PRG15_MIRROR__ec58:
 
 ;
 ; XREFS:
-;     FUN_PRG15_MIRROR__ec58
+;     FUN_PRG15__ec58
 ;
-BYTE_ARRAY_PRG15_MIRROR__eca2:
+BYTE_ARRAY_PRG15__eca2:
     .byte $f8                               ; [0]:
 
 ;
 ; XREFS:
-;     FUN_PRG15_MIRROR__ec58
+;     FUN_PRG15__ec58
 ;
-BYTE_ARRAY_PRG15_MIRROR__eca2_1_:
+BYTE_ARRAY_PRG15__eca2_1_:
     .byte $10                               ; [1]:
 
 ;
 ; XREFS:
-;     FUN_PRG15_MIRROR__ec58
+;     FUN_PRG15__ec58
 ;
-BYTE_ARRAY_PRG15_MIRROR__eca4:
+BYTE_ARRAY_PRG15__eca4:
     .byte $63                               ; [0]: Leather Armor
     .byte $67                               ; [1]: Leather Armor + Shield
     .byte $64                               ; [2]: Studded Mail
@@ -21130,15 +21126,15 @@ BYTE_ARRAY_PRG15_MIRROR__eca4:
 Player_GetBodySpriteFrameOffset:
     LDA Player_Flags
     LSR A
-    BCC @LAB_PRG15_MIRROR__ecb8
+    BCC @LAB_PRG15__ecb8
     LDA Player_Flags
-    BMI @LAB_PRG15_MIRROR__eccc
+    BMI @LAB_PRG15__eccc
     LDA #$03
     RTS
 
-  @LAB_PRG15_MIRROR__ecb8:
+  @LAB_PRG15__ecb8:
     JSR Player_IsClimbing
-    BCC @LAB_PRG15_MIRROR__ecc8
+    BCC @LAB_PRG15__ecc8
     LDA Player_MovementTick
     AND #$10
     ASL A
@@ -21147,43 +21143,43 @@ Player_GetBodySpriteFrameOffset:
     LDA #$07
     RTS
 
-  @LAB_PRG15_MIRROR__ecc8:
+  @LAB_PRG15__ecc8:
     LDA Player_Flags
-    BPL @LAB_PRG15_MIRROR__ecd2
+    BPL @LAB_PRG15__ecd2
 
-  @LAB_PRG15_MIRROR__eccc:
+  @LAB_PRG15__eccc:
     LDX Player_AttackPhaseAnimFrame
-    LDA a:BYTE_ARRAY_PRG15_MIRROR__ecf3,X
+    LDA a:BYTE_ARRAY_PRG15__ecf3,X
     RTS
 
-  @LAB_PRG15_MIRROR__ecd2:
+  @LAB_PRG15__ecd2:
     LDA Player_StatusFlag
-    BPL @LAB_PRG15_MIRROR__ecdd
+    BPL @LAB_PRG15__ecdd
     LDA Joy1_ButtonMask
-    BPL @LAB_PRG15_MIRROR__ecdd
+    BPL @LAB_PRG15__ecdd
     LDA #$03
     RTS
 
-  @LAB_PRG15_MIRROR__ecdd:
+  @LAB_PRG15__ecdd:
     LDA Player_Flags
     AND #$20
-    BEQ @LAB_PRG15_MIRROR__ecea
+    BEQ @LAB_PRG15__ecea
     LDA Player_MovementTick
     LSR A
     LSR A
     LSR A
     AND #$03
 
-  @LAB_PRG15_MIRROR__ecea:
+  @LAB_PRG15__ecea:
     TAX
-    LDA a:BYTE_ARRAY_PRG15_MIRROR__ecef,X
+    LDA a:BYTE_ARRAY_PRG15__ecef,X
     RTS
 
 ;
 ; XREFS:
 ;     Player_GetBodySpriteFrameOffset
 ;
-BYTE_ARRAY_PRG15_MIRROR__ecef:
+BYTE_ARRAY_PRG15__ecef:
     .byte $00                               ; [0]:
     .byte $01                               ; [1]:
     .byte $02                               ; [2]:
@@ -21193,7 +21189,7 @@ BYTE_ARRAY_PRG15_MIRROR__ecef:
 ; XREFS:
 ;     Player_GetBodySpriteFrameOffset
 ;
-BYTE_ARRAY_PRG15_MIRROR__ecf3:
+BYTE_ARRAY_PRG15__ecf3:
     .byte $04                               ; [0]:
     .byte $05                               ; [1]:
     .byte $06                               ; [2]:
@@ -22659,7 +22655,7 @@ SPECIAL_SCREEN_EVENT_LOOKUP_TABLE:
 ;
 ; XREFS:
 ;     SPECIAL_SCREEN_EVENT_LOOKUP_TABLE
-;     [$PRG15_MIRROR::ef63]
+;     [$PRG15::ef63]
 ;============================================================================
 ScreenEvents_HandlePathToMasconEvent:
     ;
@@ -22757,7 +22753,7 @@ Sprites_HasSpritesNotOfType:
 ;
 ; XREFS:
 ;     SPECIAL_SCREEN_EVENT_LOOKUP_TABLE
-;     [$PRG15_MIRROR::ef65]
+;     [$PRG15::ef65]
 ;============================================================================
 ScreenEvents_HandleBoss:
     ;
@@ -22872,7 +22868,7 @@ LimitItemDurations:
 ;
 ; XREFS:
 ;     SPECIAL_SCREEN_EVENT_LOOKUP_TABLE
-;     [$PRG15_MIRROR::ef67]
+;     [$PRG15::ef67]
 ;============================================================================
 ScreenEvents_HandleFinalBossKilled:
     JSR Sprites_HasCurrentSprites           ; Are there sprites on screen?
@@ -23146,7 +23142,7 @@ Sprite_DrawPortraitPartAppearance:
 ; XREFS:
 ;     Player_DrawShield
 ;     Player_DrawWeapon
-;     FUN_PRG15_MIRROR__ec58
+;     FUN_PRG15__ec58
 ;     Player_DrawBody
 ;============================================================================
 Sprite_SetPlayerAppearanceAddr:
@@ -23765,11 +23761,11 @@ Sprite_Draw_FlippedHoriz:
     SEC
     SBC Temp_04                             ; A = A - normalized column
                                             ; value.
-    BPL @LAB_PRG15_MIRROR__f198             ; If negative, jump.
+    BPL @LAB_PRG15__f198             ; If negative, jump.
     DEC Temp_05                             ; Else, it's positive. Decrement
                                             ; Temp_05.
 
-  @LAB_PRG15_MIRROR__f198:
+  @LAB_PRG15__f198:
     CLC
     ADC Temp_Sprites_NormXPos               ; A = A + normalized X position
     STA Temp_Sprites_NormXPos               ; Store as the new position.
@@ -23780,30 +23776,30 @@ Sprite_Draw_FlippedHoriz:
     STA Temp_Sprites_TileYOffset
     TAY
 
-  @LAB_PRG15_MIRROR__f1a8:
+  @LAB_PRG15__f1a8:
     LDA Temp_Sprites_ColsRemaining
     STA Temp_Sprites_TileXOffset
 
-  @LAB_PRG15_MIRROR__f1ac:
+  @LAB_PRG15__f1ac:
     LDA (Sprite_TileInfo_ReadAddr_L),Y
     CMP #$ff
-    BEQ @LAB_PRG15_MIRROR__f216
+    BEQ @LAB_PRG15__f216
     LDA Sprites_SlotsFull
-    BNE @LAB_PRG15_MIRROR__f215
+    BNE @LAB_PRG15__f215
     LDX Temp_Sprites_TileXOffset
     LDA Temp_Sprites_NormXPos
     ADC a:SPRITE_TILE_BLOCK_POSITIONS,X
     STA Temp_00
     LDA Sprite_TileInfo_OffsetX
     ADC #$00
-    BNE @LAB_PRG15_MIRROR__f215
+    BNE @LAB_PRG15__f215
     LDX Temp_Sprites_TileYOffset
     LDA Temp_Sprites_NormYPos
     ADC a:SPRITE_TILE_BLOCK_POSITIONS,X
     STA Temp_01
     LDA Sprite_TileInfo_OffsetY
     ADC #$00
-    BNE @LAB_PRG15_MIRROR__f215
+    BNE @LAB_PRG15__f215
     TYA
     PHA
     LDA Sprites_SpriteSlot
@@ -23827,13 +23823,13 @@ Sprite_Draw_FlippedHoriz:
     AND #$01
     TAY
     LDA MovingSpriteVisibility
-    AND a:BYTE_ARRAY_PRG15_MIRROR__f226,Y
-    BEQ @LAB_PRG15_MIRROR__f205
+    AND a:BYTE_ARRAY_PRG15__f226,Y
+    BEQ @LAB_PRG15__f205
     LDA Temp_01
     ORA #$20
     STA Temp_01
 
-  @LAB_PRG15_MIRROR__f205:
+  @LAB_PRG15__f205:
     LDA Temp_01
     STA a:SPRITE_0_RANGE_1_START,X
     INX
@@ -23843,16 +23839,16 @@ Sprite_Draw_FlippedHoriz:
     PLA
     TAY
 
-  @LAB_PRG15_MIRROR__f215:
+  @LAB_PRG15__f215:
     INY
 
-  @LAB_PRG15_MIRROR__f216:
+  @LAB_PRG15__f216:
     INY
     DEC Temp_Sprites_TileXOffset
-    BPL @LAB_PRG15_MIRROR__f1ac
+    BPL @LAB_PRG15__f1ac
     INC Temp_Sprites_TileYOffset
     DEC Temp_Sprites_RowsRemaining
-    BPL @LAB_PRG15_MIRROR__f1a8
+    BPL @LAB_PRG15__f1a8
     JMP Sprite_Draw_Finish
 
 ;
@@ -23867,7 +23863,7 @@ DRAW_SPRITE_VISIBILITY_MASK:
 ; XREFS:
 ;     Sprite_Draw_FlippedHoriz
 ;
-BYTE_ARRAY_PRG15_MIRROR__f226:
+BYTE_ARRAY_PRG15__f226:
     .byte $02                               ; [0]:
     .byte $01                               ; [1]:
 
@@ -25250,7 +25246,7 @@ TextBox_DisplayMessage:
     LDA a:Textbox_TitleCharOffset
     BEQ TextBox_ShowMessage_LoadMessage
     CMP #$90
-    BEQ @LAB_PRG15_MIRROR__f4c3
+    BEQ @LAB_PRG15__f4c3
     AND #$0f
     STA Temp_Int24
 
@@ -25271,7 +25267,7 @@ TextBox_DisplayMessage:
     CMP #$20
     BNE TextBox_ShowMessageWithSound
 
-  @LAB_PRG15_MIRROR__f4c3:
+  @LAB_PRG15__f4c3:
     LDA #$00
     STA a:Textbox_TitleCharOffset
 
@@ -25299,10 +25295,10 @@ TextBox_ShowMessage_LoadMessage:
     STA Temp_Int24_M
     LDY a:Message_ProcessedLength
     INC a:Message_ProcessedLength
-    BNE @LAB_PRG15_MIRROR__f4dd
+    BNE @LAB_PRG15__f4dd
     INC a:Message_StartAddr_U
 
-  @LAB_PRG15_MIRROR__f4dd:
+  @LAB_PRG15__f4dd:
     LDA (Temp_Int24),Y
     CMP #$ff
     BEQ TextBox_ShowMessage_EndOfMessage
@@ -25316,8 +25312,38 @@ TextBox_ShowMessage_LoadMessage:
     BEQ TextBox_ShowMessage_Pause
 
     ;
-    ; v-- Fall through --v
+    ; zh_version: an ordinary character must reach TextBox_ShowMessageWithSound
+    ; (and from there TextBox_ShowMessage, where the full-width hook lives).
     ;
+    ; The original code relied on falling through into it from here.  When
+    ; TextBox_ShowMessage_EndOfMessage was moved into this gap to put the
+    ; control-code branches back inside the 6502 +/-128 relative-branch range,
+    ; that fall-through was silently redirected into the EndOfMessage body -
+    ; every printable character set MessageID = 0 and returned, so no character
+    ; was ever drawn and the only thing on screen was the terminator symbol.
+    ; (Symptom: the textbox opens, stays blank, and waits for A.  Root cause
+    ; proven from the built ROM: bank 15 $F4A1 `F0 10` branches to $F4B3, and
+    ; $F4B3 is also the instruction after $F4B1 - the same `LDA #$00`.)
+    ;
+    ; This JMP restores the original flow.  It costs 3 bytes of PRG15's 51-byte
+    ; slack and does not move any branch target out of range.
+    ;
+    JMP TextBox_ShowMessageWithSound
+
+;============================================================================
+; End of message.
+;
+; zh_version: this block was MOVED here from below (it used to sit after
+; TextBox_ShowMessage_Return, far out of the +/-128 range of the `CMP #$ff`
+; branch above).  It is a self-contained 6-byte routine (set MessageID = 0 and
+; return) that nothing falls through into - the JMP above makes sure of that.
+;============================================================================
+TextBox_ShowMessage_EndOfMessage:
+    LDA #$00                                ; A = 0
+    STA a:MessageID                         ; Store as the message ID
+                                            ; (terminating message).
+    RTS
+
 
 ;============================================================================
 ; TODO: Document TextBox_ShowMessageWithSound
@@ -25363,6 +25389,28 @@ TextBox_ShowMessageWithSound:
 ;     TextBox_ShowMessageWithSound
 ;============================================================================
 TextBox_ShowMessage:
+    ;
+    ; zh_version: values >= $80 begin a double-byte full-width character.
+    ;
+    ; The work is done by ZHV_FullWidthEntry, which lives in the 48 spare bytes at
+    ; the end of this segment (see the bottom of this file).  It has to be there
+    ; and not in bank 16, because the pair's SECOND byte still has to be read out
+    ; of the message stream in bank 13, and bank 13 is what is mapped into
+    ; $8000-$BFFF while the text engine runs (TextBox_ShowNextChar selects it).
+    ; Only after that byte has been fetched may the window be switched to the
+    ; glyph bank - and that switch has to happen while executing from the fixed
+    ; bank, otherwise the instruction after it would be fetched from whatever
+    ; bank was just mapped in.
+    ;
+    ; This hook is also the reason three dead routines were removed from PRG15 and
+    ; why TextBox_ShowMessage_EndOfMessage was moved to sit beside the control-code
+    ; chain: those branches were already at the 6502 relative-branch limit, so the
+    ; hook's bytes had nowhere to go.
+    ;
+    CMP #$80
+    BCC @_halfWidth                         ; < $80: the original path
+    JMP ZHV_FullWidthEntry                  ; >= $80: full-width, see below
+  @_halfWidth:
     JSR TextBox_WriteChar
 
     ;
@@ -25462,11 +25510,18 @@ TextBox_ShowMessage_IncLineAndReset:
 
 
     ;
-    ; Check if we've reached the end of the textbox.
-    ; If so, prepare the state for the next 4 lines.
+    ; Check if we've reached the end of the visible textbox.
+    ; If so, prepare the state for the next block of lines.
     ;
-    CPY #$04                                ; Is the line number 4?
-    BEQ TextBox_ShowMessage_Fill4Lines      ; If so, jump.
+    ; zh_version: this is where the textbox becomes TWO lines tall instead of
+    ; four.  DrawnLineNum still cycles through the four buffered tile rows (so
+    ; the page rotation in TextBox_WriteChar and the nametable placeholders are
+    ; untouched); what shrinks is how many lines are drawn before the box
+    ; scrolls.  Filling at 2 makes exactly two lines visible at a time while the
+    ; engine keeps rotating all four CHR pages underneath.
+    ;
+    CPY #TEXT_LINE_COUNT                    ; Have we drawn every visible line?
+    BEQ TextBox_ShowMessage_Fill4Lines      ; If so, scroll and take the next block.
 
 
     ;
@@ -25610,13 +25665,6 @@ TextBox_ShowMessage_Return:
     ;     TextBox_ShowMessage_LoadMessage
     ;     TextBox_ShowMessage_Pause
     ;
-TextBox_ShowMessage_EndOfMessage:
-    LDA #$00                                ; A = 0
-    STA a:MessageID                         ; Store as the message ID
-                                            ; (terminating message).
-    RTS
-
-
 ;============================================================================
 ; Show the player's current title in the textbox.
 ;
@@ -25668,113 +25716,41 @@ TextBox_ShowMessage_ShowPlayerTitle:
 ;============================================================================
 TextBox_ShowMessage_Fill4Lines:
     ;
-    ; Set the start position where text will be drawn.
+    ; zh_version R5-b: the body of this routine now lives in bank 9
+    ; (ZHV_ScrollBox in src/PRG9_code.asm), because it needs one more store than
+    ; PRG15 has room for (the two-line page pause) and because bank 9 has space.
     ;
-    LDA a:TextBox_X                         ; X = textbox tile X coordinate.
-    CLC
-    ADC #$02                                ; X += 2
-    STA TextBox_ContentsX                   ; Store as the text X start
-                                            ; position.
-    LDA a:TextBox_Y                         ; Y = textbox tile Y coordinate.
-    CLC
-    ADC #$02                                ; Y += 2
-    STA TextBox_ContentsY                   ; Store as the text Y start
-                                            ; position.
+    ; This stub only switches banks and jumps.  The routine is entered by a
+    ; BRANCH from TextBox_ShowMessage_IncLineAndReset, so it must return with RTS
+    ; to that routine's caller - which is what ZHV_ScrollBoxDone below does.
+    ;
+    LDA a:CurrentROMBank
+    PHA
+    LDX #BANK_HANZI_TEXT
+    JSR MMC1_UpdateROMBank
+    JSR ZHV_ScrollBox                       ; bank 9 (may only arm the turn)
+    PLA                                     ; caller bank
+    TAX
+    JMP MMC1_UpdateROMBank                  ; restore, then RTS to our caller
 
 
-    ;
-    ; Write 3 lines.
-    ;
-    ; This will be the available text characters, filling
-    ; up the buffer. It will contain:
-    ;
-    ;     @ABCDEFGHIJKLMNO
-    ;     PQRSTUVWXYZ[\]^_
-    ;     `abcdefghijklmno
-    ;     pqrstuvwxyz{}|~.
-    ;
-    ; This will effectively reserve space in the buffer.
-    ;
-    JSR PPU_SetAddrForTextBoxPos            ; Set the PPU address for the
-                                            ; text position.
-    LDX a:TextBox_LineScrollOffset          ; X = scroll line offset
-    JSR TextBox_FillPlaceholderTextForLineCapped ; Write a line and advance.
-    JSR TextBox_FillPlaceholderTextForLineCapped ; Write a line and advance.
-    JSR TextBox_FillPlaceholderTextForLineCapped ; Write a line and advance.
-
-
-    ;
-    ; Clear the final line.
-    ;
-    LDA #$00                                ; A = 0 (start offset)
-    LDY #$10                                ; Y = 16 (line length)
-    JSR PPUBuffer_WriteValueMany            ; Write '0' 16 times, clearing
-                                            ; the line.
-
-
-    ;
-    ; Set the starting text position to the beginning text char/pos
-    ; of the text box we just wrote to.
-    ;
-    LDA #$00                                ; A = 0
-    STA PPU_TargetAddr                      ; Store A as the lower byte of
-                                            ; the PPU target address.
-    LDA a:TextBox_LineScrollOffset          ; A = scroll-aware line offset.
-    CLC
-    ADC #$14                                ; A += 20
-    STA PPU_TargetAddr_U                    ; Store as the upper byte of the
-                                            ; PPU target addres.
-
-
-    ;
-    ; Clear out each of the lines that were just written.
-    ;
-    LDX #$10                                ; X = 16
-
-  @LAB_PRG15_MIRROR__f5a5:
-    TXA                                     ; A = X
-    PHA                                     ; Push A to the stack.
-    LDA #$00                                ; A = 0
-    LDY #$10                                ; Y = 16
-    JSR PPUBuffer_WriteValueMany            ; Write '0' 16 times, clearing
-                                            ; the line.
-    JSR PPU_IncrementAddrBy16               ; Increment the offset by 16.
-    PLA                                     ; Pop A from the  stack (now 16).
-    TAX                                     ; X = A
-    DEX                                     ; X--
-    BNE @LAB_PRG15_MIRROR__f5a5             ; If X > 0, loop.
-
-
-    ;
-    ; Increase the Y position to draw to by 3, after these lines.
-    ;
-    INC TextBox_ContentsY                   ; TextBox_ContentsY
-                                            ; += 3
-    INC TextBox_ContentsY
-    INC TextBox_ContentsY
-
-
-    ;
-    ; Draw a line of text to fill the address.
-    ;
-    ; This will be:
-    ;
-    ;     PQRSTUVWXYZ[\]^_
-    ;
-    JSR PPU_SetAddrForTextBoxPos            ; Set the text draw position
-                                            ; back.
-    LDA a:TextBox_LineScrollOffset          ; A = line scroll offset.
-    JSR TextBox_FillPlaceholderTextForLine  ; Write a line of text.
-
-
-    ;
-    ; Store the new line number offset.
-    ;
-    INX                                     ; X++
-    TXA                                     ; A = X
-    AND #$03                                ; Cap the line number from 0..4.
-    STA a:TextBox_LineScrollOffset          ; Store it.
-    RTS
+;============================================================================
+; zh_version: turn a page that was armed while the player was reading.
+;
+; The half-width writer (TextBox_WriteChar) calls this when it finds a pending
+; page turn in TextBox_LineScrollOffset bit 7.  Same bank dance as the stub
+; above; placed here, after the control-code chain, to stay outside its +/-128
+; branch range.
+;============================================================================
+TextBox_DoPendingPageTurn:
+    LDA a:CurrentROMBank
+    PHA
+    LDX #BANK_HANZI_TEXT
+    JSR MMC1_UpdateROMBank
+    JSR ZHV_ScrollBox
+    PLA
+    TAX
+    JMP MMC1_UpdateROMBank
 
 
 ;============================================================================
@@ -25955,6 +25931,22 @@ TextBox_FillPlaceholderTextAtLineWithStartChar:
 ;============================================================================
 TextBox_WriteChar:
     ;
+    ; zh_version: perform a page turn that was armed while the player was
+    ; reading (see ZHV_ScrollBox).  Half-width text never reaches the bank 9
+    ; renderer, so this writer has to check it too.
+    ;
+    ; A is the character code this routine is about to look up (the SEC/SBC #$20
+    ; below works on it), and both the bank switch and the scroll clobber A, so it
+    ; is saved across the check.
+    ;
+    PHA
+    LDA a:TextBox_LineScrollOffset
+    BPL @_no_pending_turn
+    JSR TextBox_DoPendingPageTurn
+
+  @_no_pending_turn:
+    PLA                                     ; the character code again
+    ;
     ; Normalize the ASCII value into an index in the characters
     ; table.
     ;
@@ -25995,22 +25987,46 @@ TextBox_WriteChar:
     ;
     ; Compute the PPU target address.
     ;
+    ; zh_version: two VISIBLE text lines instead of four, but still the same
+    ; four CHR pages $14-$17 as a rolling double buffer.  What changes is only
+    ; how far the engine rotates through them before scrolling: the per-line
+    ; wrap point (TextBox_ShowMessage_IncLineAndReset) goes from 4 lines to 2,
+    ; while DrawnLineNum keeps cycling 0..3 and LineScrollOffset keeps flipping,
+    ; so the page sequence stays $14,$15,$16,$17,$14,... but only two lines are
+    ; ever on screen at once.
+    ;
+    ; This arithmetic is therefore deliberately unchanged: masking to $03 and
+    ; adding $14 is the ORIGINAL 25-byte sequence, and PRG15 has literally zero
+    ; spacer bytes (its segment is 16352 used of 16352), so a "+2*R+$15" form
+    ; that mirrors the plan's "ASCII in the lower tile row" literally does not
+    ; fit.  See the Step B notes in docs/hanhua-12x12.md for the measured sizes
+    ; and the follow-up plan for moving the text engine into a new bank.
+    ;
     LDA #$00                                ; A = 0
     STA PPU_TargetAddr_U                    ; Store as the starting upper
                                             ; byte of the PPU target address.
     LDA a:TextBox_CharPosForLine            ; A = character position.
     ASL A                                   ; Convert to a 16 byte address
-                                            ; boundary.
-    ASL A
+    ASL A                                   ; boundary.
     ASL A
     ASL A
     STA PPU_TargetAddr                      ; Store as the lower byte of the
                                             ; PPU target address.
-    LDA a:TextBox_DrawnLineNum              ; A = drawn line number.
+    ;
+    ; zh_version R5: the box is a four-page circular buffer whose page->row
+    ; mapping is rotated by LineScrollOffset, and one VISIBLE line now owns TWO
+    ; pages (a full-width glyph is 2 tiles tall).  LineScrollOffset therefore
+    ; advances by two per scroll, and both writers must address the page pair
+    ; 2*DrawnLineNum, i.e. page = $14 + ((2*DrawnLineNum + LineScrollOffset)&$03).
+    ; The original single-page form ((DrawnLineNum + LineScrollOffset)&$03) put
+    ; half-width text on the wrong row after a scroll.
+    ;
+    LDA a:TextBox_DrawnLineNum              ; A = drawn line number 0/1.
+    ASL A                                   ; A = its page pair offset 0/2.
     CLC
     ADC a:TextBox_LineScrollOffset          ; A += line scroll offset
-    AND #$03                                ; Cap to a 0..4 line number.
-    ADC #$14                                ; A += 20
+    AND #$03                                ; Cap to the four buffered rows.
+    ADC #$14                                ; A += first text CHR page.
     STA PPU_TargetAddr_U                    ; Set as the new upper byte of
                                             ; the PPU target address.
 
@@ -27008,21 +27024,21 @@ PPU_WriteTilesFromCHRRAM:
     STA a:PPUADDR
     LDY #$00
 
-  @LAB_PRG15_MIRROR__f8b3:
+  @LAB_PRG15__f8b3:
     LDX #$10
 
-  @LAB_PRG15_MIRROR__f8b5:
+  @LAB_PRG15__f8b5:
     LDA (IScriptOrCHRAddr),Y
     STA a:PPUDATA
     INY
-    BNE @LAB_PRG15_MIRROR__f8bf
+    BNE @LAB_PRG15__f8bf
     INC IScriptOrCHRAddr_U
 
-  @LAB_PRG15_MIRROR__f8bf:
+  @LAB_PRG15__f8bf:
     DEX
-    BNE @LAB_PRG15_MIRROR__f8b5
+    BNE @LAB_PRG15__f8b5
     DEC Temp_Int24
-    BNE @LAB_PRG15_MIRROR__f8b3
+    BNE @LAB_PRG15__f8b3
 
     ;
     ; v-- Fall through --v
@@ -27399,7 +27415,7 @@ Player_UpdateExperience:
     ADC Temp_Int24_M
     STA a:Experience_U                      ; Set the new upper byte of
                                             ; experience.
-    BCC @LAB_PRG15_MIRROR__f972             ; Can we add to the experience,
+    BCC @LAB_PRG15__f972             ; Can we add to the experience,
                                             ; or did we hit a max?
 
 
@@ -27413,7 +27429,7 @@ Player_UpdateExperience:
     STA a:Experience_U                      ; Set upper byte of experience to
                                             ; max.
 
-  @LAB_PRG15_MIRROR__f972:
+  @LAB_PRG15__f972:
     JSR Player_CheckReachedNextTitle        ; Check if the next title has
                                             ; been hit.
 
@@ -28171,10 +28187,10 @@ UI_DrawPlayerHPValue:
     ; Cap the amount of HP to 80, if over.
     ;
     CMP #$51
-    BCC @LAB_PRG15_MIRROR__fa7b
+    BCC @LAB_PRG15__fa7b
     LDA #$50
 
-  @LAB_PRG15_MIRROR__fa7b:
+  @LAB_PRG15__fa7b:
     STA a:Temp_AddedHPValue
     STA a:Player_HP_U
     LDY #$00
@@ -28514,7 +28530,7 @@ UI_SetHUDBarValue:
                                             ; draw).
     JSR PPUBuffer_Set                       ; Queue drawing the loaded tile.
 
-  @LAB_PRG15_MIRROR__fb27:
+  @LAB_PRG15__fb27:
     TYA                                     ; A = loop counter.
     AND #$07                                ; Cap to 8 (pattern length).
     BNE @_updateMagicBarPartialTilePattern2Loop ; If the tile index is within
@@ -28541,7 +28557,7 @@ UI_SetHUDBarValue:
 ;
 ; XREFS:
 ;     _updatePowerBarPartialTileLoop
-;     [$PRG15_MIRROR::fb05]
+;     [$PRG15::fb05]
 ;============================================================================
 
 ;
@@ -28556,7 +28572,7 @@ UI_SetHUDBarValue:
 ;
 ; XREFS:
 ;     _updatePowerBarPartialTileLoop
-;     [$PRG15_MIRROR::fb05]
+;     [$PRG15::fb05]
 ;
 STATUS_BAR_PARTIAL_PPU_TILES:
     .byte $00,$ff,$00,$00,$00,$00,$ff,$00   ; byte
@@ -28564,7 +28580,7 @@ STATUS_BAR_PARTIAL_PPU_TILES:
 ;
 ; XREFS:
 ;     _updateMagicBarPartialTilePattern1Loop
-;     [$PRG15_MIRROR::fb14]
+;     [$PRG15::fb14]
 ;
 STATUS_BAR_PARTIAL_PPU_TILES_row0_1:
     .byte $00,$ff,$00,$00,$00,$00,$ff,$00   ; byte
@@ -28686,12 +28702,12 @@ UI_DrawSelectedItem:
     LDA #$c0
     STA a:PPUADDR
     LDA a:SelectedItem
-    BPL @LAB_PRG15_MIRROR__fbc5
+    BPL @LAB_PRG15__fbc5
     LDY #$40
     LDA #$00
     JMP PPU_FillData
 
-  @LAB_PRG15_MIRROR__fbc5:
+  @LAB_PRG15__fbc5:
     ASL A
     ASL A
     TAY
@@ -28700,25 +28716,25 @@ UI_DrawSelectedItem:
     LDX #$0a
     JSR MMC1_UpdateROMBank
 
-  @LAB_PRG15_MIRROR__fbd1:
+  @LAB_PRG15__fbd1:
     LDA a:ITEM_TILEMAP_INDEXES,Y
     JSR UI_Maybe_GetItemSpritePPUTileAddr
     TYA
     PHA
     LDY #$00
 
-  @LAB_PRG15_MIRROR__fbdb:
+  @LAB_PRG15__fbdb:
     LDA (Temp_Int24),Y
     STA a:PPUDATA
     INY
     CPY #$10
-    BNE @LAB_PRG15_MIRROR__fbdb
+    BNE @LAB_PRG15__fbdb
     PLA
     TAY
     INY
     TYA
     AND #$03
-    BNE @LAB_PRG15_MIRROR__fbd1
+    BNE @LAB_PRG15__fbd1
     JMP MMC1_UpdatePRGBankToStackA
 
 ;============================================================================
@@ -28792,9 +28808,9 @@ TextBox_LoadItemSourceTiles:
     PHA
     JSR Player_GetInventoryIndexForItem
     TAX
-    LDA a:FUN_PRG15_MIRROR__fc0b__LOWER_ADDR_TABLE,X
+    LDA a:FUN_PRG15__fc0b__LOWER_ADDR_TABLE,X
     STA Temp_Int24_U
-    LDA a:FUN_PRG15_MIRROR__fc0b__UPPER_ADDR_TABLE,X
+    LDA a:FUN_PRG15__fc0b__UPPER_ADDR_TABLE,X
     STA Temp_0xEF
     PLA
     AND #$1f
@@ -28806,7 +28822,7 @@ TextBox_LoadItemSourceTiles:
     LDX #$0a
     JSR MMC1_UpdateROMBank
 
-  @LAB_PRG15_MIRROR__fc36:
+  @LAB_PRG15__fc36:
     LDA (Temp_Int24_U),Y
     JSR UI_Maybe_GetItemSpritePPUTileAddr
     TYA
@@ -28815,10 +28831,10 @@ TextBox_LoadItemSourceTiles:
     JSR PPUBuffer_QueueCommandOrLength
     LDY #$00
 
-  @LAB_PRG15_MIRROR__fc44:
+  @LAB_PRG15__fc44:
     JSR PPUBuffer_WriteFromTemp
     CPY #$10
-    BNE @LAB_PRG15_MIRROR__fc44
+    BNE @LAB_PRG15__fc44
     STX PPUBuffer_WriteOffset
     JSR PPU_IncrementAddrBy16
     PLA
@@ -28826,14 +28842,14 @@ TextBox_LoadItemSourceTiles:
     INY
     TYA
     AND #$03
-    BNE @LAB_PRG15_MIRROR__fc36
+    BNE @LAB_PRG15__fc36
     JMP MMC1_UpdatePRGBankToStackA
 
 ;
 ; XREFS:
 ;     TextBox_LoadItemSourceTiles
 ;
-FUN_PRG15_MIRROR__fc0b__LOWER_ADDR_TABLE:
+FUN_PRG15__fc0b__LOWER_ADDR_TABLE:
     .byte $a0                               ; [0]:
     .byte $b0                               ; [1]:
     .byte $c0                               ; [2]:
@@ -28844,7 +28860,7 @@ FUN_PRG15_MIRROR__fc0b__LOWER_ADDR_TABLE:
 ; XREFS:
 ;     TextBox_LoadItemSourceTiles
 ;
-FUN_PRG15_MIRROR__fc0b__UPPER_ADDR_TABLE:
+FUN_PRG15__fc0b__UPPER_ADDR_TABLE:
     .byte $b4                               ; [0]:
     .byte $b4                               ; [1]:
     .byte $b4                               ; [2]:
@@ -29890,3 +29906,112 @@ PPU_ClearAllTilemaps:
     .byte $ff                               ; [784]:
     .byte $ff                               ; [785]:
     .byte $ff                               ; [786]:
+
+
+;============================================================================
+; zh_version: full-width (double-byte) text - entry point.
+;
+; This code MUST live in the fixed bank, and this segment has only ~48 spare
+; bytes (the linker map sizes PRG15 at $3FB0 of the $3FE0 area), so it is
+; appended here, in the trailing $ff fill, where nothing is displaced and no
+; control-code branch distance changes.
+;
+; WHY IT CANNOT LIVE IN BANK 16: the pair's second byte - the low byte of
+; ((b1 & $7F) << 8) | b2 - still has to be read out of the message stream, and
+; the message block lives in bank 13, which is what is mapped into $8000-$BFFF
+; while the text engine runs (TextBox_ShowNextChar selects it).  Worse, if this
+; code lived at $97C0 in bank 16 and the hook jumped there with bank 13 mapped
+; (the previous revision did exactly that), the CPU would execute whatever bank
+; 13 has at $97C0 - in this build the middle of message #90's text
+; ("flow" $fd "again." ...), i.e. message bytes as 6502 opcodes - and the glyph
+; renderer would never run at all.  It is in BANK 9 now (see PRG9_code.asm).
+;
+; THE SWITCH ORDER MATTERS: read the byte first (bank 13), only then map the
+; glyph bank and jump into it.  The JSR to MMC1_UpdateROMBank and the JMP that
+; follows are fetched from the fixed bank, so they survive the switch.  For the
+; same reason the return path is a second stub here (ZHV_FullWidthDone): bank 9
+; code that switched the window back and then kept executing would be fetching
+; its next instruction from the bank it just restored.
+;
+; STATE GOES ON THE STACK, NOT IN RAM: the caller bank and the pair's second byte
+; are PHA'd here and PLA'd by the bank 9 routine / the return stub.  The obvious
+; "flat" alternative - storing them in the $07A0-$07A3 scratch - is NOT safe:
+; those bytes are not provably free (a run with a Watch on $07A0 read back $F0,
+; i.e. the game writes it), and a clobbered caller bank makes this stub restore
+; the wrong bank, after which TextBox_ShowMessage_HandleSpaceOrEndOfLine peeks at
+; the message stream through the wrong window.  The stack is balanced across the
+; NMI handler and the PPU-buffer routines, so two pushed bytes survive the call.
+;
+; ENCODING (Step C, ASCII test): the pair is $8000 | ascii, so the low byte is
+; the ASCII code and the glyph index is low - $20.  A real codepoint -> glyph
+; index table comes in C2; nothing here assumes it beyond that subtraction.
+;
+; INPUTS:
+;     A:                              the pair's high byte (bit 7 set)
+;     Message_StartAddr(_U) / Message_ProcessedLength:
+;                                     the message cursor, already past b1
+;     CurrentROMBank:                 the bank to come back to (13)
+;
+; OUTPUTS:
+;     $8000-$BFFF:                    mapped to BANK_HANZI_TEXT
+;     stack:                          caller bank, then the pair's second byte
+;     A, X, Y:                        clobbered (MMC1_UpdateROMBank rewrites X)
+;============================================================================
+ZHV_FullWidthEntry:
+    ;
+    ; A holds the pair's FIRST byte, i.e. $80 | (glyph index >> 8).  With one
+    ; 16 KiB bank holding up to 669 glyphs the index does not fit in the second
+    ; byte alone, and this is what carries bits 8-14 ($80 = glyphs 0-255,
+    ; $81 = 256-511, $82 = 512+).  It is stashed in RAM rather than pushed: the
+    ; renderer's scratch byte is free until it starts drawing, and the original
+    ; two-deep stack (caller bank, then b2) is what the return path expects.
+    ;
+    STA a:ZHV_GlyphChar
+    ;
+    ; Remember the bank to come back to.  Pushed next so the bank 9 routine can
+    ; pop the pair's second byte, then the b1 above, on top of it.
+    ;
+    LDA a:CurrentROMBank
+    PHA
+    ;
+    ; Consume the pair's second byte, using the same read pattern as
+    ; TextBox_ShowMessage_LoadMessage: load the cursor, advance it (carrying
+    ; into the address high byte when Y wraps), then read at the OLD Y.
+    ; Temp_Int24 is re-loaded from Message_StartAddr first so the local copy of
+    ; the high byte is in step with the canonical one.
+    ;
+    LDA a:Message_StartAddr
+    STA Temp_Int24
+    LDA a:Message_StartAddr_U
+    STA Temp_Int24_M
+    LDY a:Message_ProcessedLength
+    INC a:Message_ProcessedLength
+    BNE @_haveLowByte
+    INC a:Message_StartAddr_U
+
+  @_haveLowByte:
+    LDA (Temp_Int24),Y
+    PHA                                     ; the pair's second byte
+
+    ;
+    ; Map the glyph bank and enter it.
+    ;
+    LDX #BANK_HANZI_TEXT
+    JSR MMC1_UpdateROMBank
+    JMP ZHV_DrawFullWidthChar               ; bank 9
+
+
+;============================================================================
+; zh_version: return path for a drawn full-width character, in the fixed bank.
+;
+; ZHV_DrawFullWidthChar (bank 9) ends with a JMP here instead of restoring the
+; bank itself: the instant the window is switched back, the next instruction
+; fetched from $8000-$BFFF would come from the newly mapped bank.  From here the
+; switch is safe, and the original continuation point is rejoined with the
+; message bank mapped again (it peeks at the message stream).
+;============================================================================
+ZHV_FullWidthDone:
+    PLA                                     ; caller bank (pushed by the entry)
+    TAX
+    JSR MMC1_UpdateROMBank
+    JMP TextBox_ShowMessage_HandleSpaceOrEndOfLine

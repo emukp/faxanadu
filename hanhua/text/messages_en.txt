@@ -1,0 +1,199 @@
+; zh_version R6: English text of all 193 messages, extracted from
+; Faxanadu (U).nes
+; Generated file - do not hand-edit.
+; Format matches textscn.tsv: LABEL<TAB>text, '\n' = newline,
+; [pause] = $FC, [title] = $FB.  Translate from here.
+
+MESSAGE_UNKNOWN_1	Hello.\nCould I help youwith anything.[pause]What\nwould you like?
+MESSAGE_THANK_YOU_FOR_SHOPPING	Thank you\nfor shopping.
+MESSAGE_NOT_ENOUGH_GOLD	This is not\nenough Golds.
+MESSAGE_ANYTHING_ELSE	Anything else?
+MESSAGE_COME_BACK_AGAIN	Come back again.
+MESSAGE_CANT_CARRY_MORE	You can't carry\nany more.
+MESSAGE_DRIED_MEAT_50G	Dried meat to\nbring energy\nfor 50 Golds.
+MESSAGE_DRIED_MEAT_150G	Dried meat to\nbring energy\nfor 150 Golds.
+MESSAGE_DRIED_MEAT_180G	Dried meat to\nbring energy\nfor 180 Golds.
+MESSAGE_DRIED_MEAT_250G	Dried meat to\nbring energy\nfor 250 Golds.
+MESSAGE_DRIED_MEAT_350G	Dried meat to\nbring energy\nfor 350 Golds.
+MESSAGE_DRIED_MEAT_500G	Dried meat to\nbring energy\nfor 500 Golds.
+MESSAGE_DRIED_MEAT_800G	Dried meat to\nbring energy\nfor 800 Golds.
+MESSAGE_I_SELL_KEYS	Hello.\nI sell keys.\nWhat\nwould you like?
+MESSAGE_I_SELL_TOOLS	Hello.\nI sell tools.\nWhat\nwould you like?
+MESSAGE_COME_HERE_TO_BUY_SELL	Come here\nto buy.\nCome here\nto sell.
+MESSAGE_NO_KEY	You don't\nhave a key.
+MESSAGE_NOTHING_TO_BUY	You have\nnothing to buy.
+MESSAGE_WHICH_TO_SELL	Which one would\nlike to sell?
+MESSAGE_WHAT_WOULD_YOU_LIKE	What\nwould you like?
+MESSAGE_MAGIC_200G	I shall give\nmagic\nfor 200 Golds.
+MESSAGE_WATCH_POWER_LEVEL	Watch your\nremaining\npower level.
+MESSAGE_MAGIC_FIRE_3000G	Do you know the\nmagic of fire?\nI'll teach you\nfor 3000 Golds.
+MESSAGE_DONT_RELY_ON_MAGIC	Don't rely too\nmuch on magic.
+MESSAGE_MARTIAL_ARTS_200G	Do you want\na martial art\nlesson\nfor 200 Golds?
+MESSAGE_DO_YOU_WANT_TREATMENT	Do you want\na treatment?
+MESSAGE_DONT_TRY_TOO_HARD	Don't try\ntoo hard.
+MESSAGE_250G_PLEASE	It is 250 Golds\n,please.
+MESSAGE_500G_PLEASE	It is 500 Golds\n,please.
+MESSAGE_1000G_PLEASE	It is 1000 Golds,please.
+MESSAGE_2500G_PLEASE	It is 2500 Golds,please.
+MESSAGE_1800G_PLEASE	It is 1800 Golds,please.
+MESSAGE_3000G_PLEASE	It is 3000 Golds,please.
+MESSAGE_MEDITATE_WITH_YOU	You need peace\nof mind.\nI will meditate\nwith you.
+MESSAGE_NEW_TITLE	I shall give youa title.\n'[title]'[pause]Make sure you\nlive up to it.
+MESSAGE_REMEMBER_YOUR_MANTRA	Don't have\nnegative\nthoughts.[pause]Remember\nyour mantra.
+MESSAGE_HEAR_AGAIN	Do you want\nto hear it\nonce more?
+MESSAGE_INTRO	I've been on\na long journey.[pause]I came back to\nmy home town\nto find it is\nalmost deserted.[pause]The gate is\nclosed,\npeople are gone,[pause]and the walls\nare crumbling.[pause]I wonder\nwhat happened.
+MESSAGE_GO_SEE_KING	I want you\nto see the king\nright away[pause]although you've\njust arrived.
+MESSAGE_DIRECTIONS_APOLUNE	Go straight\nahead and you'llfind the town ofApolune.
+MESSAGE_MARK_OF_JACK	There is a mark\nof "Jack"\nby the key hole.
+MESSAGE_THIS_IS_EOLIS	This is the Elf\ntown of Eolis.[pause]It is located atthe bottom of\nthe World Tree[pause]and the Elves\nlive here.[pause]Go to see the\nGuru before you\nsee the king.
+MESSAGE_LOOK_FOR_RINGS	There are many\nrings with\ndifferent magic.[pause]Look for them\none by one.
+MESSAGE_TAKE_RING_TO_KING	If you are goingto see the king,take this ring.[pause]This ring will\nidentify you.\nDon't lose it.
+MESSAGE_VISIT_GURUS_GET_TITLE	Visit all Gurus\non your way.[pause]You'll get a\ntitle according\nto your\nexperience.
+MESSAGE_LAST_WELL_ALMOST_DRY	The last well isalmost dry.
+MESSAGE_THIS_IS_FOREPAW	There is\na fountain\nin the town of\nForepaw.
+MESSAGE_DWARVES_ARE_HERE	The Dwarfs are\nalready in town.It looks like\nthe end is near.
+MESSAGE_DO_YOU_HAVE_WEAPON	Do you have\na weapon\nfor fighting?
+MESSAGE_CANT_LET_YOU_GO	I can't\nlet you go.
+MESSAGE_KING_IS_WAITING	The King is\nwaiting for you.
+MESSAGE_GOOD_LUCK	Good luck!
+MESSAGE_KING_EXPOSITION	Glad you could\ncome.\nDisaster has\nbefallen us.[pause]The Elf\nfountain water,\nour life source,has stopped.[pause]The wells are\ndrying up.[pause]Many men went\nout and nobody\ncame back.[pause]You are our lasthope.\nI shall give you1500 Golds.[pause]Prepare\nfor your journeywith this money.[pause]It will be a\ndangerous\njourney.[pause]Take care\nof yourself.
+MESSAGE_NOTHING_MORE_TO_HELP	There is nothingmore I can do tohelp you.[pause]Looking forward\nto good news.
+MESSAGE_DWARVES_ROBBING_ELVES	The Dwarfs\nare robbing\nthe Elves' moneyand jewelry.
+MESSAGE_METEORITE_EXPOSITION	A meteorite fellinto the World\nTree and\ncreated havoc.[pause]At the end of\nthe confusion,[pause]the Dwarfs of\nthe underworld\ncame up[pause]and attacked\nthe Elves.\nNobody knows\nthe reason.
+MESSAGE_LISTEN_TO_PEOPLE	Listen to\npeople.[pause]You'll only get\nfrustrated\nif you just walkaround.
+MESSAGE_DONT_TRY_TOO_HARD_2	Don't try\ntoo hard.
+MESSAGE_WELCOME_TO_APOLUNE	Welcome to the\ntown of Apolune.
+MESSAGE_DIRECTIONS_FOREPAW	There is the\ntown of Forepaw\nahead of you.
+MESSAGE_DIRECTIONS_TO_TRUNK	There are Dwarfsall over in the\nTower of Trunk.[pause]Go out of town,\nturn right and\ngo straight,[pause]then you'll findthe Tower\nof Trunk.
+MESSAGE_GOOD_LUCK_2	Good luck.
+MESSAGE_SHOULD_HAVE_SHIELD	You should have\na shield. It'll\nprotect you fromDwarf attacks.
+MESSAGE_MATTOCK_IN_TOWER	The Mattock\nshould be in theTower.[pause]You can get it\nby defeating a\nDwarf.
+MESSAGE_BLOCKED_PASSAGE	We blocked the\npassage to the\nnext town by\nbuilding a wall,[pause]but the Dwarfs\nkeep coming.
+MESSAGE_MATTOCK_BREAKS_WALL	If you have the\nMattock,you can\nbreak the wall,[pause]but if you don'thave it...
+MESSAGE_YOU_NEED_KEY	You need a key.
+MESSAGE_YOU_NEED_DIFFERENT_KEY	You need a\ndifferent key.
+MESSAGE_DOCTOR_CAN_HELP	Are you hurt?\nOur doctor\ncan help.
+MESSAGE_POISON_IS_BAD	Watch out for\nthe jar of\npoison.[pause]The poison will\ntake your energyaway.
+MESSAGE_LEARN_MANTRAS	Did you learn\nthe Guru's\nmantra?[pause]The mantra will\nreturn you to\nthis world.[pause]Hold on to the\nmantra.
+MESSAGE_SECRET_GURU_IN_TOWER	There is a\nsecret Guru in\nthe Tower of\nFortress.[pause]You'll find\nimportant infor-mation and\na key there.
+MESSAGE_CARRY_ITEMS	You can carry 8\nitems. They are\nall important.\nChoose well.
+MESSAGE_WELCOME_TO_FOREPAW	This is the townof Forepaw.
+MESSAGE_FOUNTAIN_WILL_FLOW_TO_TOWN	If the fountain\nflows,water willcome back to thetown.
+MESSAGE_FIND_3_SPRINGS	Water from 3\nsprings flows\ninto the\nfountain.[pause]Find the 3\nsprings and\nreturn the waterto the fountain.
+MESSAGE_WATER_IS_FLOWING	Water is flowingin our fountain.Thanks to\nyour help.
+MESSAGE_FOUNTAIN_IN_SKY	I hear\nquite often\nabout a fountainin the sky.[pause]When you go downfrom the town,[pause]you'll come to aplace where the\nsky opens above.[pause]They say a\nfountain is up\nin the sky,[pause]but you need\nWing Boots...
+MESSAGE_PUSH_FOUNTAIN_ROCK	If you can push\nthe rock away\nfrom the\nfountain,[pause]you'll find the\nway to Mascon.[pause]But, you can't\nmove it without\nthe Ring of\nRuby.[pause]The old man of\nthe spring will\nhave it.\nAsk him.
+MESSAGE_SPRING_IN_TOWER	There is a\nspring\nin the tower of\nFortress.[pause]You'll find the\ndried up\nfountain[pause]and the entranceto the tower\nright above\nthis town.[pause]So long.
+MESSAGE_WINGBOOTS_IN_TOWER	The Dwarf\nwho lives\nin the tower\nhas Wing boots.[pause]When you get\nthem, look for\na fountain\nin the sky.
+MESSAGE_DIRECTIONS_TO_MASCON	When you push\nthe rock\naway from the\nfountain,[pause]you'll find\nthe passage\nto Mascon,[pause]but you need\nthe Ring\nof Ruby.
+MESSAGE_LOOK_FOR_WINGBOOTS	Look for\nWing Boots.
+MESSAGE_FOUNTAIN_IN_SKY_HINT	Go below the\nblue sky. You'llfind a fountain\nin the sky.
+MESSAGE_USE_THIS_KEY_FOR_FIRST_SPRING	Use this key\nto open the doorbelow.[pause]You'll find the\nfirst spring.
+MESSAGE_GET_JOKER_OR_COME_BACK	If you don't\nhave a Joker\nkey,\ncome back again.
+MESSAGE_HO_HO_HO_ZZZ	Ho, ho, ho.\nI'll tell you\nabout the water\nof the spring.[pause].....\n.....\nOops!\n..fallen asleep.[pause]The water was\npoisoned.[pause]The posion is\nalmost gone so\nit's all right\nto wake him up.[pause]Watch.\n..... .....\nSomething is\nwrong...[pause]Oops!
+MESSAGE_GET_KEY_FIND_FOUNTAIN	Get the key fromthe Guri in the\ntower of\nFortress and[pause]search for the\nundiscovered\nfirst fountain.
+MESSAGE_THIS_IS_SPRING_OF_TRUNK_GET_ELIXIR	You've done wellto get here.\nThis is the\nspring of Trunk.[pause]You need Elixir\nto revive the\nspring.[pause]Will you give meyour medicine?
+MESSAGE_2_MORE_SPRINGS	This spring willflow again.\nThere are\ntwo more.[pause]You'd better go\nand find them.
+MESSAGE_COME_BACK_WITH_MEDICINE	Come back with\nthe medicine.
+MESSAGE_FIND_POISON_IN_MASCON	As soon as waterflows in the\nfountain,[pause]go to Mascon andfind the poison\nthe Dwarfs hide,[pause]otherwise the\nElves will be\ndestroyed.
+MESSAGE_WILL_REVIVE_SPRING	Thank you for\ncoming.[pause]I will revive\nthe spring\nright away.
+MESSAGE_GIVING_RING_OF_RUBY	I'll give you\nthe Ring of\nRuby.[pause]Now, push the\nrock away from\nthe fountain.
+MESSAGE_TRUST_YOUR_POWER	Trust\nyour power.[pause]You are the\nchosen warrior\nto rescue\nthis world.
+MESSAGE_WELCOME_TO_MASCON	What business doyou have here?[pause]This is the\nmisty town of\nMascon.
+MESSAGE_PREPARE_BEFORE_FOREPAW	The tower of\nForepaw is stillfar away.[pause]Prepare well\nand go.
+MESSAGE_METEORITE_BECOMES_POISON	When the meteor-ite is dissolvedin water,[pause]it becomes\npoison which\nwill bring\nsickness.[pause]It started when\nthe Dwarfs\nbrought it into\nthe World Tree.
+MESSAGE_DID_YOU_GET_PENDANT	Did you get the\npendant? It willstrengthen your\noffense power.
+MESSAGE_STORES_OUTSIDE_TOWN	There are storesoutside town.[pause]They sell usefulitems,[pause]though it's\ninconvenient to\nget there.[pause]I wonder if you\ncould find them.Look up while\nyou walk.
+MESSAGE_THIS_IS_LARGE_SHIELD	It is a large\nand beautiful\nshield.
+MESSAGE_DIRECTIONS_TO_SUFFER	The meteorite ismeditated on\nat the tower of\nSuffer.[pause]You'll find the\nTower above a\nGuru.\nBe careful.
+MESSAGE_NEED_WING_BOOTS_FOR_MIST	You need Wing\nBoots[pause]in order to get\nto the misty\ntown of Victim.[pause]Look for them inthe Tower of\nSuffer.
+MESSAGE_WELCOME_TO_MIST	This town has\nbeen covered\nwith a mist ever[pause]since the mete-\norite hit the\ntown.[pause]Some areas\nmight still\nbe burning.
+MESSAGE_HOUSE_OUTSIDE_ABANDONED	The house\noutside town wasabandoned[pause]and the Dwarfs\nare living\nthere.[pause]Watch out for\nthem.
+MESSAGE_TOWER_OF_SUFFER_SOON	You'll get to\nthe Tower of\nSuffer soon.
+MESSAGE_KEEP_PENDANT	The pendant has\nbeen a treasure\nof the town.[pause]But it is best\nfor the town if\nyou keep it.
+MESSAGE_DWARVES_CHANTING	The Dwarfs are\nchanting their\nmantras[pause]to a segment of\nthe meteorite.[pause]They believe it\nhas special\ncosmic power.
+MESSAGE_METEORITE_WAS_MOVED	The meteorite\nwhich was in theTower of Suffer[pause]has been moved\nto the Tower of\nMist.[pause]The Dwarfs must\nhave learned of\nyour coming.
+MESSAGE_HOUR_GLASS	They say the\nHour Glass will\nenable you[pause]to move around\nwhile the time\nstops.
+MESSAGE_HOUR_GLASS_USES_ENERGY	The Hour Glass\nwill exhaust\nyour energy,[pause]so be careful\nwhen you use it.
+MESSAGE_WELCOME_TO_VICTIM	Welcome to the\nTown of Victim.[pause]I have been\nunable to leave\ntown.
+MESSAGE_DANGEROUS_WITHOUT_MAGIC	It is dangerous\nto leave town\nunless you have\na magic shield.
+MESSAGE_MAGIC_HALL_OUTSIDE_TOWN	There is a magichall outside\ntown.
+MESSAGE_MAGIC_CANE	There is a magiccane which will\ngive you magic\npower.
+MESSAGE_GO_TO_CAPITAL	The door to the\nCapital town\nbelow is open.\nGo to it now.
+MESSAGE_GOT_ARMOR_FOR_BOTTLE	It was only a\nrumor. Sorry\nabout that.[pause]I got this armorin exchange for\na bottle.[pause]If you wish,\nyou can have it.
+MESSAGE_ILL_HAVE_DRINK	I'll have a\ndrink.\nWell...\nnot yet.
+MESSAGE_IM_LOST	Looks like\nI'm lost.
+MESSAGE_IM_LOST_MAGIC_DOES_NOT_WORK	I'm lost.\nMy magic\ndoes not work.
+MESSAGE_MAGIC_OF_JUSTICE_OR_DESTRUCTION	It can be magic\nof justice\nor a magic of\ndestruction.[pause]It all depends\non who uses it.
+MESSAGE_MAGIC_INDIVIDUAL_POWERS	Magics have\nindividual\npowers.
+MESSAGE_MAGIC_CONSUMES_POWER	Magic of offenceis effective,\nbut it consumes\npower.
+MESSAGE_METEORITE_BECOMES_BLACK_ONYX	When you hold\nthe Dwarf's\nmeteorite in\nyour hand,[pause]it will become\nBlack Onyx with\npower inside.
+MESSAGE_DIRECTIONS_TO_TOWER_OF_MIST	If you go\nstraight ahead,[pause]you will get to\nthe Tower of\nMist.[pause]If you defeat\nthe dwarf who\nlives in the\nTower[pause]and get the\nmeteorite,\ncome back here.
+MESSAGE_USE_KEY_FOR_CONFLATE	As long as thereare crazed\nDwarfs,[pause]the deadly\nthreat of the\nmeteorite[pause]will loom over\nthe Elves.[pause]Use this key to\nopen the next\ndoor to get to\nConflate.[pause]Fight for the\nElves.
+MESSAGE_YOU_NEED_KEY_ACE	I give keys to\ntravelers like\nyourself.[pause]You have an\n"Ace" key,\ndon't you?
+MESSAGE_WELCOME_TO_CONFLATE	This is a\ntrading town\ncalled\nConflate.
+MESSAGE_LEGENDARY_SHIELD_HELMET	You'll find the\nlegendary shieldand helmet[pause]in the World of\nBranch.
+MESSAGE_TOWN_SURROUNDED_BY_DOORS	The town is\nsurrounded by\ndoors for\nprotection.
+MESSAGE_SEE_GURU_AFTER_SHIELD_HELMET	When you get theshield and\nhelmet, go to\nsee the Guru.
+MESSAGE_GUARDIAN_OF_GURU	I am a guardian\nof the Guru.\nHe is an im-\nportant person.
+MESSAGE_SOMETHING_YOU_CAN_GET	There should be\nsomething you\ncan get.
+MESSAGE_DONT_RELY_ON_MAGIC_FINAL_BATTLE	Don't rely on\nyour magic power[pause]during the finalbattle with the\nDwarfs.
+MESSAGE_USED_TO_TRADE_WITH_DWARVES	The town used toprosper from\ntrading with theDwarfs.
+MESSAGE_USED_TO_BE_SKILLED	They are\nterrible now,[pause]but they used tobe skilled\ncraftsmen.
+MESSAGE_USED_TO_VISIT_DWARVES	I used to go to\nthe town of\nDwarfs quite\noften[pause]when we had\nbusiness with\nthem.
+MESSAGE_I_AM_PICKPOCKET	Do you want to\nknow what I do?[pause]I am\nthe pickpocket\nGingi.[pause]I'm an importantperson around\nhere.
+MESSAGE_UNKNOWN_139	Don't rely on\nyour magic power[pause]only during the\nfinal fight\nagainst the\nDwarfs.[pause]You can wear theBattle Helmet\nand Battle Suit[pause]only when you\nhave the Dragon\nSlayer.[pause]You will not be\nable to return\nus the Dragon\nSlayer[pause]until we have\ntrue peace here.
+MESSAGE_NEED_FINAL_WEAPON_ARMOR	Don't rely on\nyour magic power[pause]alone during thelast fight\nagainst the\nDwarfs.[pause]You can wear theBattle Helmet\nand Battle Suit[pause]only when you\nhave the Dragon\nSlayer.[pause]You will not be\nable to return\nus the Dragon\nSlayer[pause]until we have\ntrue peace here.[pause]This ring will\nopen the door toDartmoor. Take\nit with you.
+MESSAGE_DIRECTIONS_DARTMORE	Daydreak is a\ntown at the\nborder.
+MESSAGE_DIRECTIONS_DAYBREAK	I have friends\nin Dartmoor[pause]which is known\nas an evil\nplace.
+MESSAGE_FRIENDS_IN_DARTMOOR	Look for the\nBattle Suit.
+MESSAGE_LOOK_FOR_BATTLE_SUIT	Did you find themagic cane?
+MESSAGE_FIND_MAGIC_CANE	You are the\nfamous warrior.[pause]You are as good\nlooking as I've\nheard.
+MESSAGE_YOU_ARE_FAMOUS_GOOD_LOOKING	You are the\nwarrior everyoneis talking\nabout.[pause]Could I have\nyour autograph?[pause]Are you busy\nnow? Well, will\nyou come to\nvisit me?[pause]My name is Moto.Please don't\nforget.
+MESSAGE_AUTOGRAPH	Look at you!\nWhen did you\nlast take a\nbath?
+MESSAGE_WHEN_TAKE_BATH	The Guru of\nConflate has theRing of Dwarfs.
+MESSAGE_GURU_CONFLATE_HAS_RING_DWARVES	Did you get the\nBattle Suit?
+MESSAGE_DID_YOU_GET_BATTLE_SUIT	The castle of\nDartmoor is a\ncomplex maze.
+MESSAGE_DARTMORE_IS_MAZE	Is this your\nfirst visit to\nthis store?\nIt is my first.
+MESSAGE_IS_FIRST_VISIT_TO_STORE	Have not seen\nyou for a while.You'll find a\nmagic cane[pause]when you get\nabove the tower\nof Pillar.
+MESSAGE_MAGIC_CANE_ABOVE_TOWER	There is the\nCastle of\nFraternal[pause]down below the\ntown of\nDartmoor.
+MESSAGE_DIRECTIONS_TO_FRATERNAL	You need the\nDemon's Ring[pause]to get into the\nfortress of\nZenis.
+MESSAGE_YOU_NEED_DEMONS_RING	Dragon Slayer isin the hands of\nking of the\nDwarfs.
+MESSAGE_KING_GRIEVE_HAS_DRAGON_SLAYER	Defeat the Evil\none with Dragon\nSlayer.
+MESSAGE_DEFEAT_EVIL_WITH_DRAGON_SLAYER	Go to see the\nGuru in the\nCastle of\nFraternal.
+MESSAGE_GO_TO_FRATERNAL_GURU	If you see the\nGuru, he'll giveyou the Demon's\nRing.
+MESSAGE_GURU_HAS_DEMONS_RING	Search inside\nthe castle.\nYou should find\na Guru.
+MESSAGE_SEARCH_CASTLE_FOR_GURU	The magic of\noffence does notwork against theEvil one.
+MESSAGE_EVIL_IMMUNE_TO_MAGIC	The Dwarfs re-\ngard the meteor-ite as a cosmic\nmessenger.[pause]It is a dreadfulthing as you\nalready know.[pause]It turns into a\npoison when\ndissolved in\nwater.[pause]It is not incon-ceivable that[pause]you would ex-\nperience mental\nand physical\nchanges[pause]when you are\nnear or touch\nit.[pause]That is why the\nDwarfs have\nchanged and gonecrazy.
+MESSAGE_METEORITE_EXPOSITION_2	The monster\nyou've just de-\nfeated is King\nGrieve,[pause]the king of the\nDwarfs. The EvilOne changed his\nappearance.[pause]The king pro-\ntected the swordfrom the Evil\nOne[pause]by hiding it\nwithin his own\nbody.[pause]Use the sword todefeat the Evil\nOne in the\nfortress.[pause]This will open\nthe door to the\nfortress.
+MESSAGE_DEFEATED_KING_GRIEVE	I'll meditate\nfor you.
+MESSAGE_ILL_MEDITATE_FOR_YOU	Glad to have youback safely.[pause]It will take\ntime,\nbut the Elves\nand the Dwarfs[pause]will become\nfriends and re-\nturn the peace\nto this land[pause]as it used to\nbe. I understandyou will leave[pause]to continue yourjourney.\nWhat a restless\nguy!
+MESSAGE_GLAD_YOURE_BACK	There is the\nmark of "Queen"\nby the key hole.
+MESSAGE_MARK_OF_QUEEN	There is the\nmark of "King"\nby the key hole.
+MESSAGE_MARK_OF_KING	There is the\nmark of "Ace"\nby the key hole.
+MESSAGE_MARK_OF_ACE	There is the\nmark of "Joker"\nby the key hole.
+MESSAGE_MARK_OF_JOKER	Do you need\na ring\nto open a door?
+MESSAGE_NEED_RING_FOR_DOOR	I've used\nRed Potion.
+MESSAGE_USED_RED_POTION	I've used\nMattock.
+MESSAGE_USED_MATTOCK	I've used\nHour Glass.
+MESSAGE_USED_HOURGLASS	I've used\nWing Boots.
+MESSAGE_USED_WINGBOOTS	I've used key.
+MESSAGE_USED_KEY	I've used\nElixir.
+MESSAGE_USED_ELIXIR	I'm holding\nElixir.
+MESSAGE_HOLDING_ELIXIR	I'm holding\nRed Potion.
+MESSAGE_HOLDING_RED_POTION	I'm holding\nMattock.
+MESSAGE_HOLDING_MATTOCK	I'm holding\nWing Boots.
+MESSAGE_HOLDING_WINGBOOTS	I'm holding\nHour Glass.
+MESSAGE_HOLDING_HOURGLASS	I've got\nthe Battle Suit.
+MESSAGE_GOT_BATTLE_SUIT	I've got the\nBattle Helmet.
+MESSAGE_GOT_BATTLE_HELMET	I've got the\nDragon Slayer.
+MESSAGE_GOT_DRAGON_SLAYER	I've got\nthe Black Onyx.
+MESSAGE_GOT_BLACK_ONYX	I've got\nthe Pendant.
+MESSAGE_GOT_PENDANT	I've got the\nMagical Rod.
+MESSAGE_GOT_MAGICAL_ROD	I've touched\nPoison.
+MESSAGE_TOUCHED_POISON	The glove\nincreases\noffensive power.
+MESSAGE_GLOVE_INCREASES_POWER	The power of\nthe Glove\nis gone.
+MESSAGE_POWER_GLOVE_IS_GONE	I am free from\ninjury because\nof the ointment.
+MESSAGE_USED_OINTMENT	The power of\nthe ointment\nis gone.
+MESSAGE_OINTMENT_GONE	The power of\nthe Wing Boots\nis gone.
+MESSAGE_WINGBOOTS_GONE	The power of\nthe Hour Glass\nis gone.

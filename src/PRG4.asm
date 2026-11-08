@@ -19,7 +19,7 @@
 ; ........
 ;
 ; XREFS:
-;     TILE_INDEX_TO_ADDR [$PRG15_MIRROR::cf07]
+;     TILE_INDEX_TO_ADDR [$PRG15::cf07]
 ;
 AREA_TILESETS_EOLIS:
     .byte $80,$3e,$9e,$00,$a0,$0b,$51,$00   ; byte
@@ -1815,7 +1815,7 @@ AREA_TILESETS_EOLIS:
 ; ░░░░░░░░
 ;
 ; XREFS:
-;     TILE_INDEX_TO_ADDR [$PRG15_MIRROR::cf0b]
+;     TILE_INDEX_TO_ADDR [$PRG15::cf0b]
 ;
 AREA_TILESETS_TRUNK:
     .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; byte
@@ -3611,7 +3611,7 @@ AREA_TILESETS_TRUNK:
 ; .....░..
 ;
 ; XREFS:
-;     TILE_INDEX_TO_ADDR [$PRG15_MIRROR::cf0d]
+;     TILE_INDEX_TO_ADDR [$PRG15::cf0d]
 ;
 AREA_TILESETS_MIST:
     .byte $20,$00,$80,$12,$00,$01,$40,$04   ; byte
@@ -5407,7 +5407,7 @@ AREA_TILESETS_MIST:
 ; ░░░░░░░░
 ;
 ; XREFS:
-;     TILE_INDEX_TO_ADDR [$PRG15_MIRROR::cf09]
+;     TILE_INDEX_TO_ADDR [$PRG15::cf09]
 ;
 AREA_TILESETS_BRANCH:
     .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; byte
@@ -7203,7 +7203,7 @@ AREA_TILESETS_BRANCH:
 ; ........
 ;
 ; XREFS:
-;     TILE_INDEX_TO_ADDR [$PRG15_MIRROR::cf11]
+;     TILE_INDEX_TO_ADDR [$PRG15::cf11]
 ;
 AREA_TILESETS_TOWNS:
     .byte $ff,$8c,$90,$90,$81,$1f,$ff,$00   ; byte
@@ -8999,7 +8999,7 @@ AREA_TILESETS_TOWNS:
 ; ░░░▒▒▒░░
 ;
 ; XREFS:
-;     TILE_INDEX_TO_ADDR [$PRG15_MIRROR::cf13]
+;     TILE_INDEX_TO_ADDR [$PRG15::cf13]
 ;
 AREA_TILESETS_KINGSROOM_GURU_HOSPITAL:
     .byte $a3,$6b,$6b,$31,$80,$ff,$ff,$e3   ; byte
@@ -10347,7 +10347,7 @@ AREA_TILESETS_KINGSROOM_GURU_HOSPITAL:
 ; ░░░░░░░░
 ;
 ; XREFS:
-;     TILE_INDEX_TO_ADDR [$PRG15_MIRROR::cf15]
+;     TILE_INDEX_TO_ADDR [$PRG15::cf15]
 ;
 AREA_TILESETS_SHOPS_HOUSE_TAVERN:
     .byte $ff,$18,$18,$ff,$fe,$81,$81,$ff   ; byte
@@ -11695,7 +11695,7 @@ AREA_TILESETS_SHOPS_HOUSE_TAVERN:
 ; ░░░░░░░░
 ;
 ; XREFS:
-;     TILE_INDEX_TO_ADDR [$PRG15_MIRROR::cf17]
+;     TILE_INDEX_TO_ADDR [$PRG15::cf17]
 ;
 AREA_TILESETS_MARTIALARTS_MAGICTRAINER:
     .byte $00,$eb,$bb,$d4,$1b,$24,$ff,$ff   ; byte
@@ -12595,7 +12595,7 @@ AREA_TILESETS_MARTIALARTS_MAGICTRAINER:
 ; ▒░▒▒░░..
 ;
 ; XREFS:
-;     TILE_INDEX_TO_ADDR [$PRG15_MIRROR::cf0f]
+;     TILE_INDEX_TO_ADDR [$PRG15::cf0f]
 ;
 AREA_TILESETS_DARTMOOR_EVIL_LAIR:
     .byte $f2,$f3,$03,$b2,$b5,$09,$13,$4c   ; byte

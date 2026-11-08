@@ -7,3 +7,5 @@ src/RAM_MIRROR*.asm
 src/SRAM.asm
 
 .*.swp
+/src/TAGS
+/hanhua/__pycache__/

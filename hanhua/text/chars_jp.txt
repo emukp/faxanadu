@@ -1,0 +1,287 @@
+; Faxanadu (J) font code table  --  CODE<TAB>character
+;
+; Built by rendering the glyphs of bank 13 ($0000-$1F3F) and reading them,
+; and cross-checked against the English of the same message: the two scripts are
+; the same game and line up as **J #N = U #(N+1)**, so every kanji below can be
+; read in a sentence whose meaning is known.
+;
+; GLYPH FORMAT (corrected in this revision - the earlier note in
+; docs/Faxanadu-UvsJ.md 5.2 called it "8x16, 2bpp, plane0[16]+plane1[16]",
+; which is wrong): a glyph is **16x16, 1bpp, 32 bytes**, stored as
+;     bytes  0..15 = the LEFT  8 columns, one byte per row (bit7 = leftmost)
+;     bytes 16..31 = the RIGHT 8 columns, same rows
+; Rendering the two halves as two bitplanes of an 8x16 cell (the old reading)
+; turns every wide kanji into a plausible-looking but wrong shape - it is what
+; made the first pass at this table unreliable.
+;
+; Code layout:
+;   $00-$51  hiragana, dense 五十音 with the small kana inline
+;            (あ ぃ い ぅ う ぇ え ぉ お / た だ ち ぢ っ つ づ て で と ど)
+;   $52-$A1  katakana, same layout, then ヮ ワ ヲ ン
+;   $A2-$F9  kanji and symbols; the font only carries the glyphs this script
+;            needs, e.g. the digits are 0 1 2 3 5 8 only (no 4/6/7/9 anywhere)
+;   $FD space  $FE newline  $FC pause  $FB player title  $FF terminator
+;
+; Two entries are deliberately glossed rather than literal:
+;   $A8  the glyph is 一, but every one of its 79 uses is a katakana long vowel,
+;        so it is entered as ー (the mark the text actually reads as).
+;   $A0  is not used by any message; it is entered as ヲ (the only katakana left
+;        in the わ row) but was not confirmed against a running text.
+; Codes with no line here are unresolved and print as <XX> in messages_jp.txt,
+; so a guess can never be mistaken for a reading.
+
+; --- hiragana ---------------------------------------------------------------
+00	ぁ
+01	あ
+02	ぃ
+03	い
+04	ぅ
+05	う
+06	ぇ
+07	え
+08	ぉ
+09	お
+0A	か
+0B	が
+0C	き
+0D	ぎ
+0E	く
+0F	ぐ
+10	け
+11	げ
+12	こ
+13	ご
+14	さ
+15	ざ
+16	し
+17	じ
+18	す
+19	ず
+1A	せ
+1B	ぜ
+1C	そ
+1D	ぞ
+1E	た
+1F	だ
+20	ち
+21	ぢ
+22	っ
+23	つ
+24	づ
+25	て
+26	で
+27	と
+28	ど
+29	な
+2A	に
+2B	ぬ
+2C	ね
+2D	の
+2E	は
+2F	ば
+30	ぱ
+31	ひ
+32	び
+33	ぴ
+34	ふ
+35	ぶ
+36	ぷ
+37	へ
+38	べ
+39	ぺ
+3A	ほ
+3B	ぼ
+3C	ぽ
+3D	ま
+3E	み
+3F	む
+40	め
+41	も
+42	ゃ
+43	や
+44	ゅ
+45	ゆ
+46	ょ
+47	よ
+48	ら
+49	り
+4A	る
+4B	れ
+4C	ろ
+4D	ゎ
+4E	わ
+4F	を
+50	ん
+
+; --- katakana ($51 is ァ; the block proper starts at $52) -------------------
+51	ァ
+52	ア
+53	ィ
+54	イ
+55	ゥ
+56	ウ
+57	ェ
+58	エ
+59	ォ
+5A	オ
+5B	カ
+5C	ガ
+5D	キ
+5E	ギ
+5F	ク
+60	グ
+61	ケ
+62	ゲ
+63	コ
+64	ゴ
+65	サ
+66	ザ
+67	シ
+68	ジ
+69	ス
+6A	ズ
+6B	セ
+6C	ゼ
+6D	ソ
+6E	ゾ
+6F	タ
+70	ダ
+71	チ
+72	ヂ
+73	ッ
+74	ツ
+75	ヅ
+76	テ
+77	デ
+78	ト
+79	ド
+7A	ナ
+7B	ニ
+7C	ヌ
+7D	ネ
+7E	ノ
+7F	ハ
+80	バ
+81	パ
+82	ヒ
+83	ビ
+84	ピ
+85	フ
+86	ブ
+87	プ
+88	ヘ
+89	ベ
+8A	ペ
+8B	ホ
+8C	ボ
+8D	ポ
+8E	マ
+8F	ミ
+90	ム
+91	メ
+92	モ
+93	ャ
+94	ヤ
+95	ュ
+96	ユ
+97	ョ
+98	ヨ
+99	ラ
+9A	リ
+9B	ル
+9C	レ
+9D	ロ
+9E	ヮ
+9F	ワ
+A0	ヲ
+A1	ン
+
+; --- kanji and symbols ------------------------------------------------------
+A2	名
+A3	前
+A4	登
+A5	録
+A6	入
+A7	力
+A8	ー
+A9	削
+AA	終
+AB	達
+AC	・
+AD	？
+AE	！
+AF	0
+B0	1
+B1	2
+B2	3
+B3	5
+B4	8
+B5	井
+B6	印
+B7	影
+B8	王
+B9	屋
+BA	会
+BB	界
+BC	鎧
+BD	器
+BE	祈
+BF	丘
+C0	教
+C1	金
+C2	具
+C3	空
+C4	撃
+C5	剣
+C6	鍵
+C7	戸
+C8	攻
+C9	号
+CA	塞
+CB	指
+CC	酒
+CD	授
+CE	樹
+CF	盾
+D0	称
+D1	城
+D2	場
+D3	心
+D4	神
+D5	人
+D6	水
+D7	世
+D8	石
+D9	戦
+DA	泉
+DB	族
+DC	体
+DD	男
+DE	中
+DF	町
+E0	超
+E1	都
+E2	塔
+E3	道
+E4	毒
+E5	必
+E6	父
+E7	負
+E8	武
+E9	噴
+EA	平
+EB	壁
+EC	法
+ED	魔
+EE	霧
+EF	命
+F0	門
+F1	薬
+F2	様
+F3	要
+F4	旅
+F5	輪
+F6	麓
+F7	和
+F8	話
+F9	隕

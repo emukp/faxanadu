@@ -1246,3 +1246,40 @@ WEAPONINVENTORY_LONG_SWORD                         = $01
 WEAPONINVENTORY_GIANT_BLADE                        = $02
 WEAPONINVENTORY_DRAGON_SLAYER                      = $03
 WEAPONINVENTORY_NONE                               = $ff
+
+;============================================================================
+; TextBox layout (zh_version)
+;
+; The textbox interior is 16 tile columns wide.  The original engine drew four
+; 16-character lines, filling all four CHR text pages ($1400-$17FF).  zh_version
+; draws TWO lines at a time, but keeps the same four pages as a rolling double
+; buffer, so only the per-line wrap point changes - see
+; TextBox_ShowMessage_IncLineAndReset in PRG15 and docs/hanhua-12x12.md 5.1.
+;
+; Only TEXT_LINE_COUNT is referenced by code today.  The rest record the layout
+; the follow-up steps (full-width glyphs) will rely on, and are kept here so the
+; numbers live in one place rather than as literals in PRG15.
+;============================================================================
+TEXT_LINE_COUNT                                    = 2     ; visible text lines
+
+; Bank holding the zh_version glyph table and text path (see PRG9_code.asm).
+;
+; It MUST be a bank the MMC1 can actually map into $8000-$BFFF.  In 16 KiB PRG
+; mode that is only banks 0-15: the PRG bank register's bit 4 is ignored (or
+; treated as PRG-RAM enable), so the 512 KiB image's banks 16-31 are NOT
+; reachable - writing $10 selects bank 0.  Measured in FCEUX 2.7.0-interim with
+; a throwaway ROM that selected each bank and read $97C0 back:
+;   bank 13 -> $66 (correct),  bank 16 -> $30 (= bank 0),  bank 0 -> $30.
+; So the glyphs live in bank 9, which the original game leaves entirely $FF
+; (DEFS names it BANK_9_UNUSED), instead of the plan's PRG16.
+BANK_HANZI_TEXT                                    = $09   ; file bank 9 (was 16)
+
+; --- used by the full-width rendering steps (not yet referenced) ---
+TEXT_COLUMNS                                       = 16    ; tile columns per line
+TEXT_PAGE_BASE                                     = $14   ; first text CHR page
+TEXT_TILE_ROW_COUNT                                = TEXT_LINE_COUNT * 2
+TEXT_ROW_SCROLL_MASK                               = $03   ; DrawnLineNum + scroll
+TEXT_PLACEHOLDER_TILE_BASE                         = $40   ; nametable placeholders
+TEXT_FULLWIDTH_LEFT                                = $00   ; Hanzi 2x2 column pair
+TEXT_FULLWIDTH_RIGHT                               = $01
+TEXT_ASCII_TILE_ROW                                = $01   ; ASCII lower tile row

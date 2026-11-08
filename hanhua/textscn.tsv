@@ -1,0 +1,217 @@
+; zh_version 剧本译文(193 条,**待人工审核**;改完运行 `make translate` 重建 ROM)。
+;
+; 格式: <消息标签><TAB><译文>   ; '\n' = 换行($FE)
+;
+; 约束与断行规则:
+;   * **一行 = 16 个 tile 列 = 8 个全角字**;超了引擎会**自动换行**(不需要你写 '\n')。
+;   * '\n' = 引擎的 $FE,是**强制断行**,优先级高于自动折行。本稿每行都控制在 8 字内,
+;     用 '\n' 断句,读起来正好一页两行。
+;   * 盒子一次显示 **2 行**:引擎**每满两行自动停一次**(下箭头,按 A 翻页),
+;     不需要你写任何控制码(见 docs §10.8)。超过 2 行会自动上滚。
+;   * 一条消息想写多长都可以;**只有"每行 ≤8 全角字"是屏幕几何的硬约束**。
+;   * 原版数据里的 $FC(停顿)本稿**全部去掉**:自动翻页已经给了节拍,多留只会多停一次。
+;   * `[title]` 是玩家称号的插入点,必须保留(称号字符串本身仍是英文,见 §10.9 后续项)。
+;   * 出现新字不用手工处理:`make translate` 会重排用字表(chars_zh.txt)并重新生成
+;     字库、重编码全部消息。字形号 = 用字表行序,只由本文件决定,不要手改 chars_zh.txt。
+;
+; 专名对照:Eolis 埃奥利斯 / Apolune 阿波伦 / Forepaw 福尔波 / Mascon 马斯康 /
+;   Victim 维克提姆 / Conflate 康弗雷特 / Dartmoor 达特穆尔 / Daybreak 黎明镇 /
+;   Fraternal 弗拉特纳 / Zenis 泽尼斯 / World Tree 世界树 / Trunk 树干塔 /
+;   Suffer 苦难塔 / Mist 迷雾塔 / Fortress 要塞塔 / Pillar 石柱塔 / Branch 树枝界 /
+;   Guru 神父(日版原作即「神父」) / Dwarfs 矮人 / Elves 精灵 / Golds 金币 / Mantra 真言 /
+;   Ruby 红宝石戒指 / Dragon Slayer 屠龙剑 / Wing Boots 羽翼靴 / Hour Glass 沙漏 /
+;   Mattock 鹤嘴锄 / Elixir 灵药 / Pendant 吊坠 / Black Onyx 黑玛瑙
+MESSAGE_HELP_WITH_ANYTHING	你好！\n有什么需要吗？\n你想要什么？
+MESSAGE_SHOP_GREETING	你好！\n有什么需要吗？\n你想要什么？
+MESSAGE_THANK_YOU_FOR_SHOPPING	多谢惠顾！
+MESSAGE_NOT_ENOUGH_GOLD	你的金币不够
+MESSAGE_ANYTHING_ELSE	还要别的吗？
+MESSAGE_COME_BACK_AGAIN	欢迎再来！
+MESSAGE_CANT_CARRY_MORE	你拿不动了
+MESSAGE_DRIED_MEAT_50G	肉干能补充体力\n需要50金币
+MESSAGE_DRIED_MEAT_150G	肉干能补充体力\n需要150金币
+MESSAGE_DRIED_MEAT_180G	肉干能补充体力\n需要180金币
+MESSAGE_DRIED_MEAT_250G	肉干能补充体力\n需要250金币
+MESSAGE_DRIED_MEAT_350G	肉干能补充体力\n需要350金币
+MESSAGE_DRIED_MEAT_500G	肉干能补充体力\n需要500金币
+MESSAGE_DRIED_MEAT_800G	肉干能补充体力\n需要800金币
+MESSAGE_I_SELL_KEYS	你好！\n我卖钥匙\n你想要什么？
+MESSAGE_I_SELL_TOOLS	你好！\n我卖道具\n你想要什么？
+MESSAGE_COME_HERE_TO_BUY_SELL	在这里买\n在这里卖
+MESSAGE_NO_KEY	你没有钥匙
+MESSAGE_NOTHING_TO_BUY	你没有可卖的
+MESSAGE_WHICH_TO_SELL	要卖哪一个？
+MESSAGE_WHAT_WOULD_YOU_LIKE	你想要什么？
+MESSAGE_MAGIC_200G	花200金币\n我赐你魔法
+MESSAGE_WATCH_POWER_LEVEL	注意体力
+MESSAGE_MAGIC_FIRE_3000G	要学火焰魔法吗？\n3000金币
+MESSAGE_DONT_RELY_ON_MAGIC	别太依赖魔法
+MESSAGE_MARTIAL_ARTS_200G	只要200金币\n学武艺吗？
+MESSAGE_DO_YOU_WANT_TREATMENT	要治疗吗？
+MESSAGE_DONT_TRY_TOO_HARD	别太勉强
+MESSAGE_250G_PLEASE	250金币
+MESSAGE_500G_PLEASE	500金币
+MESSAGE_1000G_PLEASE	1000金币
+MESSAGE_2500G_PLEASE	2500金币
+MESSAGE_1800G_PLEASE	1800金币
+MESSAGE_3000G_PLEASE	3000金币
+MESSAGE_MEDITATE_WITH_YOU	你需要静心\n我来为你冥想
+MESSAGE_NEW_TITLE	我赐你称号：\n'[title]'\n别辜负它
+MESSAGE_REMEMBER_YOUR_MANTRA	不要有杂念\n记住你的真言
+MESSAGE_HEAR_AGAIN	要再听一次吗？
+MESSAGE_INTRO	我远行归来\n故乡已荒芜\n城门紧闭\n人去楼空\n我想知道\n这里出了什么事？
+MESSAGE_GO_SEE_KING	虽然你刚到\n你要立刻去见国王
+MESSAGE_DIRECTIONS_APOLUNE	一直往前走\n就能到阿波伦镇
+MESSAGE_MARK_OF_JACK	钥匙孔旁有\n"杰克"的记号
+MESSAGE_THIS_IS_EOLIS	这里是精灵镇\n埃奥利斯\n它位于世界树的\n底部\n精灵们住在这里\n拜见国王之前\n先去见神父
+MESSAGE_LOOK_FOR_RINGS	有许多带魔力的\n戒指\n把它们一一找齐
+MESSAGE_TAKE_RING_TO_KING	如果你去见国王\n把这枚戒指带上\n它能证明身份\n别弄丢了
+MESSAGE_VISIT_GURUS_GET_TITLE	沿途拜访每一位\n神父\n他们会按你的\n经历赐予称号
+MESSAGE_LAST_WELL_ALMOST_DRY	最后一口井\n也快干涸了
+MESSAGE_THIS_IS_FOREPAW	福尔波镇里\n有一眼泉水
+MESSAGE_DWARVES_ARE_HERE	矮人已经进了镇子\n看来末日将至
+MESSAGE_DO_YOU_HAVE_WEAPON	你有能战斗的\n武器吗？
+MESSAGE_CANT_LET_YOU_GO	我不能放你走
+MESSAGE_KING_IS_WAITING	国王在等你
+MESSAGE_GOOD_LUCK	祝你好运！
+MESSAGE_KING_EXPOSITION	很高兴你来了\n灾难降临了\n精灵的泉水\n我们的命脉\n已经枯竭\n井也在干涸\n许多人出去\n再没回来\n你是最后的希望\n这是1500金币\n给你做路费\n旅途危险\n照顾好自己
+MESSAGE_NOTHING_MORE_TO_HELP	我已经帮不上\n什么忙了\n等你的好消息
+MESSAGE_DWARVES_ROBBING_ELVES	矮人在抢劫\n精灵的财物
+MESSAGE_METEORITE_EXPOSITION	陨石落进世界树\n造成了大混乱\n混乱平息后\n地底的矮人\n爬了上来\n袭击了精灵\n没人知道原因
+MESSAGE_LISTEN_TO_PEOPLE	多听听人们的话\n只顾着赶路\n会一无所获
+MESSAGE_DONT_TRY_TOO_HARD_2	别太勉强
+MESSAGE_WELCOME_TO_APOLUNE	欢迎来到\n阿波伦镇
+MESSAGE_DIRECTIONS_FOREPAW	前面就是\n福尔波镇
+MESSAGE_DIRECTIONS_TO_TRUNK	树干塔里到处\n都是矮人\n出镇后向右\n一直走\n就能看到\n树干塔
+MESSAGE_GOOD_LUCK_2	祝你好运！
+MESSAGE_SHOULD_HAVE_SHIELD	你该带面盾牌\n它能挡住\n矮人的攻击
+MESSAGE_MATTOCK_IN_TOWER	鹤嘴锄应该\n就在塔里\n打倒矮人\n就能拿到
+MESSAGE_BLOCKED_PASSAGE	我们筑起高墙\n封住了通往\n邻镇的路\n可矮人还是\n不断涌来
+MESSAGE_MATTOCK_BREAKS_WALL	有鹤嘴锄\n就能砸开墙\n如果没有……
+MESSAGE_YOU_NEED_KEY	你需要钥匙
+MESSAGE_YOU_NEED_DIFFERENT_KEY	你需要另一把\n钥匙
+MESSAGE_DOCTOR_CAN_HELP	受伤了吗？\n我们的医生\n能帮你
+MESSAGE_POISON_IS_BAD	小心那罐毒药\n它会夺走\n你的体力
+MESSAGE_LEARN_MANTRAS	你学会神父的\n真言了吗？\n真言能让你\n回到这个世界\n一定要记牢
+MESSAGE_SECRET_GURU_IN_TOWER	要塞塔里\n有位隐修神父\n你会得到\n重要的情报\n和一把钥匙
+MESSAGE_CARRY_ITEMS	你最多带8件道具\n每件都重要\n要好好挑选
+MESSAGE_WELCOME_TO_FOREPAW	这里是\n福尔波镇
+MESSAGE_FOUNTAIN_WILL_FLOW_TO_TOWN	只要泉水\n重新涌出\n水就会回到\n镇里
+MESSAGE_FIND_3_SPRINGS	三处泉水\n汇入喷泉\n找到这三处\n泉水\n把水还给它
+MESSAGE_WATER_IS_FLOWING	我们的泉水\n又涌出来了\n多亏了你
+MESSAGE_FOUNTAIN_IN_SKY	我常听人说起\n天上的泉水\n从镇上往下走\n会到一处\n天空开阔的地方\n据说那里\n天上有泉水\n但需要羽翼靴……
+MESSAGE_PUSH_FOUNTAIN_ROCK	如果你能把\n石头从泉水旁\n推开\n就能找到\n去马斯康的路\n但没有红宝石\n戒指就推不动\n泉水边的老人\n应该有一枚\n去问问他
+MESSAGE_SPRING_IN_TOWER	要塞塔里\n有一处泉水\n你会找到\n干涸的喷泉\n塔的入口\n就在这座镇子\n正上方\n再见
+MESSAGE_WINGBOOTS_IN_TOWER	住在塔里的\n矮人有羽翼靴\n拿到之后\n去找天上的\n泉水吧
+MESSAGE_DIRECTIONS_TO_MASCON	把石头从\n泉水旁推开\n就能找到\n去马斯康的路\n但你需要\n红宝石戒指
+MESSAGE_LOOK_FOR_WINGBOOTS	去找羽翼靴
+MESSAGE_FOUNTAIN_IN_SKY_HINT	走到蓝天下\n你会找到\n天上的泉水
+MESSAGE_USE_THIS_KEY_FOR_FIRST_SPRING	用这把钥匙\n打开下面的门\n你会找到\n第一处泉水
+MESSAGE_GET_JOKER_OR_COME_BACK	如果没有\n小丑钥匙\n就请回吧
+MESSAGE_HO_HO_HO_ZZZ	呵呵呵！\n我来讲讲\n泉水的故事\n……\n……\n哎呀！\n……睡着了\n水被下了毒\n毒快散尽了\n可以叫醒他\n看着\n…… ……\n有点不对……\n哎呀！
+MESSAGE_GET_KEY_FIND_FOUNTAIN	去要塞塔找\n隐修神父\n拿钥匙\n再寻找那处\n没人发现过的\n第一处泉水
+MESSAGE_THIS_IS_SPRING_OF_TRUNK_GET_ELIXIR	你能到这里\n真不容易\n这是树干泉水\n要让泉水复活\n需要灵药\n能把药给我吗？
+MESSAGE_2_MORE_SPRINGS	这处泉水\n会重新涌出\n还有两处\n快去找吧
+MESSAGE_COME_BACK_WITH_MEDICINE	带着药再来
+MESSAGE_FIND_POISON_IN_MASCON	泉水一恢复\n就去马斯康\n找出矮人藏的毒\n否则精灵\n会被毁灭
+MESSAGE_WILL_REVIVE_SPRING	谢谢你来！\n我这就让\n泉水复活
+MESSAGE_GIVING_RING_OF_RUBY	我把红宝石\n戒指给你\n现在去把石头\n从泉水旁推开
+MESSAGE_TRUST_YOUR_POWER	相信你的力量\n你是被选中的\n战士\n来拯救\n这个世界
+MESSAGE_WELCOME_TO_MASCON	你来这里\n有何贵干？\n这里是雾中的\n马斯康镇
+MESSAGE_PREPARE_BEFORE_FOREPAW	福尔波塔\n还很远\n做好准备\n再出发
+MESSAGE_METEORITE_BECOMES_POISON	陨石溶进水里\n就会变成\n让人生病的毒\n一切始于\n矮人把它\n带进世界树
+MESSAGE_DID_YOU_GET_PENDANT	拿到吊坠了吗？\n它能增强\n你的攻击力
+MESSAGE_STORES_OUTSIDE_TOWN	镇外也有商店\n它们卖些\n有用的东西\n只是路不太好走\n走路时\n抬头找一找
+MESSAGE_THIS_IS_LARGE_SHIELD	这是一面\n又大又漂亮的\n盾牌
+MESSAGE_DIRECTIONS_TO_SUFFER	陨石被供奉在\n苦难塔\n塔就在一位\n神父的上方\n小心行事
+MESSAGE_NEED_WING_BOOTS_FOR_MIST	要去雾中的\n维克提姆镇\n你需要羽翼靴\n去苦难塔找
+MESSAGE_WELCOME_TO_MIST	自从陨石\n砸中镇子\n这里就被\n浓雾笼罩\n有些地方\n可能还在燃烧
+MESSAGE_HOUSE_OUTSIDE_ABANDONED	镇外那间屋子\n被废弃了\n现在住着矮人\n小心他们
+MESSAGE_TOWER_OF_SUFFER_SOON	你很快就能\n到达苦难塔
+MESSAGE_KEEP_PENDANT	吊坠一直是\n镇上的宝物\n但由你保管\n对镇上更好
+MESSAGE_DWARVES_CHANTING	矮人对着\n一块陨石\n念诵真言\n他们相信它\n有特殊的\n宇宙之力
+MESSAGE_METEORITE_WAS_MOVED	原本在苦难塔的\n陨石\n已经被移到\n迷雾塔\n矮人一定\n知道了你要来
+MESSAGE_HOUR_GLASS	据说沙漏能让你\n在时间停止时\n行动
+MESSAGE_HOUR_GLASS_USES_ENERGY	沙漏会消耗\n你的体力\n用的时候\n要小心
+MESSAGE_WELCOME_TO_VICTIM	欢迎来到\n维克提姆镇\n我一直\n出不了镇
+MESSAGE_DANGEROUS_WITHOUT_MAGIC	没有魔法护盾\n出镇很危险
+MESSAGE_MAGIC_HALL_OUTSIDE_TOWN	镇外有一座\n魔法堂
+MESSAGE_MAGIC_CANE	有一根魔杖\n能赐你\n魔法之力
+MESSAGE_GO_TO_CAPITAL	通往首都的\n门已经开了\n现在就出发
+MESSAGE_GOT_ARMOR_FOR_BOTTLE	那只是传言\n抱歉\n我用一个瓶子\n换来了这副铠甲\n你想要的话\n就拿去吧
+MESSAGE_ILL_HAVE_DRINK	我要喝一杯\n嗯……\n还是算了
+MESSAGE_IM_LOST	我好像\n迷路了
+MESSAGE_IM_LOST_MAGIC_DOES_NOT_WORK	我迷路了\n我的魔法\n不管用了
+MESSAGE_MAGIC_OF_JUSTICE_OR_DESTRUCTION	它可以是正义\n的魔法\n也可以是\n灭亡的魔法\n全看谁来用
+MESSAGE_MAGIC_INDIVIDUAL_POWERS	每种魔法\n各有各的力量
+MESSAGE_MAGIC_CONSUMES_POWER	攻击魔法很有效\n但会消耗体力
+MESSAGE_METEORITE_BECOMES_BLACK_ONYX	把矮人的陨石\n握在手里\n它就会变成\n黑玛瑙\n它藏着力量
+MESSAGE_DIRECTIONS_TO_TOWER_OF_MIST	一直往前走\n就能到迷雾塔\n打倒塔里的矮人\n拿到陨石\n再回到这里
+MESSAGE_USE_KEY_FOR_CONFLATE	只要还有\n疯狂的矮人\n陨石的致命威胁\n就笼罩着精灵\n用这把钥匙\n打开下一道门\n前往康弗雷特\n为精灵而战
+MESSAGE_YOU_NEED_KEY_ACE	我给像你这样的\n旅人发钥匙\n你手上是\n"王牌"钥匙吧？
+MESSAGE_WELCOME_TO_CONFLATE	这里是\n商业城镇\n康弗雷特
+MESSAGE_LEGENDARY_SHIELD_HELMET	传说中的盾与盔\n就在树枝界
+MESSAGE_TOWN_SURROUNDED_BY_DOORS	镇子被重重\n门扉环绕\n用来保护自己
+MESSAGE_SEE_GURU_AFTER_SHIELD_HELMET	拿到盾与盔之后\n去见神父
+MESSAGE_GUARDIAN_OF_GURU	我是神父的守卫\n他是一位\n重要人物
+MESSAGE_SOMETHING_YOU_CAN_GET	应该有什么\n你能拿走的东西
+MESSAGE_DONT_RELY_ON_MAGIC_FINAL_BATTLE	与矮人的\n最后一战\n别依赖魔法
+MESSAGE_USED_TO_TRADE_WITH_DWARVES	这座镇子曾因\n与矮人通商\n而繁荣
+MESSAGE_USED_TO_BE_SKILLED	他们如今很可怕\n但从前都是\n能工巧匠
+MESSAGE_USED_TO_VISIT_DWARVES	从前有生意时\n我常去矮人镇
+MESSAGE_I_AM_PICKPOCKET	想知道我\n是干什么的？\n我是扒手金吉\n在这附近\n我可是个人物
+MESSAGE_NEED_FINAL_WEAPON_ARMOR	与矮人的\n最后一战\n别只靠魔法\n只有拿到屠龙剑\n才能穿上\n战斗头盔和战服\n在真正的和平\n到来之前\n屠龙剑\n不能还给我们
+MESSAGE_DIRECTIONS_DARTMORE	与矮人的\n最后一战\n别只靠魔法\n只有拿到屠龙剑\n才能穿上\n战斗头盔和战服\n在真正的和平\n到来之前\n屠龙剑\n不能还给我们\n这枚戒指能打开\n通往达特穆尔\n带上它
+MESSAGE_DIRECTIONS_DAYBREAK	黎明镇是边境上的\n一座小镇
+MESSAGE_FRIENDS_IN_DARTMOOR	我在达特穆尔\n有朋友\n那里是出了名的\n凶险之地
+MESSAGE_LOOK_FOR_BATTLE_SUIT	去找战斗服
+MESSAGE_FIND_MAGIC_CANE	你找到魔杖了吗？
+MESSAGE_YOU_ARE_FAMOUS_GOOD_LOOKING	你就是那位\n有名的战士\n你果然和\n传闻中一样\n英俊
+MESSAGE_AUTOGRAPH	你就是大家\n谈论的战士\n能给我签个名吗？\n你现在忙吗？\n那改天来\n看我吧？\n我叫摩多\n别忘了我
+MESSAGE_WHEN_TAKE_BATH	看看你！\n你上次洗澡\n是什么时候？
+MESSAGE_GURU_CONFLATE_HAS_RING_DWARVES	康弗雷特的\n神父有\n矮人戒指
+MESSAGE_DID_YOU_GET_BATTLE_SUIT	拿到战斗服了吗？
+MESSAGE_DARTMORE_IS_MAZE	达特穆尔城堡\n是一座\n复杂的迷宫
+MESSAGE_IS_FIRST_VISIT_TO_STORE	你是第一次\n来这家店吗？\n我也是第一次
+MESSAGE_MAGIC_CANE_ABOVE_TOWER	好久不见！\n到石柱塔上方\n你就能找到魔杖
+MESSAGE_DIRECTIONS_TO_FRATERNAL	弗拉特纳城堡\n就在达特穆尔镇\n的下方
+MESSAGE_YOU_NEED_DEMONS_RING	要进入泽尼斯要塞\n你需要恶魔戒指
+MESSAGE_KING_GRIEVE_HAS_DRAGON_SLAYER	屠龙剑在\n矮人国王\n手里
+MESSAGE_DEFEAT_EVIL_WITH_DRAGON_SLAYER	用屠龙剑\n打败邪恶
+MESSAGE_GO_TO_FRATERNAL_GURU	去弗拉特纳城堡\n见神父
+MESSAGE_GURU_HAS_DEMONS_RING	见到神父\n他就会把\n恶魔戒指给你
+MESSAGE_SEARCH_CASTLE_FOR_GURU	在城堡里\n仔细搜查\n你应该能找到\n一位神父
+MESSAGE_EVIL_IMMUNE_TO_MAGIC	攻击魔法\n对邪恶无效
+MESSAGE_METEORITE_EXPOSITION_2	矮人把陨石\n视为宇宙的使者\n你已经知道\n它是可怕的东西\n溶进水里\n就会变成毒\n靠近或触碰它\n身心都可能\n发生变化\n所以矮人才会\n发疯
+MESSAGE_DEFEATED_KING_GRIEVE	你刚刚打败的\n怪物是格里夫王\n矮人的国王\n邪恶改变了\n他的样貌\n国王把剑\n藏在自己体内\n从邪恶手中\n保护了它\n用这把剑\n去要塞打败邪恶\n门会就此打开
+MESSAGE_ILL_MEDITATE_FOR_YOU	我来为你\n冥想
+MESSAGE_GLAD_YOURE_BACK	很高兴你平安归来\n需要时间\n但精灵与矮人\n会成为朋友\n这片土地\n会重归和平\n我知道你\n还要继续旅行\n真是个\n闲不住的人！
+MESSAGE_MARK_OF_QUEEN	钥匙孔旁有\n"王后"的记号
+MESSAGE_MARK_OF_KING	钥匙孔旁有\n"国王"的记号
+MESSAGE_MARK_OF_ACE	钥匙孔旁有\n"王牌"的记号
+MESSAGE_MARK_OF_JOKER	钥匙孔旁有\n"小丑"的记号
+MESSAGE_NEED_RING_FOR_DOOR	你需要戒指\n来开门吗？
+MESSAGE_USED_RED_POTION	我用了红药水
+MESSAGE_USED_MATTOCK	我用了鹤嘴锄
+MESSAGE_USED_HOURGLASS	我用了沙漏
+MESSAGE_USED_WINGBOOTS	我用了羽翼靴
+MESSAGE_USED_KEY	我用了钥匙
+MESSAGE_USED_ELIXIR	我用了灵药
+MESSAGE_HOLDING_ELIXIR	我带着灵药
+MESSAGE_HOLDING_RED_POTION	我带着红药水
+MESSAGE_HOLDING_MATTOCK	我带着鹤嘴锄
+MESSAGE_HOLDING_WINGBOOTS	我带着羽翼靴
+MESSAGE_HOLDING_HOURGLASS	我带着沙漏
+MESSAGE_GOT_BATTLE_SUIT	我拿到了战斗服
+MESSAGE_GOT_BATTLE_HELMET	我拿到了战斗头盔
+MESSAGE_GOT_DRAGON_SLAYER	我拿到了屠龙剑
+MESSAGE_GOT_BLACK_ONYX	我拿到了黑玛瑙
+MESSAGE_GOT_PENDANT	我拿到了吊坠
+MESSAGE_GOT_MAGICAL_ROD	我拿到了魔杖
+MESSAGE_TOUCHED_POISON	我碰到了毒
+MESSAGE_GLOVE_INCREASES_POWER	手套能提升\n攻击力
+MESSAGE_POWER_GLOVE_IS_GONE	手套的力量\n消失了
+MESSAGE_USED_OINTMENT	药膏治好了\n我的伤
+MESSAGE_OINTMENT_GONE	药膏的力量\n消失了
+MESSAGE_WINGBOOTS_GONE	羽翼靴的力量\n消失了
+MESSAGE_HOURGLASS_GONE	沙漏的力量\n消失了
